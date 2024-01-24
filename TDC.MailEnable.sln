@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34316.72
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TDC.MailEnable.IpBan", "TDC.MailEnable.IpBan\TDC.MailEnable.IpBan.vbproj", "{68394ABB-9295-489E-9E95-648E61EEF50C}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TDC.MailEnable.Core", "TDC.MailEnable.Core\TDC.MailEnable.Core.vbproj", "{85E52E14-0789-4003-BB92-E3F59FE5A650}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TDC.MailEnable.Service.IMAP", "TDC.MailEnable.Service.IMAP\TDC.MailEnable.Service.IMAP.vbproj", "{6BE451F9-B0F0-47AC-90C2-F44B9F464BA9}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TDC.MailEnable.Pruebas", "TDC.MailEnable.Pruebas\TDC.MailEnable.Pruebas.vbproj", "{7BD19DF9-6099-4B28-9FAB-01B16C9CFA58}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68394ABB-9295-489E-9E95-648E61EEF50C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68394ABB-9295-489E-9E95-648E61EEF50C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68394ABB-9295-489E-9E95-648E61EEF50C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68394ABB-9295-489E-9E95-648E61EEF50C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85E52E14-0789-4003-BB92-E3F59FE5A650}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85E52E14-0789-4003-BB92-E3F59FE5A650}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85E52E14-0789-4003-BB92-E3F59FE5A650}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85E52E14-0789-4003-BB92-E3F59FE5A650}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BE451F9-B0F0-47AC-90C2-F44B9F464BA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BE451F9-B0F0-47AC-90C2-F44B9F464BA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BE451F9-B0F0-47AC-90C2-F44B9F464BA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BE451F9-B0F0-47AC-90C2-F44B9F464BA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BD19DF9-6099-4B28-9FAB-01B16C9CFA58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BD19DF9-6099-4B28-9FAB-01B16C9CFA58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BD19DF9-6099-4B28-9FAB-01B16C9CFA58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BD19DF9-6099-4B28-9FAB-01B16C9CFA58}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4D087EC4-46E3-428F-86B7-C1B0922FA4FF}
+	EndGlobalSection
+EndGlobal
