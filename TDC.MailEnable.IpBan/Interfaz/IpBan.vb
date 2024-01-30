@@ -117,13 +117,13 @@ Namespace Interfaz
 
             'SMTP (Actividad)
             Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Cualquiera, 20, New List(Of String) From {"Invalid Username or Password"}))
-            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Cualquiera, 20, New List(Of String) From {"This mail server requires authentication before sending mail"}))
+            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Cualquiera, 1, New List(Of String) From {"This mail server requires authentication before sending mail"}))
             Trabajador_SMTP.Intervalo = 1000
             Trabajador_SMTP.Inicia()
 
             'SMTP(W3C)
             Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Cualquiera, 20, New List(Of String) From {"Invalid+Username+or+Password"}))
-            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Cualquiera, 20, New List(Of String) From {"This+mail+server+requires+authentication+before+sending+mail"}))
+            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Cualquiera, 1, New List(Of String) From {"This+mail+server+requires+authentication+before+sending+mail"}))
             Trabajador_SMTPW3C.Intervalo = 1000
             Trabajador_SMTPW3C.Inicia()
 
