@@ -19,6 +19,10 @@ Namespace MailEnableLog
         Const File_Geolocalizacion As String = "Geolocalizacion.lst"
         Public Geolocalizador As New Cls_Geolocalizacion(File_Geolocalizacion)
 
+        'SPAMASSASSIN
+
+        Public SpamAssassin As Spam.SpamAssassin
+
         'PIPE BANEADAS
         Private PipeServer As Core.Pipe.ServerPipe
 
@@ -65,25 +69,19 @@ Namespace MailEnableLog
                     End Try
                 End If
 
-                'Activar Imap Socket
-                'If Not String.IsNullOrEmpty(Configuracion.IMAP_SOCKET_APP) Then
-                '    If IO.File.Exists(Configuracion.IMAP_SOCKET_APP) Then
-                '        If New IO.FileInfo(Configuracion.IMAP_SOCKET_APP).Extension.ToLower.Contains("exe") Then
-                '            Dim BuscarProceso As Integer = Process.GetProcessesByName(New IO.FileInfo(Configuracion.IMAP_SOCKET_APP).Name.Replace(".exe", "")).Length
-                '            If BuscarProceso = 0 Then
-                '                Using LanzarImap As New Process
-                '                    With LanzarImap
-                '                        With .StartInfo
-                '                            .FileName = Configuracion.IMAP_SOCKET_APP
-                '                            .Verb = "runas"
-                '                        End With
-                '                        .Start()
-                '                    End With
-                '                End Using
-                '            End If
-                '        End If
-                '    End If
-                'End If
+                'Activar Spam Assassin
+                If Not String.IsNullOrEmpty(Configuracion.SPAM_SPAMASSASSIN) Then
+                    If IO.File.Exists(Configuracion.SPAM_SPAMASSASSIN) Then
+                        If New IO.FileInfo(Configuracion.SPAM_SPAMASSASSIN).Extension.ToLower.Contains("exe") Then
+                            Dim BuscarProceso As Integer = Process.GetProcessesByName(New IO.FileInfo(Configuracion.SPAM_SPAMASSASSIN).Name.Replace(".exe", "")).Length
+                            If BuscarProceso = 0 Then
+                                SpamAssassin = New Spam.SpamAssassin With {.Ejecutable = New IO.FileInfo(Configuracion.SPAM_SPAMASSASSIN)}
+                            Else
+                                SpamAssassin = New Spam.SpamAssassin With {.Proceso = Process.GetProcessesByName(New IO.FileInfo(Configuracion.SPAM_SPAMASSASSIN).Name.Replace(".exe", ""))(0)}
+                            End If
+                        End If
+                    End If
+                End If
             End If
         End Sub
 

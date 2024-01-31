@@ -65,6 +65,9 @@
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Spam_Assassin.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -142,6 +145,7 @@
     </Compile>
     <Compile Include="RegistroDeArchivos\LecturaDeArchivo.vb" />
     <Compile Include="RegistroDeArchivos\RegistroDeArchivos.vb" />
+    <Compile Include="Spam\SpamAssassin.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Interfaz\Frm_Config.resx">
@@ -204,6 +208,9 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Spam_Assassin.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

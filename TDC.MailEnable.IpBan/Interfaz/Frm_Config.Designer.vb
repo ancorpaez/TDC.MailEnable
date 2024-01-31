@@ -54,6 +54,9 @@
             Me.txtImapApp = New System.Windows.Forms.TextBox()
             Me.CmdCargarImapApp = New System.Windows.Forms.Button()
             Me.chkArranqueWindows = New System.Windows.Forms.CheckBox()
+            Me.Label9 = New System.Windows.Forms.Label()
+            Me.txtSpamAssassin = New System.Windows.Forms.TextBox()
+            Me.CmdCargarSpamAssassin = New System.Windows.Forms.Button()
             Me.Panel1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -127,7 +130,7 @@
             Me.Panel1.Controls.Add(Me.BtnGuardarConfig)
             Me.Panel1.Controls.Add(Me.CtrlSeparadorPie)
             Me.Panel1.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.Panel1.Location = New System.Drawing.Point(0, 266)
+            Me.Panel1.Location = New System.Drawing.Point(0, 300)
             Me.Panel1.Name = "Panel1"
             Me.Panel1.Size = New System.Drawing.Size(784, 40)
             Me.Panel1.TabIndex = 3
@@ -303,19 +306,45 @@
             'chkArranqueWindows
             '
             Me.chkArranqueWindows.AutoSize = True
-            Me.chkArranqueWindows.Location = New System.Drawing.Point(15, 242)
+            Me.chkArranqueWindows.Location = New System.Drawing.Point(12, 277)
             Me.chkArranqueWindows.Name = "chkArranqueWindows"
             Me.chkArranqueWindows.Size = New System.Drawing.Size(134, 17)
             Me.chkArranqueWindows.TabIndex = 5
             Me.chkArranqueWindows.Text = "Arrancar con Windows"
             Me.chkArranqueWindows.UseVisualStyleBackColor = True
             '
+            'Label9
+            '
+            Me.Label9.AutoSize = True
+            Me.Label9.Location = New System.Drawing.Point(12, 236)
+            Me.Label9.Name = "Label9"
+            Me.Label9.Size = New System.Drawing.Size(78, 13)
+            Me.Label9.TabIndex = 0
+            Me.Label9.Text = "Spam Assassin"
+            '
+            'txtSpamAssassin
+            '
+            Me.txtSpamAssassin.Location = New System.Drawing.Point(116, 233)
+            Me.txtSpamAssassin.Name = "txtSpamAssassin"
+            Me.txtSpamAssassin.Size = New System.Drawing.Size(571, 20)
+            Me.txtSpamAssassin.TabIndex = 1
+            '
+            'CmdCargarSpamAssassin
+            '
+            Me.CmdCargarSpamAssassin.Location = New System.Drawing.Point(693, 232)
+            Me.CmdCargarSpamAssassin.Name = "CmdCargarSpamAssassin"
+            Me.CmdCargarSpamAssassin.Size = New System.Drawing.Size(75, 20)
+            Me.CmdCargarSpamAssassin.TabIndex = 4
+            Me.CmdCargarSpamAssassin.Text = "Buscar"
+            Me.CmdCargarSpamAssassin.UseVisualStyleBackColor = True
+            '
             'Frm_Config
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(784, 306)
+            Me.ClientSize = New System.Drawing.Size(784, 340)
             Me.Controls.Add(Me.chkArranqueWindows)
+            Me.Controls.Add(Me.CmdCargarSpamAssassin)
             Me.Controls.Add(Me.CmdCargarImapApp)
             Me.Controls.Add(Me.BtnCargarAWEB)
             Me.Controls.Add(Me.BtnCargarAPOP)
@@ -324,10 +353,12 @@
             Me.Controls.Add(Me.BtnCargarPOP)
             Me.Controls.Add(Me.BtnCargarSMTP)
             Me.Controls.Add(Me.BtnCargarIMAP)
+            Me.Controls.Add(Me.txtSpamAssassin)
             Me.Controls.Add(Me.txtImapApp)
             Me.Controls.Add(Me.txtAWEB)
             Me.Controls.Add(Me.txtAPOP)
             Me.Controls.Add(Me.Panel1)
+            Me.Controls.Add(Me.Label9)
             Me.Controls.Add(Me.txtASMTP)
             Me.Controls.Add(Me.Label8)
             Me.Controls.Add(Me.txtWEB)
@@ -381,5 +412,8 @@
         Friend WithEvents txtImapApp As TextBox
         Friend WithEvents CmdCargarImapApp As Button
         Friend WithEvents chkArranqueWindows As CheckBox
+        Friend WithEvents Label9 As Label
+        Friend WithEvents txtSpamAssassin As TextBox
+        Friend WithEvents CmdCargarSpamAssassin As Button
     End Class
 End Namespace

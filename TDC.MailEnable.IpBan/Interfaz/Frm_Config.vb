@@ -16,6 +16,7 @@ Namespace Interfaz
             txtAPOP.Text = Mod_Core.Configuracion.POP_DENY
             txtAWEB.Text = Mod_Core.Configuracion.WEB_DENY
             txtImapApp.Text = Mod_Core.Configuracion.IMAP_SOCKET_APP
+            txtSpamAssassin.Text = Mod_Core.Configuracion.SPAM_SPAMASSASSIN
             chkArranqueWindows.Checked = Mod_Core.Configuracion.AutoArranqueWindows
         End Sub
 
@@ -53,11 +54,12 @@ Namespace Interfaz
             Mod_Core.Configuracion.POP_DENY = txtAPOP.Text
             Mod_Core.Configuracion.WEB_DENY = txtAWEB.Text
             Mod_Core.Configuracion.IMAP_SOCKET_APP = txtImapApp.Text
+            Mod_Core.Configuracion.SPAM_SPAMASSASSIN = txtSpamAssassin.Text
             Mod_Core.GuardarConfiguracion()
             Me.Close()
         End Sub
 
-        Private Sub txtAPOP_TextChanged(sender As Object, e As EventArgs) Handles txtAPOP.TextChanged, txtAWEB.TextChanged, txtASMTP.TextChanged, txtWEB.TextChanged, txtPOP.TextChanged, txtSMTP.TextChanged, txtIMAP.TextChanged, txtImapApp.TextChanged
+        Private Sub txtAPOP_TextChanged(sender As Object, e As EventArgs) Handles txtAPOP.TextChanged, txtAWEB.TextChanged, txtASMTP.TextChanged, txtWEB.TextChanged, txtPOP.TextChanged, txtSMTP.TextChanged, txtIMAP.TextChanged, txtImapApp.TextChanged, txtSpamAssassin.TextChanged
             If Estado = EstadosCarga.Cargado Then BtnGuardarConfig.Enabled = True
         End Sub
         Private Sub BtnCargarIMAP_Click(sender As Object, e As EventArgs) Handles BtnCargarIMAP.Click
@@ -95,10 +97,14 @@ Namespace Interfaz
         Private Sub CmdCargarImapApp_Click(sender As Object, e As EventArgs) Handles CmdCargarImapApp.Click
             txtImapApp.Text = CargarArchivo()
         End Sub
-
+        Private Sub CmdCargarSpamAssassin_Click(sender As Object, e As EventArgs) Handles CmdCargarSpamAssassin.Click
+            txtSpamAssassin.Text = CargarArchivo()
+        End Sub
         Private Sub chkArranqueWindows_CheckedChanged(sender As Object, e As EventArgs) Handles chkArranqueWindows.CheckedChanged
             Configuracion.AutoArranqueWindows = chkArranqueWindows.Checked
             BtnGuardarConfig.Enabled = True
         End Sub
+
+
     End Class
 End Namespace

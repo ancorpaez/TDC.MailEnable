@@ -8,6 +8,7 @@
         Public POP_DENY As String = ""
         Public WEB_DENY As String = ""
         Public IMAP_SOCKET_APP As String = ""
+        Public SPAM_SPAMASSASSIN As String = ""
         Public AutoArranqueWindows As Boolean = True
     End Class
 End Namespace

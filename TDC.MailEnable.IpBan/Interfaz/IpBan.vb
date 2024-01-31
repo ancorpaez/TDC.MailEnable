@@ -38,10 +38,11 @@ Namespace Interfaz
         Private Publicador As Frm_PublicarIps = Nothing
         Private Shared SyncLockPublicador As New Object()
 
+
         Private Sub IpBan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
             'Posicionar Ventana
-            Me.Top = 0
+            Me.Top = 150
             'Arrancar Modulo Principal
             Mod_Core.Mod_Core_Main()
 
@@ -154,6 +155,18 @@ Namespace Interfaz
             UcIMAPEx.Etiqueta.Text = "IMAPP (Ex)"
             UcWEB.Etiqueta.Text = "WEB"
 
+            'ACTIVAR SPAM ASSASIN
+            If Not IsNothing(Mod_Core.SpamAssassin) AndAlso Not IsNothing(SpamAssassin.Ejecutable) Then
+                'No está Iniciado SpamAssassin
+                If SpamAssassin.LogFile.Exists Then SpamAssassin.LogFile.Delete()
+                Mod_Core.SpamAssassin.Salida = txtRichSpamAssassin
+                Mod_Core.SpamAssassin.Start(Spam.SpamAssassin.SpamAssassinModoInicio.Oculto)
+            ElseIf Not IsNothing(SpamAssassin) AndAlso Not IsNothing(SpamAssassin.Proceso) Then
+                'Ya está Iniciado SpamAssasin
+                SpamAssassin.Ejecutable = New IO.FileInfo(Configuracion.SPAM_SPAMASSASSIN)
+                Mod_Core.SpamAssassin.Salida = txtRichSpamAssassin
+                SpamAssassin.Read()
+            End If
         End Sub
 
         Private Sub RefrescarDatosBaneadas()
@@ -382,6 +395,44 @@ Namespace Interfaz
 
         Private Sub GridImapRechazados_DataError(sender As Object, e As DataGridViewDataErrorEventArgs)
             e.ThrowException = False
+        End Sub
+
+        Private Sub BtnDeneterSpamAssassin_Click(sender As Object, e As EventArgs)
+
+        End Sub
+
+        Private Sub txtRichSpamAssassin_TextChanged(sender As Object, e As EventArgs) Handles txtRichSpamAssassin.TextChanged
+            txtRichSpamAssassin.SelectionStart = txtRichSpamAssassin.Text.Length
+            txtRichSpamAssassin.ScrollToCaret()
+        End Sub
+
+        Private Sub TimerIpBan_Tick(sender As Object, e As EventArgs) Handles TimerIpBan.Tick
+            If Not IsNothing(SpamAssassin) Then
+                If Not IsNothing(SpamAssassin.Proceso) Then
+                    If SpamAssassin.Corriendo Then
+                        lblEstadoSpamAssasin.BackColor = Color.Green
+                        TSMIniciarSpamAssassin.Enabled = False
+                        TSMDetener.Enabled = True
+                    Else
+                        lblEstadoSpamAssasin.BackColor = Color.Red
+                        TSMIniciarSpamAssassin.Enabled = True
+                        TSMDetener.Enabled = False
+                    End If
+
+                End If
+            End If
+        End Sub
+
+        Private Sub TSMDetener_Click(sender As Object, e As EventArgs) Handles TSMDetener.Click
+            If Not IsNothing(Mod_Core.SpamAssassin) Then Mod_Core.SpamAssassin.Kill()
+        End Sub
+
+        Private Sub TSMIniciarSmapAssassinNormal_Click(sender As Object, e As EventArgs) Handles TSMIniciarSmapAssassinNormal.Click
+            SpamAssassin.Start(Spam.SpamAssassin.SpamAssassinModoInicio.Normal)
+        End Sub
+
+        Private Sub TSMIniciarSmapAssassinOculto_Click(sender As Object, e As EventArgs) Handles TSMIniciarSmapAssassinOculto.Click
+            SpamAssassin.Start(Spam.SpamAssassin.SpamAssassinModoInicio.Oculto)
         End Sub
     End Class
 End Namespace

@@ -38,8 +38,8 @@
             Me.Panel5 = New System.Windows.Forms.Panel()
             Me.Panel4 = New System.Windows.Forms.Panel()
             Me.PanelPOPEx = New System.Windows.Forms.Panel()
-            Me.Panel3 = New System.Windows.Forms.Panel()
             Me.PanelPOPAct = New System.Windows.Forms.Panel()
+            Me.Panel3 = New System.Windows.Forms.Panel()
             Me.Splitter1 = New System.Windows.Forms.Splitter()
             Me.PanelIps = New System.Windows.Forms.Panel()
             Me.PanelListaNegra = New System.Windows.Forms.Panel()
@@ -65,12 +65,23 @@
             Me.BtnAnadirBlanca = New System.Windows.Forms.Button()
             Me.Label2 = New System.Windows.Forms.Label()
             Me.Fondo = New System.Windows.Forms.Panel()
-            Me.MenuPrincipal = New System.Windows.Forms.MenuStrip()
-            Me.ConfiguraciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.TabControl1 = New System.Windows.Forms.TabControl()
             Me.TabPIpBan = New System.Windows.Forms.TabPage()
             Me.TabPage2 = New System.Windows.Forms.TabPage()
+            Me.txtRichSpamAssassin = New System.Windows.Forms.RichTextBox()
+            Me.Panel1 = New System.Windows.Forms.Panel()
+            Me.Panel2 = New System.Windows.Forms.Panel()
+            Me.lblEstadoSpamAssasin = New System.Windows.Forms.Label()
+            Me.Label3 = New System.Windows.Forms.Label()
+            Me.MenuSpamAssassin = New System.Windows.Forms.MenuStrip()
+            Me.TSMDetener = New System.Windows.Forms.ToolStripMenuItem()
+            Me.TSMIniciarSpamAssassin = New System.Windows.Forms.ToolStripMenuItem()
+            Me.TSMIniciarSmapAssassinNormal = New System.Windows.Forms.ToolStripMenuItem()
+            Me.TSMIniciarSmapAssassinOculto = New System.Windows.Forms.ToolStripMenuItem()
             Me.IconosTab = New System.Windows.Forms.ImageList(Me.components)
+            Me.MenuPrincipal = New System.Windows.Forms.MenuStrip()
+            Me.ConfiguraciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.TimerIpBan = New System.Windows.Forms.Timer(Me.components)
             Me.UcArchivoWEB = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcArchivoIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
@@ -85,7 +96,6 @@
             Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcArchivoPOPAct = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcPOPAct = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
             Me.PanelIpBaneadas.SuspendLayout()
             Me.PanelBuscadores.SuspendLayout()
             Me.Panel13.SuspendLayout()
@@ -107,10 +117,13 @@
             Me.Panel15.SuspendLayout()
             Me.PanelBotonesBlanca.SuspendLayout()
             Me.Fondo.SuspendLayout()
-            Me.MenuPrincipal.SuspendLayout()
             Me.TabControl1.SuspendLayout()
             Me.TabPIpBan.SuspendLayout()
             Me.TabPage2.SuspendLayout()
+            Me.Panel1.SuspendLayout()
+            Me.Panel2.SuspendLayout()
+            Me.MenuSpamAssassin.SuspendLayout()
+            Me.MenuPrincipal.SuspendLayout()
             Me.SuspendLayout()
             '
             'PanelIpBaneadas
@@ -248,14 +261,6 @@
             Me.PanelPOPEx.Size = New System.Drawing.Size(441, 31)
             Me.PanelPOPEx.TabIndex = 3
             '
-            'Panel3
-            '
-            Me.Panel3.Dock = System.Windows.Forms.DockStyle.Top
-            Me.Panel3.Location = New System.Drawing.Point(3, 3)
-            Me.Panel3.Name = "Panel3"
-            Me.Panel3.Size = New System.Drawing.Size(441, 10)
-            Me.Panel3.TabIndex = 2
-            '
             'PanelPOPAct
             '
             Me.PanelPOPAct.Controls.Add(Me.UcArchivoPOPAct)
@@ -265,6 +270,14 @@
             Me.PanelPOPAct.Name = "PanelPOPAct"
             Me.PanelPOPAct.Size = New System.Drawing.Size(441, 31)
             Me.PanelPOPAct.TabIndex = 1
+            '
+            'Panel3
+            '
+            Me.Panel3.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Panel3.Location = New System.Drawing.Point(3, 3)
+            Me.Panel3.Name = "Panel3"
+            Me.Panel3.Size = New System.Drawing.Size(441, 10)
+            Me.Panel3.TabIndex = 2
             '
             'Splitter1
             '
@@ -545,21 +558,6 @@
             Me.Fondo.Size = New System.Drawing.Size(831, 369)
             Me.Fondo.TabIndex = 1
             '
-            'MenuPrincipal
-            '
-            Me.MenuPrincipal.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfiguraciónToolStripMenuItem})
-            Me.MenuPrincipal.Location = New System.Drawing.Point(0, 0)
-            Me.MenuPrincipal.Name = "MenuPrincipal"
-            Me.MenuPrincipal.Size = New System.Drawing.Size(831, 24)
-            Me.MenuPrincipal.TabIndex = 2
-            Me.MenuPrincipal.Text = "Menu"
-            '
-            'ConfiguraciónToolStripMenuItem
-            '
-            Me.ConfiguraciónToolStripMenuItem.Name = "ConfiguraciónToolStripMenuItem"
-            Me.ConfiguraciónToolStripMenuItem.Size = New System.Drawing.Size(95, 20)
-            Me.ConfiguraciónToolStripMenuItem.Text = "Configuración"
-            '
             'TabControl1
             '
             Me.TabControl1.Controls.Add(Me.TabPIpBan)
@@ -586,7 +584,8 @@
             '
             'TabPage2
             '
-            Me.TabPage2.Controls.Add(Me.RichTextBox1)
+            Me.TabPage2.Controls.Add(Me.txtRichSpamAssassin)
+            Me.TabPage2.Controls.Add(Me.Panel1)
             Me.TabPage2.ImageIndex = 0
             Me.TabPage2.Location = New System.Drawing.Point(4, 39)
             Me.TabPage2.Name = "TabPage2"
@@ -596,12 +595,121 @@
             Me.TabPage2.Text = "SpamAssassin"
             Me.TabPage2.UseVisualStyleBackColor = True
             '
+            'txtRichSpamAssassin
+            '
+            Me.txtRichSpamAssassin.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.txtRichSpamAssassin.Location = New System.Drawing.Point(3, 43)
+            Me.txtRichSpamAssassin.Name = "txtRichSpamAssassin"
+            Me.txtRichSpamAssassin.Size = New System.Drawing.Size(797, 260)
+            Me.txtRichSpamAssassin.TabIndex = 0
+            Me.txtRichSpamAssassin.Text = ""
+            '
+            'Panel1
+            '
+            Me.Panel1.Controls.Add(Me.Panel2)
+            Me.Panel1.Controls.Add(Me.MenuSpamAssassin)
+            Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Panel1.Location = New System.Drawing.Point(3, 3)
+            Me.Panel1.Name = "Panel1"
+            Me.Panel1.Padding = New System.Windows.Forms.Padding(3)
+            Me.Panel1.Size = New System.Drawing.Size(797, 40)
+            Me.Panel1.TabIndex = 1
+            '
+            'Panel2
+            '
+            Me.Panel2.Controls.Add(Me.lblEstadoSpamAssasin)
+            Me.Panel2.Controls.Add(Me.Label3)
+            Me.Panel2.Dock = System.Windows.Forms.DockStyle.Right
+            Me.Panel2.Location = New System.Drawing.Point(682, 3)
+            Me.Panel2.Name = "Panel2"
+            Me.Panel2.Size = New System.Drawing.Size(112, 34)
+            Me.Panel2.TabIndex = 1
+            '
+            'lblEstadoSpamAssasin
+            '
+            Me.lblEstadoSpamAssasin.BackColor = System.Drawing.Color.Red
+            Me.lblEstadoSpamAssasin.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.lblEstadoSpamAssasin.Dock = System.Windows.Forms.DockStyle.Right
+            Me.lblEstadoSpamAssasin.Location = New System.Drawing.Point(60, 0)
+            Me.lblEstadoSpamAssasin.Name = "lblEstadoSpamAssasin"
+            Me.lblEstadoSpamAssasin.Size = New System.Drawing.Size(52, 34)
+            Me.lblEstadoSpamAssasin.TabIndex = 1
+            '
+            'Label3
+            '
+            Me.Label3.AutoSize = True
+            Me.Label3.Location = New System.Drawing.Point(3, 11)
+            Me.Label3.Name = "Label3"
+            Me.Label3.Size = New System.Drawing.Size(54, 13)
+            Me.Label3.TabIndex = 0
+            Me.Label3.Text = "ESTADO:"
+            '
+            'MenuSpamAssassin
+            '
+            Me.MenuSpamAssassin.AutoSize = False
+            Me.MenuSpamAssassin.BackColor = System.Drawing.Color.White
+            Me.MenuSpamAssassin.Dock = System.Windows.Forms.DockStyle.Left
+            Me.MenuSpamAssassin.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TSMDetener, Me.TSMIniciarSpamAssassin})
+            Me.MenuSpamAssassin.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
+            Me.MenuSpamAssassin.Location = New System.Drawing.Point(3, 3)
+            Me.MenuSpamAssassin.Name = "MenuSpamAssassin"
+            Me.MenuSpamAssassin.Size = New System.Drawing.Size(128, 34)
+            Me.MenuSpamAssassin.TabIndex = 2
+            Me.MenuSpamAssassin.Text = "MenuStrip1"
+            '
+            'TSMDetener
+            '
+            Me.TSMDetener.Enabled = False
+            Me.TSMDetener.Name = "TSMDetener"
+            Me.TSMDetener.Size = New System.Drawing.Size(60, 30)
+            Me.TSMDetener.Text = "Detener"
+            '
+            'TSMIniciarSpamAssassin
+            '
+            Me.TSMIniciarSpamAssassin.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TSMIniciarSmapAssassinNormal, Me.TSMIniciarSmapAssassinOculto})
+            Me.TSMIniciarSpamAssassin.Enabled = False
+            Me.TSMIniciarSpamAssassin.Name = "TSMIniciarSpamAssassin"
+            Me.TSMIniciarSpamAssassin.Size = New System.Drawing.Size(51, 30)
+            Me.TSMIniciarSpamAssassin.Text = "Iniciar"
+            '
+            'TSMIniciarSmapAssassinNormal
+            '
+            Me.TSMIniciarSmapAssassinNormal.Name = "TSMIniciarSmapAssassinNormal"
+            Me.TSMIniciarSmapAssassinNormal.Size = New System.Drawing.Size(114, 22)
+            Me.TSMIniciarSmapAssassinNormal.Text = "Normal"
+            '
+            'TSMIniciarSmapAssassinOculto
+            '
+            Me.TSMIniciarSmapAssassinOculto.Name = "TSMIniciarSmapAssassinOculto"
+            Me.TSMIniciarSmapAssassinOculto.Size = New System.Drawing.Size(114, 22)
+            Me.TSMIniciarSmapAssassinOculto.Text = "Oculto"
+            '
             'IconosTab
             '
             Me.IconosTab.ImageStream = CType(resources.GetObject("IconosTab.ImageStream"), System.Windows.Forms.ImageListStreamer)
             Me.IconosTab.TransparentColor = System.Drawing.Color.Transparent
             Me.IconosTab.Images.SetKeyName(0, "SA")
             Me.IconosTab.Images.SetKeyName(1, "ME")
+            '
+            'MenuPrincipal
+            '
+            Me.MenuPrincipal.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfiguraciónToolStripMenuItem})
+            Me.MenuPrincipal.Location = New System.Drawing.Point(0, 0)
+            Me.MenuPrincipal.Name = "MenuPrincipal"
+            Me.MenuPrincipal.Size = New System.Drawing.Size(831, 24)
+            Me.MenuPrincipal.TabIndex = 2
+            Me.MenuPrincipal.Text = "Menu"
+            '
+            'ConfiguraciónToolStripMenuItem
+            '
+            Me.ConfiguraciónToolStripMenuItem.Name = "ConfiguraciónToolStripMenuItem"
+            Me.ConfiguraciónToolStripMenuItem.Size = New System.Drawing.Size(95, 20)
+            Me.ConfiguraciónToolStripMenuItem.Text = "Configuración"
+            '
+            'TimerIpBan
+            '
+            Me.TimerIpBan.Enabled = True
+            Me.TimerIpBan.Interval = 1000
             '
             'UcArchivoWEB
             '
@@ -715,15 +823,6 @@
             Me.UcPOPAct.Size = New System.Drawing.Size(441, 20)
             Me.UcPOPAct.TabIndex = 0
             '
-            'RichTextBox1
-            '
-            Me.RichTextBox1.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.RichTextBox1.Location = New System.Drawing.Point(3, 3)
-            Me.RichTextBox1.Name = "RichTextBox1"
-            Me.RichTextBox1.Size = New System.Drawing.Size(797, 300)
-            Me.RichTextBox1.TabIndex = 0
-            Me.RichTextBox1.Text = ""
-            '
             'IpBan
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -732,6 +831,7 @@
             Me.Controls.Add(Me.Fondo)
             Me.Controls.Add(Me.MenuPrincipal)
             Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+            Me.MainMenuStrip = Me.MenuSpamAssassin
             Me.Name = "IpBan"
             Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
             Me.Text = "IpBan"
@@ -758,11 +858,16 @@
             Me.Panel15.ResumeLayout(False)
             Me.PanelBotonesBlanca.ResumeLayout(False)
             Me.Fondo.ResumeLayout(False)
-            Me.MenuPrincipal.ResumeLayout(False)
-            Me.MenuPrincipal.PerformLayout()
             Me.TabControl1.ResumeLayout(False)
             Me.TabPIpBan.ResumeLayout(False)
             Me.TabPage2.ResumeLayout(False)
+            Me.Panel1.ResumeLayout(False)
+            Me.Panel2.ResumeLayout(False)
+            Me.Panel2.PerformLayout()
+            Me.MenuSpamAssassin.ResumeLayout(False)
+            Me.MenuSpamAssassin.PerformLayout()
+            Me.MenuPrincipal.ResumeLayout(False)
+            Me.MenuPrincipal.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -827,6 +932,16 @@
         Friend WithEvents TabPIpBan As TabPage
         Friend WithEvents TabPage2 As TabPage
         Friend WithEvents IconosTab As ImageList
-        Friend WithEvents RichTextBox1 As RichTextBox
+        Friend WithEvents txtRichSpamAssassin As RichTextBox
+        Friend WithEvents Panel1 As Panel
+        Friend WithEvents TimerIpBan As Timer
+        Friend WithEvents Panel2 As Panel
+        Friend WithEvents lblEstadoSpamAssasin As Label
+        Friend WithEvents Label3 As Label
+        Friend WithEvents MenuSpamAssassin As MenuStrip
+        Friend WithEvents TSMDetener As ToolStripMenuItem
+        Friend WithEvents TSMIniciarSpamAssassin As ToolStripMenuItem
+        Friend WithEvents TSMIniciarSmapAssassinNormal As ToolStripMenuItem
+        Friend WithEvents TSMIniciarSmapAssassinOculto As ToolStripMenuItem
     End Class
 End Namespace
