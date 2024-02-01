@@ -653,35 +653,35 @@
             Me.MenuSpamAssassin.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
             Me.MenuSpamAssassin.Location = New System.Drawing.Point(3, 3)
             Me.MenuSpamAssassin.Name = "MenuSpamAssassin"
-            Me.MenuSpamAssassin.Size = New System.Drawing.Size(128, 34)
+            Me.MenuSpamAssassin.Size = New System.Drawing.Size(167, 34)
             Me.MenuSpamAssassin.TabIndex = 2
             Me.MenuSpamAssassin.Text = "MenuStrip1"
             '
             'TSMDetener
             '
-            Me.TSMDetener.Enabled = False
+            Me.TSMDetener.Image = CType(resources.GetObject("TSMDetener.Image"), System.Drawing.Image)
             Me.TSMDetener.Name = "TSMDetener"
-            Me.TSMDetener.Size = New System.Drawing.Size(60, 30)
+            Me.TSMDetener.Size = New System.Drawing.Size(76, 30)
             Me.TSMDetener.Text = "Detener"
             '
             'TSMIniciarSpamAssassin
             '
             Me.TSMIniciarSpamAssassin.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TSMIniciarSmapAssassinNormal, Me.TSMIniciarSmapAssassinOculto})
-            Me.TSMIniciarSpamAssassin.Enabled = False
+            Me.TSMIniciarSpamAssassin.Image = CType(resources.GetObject("TSMIniciarSpamAssassin.Image"), System.Drawing.Image)
             Me.TSMIniciarSpamAssassin.Name = "TSMIniciarSpamAssassin"
-            Me.TSMIniciarSpamAssassin.Size = New System.Drawing.Size(51, 30)
+            Me.TSMIniciarSpamAssassin.Size = New System.Drawing.Size(67, 30)
             Me.TSMIniciarSpamAssassin.Text = "Iniciar"
             '
             'TSMIniciarSmapAssassinNormal
             '
             Me.TSMIniciarSmapAssassinNormal.Name = "TSMIniciarSmapAssassinNormal"
-            Me.TSMIniciarSmapAssassinNormal.Size = New System.Drawing.Size(114, 22)
+            Me.TSMIniciarSmapAssassinNormal.Size = New System.Drawing.Size(180, 22)
             Me.TSMIniciarSmapAssassinNormal.Text = "Normal"
             '
             'TSMIniciarSmapAssassinOculto
             '
             Me.TSMIniciarSmapAssassinOculto.Name = "TSMIniciarSmapAssassinOculto"
-            Me.TSMIniciarSmapAssassinOculto.Size = New System.Drawing.Size(114, 22)
+            Me.TSMIniciarSmapAssassinOculto.Size = New System.Drawing.Size(180, 22)
             Me.TSMIniciarSmapAssassinOculto.Text = "Oculto"
             '
             'IconosTab
@@ -690,6 +690,8 @@
             Me.IconosTab.TransparentColor = System.Drawing.Color.Transparent
             Me.IconosTab.Images.SetKeyName(0, "SA")
             Me.IconosTab.Images.SetKeyName(1, "ME")
+            Me.IconosTab.Images.SetKeyName(2, "play")
+            Me.IconosTab.Images.SetKeyName(3, "stop")
             '
             'MenuPrincipal
             '

@@ -411,12 +411,12 @@ Namespace Interfaz
                 If Not IsNothing(SpamAssassin.Proceso) Then
                     If SpamAssassin.Corriendo Then
                         lblEstadoSpamAssasin.BackColor = Color.Green
-                        TSMIniciarSpamAssassin.Enabled = False
-                        TSMDetener.Enabled = True
+                        TSMIniciarSpamAssassin.Visible = False
+                        TSMDetener.Visible = True
                     Else
                         lblEstadoSpamAssasin.BackColor = Color.Red
-                        TSMIniciarSpamAssassin.Enabled = True
-                        TSMDetener.Enabled = False
+                        TSMIniciarSpamAssassin.Visible = True
+                        TSMDetener.Visible = False
                     End If
 
                 End If

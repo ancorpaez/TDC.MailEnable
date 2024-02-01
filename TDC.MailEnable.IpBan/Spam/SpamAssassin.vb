@@ -1,5 +1,9 @@
 ﻿Namespace Spam
     Public Class SpamAssassin
+        Private Declare Function ShowWindow Lib "user32.dll" (ByVal hWnd As IntPtr, ByVal nCmdShow As Integer) As Boolean
+        Private Const SW_HIDE As Integer = 0
+        Private Const SW_SHOW As Integer = 5
+
         Private _Ejecutable As IO.FileInfo
         Public Property Ejecutable As IO.FileInfo
             Get
@@ -22,7 +26,11 @@
             End Get
             Set(value As Process)
                 _Proceso = value
-                If Not IsNothing(value) Then _Corriendo = True
+                If Not IsNothing(value) Then
+                    _Proceso.EnableRaisingEvents = True
+                    AddHandler _Proceso.Exited, AddressOf _Proceso_Exited
+                    _Corriendo = True
+                End If
             End Set
         End Property
         Public Salida As RichTextBox
@@ -42,8 +50,8 @@
         Public Sub Start(Modo As SpamAssassinModoInicio)
             If Not IsNothing(Ejecutable) Then
                 If Ejecutable.Exists Then
-                    Proceso = New Process
-                    With Proceso
+                    _Proceso = New Process
+                    With _Proceso
                         With .StartInfo
                             .FileName = Ejecutable.FullName
                             .WorkingDirectory = Ejecutable.Directory.FullName
@@ -54,11 +62,20 @@
                                 .CreateNoWindow = True
                             End If
                         End With
+                        .EnableRaisingEvents = True
+                        AddHandler _Proceso.Exited, AddressOf _Proceso_Exited
                         .Start()
+                        _Corriendo = True
                         Read()
                     End With
                 End If
             End If
+        End Sub
+        Public Sub Ocultar()
+            ShowWindow(_Proceso.MainWindowHandle, SW_HIDE)
+        End Sub
+        Public Sub Mostrar()
+            ShowWindow(_Proceso.MainWindowHandle, SW_SHOW)
         End Sub
         Public Sub Read()
             Lectura = New Core.Bucle.Bucle With {.Intervalo = 1000}
@@ -117,7 +134,7 @@
         End Sub
 
         Private Sub _Proceso_Exited(sender As Object, e As EventArgs) Handles _Proceso.Exited
-            Stop
+            _Corriendo = False
         End Sub
     End Class
 End Namespace
