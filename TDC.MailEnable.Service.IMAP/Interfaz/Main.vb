@@ -60,9 +60,9 @@ Namespace Interfaz
                                   'GridImapClientes.Refresh()
                                   'GridImapRechazados.Refresh()
                               Catch ex As Exception
+                                  Stop
                               End Try
                           End Sub)
-                Return Nothing
             End If
             Return Nothing
         End Function

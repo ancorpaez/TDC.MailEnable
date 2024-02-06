@@ -3,7 +3,6 @@ Imports System.Net
 Imports System.Net.NetworkInformation
 Imports System.Net.Sockets
 Imports System.Text
-Imports System.Threading
 Imports TDC.MailEnable.Core
 
 Namespace Routing
@@ -14,16 +13,14 @@ Namespace Routing
         Private BufferDestino As BufferConexion
         Private disposedValue As Boolean
         Private WithEvents Temporizador As New Bucle.Bucle
-        Private WithEvents Enrutador As New Bucle.Bucle
         Private Actividad As Date
-        Private EsperarSync As New ManualResetEvent(False)
 
         Public Origen As Socket
         Public Destino As Socket
         Public Cliente As IPEndPoint
-        Public IpRuteada As New NetSH(Me)
+
         Public Event AlCerrarConexion(Cliente As Cliente)
-        Public PuertoDestino As Integer = 0
+
         Private Function BuscarPuertoLibre() As Integer
             Dim Local As TcpListener = New TcpListener(IPAddress.Loopback, 0)
             Local.Start()
@@ -31,24 +28,21 @@ Namespace Routing
             Local.Stop()
             Return Puerto
         End Function
-        Public Sub New(ByRef SocketCliente As Socket, PuertoDestino As Integer)
+        Public Sub New(ByRef SocketCliente As Socket, Destino As EndPoint)
             Try
-                'Establecer el puerto del servidor
-                Me.PuertoDestino = PuertoDestino
-
                 'Establecer el Origen
                 Me.Origen = SocketCliente
 
                 'Almacenar Cliente
                 Cliente = CType(SocketCliente.RemoteEndPoint, IPEndPoint)
 
-                'Establecer Enrutamiento IP
-                IpRuteada.RoutingAddress = CType(SocketCliente.RemoteEndPoint, IPEndPoint).Address.ToString()
+                'Comprobar la Lista Negra
+                Dim clientIp As String = CType(SocketCliente.RemoteEndPoint, IPEndPoint).Address.ToString()
 
                 'Si está Preparada la Lista se Contrasta
                 If Core.IpBaneadasEstado = EnumEstadoIpBan.Iniciada OrElse Core.IpBaneadasEstado = EnumEstadoIpBan.Actualizando Then
                     If Not IsNothing(Core.IpBaneadas) Then
-                        If Core.IpBaneadas.Contains(IpRuteada.RoutingAddress) Then
+                        If Core.IpBaneadas.Contains(clientIp) Then
                             'Es IP BANEADA
                             'No conectamos al Servidor y Cerramos inmediatamente.
                             Me.Dispose()
@@ -57,20 +51,30 @@ Namespace Routing
                     End If
                 End If
 
-                'Añadir enrutamiento IP
-                IpRuteada.AddRoute()
-
                 'Establecer Temporizador de Inactividad
                 Temporizador.Intervalo = 1000
                 Actividad = Now
                 Temporizador.Inicia()
 
                 'Enrutar la Conexion
-                Enrutador.Intervalo = 150
-                Enrutador.Inicia()
+                'Me.Destino = New Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IPv4)
+                Me.Destino = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+                'Me.Destino.EndSend()
+                'Me.Destino = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+                'Dim NatSocket As New IPEndPoint(IPAddress.Parse(clientIp), BuscarPuertoLibre)
+                'Me.Destino.SetIPProtectionLevel(IPProtectionLevel.Unrestricted)
+                'Dim Prueba As New TcpClient(NatSocket)
+                'Me.Destino.Bind(NatSocket)
+                'Me.Destino.Connect(Destino)
+                'Dim TarjetaDeRed As NetworkInterface = NetworkInterface.GetAllNetworkInterfaces().First(Function(ni) ni.Name = "INTERNET")
 
-                'Esperar al enrutamiento
-                EsperarSync.WaitOne()
+                'Me.Destino.IOControl(IOControlCode.)
+                Me.Destino.Connect(Destino)
+                'SocketCliente.Bind(Me.Destino.LocalEndPoint)
+                BufferOrigen = New BufferConexion(Me.Origen, Me.Destino)
+                Me.Origen.BeginReceive(BufferOrigen.Buffer, 0, BufferOrigen.Buffer.Length, 0, AddressOf AlRecibirDatosDelOrigen, BufferOrigen)
+                BufferDestino = New BufferConexion(Me.Destino, Me.Origen)
+                Me.Destino.BeginReceive(BufferDestino.Buffer, 0, BufferDestino.Buffer.Length, 0, AddressOf AlRecibirDatosDelDestino, BufferDestino)
 
             Catch ex As Exception
                 Me.Dispose()
@@ -104,8 +108,7 @@ Namespace Routing
         End Sub
 
         Private Sub Temporizador_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Temporizador.IBucle_Bucle
-            If DateDiff(DateInterval.Second, Actividad, Now) > 20 Then
-                'If DateDiff(DateInterval.Second, Actividad, Now) > 3600 Then
+            If DateDiff(DateInterval.Second, Actividad, Now) > 3600 Then
                 Me.Dispose()
             End If
         End Sub
@@ -114,25 +117,15 @@ Namespace Routing
             If Not disposedValue Then
                 If disposing Then
                     ' TODO: eliminar el estado administrado (objetos administrados)
+                    RaiseEvent AlCerrarConexion(Me)
 
                     Try
-                        'Detener temporizador
-                        Temporizador.Detener()
-
-                        'Avisar de desconexion
-                        RaiseEvent AlCerrarConexion(Me)
-
-                        'Eliminar enrutamiento
-                        IpRuteada.DeleteRoute()
-
-                        'Liberar recursos
                         If Not IsNothing(Origen) AndAlso Origen.Connected Then
                             Origen.Close()
                             Origen.Dispose()
                             Origen = Nothing
                         End If
                     Catch ex As Exception
-                        Stop
                     End Try
                     Try
                         If Not IsNothing(Destino) AndAlso Destino.Connected Then
@@ -141,7 +134,6 @@ Namespace Routing
                             Destino = Nothing
                         End If
                     Catch ex As Exception
-                        Stop
                     End Try
                     BufferOrigen = Nothing
                     BufferDestino = Nothing
@@ -166,27 +158,5 @@ Namespace Routing
             GC.SuppressFinalize(Me)
         End Sub
 
-        Private Sub Enrutador_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Enrutador.IBucle_Bucle
-            'Enrutar la conexion
-            Try
-                Me.Destino = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
-                Dim NatSocket As New IPEndPoint(IPAddress.Parse(IpRuteada.RoutingAddress), BuscarPuertoLibre)
-                Me.Destino.Bind(NatSocket)
-                Me.Destino.Connect(IpRuteada.RoutingAddress, PuertoDestino)
-                BufferOrigen = New BufferConexion(Me.Origen, Me.Destino)
-                Me.Origen.BeginReceive(BufferOrigen.Buffer, 0, BufferOrigen.Buffer.Length, 0, AddressOf AlRecibirDatosDelOrigen, BufferOrigen)
-                BufferDestino = New BufferConexion(Me.Destino, Me.Origen)
-                Me.Destino.BeginReceive(BufferDestino.Buffer, 0, BufferDestino.Buffer.Length, 0, AddressOf AlRecibirDatosDelDestino, BufferDestino)
-
-                'Deshabilitar el enrutador
-                Enrutador.Detener()
-
-                'Desbloquear el enrutamiento
-                EsperarSync.Set()
-            Catch ex As Exception
-
-            End Try
-
-        End Sub
     End Class
 End Namespace

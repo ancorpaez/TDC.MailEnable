@@ -11,8 +11,8 @@ Namespace Routing
 
         Public imapListener As New TcpListener(IPAddress.Any, 144)
         Public imapSslListener As New TcpListener(IPAddress.Any, 994)
-        Private servidorImap As New IPEndPoint(IPAddress.Parse("127.0.0.1"), 143)
-        Private servidorImapSsl As New IPEndPoint(IPAddress.Parse("127.0.0.1"), 993)
+        Private PuertoservidorImap As Integer = 143
+        Private PuertoservidorImapSsl As Integer = 993
         Private WithEvents EventosConexionCliente As Cliente
 
         Public Clientes As New BDD.IMAPCorrectas
@@ -35,6 +35,10 @@ Namespace Routing
 
         Sub Main()
 
+            'Habilitar  traduccion de direcciones
+            imapListener.AllowNatTraversal(True)
+            imapSslListener.AllowNatTraversal(True)
+
             'Iniciar Listeners
             imapListener.Start()
             imapSslListener.Start()
@@ -42,7 +46,7 @@ Namespace Routing
             'Cerrar Listeners
             AddHandler AppDomain.CurrentDomain.ProcessExit, AddressOf DetenerListeners
 
-            Console.WriteLine("Servidor IMAP escuchando en los puertos 143 y 993...")
+            Console.WriteLine("Servidor IMAP escuchando en los puertos " & imapListener.LocalEndpoint.ToString & " y " & imapSslListener.LocalEndpoint.ToString & "...")
 
             EscuchadorImap.Intervalo = 10
             EscuchadorImap.Inicia()
@@ -54,7 +58,7 @@ Namespace Routing
             Try
                 Dim NuevoCliente As Cliente = Nothing
                 'Comprueba que se acepto la conexion
-                If FiltrarCliente(imapListener, servidorImap, NuevoCliente) Then
+                If FiltrarCliente(imapListener, PuertoservidorImap, NuevoCliente) Then
                     'Comprueba que no hubo errores en la conexion
                     If Not IsNothing(NuevoCliente) Then
                         Conexiones.TryAdd(NuevoCliente.Cliente.ToString, NuevoCliente)
@@ -63,6 +67,7 @@ Namespace Routing
                     End If
                 End If
             Catch ex As Exception
+                Stop
             End Try
         End Sub
 
@@ -71,7 +76,7 @@ Namespace Routing
             Try
                 Dim NuevoCliente As Cliente = Nothing
                 'Comprueba que se acepto la conexion
-                If FiltrarCliente(imapSslListener, servidorImapSsl, NuevoCliente) Then
+                If FiltrarCliente(imapSslListener, PuertoservidorImapSsl, NuevoCliente) Then
                     'Comprueba que no hubo errores en la conexion
                     If Not IsNothing(NuevoCliente) Then
                         'Crear Delegado para Limpiar recursos de la Conexion
@@ -86,19 +91,22 @@ Namespace Routing
         ''' Devuelve True/False al Aceptar/Rechazar la conexion del Socket
         ''' </summary>
         ''' <param name="Escucha">Listeners TCP (Seguro y No Seguro)</param>
-        ''' <param name="Servidor">EndPoint Servidor Real donde debe conectar el Socket Cliente</param>
+        ''' <param name="PuertoServidor">Puerto real del servicio IMAP</param>
         ''' <param name="Cliente">Clase Personalizada que Filtra el Socket</param>
         ''' <returns></returns>
-        Private Function FiltrarCliente(Escucha As TcpListener, Servidor As IPEndPoint, ByRef Cliente As Cliente) As Boolean
+        Private Function FiltrarCliente(Escucha As TcpListener, PuertoServidor As Integer, ByRef Cliente As Cliente) As Boolean
             Try
                 If Escucha.Pending() Then
 
                     'Filtra la conexion (Crea un .Origen Vacio al Bloquear la Conexion)
-                    Dim CrearCliente As New Cliente(Escucha.AcceptSocket, Servidor)
+                    Dim CrearCliente As New Cliente(Escucha.AcceptSocket, PuertoServidor)
 
                     If Not IsNothing(CrearCliente.Destino) Then
 
                         '*** CONEXIONES ACEPTADAS
+
+                        'Eventos
+                        'AddHandler CrearCliente.AlCerrarConexion, AddressOf EventosConexionCliente_AlCerrarConexion
 
                         'Identificadores
                         Dim Key As String = CrearCliente.Cliente.Address.ToString
@@ -111,7 +119,7 @@ Namespace Routing
                             Clientes.Add(New BDD.IMAPCorrectas.Rows With {
                                        .IP = Key,
                                        .Accesos = Value,
-                                       .Pais = Geolocalizar.Geolocalizar(Key)})
+                                       .Pais = "ES"}) ' Geolocalizar.Geolocalizar(Key)})
                         Else
                             Value = Clientes.Get(Clientes.GetItemIndex("IP", Key), "Accesos") + 1
                             If Not IsNothing(Value) Then Clientes.Update(Clientes.GetItemIndex("IP", Key), "Accesos", Value)
@@ -144,7 +152,7 @@ Namespace Routing
                             Rechazados.Add(New BDD.IMAPBaneadas.Rows With {
                                        .IP = Key,
                                        .Intentos = Value,
-                                       .Pais = Geolocalizar.Geolocalizar(Key)})
+                                       .Pais = "ES"}) 'Geolocalizar.Geolocalizar(Key)})
                         Else
                             Value = Rechazados.Get(Rechazados.GetItemIndex("IP", Key), "Intentos") + 1
                             If Not IsNothing(Value) Then Rechazados.Update(Rechazados.GetItemIndex("IP", Key), "Intentos", Value)
@@ -157,7 +165,8 @@ Namespace Routing
                         If Not IsNothing(ActualizarConexionesActivas) Then ActualizarConexionesActivas()
                         Return False
                     End If
-
+                Else
+                    Return False
                 End If
             Catch ex As Exception
                 Return False
@@ -169,7 +178,9 @@ Namespace Routing
             Try
                 If Not IsNothing(Cliente.Origen) Then
                     If Conexiones.ContainsKey(Cliente.Cliente.ToString) Then
-                        Conexiones.TryRemove(Cliente.Cliente.ToString, Cliente)
+                        If Not Conexiones.TryRemove(Cliente.Cliente.ToString, Cliente) Then
+                            Stop
+                        End If
                         Cliente.Dispose()
                     End If
                 End If
