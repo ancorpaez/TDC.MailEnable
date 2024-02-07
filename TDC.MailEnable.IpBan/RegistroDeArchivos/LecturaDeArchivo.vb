@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports System.Threading
+Imports Microsoft.VisualBasic.Logging
 Imports TDC.MailEnable.Core
 Imports TDC.MailEnable.Core.GeoLocalizacion
 Imports TDC.MailEnable.IpBan.MailEnableLog
@@ -14,7 +15,7 @@ Namespace RegistroDeArchivos
         ''' Integer, Numero de Concidencias por IP
         ''' List, Comparaciones del Filtro
         ''' </summary>
-        Public Filtros As New List(Of Tuple(Of Integer, Integer, List(Of String)))
+        Public Filtros As New List(Of Tuple(Of Integer, Integer, List(Of FiltroLectura)))
         Public Property ObtenerIp As Func(Of String, String)
 
         Private Coincidentes As New Collections.Concurrent.ConcurrentDictionary(Of String, Integer)
@@ -29,131 +30,113 @@ Namespace RegistroDeArchivos
         End Enum
 
         Public Sub New(Archivo As String)
-            Lineas = IO.File.ReadAllLines(Archivo)
-            'Try
-            '    Using fs As New FileStream(Archivo, FileMode.Open, FileAccess.Read)
-            '        Using reader As New StreamReader(fs)
-            '            ' Lee el archivo línea por línea hasta el final del archivo
-            '            Do While Not reader.EndOfStream
-            '                Dim linea As String = reader.ReadLine()
-            '                Lineas.Append(linea)
-            '            Loop
-            '        End Using
-            '    End Using
-            'Catch ex As Exception
-            '    Console.WriteLine("Error al leer el archivo: " & ex.Message)
-            'End Try
+            Try
+                Lineas = IO.File.ReadAllLines(Archivo)
+            Catch ex As Exception
+
+            End Try
+
+            Try
+                If Lineas.Count = 0 Then
+                    Using Bloqueado As StreamReader = New IO.StreamReader(IO.File.Open(Archivo, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.ReadWrite))
+                        Dim Linea As String = Bloqueado.ReadLine
+                        Dim lLineas As New List(Of String)
+                        Do While Not String.IsNullOrEmpty(Linea)
+                            lLineas.Add(Linea)
+                            Linea = Bloqueado.ReadLine
+                        Loop
+                        Lineas = lLineas.ToArray
+                    End Using
+                End If
+            Catch ex As Exception
+
+            End Try
             Lector.Intervalo = 10
         End Sub
 
         Private Sub Lector_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Lector.IBucle_Bucle
             If IndexLinea < Lineas.Count Then
-                'Si coincide cualquiera de los Filtros almacenados.
-                If Filtros.Any(Function(Filtro) VerificarFiltro(Filtro, Lineas(IndexLinea))) Then
-                    'Solicitar la IP al Nucleo central
-                    Dim Ip As String = ObtenerIp(Lineas(IndexLinea))
-                    'RaiseEvent FiltrarLinea(Lineas(IndexLinea), Ip)
+                If Not IsNothing(Filtros) Then
+                    'Si coincide cualquiera de los Filtros almacenados.
+                    If Filtros.Any(Function(Filtro) VerificarFiltro(Filtro, Lineas(IndexLinea))) Then
+                        'Solicitar la IP al Nucleo central
+                        Dim Ip As String = ObtenerIp(Lineas(IndexLinea))
+                        If Ip <> "0.0.0.0" Then
+                            Try
+                                'Testear que es una IPV4 Real, Si no es IPV4 desecha las comprobaciones
+                                Ip = Net.IPAddress.Parse(Ip).ToString
+                                If Net.IPAddress.Parse(Ip).AddressFamily = Net.Sockets.AddressFamily.InterNetworkV6 Then Ip = ""
+                            Catch ex As Exception
+                                Ip = ""
+                            End Try
+                        Else
+                            Ip = ""
+                        End If
 
-                    Try
-                        'Testear que es una IPV4 Real
-                        Ip = Net.IPAddress.Parse(Ip).ToString
-                        If Net.IPAddress.Parse(Ip).AddressFamily = Net.Sockets.AddressFamily.InterNetworkV6 Then Ip = ""
-                    Catch ex As Exception
-                        Ip = ""
-                    End Try
+                        'Geolocalizar  la IP
+                        If Ip <> "" Then
+                            Dim Geolocalizar As New IpInfo
+                            Dim Pais As String = Geolocalizar.Geolocalizar(Ip, Mod_Core.Geolocalizador)
+                            Dim GeolocalizarID As Integer = 0
+                            If Pais = "ES" OrElse Pais = "ERR" Then GeolocalizarID = 1
 
-                    'Geolocalizar  la IP
-                    Dim Geolocalizar As New IpInfo
-                    Dim Pais As String = Geolocalizar.Geolocalizar(Ip, Mod_Core.Geolocalizador)
-                    Dim GeolocalizarID As Integer = 0
-                    If Pais = "ES" OrElse Pais = "ERR" Then GeolocalizarID = 1
-
-                    'Banear la IP (Evita Bloquear Ip[ES][ERR])
-                    If Ip <> "" AndAlso Not FiltroIp.Contains(Ip) AndAlso GeolocalizarID = 0 Then FiltroIp.Add(Ip)
+                            'Banear la IP (Evita Bloquear Ip[ES][ERR]) Comprueba la Bandera (GeolocalizarID, 0(Bloquea) o 1(No bloquea))
+                            If GeolocalizarID = 0 Then If Not FiltroIp.Contains(Ip) Then FiltroIp.Add(Ip)
+                        End If
                     End If
-                    IndexLinea += 1
+
+                End If
+
+                'Avanza en el conteo de lineas procesadas
+                IndexLinea += 1
+
+                'Informa en el avance de lectura
                 RaiseEvent Progreso(IndexLinea, Lineas.Count)
             Else
                 Lector.Detener()
                 Bloqueo.Set()
             End If
         End Sub
-        Private Function VerificarFiltro(Filtro As Tuple(Of Integer, Integer, List(Of String)), Linea As String) As Boolean
+        Private Function VerificarFiltro(Filtro As Tuple(Of Integer, Integer, List(Of FiltroLectura)), Linea As String) As Boolean
             Dim TipoComparacion As EnumTipoComparacion = Filtro.Item1
             Dim NumeroCoincidentes As Integer = Filtro.Item2
-            Dim Comparaciones As List(Of String) = Filtro.Item3
-
+            Dim Comparaciones As List(Of FiltroLectura) = Filtro.Item3
+            Dim Coincide As Boolean
             Select Case TipoComparacion
-                Case EnumTipoComparacion.Cualquiera
-
-                    'Si no hay limite de coincidencias
-                    If NumeroCoincidentes = 0 Then Return Comparaciones.Any(Function(Flt) Linea.Contains(Flt))
-
-                    'Si hay limite de coincidencas
-                    If NumeroCoincidentes > 0 Then
-                        If Comparaciones.Any(Function(Flt) Linea.Contains(Flt)) Then
-                            'Si hay coincidencia
-                            Dim oIp As String = ObtenerIp(Linea)
-                            If Not Coincidentes.ContainsKey(oIp) Then
-                                'Si es la primera coincidencia
-                                Coincidentes.TryAdd(oIp, 1)
-                            Else
-                                'Sumamos si hay mas coincidencias
-                                Coincidentes.TryUpdate(oIp, Coincidentes(oIp) + 1, Coincidentes(oIp))
-                            End If
-
-                            'Retornar valor segun nivel de coincidencias
-                            If Coincidentes(oIp) >= NumeroCoincidentes Then Return True Else Return False
-                        Else
-                            'Si no coincide el Filtro
-                            Return False
-                        End If
-                    End If
-
-                    'Si no se solicita comprobar la linea anterior
-                    'If Not Filtro.Item2 Then Return Filtro.Item3.Any(Function(Flt) Linea.Contains(Flt))
-
-                    ''Si se solicita contrastar el filtro con la linea anterior
-                    'If Filtro.Item3.Any(Function(Flt) Anterior.Contains(Flt)) Then
-                    '    'Si concide el filtro con la linea anterior
-                    '    Return Filtro.Item3.Any(Function(Flt) Linea.Contains(Flt))
-                    'Else
-                    '    'Si no coincide el filtro con la linea anterior
-                    '    Return False
-                    'End If
-
                 Case EnumTipoComparacion.Todo
-                    'Si no hay limite de coincidencias
-                    If NumeroCoincidentes = 0 Then Return Comparaciones.All(Function(Flt) Linea.Contains(Flt))
+                    Coincide = True
+                    For Each Comparador In Comparaciones
+                        Select Case Comparador.Condicion
+                            Case FiltroLectura.EnumCondicion.Contiene
+                                If Not Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = False
+                            Case FiltroLectura.EnumCondicion.NoContiene
+                                If Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = False
+                        End Select
+                    Next
 
-                    'Si hay limite de coincidencas
-                    If NumeroCoincidentes > 0 Then
-                        If Comparaciones.All(Function(Flt) Linea.Contains(Flt)) Then
-                            Dim oIp As String = ObtenerIp(Linea)
-                            If Not Coincidentes.ContainsKey(oIp) Then
-                                'Si es la primera coincidencia
-                                Coincidentes.TryAdd(oIp, 1)
-                            Else
-                                'Sumamos si hay mas coincidencias
-                                Coincidentes.TryUpdate(oIp, Coincidentes(oIp) + 1, Coincidentes(oIp))
-                            End If
-
-                            'Retornar valor segun nivel de coincidencias
-                            If Coincidentes(oIp) = NumeroCoincidentes Then Return True Else Return False
-                        Else
-                            Return False
-                        End If
-                    End If
-                    'Si se solicita contrastar el filtro con la linea anterior
-                    'If Filtro.Item3.All(Function(Flt) Anterior.Contains(Flt)) Then
-                    '    Return Filtro.Item3.All(Function(Flt) Linea.Contains(Flt))
-                    'Else
-                    '    'Si no coincide el filtro con la linea anterior
-                    '    Return False
-                    'End If
+                Case EnumTipoComparacion.Cualquiera
+                    Coincide = False
+                    For Each Comparador In Comparaciones
+                        Select Case Comparador.Condicion
+                            Case FiltroLectura.EnumCondicion.Contiene
+                                If Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = True
+                            Case FiltroLectura.EnumCondicion.NoContiene
+                                If Not Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = True
+                        End Select
+                    Next
             End Select
-            Return False
+
+            If Coincide Then
+                If NumeroCoincidentes > 0 Then
+                    Dim oIp As String = ObtenerIp(Linea)
+                    If Not Me.Coincidentes.ContainsKey(oIp) Then Me.Coincidentes.TryAdd(oIp, 1) Else Me.Coincidentes.TryUpdate(oIp, Me.Coincidentes(oIp) + 1, Me.Coincidentes(oIp))
+                    If Me.Coincidentes(oIp) > NumeroCoincidentes Then Coincide = True Else Coincide = False
+                End If
+            End If
+
+            Return Coincide
         End Function
+
         Public Sub Escanear()
             Lector.Inicia()
             Bloqueo.WaitOne()

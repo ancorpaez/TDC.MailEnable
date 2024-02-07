@@ -1,10 +1,5 @@
-﻿Imports System.ComponentModel
-Imports System.Net
+﻿Imports System.Net
 Imports System.Collections.Concurrent
-Imports System.IO
-Imports System.Xml.Serialization
-Imports TDC.MailEnable.Core.BDD
-Imports System.Text
 Namespace MailEnableLog
     Public Class Cls_Geolocalizacion
         '(IP,PAIS)

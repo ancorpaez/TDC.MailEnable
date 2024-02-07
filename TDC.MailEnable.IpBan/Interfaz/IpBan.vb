@@ -107,53 +107,116 @@ Namespace Interfaz
 
             'Empezar a Trabajar
             'POP(Actividad)
-            Registro_POP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Cualquiera, 20, New List(Of String) From {"-ERR Unable to log on"}))
+            Registro_POP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, New List(Of FiltroLectura) From {
+                                                                                            New FiltroLectura With {.Filtro = "-ERR Unable to log on", .Condicion = FiltroLectura.EnumCondicion.Contiene}
+                                                                                            }))
             Trabajador_POP.Intervalo = 1000
             Trabajador_POP.Inicia()
 
             'POP(W3C)
-            Registro_POPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Cualquiera, 20, New List(Of String) From {"-ERR+Unable+to+log+on"}))
+            Registro_POPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 5, New List(Of FiltroLectura) From {
+                                                                                               New FiltroLectura With {.Filtro = "-ERR+Unable+to+log+on", .Condicion = FiltroLectura.EnumCondicion.Contiene}
+                                                                                               }))
             Trabajador_POPW3C.Intervalo = 1000
             Trabajador_POPW3C.Inicia()
 
             'SMTP (Actividad)
-            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Cualquiera, 20, New List(Of String) From {"Invalid Username or Password"}))
-            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Cualquiera, 1, New List(Of String) From {"This mail server requires authentication before sending mail"}))
+            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 0, New List(Of FiltroLectura) From {
+                                                                                              New FiltroLectura With {.Filtro = "This mail server requires authentication before sending mail", .Condicion = FiltroLectura.EnumCondicion.Contiene}}))
+            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
+                                                                                            New FiltroLectura With {.Filtro = "Invalid Username or Password", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = "@", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
+                                                                                            }))
+            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, New List(Of FiltroLectura) From {
+                                                                                            New FiltroLectura With {.Filtro = "Invalid Username or Password", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = "@", .Condicion = FiltroLectura.EnumCondicion.Contiene}
+                                                                                            }))
             Trabajador_SMTP.Intervalo = 1000
             Trabajador_SMTP.Inicia()
 
             'SMTP(W3C)
-            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Cualquiera, 20, New List(Of String) From {"Invalid+Username+or+Password"}))
-            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Cualquiera, 1, New List(Of String) From {"This+mail+server+requires+authentication+before+sending+mail"}))
+            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, New List(Of FiltroLectura) From {
+                                                                                                New FiltroLectura With {.Filtro = "Invalid+Username+or+Password", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                                New FiltroLectura With {.Filtro = "@", .Condicion = FiltroLectura.EnumCondicion.Contiene}
+                                                                                                }))
+            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
+                                                                                                New FiltroLectura With {.Filtro = "Invalid+Username+or+Password", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                                New FiltroLectura With {.Filtro = "@", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
+                                                                                                }))
+            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 0, New List(Of FiltroLectura) From {
+                                                                                               New FiltroLectura With {.Filtro = "This+mail+server+requires+authentication+before+sending+mail", .Condicion = FiltroLectura.EnumCondicion.Contiene}
+                                                                                               }))
+
             Trabajador_SMTPW3C.Intervalo = 1000
             Trabajador_SMTPW3C.Inicia()
 
             'IMAP(Actividad)
-            Registro_IMAP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Cualquiera, 20, New List(Of String) From {"Invalid username or password"}))
+            Registro_IMAP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 5, New List(Of FiltroLectura) From {
+                                                                                             New FiltroLectura With {.Filtro = "Invalid username or password", .Condicion = FiltroLectura.EnumCondicion.Contiene}
+                                                                                             }))
             Trabajador_IMAP.Intervalo = 1000
             Trabajador_IMAP.Inicia()
 
             'IMAP (W3C)
-            Registro_IMAPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Cualquiera, 20, New List(Of String) From {"Invalid+username+or+password"}))
+            Registro_IMAPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 5, New List(Of FiltroLectura) From {
+                                                                                                New FiltroLectura With {.Filtro = "Invalid+username+or+password", .Condicion = FiltroLectura.EnumCondicion.Contiene}
+                                                                                                }))
             Trabajador_IMAPW3C.Intervalo = 1000
             Trabajador_IMAPW3C.Inicia()
 
             'WEB
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Todo, 10, New List(Of String) From {"POST", "Cmd=LOGIN"}))
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Todo, 10, New List(Of String) From {"POST", "/Mobile/Login.aspx"}))
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Todo, 0, New List(Of String) From {"POST", " 404 "}))
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of String))(EnumTipoComparacion.Todo, 0, New List(Of String) From {"GET", " 404 "}))
+            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, New List(Of FiltroLectura) From {
+                                                                                            New FiltroLectura With {.Filtro = "POST", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = "Cmd=LOGIN", .Condicion = FiltroLectura.EnumCondicion.Contiene}
+                                                                                            }))
+            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, New List(Of FiltroLectura) From {
+                                                                                            New FiltroLectura With {.Filtro = "POST", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = "/Mobile/Login.aspx", .Condicion = FiltroLectura.EnumCondicion.Contiene}
+                                                                                            }))
+            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
+                                                                                            New FiltroLectura With {.Filtro = "GET", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = "favicon.ico", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
+                                                                                            }))
+            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
+                                                                                            New FiltroLectura With {.Filtro = "GET", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = "robots.txt", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
+                                                                                            }))
+            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
+                                                                                            New FiltroLectura With {.Filtro = "GET", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = "sitemap.xml", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
+                                                                                            }))
+            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
+                                                                                            New FiltroLectura With {.Filtro = "GET", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = "BingSiteAuth.xml", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
+                                                                                            }))
+            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
+                                                                                            New FiltroLectura With {.Filtro = "GET", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = "google-site-verification", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
+                                                                                            }))
+            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
+                                                                                            New FiltroLectura With {.Filtro = "POST", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene}
+                                                                                            }))
+            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
+                                                                                            New FiltroLectura With {.Filtro = "HEAD", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene}
+                                                                                            }))
             Trabajador_WEB.Intervalo = 1000
             Trabajador_WEB.Inicia()
 
             'Interfaz
-            UcPOPEx.Etiqueta.Text = "POP (Ex)"
-            UcPOPAct.Etiqueta.Text = "POP (Act)"
-            UcSMTPEx.Etiqueta.Text = "SMTP (Ex)"
-            UcSMTPAct.Etiqueta.Text = "SMTP (Act)"
-            UcIMAPAct.Etiqueta.Text = "IMAPP (Act)"
-            UcIMAPEx.Etiqueta.Text = "IMAPP (Ex)"
-            UcWEB.Etiqueta.Text = "WEB"
+            UcPOPEx.Carpeta.Text = "POP (Ex)"
+            UcPOPAct.Carpeta.Text = "POP (Act)"
+            UcSMTPEx.Carpeta.Text = "SMTP (Ex)"
+            UcSMTPAct.Carpeta.Text = "SMTP (Act)"
+            UcIMAPAct.Carpeta.Text = "IMAPP (Act)"
+            UcIMAPEx.Carpeta.Text = "IMAPP (Ex)"
+            UcWEB.Carpeta.Text = "WEB"
 
             'ACTIVAR SPAM ASSASIN
             If Not IsNothing(Mod_Core.SpamAssassin) AndAlso Not IsNothing(SpamAssassin.Ejecutable) Then
@@ -168,6 +231,21 @@ Namespace Interfaz
                 SpamAssassin.Read()
             End If
         End Sub
+
+        Private Function RecuperarIpSplit(Linea, Index) As String
+            Try
+                Return Linea.Split(" ")(Index)
+            Catch ex As Exception
+                Return "0.0.0.0"
+            End Try
+        End Function
+        Private Function RecuperarIpTab(Linea, Index) As String
+            Try
+                Return Linea.Split(vbTab)(Index)
+            Catch ex As Exception
+                Return "0.0.0.0"
+            End Try
+        End Function
 
         Private Sub RefrescarDatosBaneadas()
             lstIpBaneadas.Invoke(Sub()
@@ -193,30 +271,44 @@ Namespace Interfaz
         End Sub
 
         Private Function esLegible(Archivo As String) As Boolean
+            Dim Devolver As Boolean = False
             Try
                 Using OpenFile As New IO.FileStream(Archivo, IO.FileMode.Open, IO.FileAccess.Read)
                     'Intenta abrir el archivo en modo lectura y cierra.
                 End Using
+                Devolver = True
             Catch ex As Exception
-                Return False
+                Devolver = False
             End Try
-            Return True
+            Try
+                If Not Devolver Then
+                    Using Acceso = New IO.StreamReader(IO.File.Open(Archivo, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.ReadWrite))
+                        'Intenta abrir el archivo bloqueado en modo lectura y cierra.
+                    End Using
+                    Devolver = True
+                End If
+            Catch ex As Exception
+                Devolver = False
+            End Try
+            Return Devolver
         End Function
-        Private Sub EscanearCarpeta(UcCarpeta As UcAnalizador, UcArchivo As UcAnalizador, DelimitadorIp As Func(Of String, String), Trabajador As Bucle.Bucle, Carpeta As String, ControlCarpeta As RegistroDeArchivos.RegistroDeArchivos, FiltroCarpeta As String)
+        Private Sub EscanearCarpeta(UcCarpeta As UcAnalizador, DelimitadorIp As Func(Of String, String), Trabajador As Bucle.Bucle, Carpeta As String, ControlCarpeta As RegistroDeArchivos.RegistroDeArchivos, FiltroCarpeta As String)
             'Marcador para evitar analizar los archivos del Dia
             'Dim Ahora As String = Now.Year.ToString("00").Substring(2) & Now.Month.ToString("00") & Now.Day.ToString("00")
 
             'Actualizar el Interface
-            Me.Invoke(Sub() UcCarpeta.Progreso.Maximum = New IO.DirectoryInfo(Carpeta).GetFiles(FiltroCarpeta, IO.SearchOption.TopDirectoryOnly).Count)
-            If Not UcArchivo.Etiqueta.Text.Contains("-") Then Me.Invoke(Sub() UcArchivo.Etiqueta.Text = "0 - 0")
+            Me.Invoke(Sub() UcCarpeta.ProgresoCarpeta.Maximum = New IO.DirectoryInfo(Carpeta).GetFiles(FiltroCarpeta, IO.SearchOption.TopDirectoryOnly).Count)
+            If Not UcCarpeta.Archivo.Text.Contains("-") Then Me.Invoke(Sub() UcCarpeta.Archivo.Text = "0 - 0")
             'Buscar Archivos en la Carpeta
             For Each Archivo In New IO.DirectoryInfo(Carpeta).GetFiles(FiltroCarpeta, IO.SearchOption.TopDirectoryOnly)
                 'Actualizar Interface
                 Me.Invoke(Sub()
                               'Progreso
-                              UcCarpeta.Progreso.Value = ControlCarpeta.Count
+                              UcCarpeta.ProgresoCarpeta.Value = ControlCarpeta.Count
                               'Label
-                              UcCarpeta.Contador.Text = String.Format("{0} - {1}", ControlCarpeta.Count, UcCarpeta.Progreso.Maximum)
+                              UcCarpeta.ContadorCarpeta.Text = String.Format("{0} - {1}", ControlCarpeta.Count, UcCarpeta.ProgresoCarpeta.Maximum)
+                              'Archivo
+                              UcCarpeta.Archivo.Text = Archivo.Name
                           End Sub)
 
                 If Not ControlCarpeta.Contains(Archivo.Name) AndAlso esLegible(Archivo.FullName) Then
@@ -226,28 +318,19 @@ Namespace Interfaz
                     AddHandler EscanearArchivo.Progreso, Sub(Index, Total)
                                                              'Actualizar el Interface
                                                              Me.Invoke(Sub()
-                                                                           UcArchivo.Progreso.Maximum = Total
-                                                                           UcArchivo.Progreso.Value = Index
-                                                                           UcArchivo.Contador.Text = String.Format("{0} - {1}", Index, Total)
+                                                                           UcCarpeta.ProgresoArchivo.Maximum = Total
+                                                                           UcCarpeta.ProgresoArchivo.Value = Index
+                                                                           UcCarpeta.ContadorArchivo.Text = String.Format("{0} - {1}", Index, Total)
                                                                        End Sub)
                                                          End Sub
                     'Mandar a analizar y esperar
                     EscanearArchivo.Escanear()
 
                     'Actualizar la lista de Bloqueo si encuentra Ips a Bloquear
-                    If EscanearArchivo.FiltroIp.Count > 0 Then
-                        BloquearIps(EscanearArchivo.FiltroIp)
+                    If EscanearArchivo.FiltroIp.Count > 0 Then BloquearIps(EscanearArchivo.FiltroIp)
 
-                        'Actualizar el Interface
-                        Me.Invoke(Sub()
-                                      Dim Total As Integer = CInt(UcArchivo.Etiqueta.Text.Split("-")(0).Trim) + EscanearArchivo.FiltroIp.Count
-                                      Dim Ultimas As Integer = EscanearArchivo.FiltroIp.Count.ToString
-                                      UcArchivo.Etiqueta.Text = String.Format("{0} - {1}", Total, Ultimas)
-                                  End Sub)
-                    End If
-
-                    'Registramos el Archivo Analizado
-                    ControlCarpeta.Add(Archivo.Name)
+                    'Registramos el Archivo Analizado, si no es el LOG Actual(Now) ya que esta en continuo crecimiento.
+                    If Not DateDiff(DateInterval.Day, Now, Archivo.LastWriteTime) = 0 Then ControlCarpeta.Add(Archivo.Name)
                 End If
             Next
 
@@ -257,8 +340,6 @@ Namespace Interfaz
             'Propagamos la configuracion
             BtnPropagarIps_Click(Nothing, New EventArgs)
 
-            'Detenemos el escaneo
-            'Trabajador.Detener()
         End Sub
 
         Private Sub BtnAñadirIp_Click(sender As Object, e As EventArgs) Handles BtnAñadirIp.Click
@@ -282,34 +363,35 @@ Namespace Interfaz
 
         Private Sub Trabajador_POP_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_POP.IBucle_Bucle
             'Trabajo en BackGround
-            EscanearCarpeta(UcPOPAct, UcArchivoPOPAct, Function(Linea) Linea.Split(vbTab)(3), Trabajador_POP, Mod_Core.Configuracion.POP, Registro_POP, "POP*.log")
+            EscanearCarpeta(UcPOPAct, Function(Linea) RecuperarIpTab(Linea, 3), Trabajador_POP, Mod_Core.Configuracion.POP, Registro_POP, "POP*.log")
         End Sub
 
         Private Sub Trabajador_POPW3C_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_POPW3C.IBucle_Bucle
             'Trabajo en BackGround
-            EscanearCarpeta(UcPOPEx, UcArchivoPOPEx, Function(Linea) Linea.Split(" ")(2), Trabajador_POPW3C, Mod_Core.Configuracion.POP, Registro_POPW3C, "ex*.log")
+            EscanearCarpeta(UcPOPEx, Function(Linea) RecuperarIpSplit(Linea, 2), Trabajador_POPW3C, Mod_Core.Configuracion.POP, Registro_POPW3C, "ex*.log")
         End Sub
 
         Private Sub Trabajador_SMTP_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_SMTP.IBucle_Bucle
             'Trabajo en BackGround
-            EscanearCarpeta(UcSMTPAct, UcArchivoSMTPAct, Function(linea) linea.Split(vbTab)(4), Trabajador_SMTP, Mod_Core.Configuracion.SMTP, Registro_SMTP, "SMTP*.log")
+            EscanearCarpeta(UcSMTPAct, Function(linea) RecuperarIpTab(linea, 4), Trabajador_SMTP, Mod_Core.Configuracion.SMTP, Registro_SMTP, "SMTP*.log")
         End Sub
         Private Sub Trabajador_SMTPW3C_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_SMTPW3C.IBucle_Bucle
             'Trabajo en BackGround
-            EscanearCarpeta(UcSMTPEx, UcArchivoSMTPEx, Function(Linea) Linea.Split(" ")(2), Trabajador_SMTPW3C, Mod_Core.Configuracion.SMTP, Registro_SMTPW3C, "ex*.log")
+            'EscanearCarpeta(UcSMTPEx, Function(Linea) Linea.Split(" ")(2), Trabajador_SMTPW3C, Mod_Core.Configuracion.SMTP, Registro_SMTPW3C, "ex*.log")
+            EscanearCarpeta(UcSMTPEx, Function(Linea) RecuperarIpSplit(Linea, 2), Trabajador_SMTPW3C, Mod_Core.Configuracion.SMTP, Registro_SMTPW3C, "ex*.log")
         End Sub
         Private Sub Trabajador_IMAP_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_IMAP.IBucle_Bucle
             'Trabajo en BackGround
-            EscanearCarpeta(UcIMAPAct, UcArchivoIMAPAct, Function(Linea) Linea.Split(vbTab)(4), Trabajador_IMAP, Mod_Core.Configuracion.IMAP, Registro_IMAP, "IMAP*.log")
+            EscanearCarpeta(UcIMAPAct, Function(Linea) RecuperarIpTab(Linea, 4), Trabajador_IMAP, Mod_Core.Configuracion.IMAP, Registro_IMAP, "IMAP*.log")
         End Sub
         Private Sub Trabajador_IMAPW3C_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_IMAPW3C.IBucle_Bucle
             'Trabajo en BackGround
-            EscanearCarpeta(UcIMAPEx, UcArchivoIMAPEx, Function(Linea) Linea.Split(" ")(2), Trabajador_IMAPW3C, Mod_Core.Configuracion.IMAP, Registro_IMAPW3C, "ex*.log")
+            EscanearCarpeta(UcIMAPEx, Function(Linea) RecuperarIpSplit(Linea, 2), Trabajador_IMAPW3C, Mod_Core.Configuracion.IMAP, Registro_IMAPW3C, "ex*.log")
         End Sub
 
         Private Sub Trabajador_WEB_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_WEB.IBucle_Bucle
             'Trabajo en BackGround
-            EscanearCarpeta(UcWEB, UcArchivoWEB, Function(Linea) Linea.Split(" ")(8), Trabajador_WEB, Mod_Core.Configuracion.WEB, Registro_WEB, "u_ex*.log")
+            EscanearCarpeta(UcWEB, Function(Linea) RecuperarIpSplit(Linea, 8), Trabajador_WEB, Mod_Core.Configuracion.WEB, Registro_WEB, "u_ex*.log")
         End Sub
         Private Sub lstIpBaneadas_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstIpBaneadas.SelectedIndexChanged
             lblIpsCount.Text = lstIpBaneadas.Items.Count

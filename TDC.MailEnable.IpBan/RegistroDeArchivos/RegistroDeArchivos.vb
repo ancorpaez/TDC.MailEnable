@@ -7,7 +7,7 @@ Namespace RegistroDeArchivos
         Public Property Archivos As New Concurrent.ConcurrentBindingList(Of String)
         'Configurar Filtro
         'Filtro.Add((LecturaDeArchivo.EnumTipoComparacion.Cualquiera, New List(Of String) From {"Filtro1", "Filtro2"}))
-        Public Filtro As New List(Of Tuple(Of Integer, Integer, List(Of String)))
+        Public Filtro As New List(Of Tuple(Of Integer, Integer, List(Of FiltroLectura)))
         Private File_Registro As String = ""
         Public Sub New(Contenedor As String)
             File_Registro = Contenedor & ".xml"

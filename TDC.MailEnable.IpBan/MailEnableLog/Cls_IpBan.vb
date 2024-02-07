@@ -27,6 +27,7 @@ Namespace MailEnableLog
                         If Not Ips.Contains(SearchIp4.ToString) Then
                             Ips.Add(SearchIp4.ToString)
                             Mod_Core.SalvarIpBan()
+                            AddingBackGrundList = True
                             Return True
                         Else
                             MsgBox("La IP ya está en la lista de bloqueo.")

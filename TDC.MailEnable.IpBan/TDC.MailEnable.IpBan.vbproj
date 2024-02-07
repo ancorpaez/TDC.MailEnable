@@ -143,6 +143,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="RegistroDeArchivos\FiltroLectura.vb" />
     <Compile Include="RegistroDeArchivos\LecturaDeArchivo.vb" />
     <Compile Include="RegistroDeArchivos\RegistroDeArchivos.vb" />
     <Compile Include="Spam\SpamAssassin.vb" />
