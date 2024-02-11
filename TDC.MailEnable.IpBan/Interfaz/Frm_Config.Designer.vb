@@ -57,13 +57,16 @@
             Me.Label9 = New System.Windows.Forms.Label()
             Me.txtSpamAssassin = New System.Windows.Forms.TextBox()
             Me.CmdCargarSpamAssassin = New System.Windows.Forms.Button()
+            Me.Label10 = New System.Windows.Forms.Label()
+            Me.txtPostOffices = New System.Windows.Forms.TextBox()
+            Me.BtnCargarPostOffices = New System.Windows.Forms.Button()
             Me.Panel1.SuspendLayout()
             Me.SuspendLayout()
             '
             'Label1
             '
             Me.Label1.AutoSize = True
-            Me.Label1.Location = New System.Drawing.Point(12, 9)
+            Me.Label1.Location = New System.Drawing.Point(12, 55)
             Me.Label1.Name = "Label1"
             Me.Label1.Size = New System.Drawing.Size(94, 13)
             Me.Label1.TabIndex = 0
@@ -72,7 +75,7 @@
             'Label2
             '
             Me.Label2.AutoSize = True
-            Me.Label2.Location = New System.Drawing.Point(12, 39)
+            Me.Label2.Location = New System.Drawing.Point(12, 85)
             Me.Label2.Name = "Label2"
             Me.Label2.Size = New System.Drawing.Size(98, 13)
             Me.Label2.TabIndex = 0
@@ -81,7 +84,7 @@
             'Label3
             '
             Me.Label3.AutoSize = True
-            Me.Label3.Location = New System.Drawing.Point(12, 72)
+            Me.Label3.Location = New System.Drawing.Point(12, 118)
             Me.Label3.Name = "Label3"
             Me.Label3.Size = New System.Drawing.Size(90, 13)
             Me.Label3.TabIndex = 0
@@ -90,7 +93,7 @@
             'Label4
             '
             Me.Label4.AutoSize = True
-            Me.Label4.Location = New System.Drawing.Point(12, 102)
+            Me.Label4.Location = New System.Drawing.Point(12, 148)
             Me.Label4.Name = "Label4"
             Me.Label4.Size = New System.Drawing.Size(93, 13)
             Me.Label4.TabIndex = 0
@@ -98,28 +101,28 @@
             '
             'txtIMAP
             '
-            Me.txtIMAP.Location = New System.Drawing.Point(116, 6)
+            Me.txtIMAP.Location = New System.Drawing.Point(116, 52)
             Me.txtIMAP.Name = "txtIMAP"
             Me.txtIMAP.Size = New System.Drawing.Size(571, 20)
             Me.txtIMAP.TabIndex = 1
             '
             'txtSMTP
             '
-            Me.txtSMTP.Location = New System.Drawing.Point(116, 36)
+            Me.txtSMTP.Location = New System.Drawing.Point(116, 82)
             Me.txtSMTP.Name = "txtSMTP"
             Me.txtSMTP.Size = New System.Drawing.Size(571, 20)
             Me.txtSMTP.TabIndex = 1
             '
             'txtPOP
             '
-            Me.txtPOP.Location = New System.Drawing.Point(116, 69)
+            Me.txtPOP.Location = New System.Drawing.Point(116, 115)
             Me.txtPOP.Name = "txtPOP"
             Me.txtPOP.Size = New System.Drawing.Size(571, 20)
             Me.txtPOP.TabIndex = 1
             '
             'txtWEB
             '
-            Me.txtWEB.Location = New System.Drawing.Point(116, 99)
+            Me.txtWEB.Location = New System.Drawing.Point(116, 145)
             Me.txtWEB.Name = "txtWEB"
             Me.txtWEB.Size = New System.Drawing.Size(571, 20)
             Me.txtWEB.TabIndex = 1
@@ -130,7 +133,7 @@
             Me.Panel1.Controls.Add(Me.BtnGuardarConfig)
             Me.Panel1.Controls.Add(Me.CtrlSeparadorPie)
             Me.Panel1.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.Panel1.Location = New System.Drawing.Point(0, 300)
+            Me.Panel1.Location = New System.Drawing.Point(0, 346)
             Me.Panel1.Name = "Panel1"
             Me.Panel1.Size = New System.Drawing.Size(784, 40)
             Me.Panel1.TabIndex = 3
@@ -165,36 +168,36 @@
             '
             'BtnCargarIMAP
             '
-            Me.BtnCargarIMAP.Location = New System.Drawing.Point(693, 6)
+            Me.BtnCargarIMAP.Location = New System.Drawing.Point(693, 52)
             Me.BtnCargarIMAP.Name = "BtnCargarIMAP"
-            Me.BtnCargarIMAP.Size = New System.Drawing.Size(75, 20)
+            Me.BtnCargarIMAP.Size = New System.Drawing.Size(75, 21)
             Me.BtnCargarIMAP.TabIndex = 4
             Me.BtnCargarIMAP.Text = "Buscar"
             Me.BtnCargarIMAP.UseVisualStyleBackColor = True
             '
             'BtnCargarSMTP
             '
-            Me.BtnCargarSMTP.Location = New System.Drawing.Point(693, 36)
+            Me.BtnCargarSMTP.Location = New System.Drawing.Point(693, 82)
             Me.BtnCargarSMTP.Name = "BtnCargarSMTP"
-            Me.BtnCargarSMTP.Size = New System.Drawing.Size(75, 20)
+            Me.BtnCargarSMTP.Size = New System.Drawing.Size(75, 21)
             Me.BtnCargarSMTP.TabIndex = 4
             Me.BtnCargarSMTP.Text = "Buscar"
             Me.BtnCargarSMTP.UseVisualStyleBackColor = True
             '
             'BtnCargarPOP
             '
-            Me.BtnCargarPOP.Location = New System.Drawing.Point(693, 69)
+            Me.BtnCargarPOP.Location = New System.Drawing.Point(693, 115)
             Me.BtnCargarPOP.Name = "BtnCargarPOP"
-            Me.BtnCargarPOP.Size = New System.Drawing.Size(75, 20)
+            Me.BtnCargarPOP.Size = New System.Drawing.Size(75, 21)
             Me.BtnCargarPOP.TabIndex = 4
             Me.BtnCargarPOP.Text = "Buscar"
             Me.BtnCargarPOP.UseVisualStyleBackColor = True
             '
             'BtnCargarWEB
             '
-            Me.BtnCargarWEB.Location = New System.Drawing.Point(693, 99)
+            Me.BtnCargarWEB.Location = New System.Drawing.Point(693, 145)
             Me.BtnCargarWEB.Name = "BtnCargarWEB"
-            Me.BtnCargarWEB.Size = New System.Drawing.Size(75, 20)
+            Me.BtnCargarWEB.Size = New System.Drawing.Size(75, 21)
             Me.BtnCargarWEB.TabIndex = 4
             Me.BtnCargarWEB.Text = "Buscar"
             Me.BtnCargarWEB.UseVisualStyleBackColor = True
@@ -202,7 +205,7 @@
             'Label5
             '
             Me.Label5.AutoSize = True
-            Me.Label5.Location = New System.Drawing.Point(12, 132)
+            Me.Label5.Location = New System.Drawing.Point(12, 178)
             Me.Label5.Name = "Label5"
             Me.Label5.Size = New System.Drawing.Size(76, 13)
             Me.Label5.TabIndex = 0
@@ -210,16 +213,16 @@
             '
             'txtASMTP
             '
-            Me.txtASMTP.Location = New System.Drawing.Point(116, 129)
+            Me.txtASMTP.Location = New System.Drawing.Point(116, 175)
             Me.txtASMTP.Name = "txtASMTP"
             Me.txtASMTP.Size = New System.Drawing.Size(571, 20)
             Me.txtASMTP.TabIndex = 1
             '
             'BtnCargarASMTP
             '
-            Me.BtnCargarASMTP.Location = New System.Drawing.Point(693, 128)
+            Me.BtnCargarASMTP.Location = New System.Drawing.Point(693, 174)
             Me.BtnCargarASMTP.Name = "BtnCargarASMTP"
-            Me.BtnCargarASMTP.Size = New System.Drawing.Size(75, 20)
+            Me.BtnCargarASMTP.Size = New System.Drawing.Size(75, 21)
             Me.BtnCargarASMTP.TabIndex = 4
             Me.BtnCargarASMTP.Text = "Buscar"
             Me.BtnCargarASMTP.UseVisualStyleBackColor = True
@@ -231,7 +234,7 @@
             'Label6
             '
             Me.Label6.AutoSize = True
-            Me.Label6.Location = New System.Drawing.Point(12, 158)
+            Me.Label6.Location = New System.Drawing.Point(12, 204)
             Me.Label6.Name = "Label6"
             Me.Label6.Size = New System.Drawing.Size(68, 13)
             Me.Label6.TabIndex = 0
@@ -239,16 +242,16 @@
             '
             'txtAPOP
             '
-            Me.txtAPOP.Location = New System.Drawing.Point(116, 155)
+            Me.txtAPOP.Location = New System.Drawing.Point(116, 201)
             Me.txtAPOP.Name = "txtAPOP"
             Me.txtAPOP.Size = New System.Drawing.Size(571, 20)
             Me.txtAPOP.TabIndex = 1
             '
             'BtnCargarAPOP
             '
-            Me.BtnCargarAPOP.Location = New System.Drawing.Point(693, 154)
+            Me.BtnCargarAPOP.Location = New System.Drawing.Point(693, 200)
             Me.BtnCargarAPOP.Name = "BtnCargarAPOP"
-            Me.BtnCargarAPOP.Size = New System.Drawing.Size(75, 20)
+            Me.BtnCargarAPOP.Size = New System.Drawing.Size(75, 21)
             Me.BtnCargarAPOP.TabIndex = 4
             Me.BtnCargarAPOP.Text = "Buscar"
             Me.BtnCargarAPOP.UseVisualStyleBackColor = True
@@ -256,7 +259,7 @@
             'Label7
             '
             Me.Label7.AutoSize = True
-            Me.Label7.Location = New System.Drawing.Point(12, 184)
+            Me.Label7.Location = New System.Drawing.Point(12, 230)
             Me.Label7.Name = "Label7"
             Me.Label7.Size = New System.Drawing.Size(71, 13)
             Me.Label7.TabIndex = 0
@@ -264,16 +267,16 @@
             '
             'txtAWEB
             '
-            Me.txtAWEB.Location = New System.Drawing.Point(116, 181)
+            Me.txtAWEB.Location = New System.Drawing.Point(116, 227)
             Me.txtAWEB.Name = "txtAWEB"
             Me.txtAWEB.Size = New System.Drawing.Size(571, 20)
             Me.txtAWEB.TabIndex = 1
             '
             'BtnCargarAWEB
             '
-            Me.BtnCargarAWEB.Location = New System.Drawing.Point(693, 180)
+            Me.BtnCargarAWEB.Location = New System.Drawing.Point(693, 226)
             Me.BtnCargarAWEB.Name = "BtnCargarAWEB"
-            Me.BtnCargarAWEB.Size = New System.Drawing.Size(75, 20)
+            Me.BtnCargarAWEB.Size = New System.Drawing.Size(75, 21)
             Me.BtnCargarAWEB.TabIndex = 4
             Me.BtnCargarAWEB.Text = "Buscar"
             Me.BtnCargarAWEB.UseVisualStyleBackColor = True
@@ -281,7 +284,7 @@
             'Label8
             '
             Me.Label8.AutoSize = True
-            Me.Label8.Location = New System.Drawing.Point(12, 210)
+            Me.Label8.Location = New System.Drawing.Point(12, 256)
             Me.Label8.Name = "Label8"
             Me.Label8.Size = New System.Drawing.Size(52, 13)
             Me.Label8.TabIndex = 0
@@ -289,16 +292,16 @@
             '
             'txtImapApp
             '
-            Me.txtImapApp.Location = New System.Drawing.Point(116, 207)
+            Me.txtImapApp.Location = New System.Drawing.Point(116, 253)
             Me.txtImapApp.Name = "txtImapApp"
             Me.txtImapApp.Size = New System.Drawing.Size(571, 20)
             Me.txtImapApp.TabIndex = 1
             '
             'CmdCargarImapApp
             '
-            Me.CmdCargarImapApp.Location = New System.Drawing.Point(693, 206)
+            Me.CmdCargarImapApp.Location = New System.Drawing.Point(693, 252)
             Me.CmdCargarImapApp.Name = "CmdCargarImapApp"
-            Me.CmdCargarImapApp.Size = New System.Drawing.Size(75, 20)
+            Me.CmdCargarImapApp.Size = New System.Drawing.Size(75, 21)
             Me.CmdCargarImapApp.TabIndex = 4
             Me.CmdCargarImapApp.Text = "Buscar"
             Me.CmdCargarImapApp.UseVisualStyleBackColor = True
@@ -306,7 +309,7 @@
             'chkArranqueWindows
             '
             Me.chkArranqueWindows.AutoSize = True
-            Me.chkArranqueWindows.Location = New System.Drawing.Point(12, 277)
+            Me.chkArranqueWindows.Location = New System.Drawing.Point(12, 323)
             Me.chkArranqueWindows.Name = "chkArranqueWindows"
             Me.chkArranqueWindows.Size = New System.Drawing.Size(134, 17)
             Me.chkArranqueWindows.TabIndex = 5
@@ -316,7 +319,7 @@
             'Label9
             '
             Me.Label9.AutoSize = True
-            Me.Label9.Location = New System.Drawing.Point(12, 236)
+            Me.Label9.Location = New System.Drawing.Point(12, 282)
             Me.Label9.Name = "Label9"
             Me.Label9.Size = New System.Drawing.Size(78, 13)
             Me.Label9.TabIndex = 0
@@ -324,25 +327,50 @@
             '
             'txtSpamAssassin
             '
-            Me.txtSpamAssassin.Location = New System.Drawing.Point(116, 233)
+            Me.txtSpamAssassin.Location = New System.Drawing.Point(116, 279)
             Me.txtSpamAssassin.Name = "txtSpamAssassin"
             Me.txtSpamAssassin.Size = New System.Drawing.Size(571, 20)
             Me.txtSpamAssassin.TabIndex = 1
             '
             'CmdCargarSpamAssassin
             '
-            Me.CmdCargarSpamAssassin.Location = New System.Drawing.Point(693, 232)
+            Me.CmdCargarSpamAssassin.Location = New System.Drawing.Point(693, 278)
             Me.CmdCargarSpamAssassin.Name = "CmdCargarSpamAssassin"
-            Me.CmdCargarSpamAssassin.Size = New System.Drawing.Size(75, 20)
+            Me.CmdCargarSpamAssassin.Size = New System.Drawing.Size(75, 21)
             Me.CmdCargarSpamAssassin.TabIndex = 4
             Me.CmdCargarSpamAssassin.Text = "Buscar"
             Me.CmdCargarSpamAssassin.UseVisualStyleBackColor = True
+            '
+            'Label10
+            '
+            Me.Label10.AutoSize = True
+            Me.Label10.Location = New System.Drawing.Point(13, 25)
+            Me.Label10.Name = "Label10"
+            Me.Label10.Size = New System.Drawing.Size(75, 13)
+            Me.Label10.TabIndex = 0
+            Me.Label10.Text = "Post OFFICES"
+            '
+            'txtPostOffices
+            '
+            Me.txtPostOffices.Location = New System.Drawing.Point(117, 22)
+            Me.txtPostOffices.Name = "txtPostOffices"
+            Me.txtPostOffices.Size = New System.Drawing.Size(571, 20)
+            Me.txtPostOffices.TabIndex = 1
+            '
+            'BtnCargarPostOffices
+            '
+            Me.BtnCargarPostOffices.Location = New System.Drawing.Point(694, 22)
+            Me.BtnCargarPostOffices.Name = "BtnCargarPostOffices"
+            Me.BtnCargarPostOffices.Size = New System.Drawing.Size(75, 21)
+            Me.BtnCargarPostOffices.TabIndex = 4
+            Me.BtnCargarPostOffices.Text = "Buscar"
+            Me.BtnCargarPostOffices.UseVisualStyleBackColor = True
             '
             'Frm_Config
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(784, 340)
+            Me.ClientSize = New System.Drawing.Size(784, 386)
             Me.Controls.Add(Me.chkArranqueWindows)
             Me.Controls.Add(Me.CmdCargarSpamAssassin)
             Me.Controls.Add(Me.CmdCargarImapApp)
@@ -352,6 +380,7 @@
             Me.Controls.Add(Me.BtnCargarWEB)
             Me.Controls.Add(Me.BtnCargarPOP)
             Me.Controls.Add(Me.BtnCargarSMTP)
+            Me.Controls.Add(Me.BtnCargarPostOffices)
             Me.Controls.Add(Me.BtnCargarIMAP)
             Me.Controls.Add(Me.txtSpamAssassin)
             Me.Controls.Add(Me.txtImapApp)
@@ -367,10 +396,12 @@
             Me.Controls.Add(Me.Label6)
             Me.Controls.Add(Me.txtSMTP)
             Me.Controls.Add(Me.Label5)
+            Me.Controls.Add(Me.txtPostOffices)
             Me.Controls.Add(Me.txtIMAP)
             Me.Controls.Add(Me.Label4)
             Me.Controls.Add(Me.Label3)
             Me.Controls.Add(Me.Label2)
+            Me.Controls.Add(Me.Label10)
             Me.Controls.Add(Me.Label1)
             Me.Name = "Frm_Config"
             Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
@@ -415,5 +446,8 @@
         Friend WithEvents Label9 As Label
         Friend WithEvents txtSpamAssassin As TextBox
         Friend WithEvents CmdCargarSpamAssassin As Button
+        Friend WithEvents Label10 As Label
+        Friend WithEvents txtPostOffices As TextBox
+        Friend WithEvents BtnCargarPostOffices As Button
     End Class
 End Namespace

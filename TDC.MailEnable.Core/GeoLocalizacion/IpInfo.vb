@@ -7,7 +7,7 @@ Namespace GeoLocalizacion
         Public Function Geolocalizar(Ip As String, Almacen As Cls_Geolocalizacion) As String
             Try
                 If Not Almacen.Contains(Ip) Then
-                    Dim Req As HttpWebRequest = HttpWebRequest.Create("https://ipinfo.io/" & Ip)
+                    Dim Req As HttpWebRequest = HttpWebRequest.Create("https://ipinfo.io/" & Ip & "?token=34f171996c5865")
                     Dim Resp As HttpWebResponse
                     Req.Method = "GET"
                     Req.UserAgent = "curl/7/29/0"

@@ -124,7 +124,9 @@
     </Compile>
     <Compile Include="MailEnableLog\Cls_IpBlanca.vb" />
     <Compile Include="MailEnableLog\Cls_IpBan.vb" />
+    <Compile Include="MailEnableLog\Cls_MailBoxes.vb" />
     <Compile Include="MailEnableLog\Cls_MailEnableDeny.vb" />
+    <Compile Include="MailEnableLog\Cls_PostOffices.vb" />
     <Compile Include="MailEnableLog\Mod_Core.vb" />
     <Compile Include="MailEnableLog\Cls_ISS.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

@@ -4,6 +4,7 @@ Imports Microsoft.VisualBasic.Logging
 Imports TDC.MailEnable.Core
 Imports TDC.MailEnable.Core.GeoLocalizacion
 Imports TDC.MailEnable.IpBan.MailEnableLog
+Imports System.Text.RegularExpressions
 
 Namespace RegistroDeArchivos
     Public Class LecturaDeArchivo
@@ -15,7 +16,7 @@ Namespace RegistroDeArchivos
         ''' Integer, Numero de Concidencias por IP
         ''' List, Comparaciones del Filtro
         ''' </summary>
-        Public Filtros As New List(Of Tuple(Of Integer, Integer, List(Of FiltroLectura)))
+        Public Filtros As New List(Of Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura)))
         Public Property ObtenerIp As Func(Of String, String)
 
         Private Coincidentes As New Collections.Concurrent.ConcurrentDictionary(Of String, Integer)
@@ -51,7 +52,7 @@ Namespace RegistroDeArchivos
             Catch ex As Exception
 
             End Try
-            Lector.Intervalo = 10
+            Lector.Intervalo = 1
         End Sub
 
         Private Sub Lector_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Lector.IBucle_Bucle
@@ -59,6 +60,7 @@ Namespace RegistroDeArchivos
                 If Not IsNothing(Filtros) Then
                     'Si coincide cualquiera de los Filtros almacenados.
                     If Filtros.Any(Function(Filtro) VerificarFiltro(Filtro, Lineas(IndexLinea))) Then
+
                         'Solicitar la IP al Nucleo central
                         Dim Ip As String = ObtenerIp(Lineas(IndexLinea))
                         If Ip <> "0.0.0.0" Then
@@ -97,11 +99,13 @@ Namespace RegistroDeArchivos
                 Bloqueo.Set()
             End If
         End Sub
-        Private Function VerificarFiltro(Filtro As Tuple(Of Integer, Integer, List(Of FiltroLectura)), Linea As String) As Boolean
+        Private Function VerificarFiltro(Filtro As Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura)), Linea As String) As Boolean
             Dim TipoComparacion As EnumTipoComparacion = Filtro.Item1
             Dim NumeroCoincidentes As Integer = Filtro.Item2
-            Dim Comparaciones As List(Of FiltroLectura) = Filtro.Item3
+            Dim ComprobarMailBox As Boolean = Filtro.Item3
+            Dim Comparaciones As List(Of FiltroLectura) = Filtro.Item4
             Dim Coincide As Boolean
+
             Select Case TipoComparacion
                 Case EnumTipoComparacion.Todo
                     Coincide = True
@@ -127,6 +131,17 @@ Namespace RegistroDeArchivos
             End Select
 
             If Coincide Then
+                'Si no supera ComprobarMailBox establecemos NumeroCoincidentes a 0
+                'Para banear la IP Automaticamente
+                If ComprobarMailBox Then
+                    Dim FullMailbox As String = ExtraerEmails(Linea)
+                    Dim PostOffice As String = FullMailbox.Split("@")(1)
+                    Dim MailBox As String = FullMailbox.Split("@")(0)
+                    'Si no existe el PostOffice o el MailBox banea la IP
+                    If Not Mod_Core.PostOfficesCenter.PostOffices.Contains(PostOffice) Then NumeroCoincidentes = 0 Else If Not Mod_Core.PostOfficesCenter.PostOffice(PostOffice).MailBoxes.ContainsKey(MailBox) Then NumeroCoincidentes = 0
+                End If
+
+                'Comprueba las coincidencias del filtro establecidas
                 If NumeroCoincidentes > 0 Then
                     Dim oIp As String = ObtenerIp(Linea)
                     If Not Me.Coincidentes.ContainsKey(oIp) Then Me.Coincidentes.TryAdd(oIp, 1) Else Me.Coincidentes.TryUpdate(oIp, Me.Coincidentes(oIp) + 1, Me.Coincidentes(oIp))
@@ -141,5 +156,19 @@ Namespace RegistroDeArchivos
             Lector.Inicia()
             Bloqueo.WaitOne()
         End Sub
+
+        Private Function ExtraerEmails(texto As String) As String
+            Dim emails As New List(Of String)
+            Dim regex As New Regex("\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
+
+            Dim coincidencias As MatchCollection = regex.Matches(texto)
+
+            For Each coincidencia As Match In coincidencias
+                emails.Add(coincidencia.Value)
+            Next
+
+            Return emails.First
+        End Function
+
     End Class
 End Namespace

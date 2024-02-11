@@ -51,7 +51,7 @@ Namespace Interfaz
                 Dim CrearConfigUsuario As New Frm_Config
                 CrearConfigUsuario.ShowDialog(Me)
             End If
-            'MsgBox(IO.File.ReadAllText(Configuracion.WEB_DENY))
+
             'Cargar Ip Baneadas
             lstIpBaneadas.DataSource = Mod_Core.IpBaneadas.Data
             lstIpBaneadas.DisplayMember = "Item"
@@ -107,27 +107,27 @@ Namespace Interfaz
 
             'Empezar a Trabajar
             'POP(Actividad)
-            Registro_POP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, New List(Of FiltroLectura) From {
+            Registro_POP.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, False, New List(Of FiltroLectura) From {
                                                                                             New FiltroLectura With {.Filtro = "-ERR Unable to log on", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                             }))
             Trabajador_POP.Intervalo = 1000
             Trabajador_POP.Inicia()
 
             'POP(W3C)
-            Registro_POPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 5, New List(Of FiltroLectura) From {
+            Registro_POPW3C.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 5, False, New List(Of FiltroLectura) From {
                                                                                                New FiltroLectura With {.Filtro = "-ERR+Unable+to+log+on", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                                }))
             Trabajador_POPW3C.Intervalo = 1000
             Trabajador_POPW3C.Inicia()
 
             'SMTP (Actividad)
-            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 0, New List(Of FiltroLectura) From {
+            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 0, False, New List(Of FiltroLectura) From {
                                                                                               New FiltroLectura With {.Filtro = "This mail server requires authentication before sending mail", .Condicion = FiltroLectura.EnumCondicion.Contiene}}))
-            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
+            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, False, New List(Of FiltroLectura) From {
                                                                                             New FiltroLectura With {.Filtro = "Invalid Username or Password", .Condicion = FiltroLectura.EnumCondicion.Contiene},
                                                                                             New FiltroLectura With {.Filtro = "@", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
                                                                                             }))
-            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, New List(Of FiltroLectura) From {
+            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, True, New List(Of FiltroLectura) From {
                                                                                             New FiltroLectura With {.Filtro = "Invalid Username or Password", .Condicion = FiltroLectura.EnumCondicion.Contiene},
                                                                                             New FiltroLectura With {.Filtro = "@", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                             }))
@@ -135,15 +135,15 @@ Namespace Interfaz
             Trabajador_SMTP.Inicia()
 
             'SMTP(W3C)
-            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, New List(Of FiltroLectura) From {
+            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, True, New List(Of FiltroLectura) From {
                                                                                                 New FiltroLectura With {.Filtro = "Invalid+Username+or+Password", .Condicion = FiltroLectura.EnumCondicion.Contiene},
                                                                                                 New FiltroLectura With {.Filtro = "@", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                                 }))
-            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
+            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, False, New List(Of FiltroLectura) From {
                                                                                                 New FiltroLectura With {.Filtro = "Invalid+Username+or+Password", .Condicion = FiltroLectura.EnumCondicion.Contiene},
                                                                                                 New FiltroLectura With {.Filtro = "@", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
                                                                                                 }))
-            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 0, New List(Of FiltroLectura) From {
+            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 0, False, New List(Of FiltroLectura) From {
                                                                                                New FiltroLectura With {.Filtro = "This+mail+server+requires+authentication+before+sending+mail", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                                }))
 
@@ -151,58 +151,42 @@ Namespace Interfaz
             Trabajador_SMTPW3C.Inicia()
 
             'IMAP(Actividad)
-            Registro_IMAP.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 5, New List(Of FiltroLectura) From {
+            Registro_IMAP.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 5, False, New List(Of FiltroLectura) From {
                                                                                              New FiltroLectura With {.Filtro = "Invalid username or password", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                              }))
             Trabajador_IMAP.Intervalo = 1000
             Trabajador_IMAP.Inicia()
 
             'IMAP (W3C)
-            Registro_IMAPW3C.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 5, New List(Of FiltroLectura) From {
+            Registro_IMAPW3C.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 5, False, New List(Of FiltroLectura) From {
                                                                                                 New FiltroLectura With {.Filtro = "Invalid+username+or+password", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                                 }))
             Trabajador_IMAPW3C.Intervalo = 1000
             Trabajador_IMAPW3C.Inicia()
 
             'WEB
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, New List(Of FiltroLectura) From {
+            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, False, New List(Of FiltroLectura) From {
                                                                                             New FiltroLectura With {.Filtro = "POST", .Condicion = FiltroLectura.EnumCondicion.Contiene},
                                                                                             New FiltroLectura With {.Filtro = "Cmd=LOGIN", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                             }))
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, New List(Of FiltroLectura) From {
+            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, False, New List(Of FiltroLectura) From {
                                                                                             New FiltroLectura With {.Filtro = "POST", .Condicion = FiltroLectura.EnumCondicion.Contiene},
                                                                                             New FiltroLectura With {.Filtro = "/Mobile/Login.aspx", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                             }))
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
+            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, False, New List(Of FiltroLectura) From {
                                                                                             New FiltroLectura With {.Filtro = "GET", .Condicion = FiltroLectura.EnumCondicion.Contiene},
                                                                                             New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = "favicon.ico", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
-                                                                                            }))
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
-                                                                                            New FiltroLectura With {.Filtro = "GET", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = "robots.txt", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
-                                                                                            }))
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
-                                                                                            New FiltroLectura With {.Filtro = "GET", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = "sitemap.xml", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
-                                                                                            }))
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
-                                                                                            New FiltroLectura With {.Filtro = "GET", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = "BingSiteAuth.xml", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
-                                                                                            }))
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
-                                                                                            New FiltroLectura With {.Filtro = "GET", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = "favicon.ico", .Condicion = FiltroLectura.EnumCondicion.NoContiene},
+                                                                                            New FiltroLectura With {.Filtro = "robots.txt", .Condicion = FiltroLectura.EnumCondicion.NoContiene},
+                                                                                            New FiltroLectura With {.Filtro = "sitemap.xml", .Condicion = FiltroLectura.EnumCondicion.NoContiene},
+                                                                                            New FiltroLectura With {.Filtro = "BingSiteAuth.xml", .Condicion = FiltroLectura.EnumCondicion.NoContiene},
                                                                                             New FiltroLectura With {.Filtro = "google-site-verification", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
                                                                                             }))
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
+            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, False, New List(Of FiltroLectura) From {
                                                                                             New FiltroLectura With {.Filtro = "POST", .Condicion = FiltroLectura.EnumCondicion.Contiene},
                                                                                             New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                             }))
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, New List(Of FiltroLectura) From {
+            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, False, New List(Of FiltroLectura) From {
                                                                                             New FiltroLectura With {.Filtro = "HEAD", .Condicion = FiltroLectura.EnumCondicion.Contiene},
                                                                                             New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                             }))
@@ -300,7 +284,14 @@ Namespace Interfaz
             Me.Invoke(Sub() UcCarpeta.ProgresoCarpeta.Maximum = New IO.DirectoryInfo(Carpeta).GetFiles(FiltroCarpeta, IO.SearchOption.TopDirectoryOnly).Count)
             If Not UcCarpeta.Archivo.Text.Contains("-") Then Me.Invoke(Sub() UcCarpeta.Archivo.Text = "0 - 0")
             'Buscar Archivos en la Carpeta
-            For Each Archivo In New IO.DirectoryInfo(Carpeta).GetFiles(FiltroCarpeta, IO.SearchOption.TopDirectoryOnly)
+            'Dim Archivos As IO.FileInfo() = New IO.DirectoryInfo(Carpeta).GetFiles(FiltroCarpeta, IO.SearchOption.TopDirectoryOnly)
+            'Dim Ordenados = Archivos.OrderBy(Function(file) file.CreationTime)
+            Dim Ordenados = From Archivo In New IO.DirectoryInfo(Carpeta).GetFiles(FiltroCarpeta, IO.SearchOption.TopDirectoryOnly)
+                            Order By Archivo.LastWriteTime Ascending
+                            Select Archivo
+
+            'For Each Archivo In New IO.DirectoryInfo(Carpeta).GetFiles(FiltroCarpeta, IO.SearchOption.TopDirectoryOnly)
+            For Each Archivo In Ordenados
                 'Actualizar Interface
                 Me.Invoke(Sub()
                               'Progreso
@@ -330,7 +321,8 @@ Namespace Interfaz
                     If EscanearArchivo.FiltroIp.Count > 0 Then BloquearIps(EscanearArchivo.FiltroIp)
 
                     'Registramos el Archivo Analizado, si no es el LOG Actual(Now) ya que esta en continuo crecimiento.
-                    If Not DateDiff(DateInterval.Day, Now, Archivo.LastWriteTime) = 0 Then ControlCarpeta.Add(Archivo.Name)
+                    If Archivo.LastWriteTime.Date < Date.Now.Date Then ControlCarpeta.Add(Archivo.Name)
+                    'If DateDiff(DateInterval.Hour, Archivo.LastWriteTime, Now) > 8 Then ControlCarpeta.Add(Archivo.Name)
                 End If
             Next
 
@@ -363,7 +355,7 @@ Namespace Interfaz
 
         Private Sub Trabajador_POP_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_POP.IBucle_Bucle
             'Trabajo en BackGround
-            EscanearCarpeta(UcPOPAct, Function(Linea) RecuperarIpTab(Linea, 3), Trabajador_POP, Mod_Core.Configuracion.POP, Registro_POP, "POP*.log")
+            EscanearCarpeta(UcPOPAct, Function(Linea) RecuperarIpTab(Linea, 3), Trabajador_POP, Mod_Core.Configuracion.POP, Registro_POP, "POP-Activity*.log")
         End Sub
 
         Private Sub Trabajador_POPW3C_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_POPW3C.IBucle_Bucle
@@ -373,7 +365,7 @@ Namespace Interfaz
 
         Private Sub Trabajador_SMTP_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_SMTP.IBucle_Bucle
             'Trabajo en BackGround
-            EscanearCarpeta(UcSMTPAct, Function(linea) RecuperarIpTab(linea, 4), Trabajador_SMTP, Mod_Core.Configuracion.SMTP, Registro_SMTP, "SMTP*.log")
+            EscanearCarpeta(UcSMTPAct, Function(linea) RecuperarIpTab(linea, 4), Trabajador_SMTP, Mod_Core.Configuracion.SMTP, Registro_SMTP, "SMTP-Activity*.log")
         End Sub
         Private Sub Trabajador_SMTPW3C_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_SMTPW3C.IBucle_Bucle
             'Trabajo en BackGround
@@ -382,7 +374,7 @@ Namespace Interfaz
         End Sub
         Private Sub Trabajador_IMAP_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_IMAP.IBucle_Bucle
             'Trabajo en BackGround
-            EscanearCarpeta(UcIMAPAct, Function(Linea) RecuperarIpTab(Linea, 4), Trabajador_IMAP, Mod_Core.Configuracion.IMAP, Registro_IMAP, "IMAP*.log")
+            EscanearCarpeta(UcIMAPAct, Function(Linea) RecuperarIpTab(Linea, 4), Trabajador_IMAP, Mod_Core.Configuracion.IMAP, Registro_IMAP, "IMAP-Activity*.log")
         End Sub
         Private Sub Trabajador_IMAPW3C_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_IMAPW3C.IBucle_Bucle
             'Trabajo en BackGround

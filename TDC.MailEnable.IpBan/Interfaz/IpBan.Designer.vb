@@ -27,6 +27,13 @@
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(IpBan))
             Me.PanelIpBaneadas = New System.Windows.Forms.Panel()
             Me.PanelBuscadores = New System.Windows.Forms.Panel()
+            Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcIMAPAct = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcSMTPAct = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcPOPAct = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.Splitter1 = New System.Windows.Forms.Splitter()
             Me.PanelIps = New System.Windows.Forms.Panel()
             Me.PanelListaNegra = New System.Windows.Forms.Panel()
@@ -69,13 +76,7 @@
             Me.MenuPrincipal = New System.Windows.Forms.MenuStrip()
             Me.ConfiguraciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.TimerIpBan = New System.Windows.Forms.Timer(Me.components)
-            Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcIMAPAct = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcSMTPAct = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcPOPAct = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
             Me.PanelIpBaneadas.SuspendLayout()
             Me.PanelBuscadores.SuspendLayout()
             Me.PanelIps.SuspendLayout()
@@ -97,6 +98,7 @@
             Me.Panel2.SuspendLayout()
             Me.MenuSpamAssassin.SuspendLayout()
             Me.MenuPrincipal.SuspendLayout()
+            Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
             'PanelIpBaneadas
@@ -108,7 +110,7 @@
             Me.PanelIpBaneadas.Location = New System.Drawing.Point(3, 3)
             Me.PanelIpBaneadas.Name = "PanelIpBaneadas"
             Me.PanelIpBaneadas.Padding = New System.Windows.Forms.Padding(3)
-            Me.PanelIpBaneadas.Size = New System.Drawing.Size(795, 371)
+            Me.PanelIpBaneadas.Size = New System.Drawing.Size(869, 304)
             Me.PanelIpBaneadas.TabIndex = 1
             '
             'PanelBuscadores
@@ -125,14 +127,70 @@
             Me.PanelBuscadores.Location = New System.Drawing.Point(347, 3)
             Me.PanelBuscadores.Name = "PanelBuscadores"
             Me.PanelBuscadores.Padding = New System.Windows.Forms.Padding(3)
-            Me.PanelBuscadores.Size = New System.Drawing.Size(445, 365)
+            Me.PanelBuscadores.Size = New System.Drawing.Size(519, 298)
             Me.PanelBuscadores.TabIndex = 3
+            '
+            'UcWEB
+            '
+            Me.UcWEB.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcWEB.Location = New System.Drawing.Point(3, 243)
+            Me.UcWEB.Name = "UcWEB"
+            Me.UcWEB.Size = New System.Drawing.Size(513, 40)
+            Me.UcWEB.TabIndex = 0
+            '
+            'UcIMAPEx
+            '
+            Me.UcIMAPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcIMAPEx.Location = New System.Drawing.Point(3, 203)
+            Me.UcIMAPEx.Name = "UcIMAPEx"
+            Me.UcIMAPEx.Size = New System.Drawing.Size(513, 40)
+            Me.UcIMAPEx.TabIndex = 0
+            '
+            'UcIMAPAct
+            '
+            Me.UcIMAPAct.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcIMAPAct.Location = New System.Drawing.Point(3, 163)
+            Me.UcIMAPAct.Name = "UcIMAPAct"
+            Me.UcIMAPAct.Size = New System.Drawing.Size(513, 40)
+            Me.UcIMAPAct.TabIndex = 0
+            '
+            'UcSMTPEx
+            '
+            Me.UcSMTPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcSMTPEx.Location = New System.Drawing.Point(3, 123)
+            Me.UcSMTPEx.Name = "UcSMTPEx"
+            Me.UcSMTPEx.Size = New System.Drawing.Size(513, 40)
+            Me.UcSMTPEx.TabIndex = 0
+            '
+            'UcSMTPAct
+            '
+            Me.UcSMTPAct.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcSMTPAct.Location = New System.Drawing.Point(3, 83)
+            Me.UcSMTPAct.Name = "UcSMTPAct"
+            Me.UcSMTPAct.Size = New System.Drawing.Size(513, 40)
+            Me.UcSMTPAct.TabIndex = 0
+            '
+            'UcPOPEx
+            '
+            Me.UcPOPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcPOPEx.Location = New System.Drawing.Point(3, 43)
+            Me.UcPOPEx.Name = "UcPOPEx"
+            Me.UcPOPEx.Size = New System.Drawing.Size(513, 40)
+            Me.UcPOPEx.TabIndex = 0
+            '
+            'UcPOPAct
+            '
+            Me.UcPOPAct.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcPOPAct.Location = New System.Drawing.Point(3, 3)
+            Me.UcPOPAct.Name = "UcPOPAct"
+            Me.UcPOPAct.Size = New System.Drawing.Size(513, 40)
+            Me.UcPOPAct.TabIndex = 0
             '
             'Splitter1
             '
             Me.Splitter1.Location = New System.Drawing.Point(337, 3)
             Me.Splitter1.Name = "Splitter1"
-            Me.Splitter1.Size = New System.Drawing.Size(10, 365)
+            Me.Splitter1.Size = New System.Drawing.Size(10, 298)
             Me.Splitter1.TabIndex = 2
             Me.Splitter1.TabStop = False
             '
@@ -144,20 +202,19 @@
             Me.PanelIps.Dock = System.Windows.Forms.DockStyle.Left
             Me.PanelIps.Location = New System.Drawing.Point(3, 3)
             Me.PanelIps.Name = "PanelIps"
-            Me.PanelIps.Size = New System.Drawing.Size(334, 365)
+            Me.PanelIps.Size = New System.Drawing.Size(334, 298)
             Me.PanelIps.TabIndex = 1
             '
             'PanelListaNegra
             '
             Me.PanelListaNegra.Controls.Add(Me.lstIpBaneadas)
-            Me.PanelListaNegra.Controls.Add(Me.lblIpsCount)
-            Me.PanelListaNegra.Controls.Add(Me.Label1)
             Me.PanelListaNegra.Controls.Add(Me.PanelBotonesListaNegra)
+            Me.PanelListaNegra.Controls.Add(Me.TableLayoutPanel1)
             Me.PanelListaNegra.Dock = System.Windows.Forms.DockStyle.Fill
             Me.PanelListaNegra.Location = New System.Drawing.Point(0, 0)
             Me.PanelListaNegra.Name = "PanelListaNegra"
             Me.PanelListaNegra.Padding = New System.Windows.Forms.Padding(3)
-            Me.PanelListaNegra.Size = New System.Drawing.Size(203, 265)
+            Me.PanelListaNegra.Size = New System.Drawing.Size(203, 198)
             Me.PanelListaNegra.TabIndex = 6
             '
             'lstIpBaneadas
@@ -165,18 +222,21 @@
             Me.lstIpBaneadas.Dock = System.Windows.Forms.DockStyle.Fill
             Me.lstIpBaneadas.FormattingEnabled = True
             Me.lstIpBaneadas.IntegralHeight = False
-            Me.lstIpBaneadas.Location = New System.Drawing.Point(3, 54)
+            Me.lstIpBaneadas.Location = New System.Drawing.Point(3, 29)
             Me.lstIpBaneadas.Name = "lstIpBaneadas"
-            Me.lstIpBaneadas.Size = New System.Drawing.Size(197, 146)
+            Me.lstIpBaneadas.Size = New System.Drawing.Size(197, 104)
             Me.lstIpBaneadas.TabIndex = 2
             '
             'lblIpsCount
             '
-            Me.lblIpsCount.Dock = System.Windows.Forms.DockStyle.Top
+            Me.lblIpsCount.BackColor = System.Drawing.Color.Black
+            Me.lblIpsCount.Dock = System.Windows.Forms.DockStyle.Fill
             Me.lblIpsCount.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.lblIpsCount.Location = New System.Drawing.Point(3, 23)
+            Me.lblIpsCount.ForeColor = System.Drawing.Color.White
+            Me.lblIpsCount.Location = New System.Drawing.Point(137, 0)
+            Me.lblIpsCount.Margin = New System.Windows.Forms.Padding(0)
             Me.lblIpsCount.Name = "lblIpsCount"
-            Me.lblIpsCount.Size = New System.Drawing.Size(197, 31)
+            Me.lblIpsCount.Size = New System.Drawing.Size(60, 26)
             Me.lblIpsCount.TabIndex = 1
             Me.lblIpsCount.Text = "999"
             Me.lblIpsCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -184,12 +244,13 @@
             'Label1
             '
             Me.Label1.BackColor = System.Drawing.Color.Black
-            Me.Label1.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Label1.Dock = System.Windows.Forms.DockStyle.Fill
             Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label1.ForeColor = System.Drawing.Color.White
-            Me.Label1.Location = New System.Drawing.Point(3, 3)
+            Me.Label1.Location = New System.Drawing.Point(0, 0)
+            Me.Label1.Margin = New System.Windows.Forms.Padding(0)
             Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(197, 20)
+            Me.Label1.Size = New System.Drawing.Size(137, 26)
             Me.Label1.TabIndex = 2
             Me.Label1.Text = "Lista NEGRA"
             Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -202,7 +263,7 @@
             Me.PanelBotonesListaNegra.Controls.Add(Me.BtnPropagarIps)
             Me.PanelBotonesListaNegra.Controls.Add(Me.ChkDetenerPublicacion)
             Me.PanelBotonesListaNegra.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.PanelBotonesListaNegra.Location = New System.Drawing.Point(3, 200)
+            Me.PanelBotonesListaNegra.Location = New System.Drawing.Point(3, 133)
             Me.PanelBotonesListaNegra.Name = "PanelBotonesListaNegra"
             Me.PanelBotonesListaNegra.Padding = New System.Windows.Forms.Padding(1)
             Me.PanelBotonesListaNegra.Size = New System.Drawing.Size(197, 62)
@@ -260,7 +321,7 @@
             Me.PanelBusqueda.Controls.Add(Me.SplitContainer1)
             Me.PanelBusqueda.Controls.Add(Me.PanelTexto)
             Me.PanelBusqueda.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.PanelBusqueda.Location = New System.Drawing.Point(0, 265)
+            Me.PanelBusqueda.Location = New System.Drawing.Point(0, 198)
             Me.PanelBusqueda.Name = "PanelBusqueda"
             Me.PanelBusqueda.Size = New System.Drawing.Size(203, 100)
             Me.PanelBusqueda.TabIndex = 7
@@ -341,7 +402,7 @@
             Me.Panel15.Location = New System.Drawing.Point(203, 0)
             Me.Panel15.Name = "Panel15"
             Me.Panel15.Padding = New System.Windows.Forms.Padding(3)
-            Me.Panel15.Size = New System.Drawing.Size(131, 365)
+            Me.Panel15.Size = New System.Drawing.Size(131, 298)
             Me.Panel15.TabIndex = 5
             '
             'lstIpBlancas
@@ -351,7 +412,7 @@
             Me.lstIpBlancas.IntegralHeight = False
             Me.lstIpBlancas.Location = New System.Drawing.Point(3, 23)
             Me.lstIpBlancas.Name = "lstIpBlancas"
-            Me.lstIpBlancas.Size = New System.Drawing.Size(125, 297)
+            Me.lstIpBlancas.Size = New System.Drawing.Size(125, 230)
             Me.lstIpBlancas.TabIndex = 0
             '
             'PanelBotonesBlanca
@@ -359,7 +420,7 @@
             Me.PanelBotonesBlanca.Controls.Add(Me.BtnEliminarBlanca)
             Me.PanelBotonesBlanca.Controls.Add(Me.BtnAnadirBlanca)
             Me.PanelBotonesBlanca.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.PanelBotonesBlanca.Location = New System.Drawing.Point(3, 320)
+            Me.PanelBotonesBlanca.Location = New System.Drawing.Point(3, 253)
             Me.PanelBotonesBlanca.Name = "PanelBotonesBlanca"
             Me.PanelBotonesBlanca.Size = New System.Drawing.Size(125, 42)
             Me.PanelBotonesBlanca.TabIndex = 4
@@ -404,7 +465,7 @@
             Me.Fondo.Location = New System.Drawing.Point(0, 24)
             Me.Fondo.Name = "Fondo"
             Me.Fondo.Padding = New System.Windows.Forms.Padding(10)
-            Me.Fondo.Size = New System.Drawing.Size(829, 440)
+            Me.Fondo.Size = New System.Drawing.Size(903, 373)
             Me.Fondo.TabIndex = 1
             '
             'TabControl1
@@ -416,7 +477,7 @@
             Me.TabControl1.Location = New System.Drawing.Point(10, 10)
             Me.TabControl1.Name = "TabControl1"
             Me.TabControl1.SelectedIndex = 0
-            Me.TabControl1.Size = New System.Drawing.Size(809, 420)
+            Me.TabControl1.Size = New System.Drawing.Size(883, 353)
             Me.TabControl1.TabIndex = 3
             '
             'TabPIpBan
@@ -426,7 +487,7 @@
             Me.TabPIpBan.Location = New System.Drawing.Point(4, 39)
             Me.TabPIpBan.Name = "TabPIpBan"
             Me.TabPIpBan.Padding = New System.Windows.Forms.Padding(3)
-            Me.TabPIpBan.Size = New System.Drawing.Size(801, 377)
+            Me.TabPIpBan.Size = New System.Drawing.Size(875, 310)
             Me.TabPIpBan.TabIndex = 0
             Me.TabPIpBan.Text = "IpBan"
             Me.TabPIpBan.UseVisualStyleBackColor = True
@@ -439,7 +500,7 @@
             Me.TabPage2.Location = New System.Drawing.Point(4, 39)
             Me.TabPage2.Name = "TabPage2"
             Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-            Me.TabPage2.Size = New System.Drawing.Size(801, 377)
+            Me.TabPage2.Size = New System.Drawing.Size(1032, 377)
             Me.TabPage2.TabIndex = 1
             Me.TabPage2.Text = "SpamAssassin"
             Me.TabPage2.UseVisualStyleBackColor = True
@@ -449,7 +510,7 @@
             Me.txtRichSpamAssassin.Dock = System.Windows.Forms.DockStyle.Fill
             Me.txtRichSpamAssassin.Location = New System.Drawing.Point(3, 43)
             Me.txtRichSpamAssassin.Name = "txtRichSpamAssassin"
-            Me.txtRichSpamAssassin.Size = New System.Drawing.Size(795, 331)
+            Me.txtRichSpamAssassin.Size = New System.Drawing.Size(1026, 331)
             Me.txtRichSpamAssassin.TabIndex = 0
             Me.txtRichSpamAssassin.Text = ""
             '
@@ -461,7 +522,7 @@
             Me.Panel1.Location = New System.Drawing.Point(3, 3)
             Me.Panel1.Name = "Panel1"
             Me.Panel1.Padding = New System.Windows.Forms.Padding(3)
-            Me.Panel1.Size = New System.Drawing.Size(795, 40)
+            Me.Panel1.Size = New System.Drawing.Size(1026, 40)
             Me.Panel1.TabIndex = 1
             '
             'Panel2
@@ -469,7 +530,7 @@
             Me.Panel2.Controls.Add(Me.lblEstadoSpamAssasin)
             Me.Panel2.Controls.Add(Me.Label3)
             Me.Panel2.Dock = System.Windows.Forms.DockStyle.Right
-            Me.Panel2.Location = New System.Drawing.Point(680, 3)
+            Me.Panel2.Location = New System.Drawing.Point(911, 3)
             Me.Panel2.Name = "Panel2"
             Me.Panel2.Size = New System.Drawing.Size(112, 34)
             Me.Panel2.TabIndex = 1
@@ -547,7 +608,7 @@
             Me.MenuPrincipal.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfiguraciónToolStripMenuItem})
             Me.MenuPrincipal.Location = New System.Drawing.Point(0, 0)
             Me.MenuPrincipal.Name = "MenuPrincipal"
-            Me.MenuPrincipal.Size = New System.Drawing.Size(829, 24)
+            Me.MenuPrincipal.Size = New System.Drawing.Size(903, 24)
             Me.MenuPrincipal.TabIndex = 2
             Me.MenuPrincipal.Text = "Menu"
             '
@@ -562,67 +623,26 @@
             Me.TimerIpBan.Enabled = True
             Me.TimerIpBan.Interval = 1000
             '
-            'UcWEB
+            'TableLayoutPanel1
             '
-            Me.UcWEB.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcWEB.Location = New System.Drawing.Point(3, 243)
-            Me.UcWEB.Name = "UcWEB"
-            Me.UcWEB.Size = New System.Drawing.Size(439, 40)
-            Me.UcWEB.TabIndex = 0
-            '
-            'UcIMAPEx
-            '
-            Me.UcIMAPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcIMAPEx.Location = New System.Drawing.Point(3, 203)
-            Me.UcIMAPEx.Name = "UcIMAPEx"
-            Me.UcIMAPEx.Size = New System.Drawing.Size(439, 40)
-            Me.UcIMAPEx.TabIndex = 0
-            '
-            'UcIMAPAct
-            '
-            Me.UcIMAPAct.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcIMAPAct.Location = New System.Drawing.Point(3, 163)
-            Me.UcIMAPAct.Name = "UcIMAPAct"
-            Me.UcIMAPAct.Size = New System.Drawing.Size(439, 40)
-            Me.UcIMAPAct.TabIndex = 0
-            '
-            'UcSMTPEx
-            '
-            Me.UcSMTPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcSMTPEx.Location = New System.Drawing.Point(3, 123)
-            Me.UcSMTPEx.Name = "UcSMTPEx"
-            Me.UcSMTPEx.Size = New System.Drawing.Size(439, 40)
-            Me.UcSMTPEx.TabIndex = 0
-            '
-            'UcSMTPAct
-            '
-            Me.UcSMTPAct.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcSMTPAct.Location = New System.Drawing.Point(3, 83)
-            Me.UcSMTPAct.Name = "UcSMTPAct"
-            Me.UcSMTPAct.Size = New System.Drawing.Size(439, 40)
-            Me.UcSMTPAct.TabIndex = 0
-            '
-            'UcPOPEx
-            '
-            Me.UcPOPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcPOPEx.Location = New System.Drawing.Point(3, 43)
-            Me.UcPOPEx.Name = "UcPOPEx"
-            Me.UcPOPEx.Size = New System.Drawing.Size(439, 40)
-            Me.UcPOPEx.TabIndex = 0
-            '
-            'UcPOPAct
-            '
-            Me.UcPOPAct.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcPOPAct.Location = New System.Drawing.Point(3, 3)
-            Me.UcPOPAct.Name = "UcPOPAct"
-            Me.UcPOPAct.Size = New System.Drawing.Size(439, 40)
-            Me.UcPOPAct.TabIndex = 0
+            Me.TableLayoutPanel1.ColumnCount = 2
+            Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
+            Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
+            Me.TableLayoutPanel1.Controls.Add(Me.lblIpsCount, 1, 0)
+            Me.TableLayoutPanel1.Controls.Add(Me.Label1, 0, 0)
+            Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top
+            Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 3)
+            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+            Me.TableLayoutPanel1.RowCount = 1
+            Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.TableLayoutPanel1.Size = New System.Drawing.Size(197, 26)
+            Me.TableLayoutPanel1.TabIndex = 3
             '
             'IpBan
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(829, 464)
+            Me.ClientSize = New System.Drawing.Size(903, 397)
             Me.Controls.Add(Me.Fondo)
             Me.Controls.Add(Me.MenuPrincipal)
             Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -656,6 +676,7 @@
             Me.MenuSpamAssassin.PerformLayout()
             Me.MenuPrincipal.ResumeLayout(False)
             Me.MenuPrincipal.PerformLayout()
+            Me.TableLayoutPanel1.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -711,5 +732,6 @@
         Friend WithEvents TSMIniciarSpamAssassin As ToolStripMenuItem
         Friend WithEvents TSMIniciarSmapAssassinNormal As ToolStripMenuItem
         Friend WithEvents TSMIniciarSmapAssassinOculto As ToolStripMenuItem
+        Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     End Class
 End Namespace

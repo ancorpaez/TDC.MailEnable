@@ -1,5 +1,6 @@
 ﻿Namespace MailEnableLog
     Public Class Cls_Config
+        Public POST_OFFICES As String = ""
         Public IMAP As String = ""
         Public SMTP As String = ""
         Public POP As String = ""

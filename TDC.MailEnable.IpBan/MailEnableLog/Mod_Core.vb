@@ -26,11 +26,13 @@ Namespace MailEnableLog
         'PIPE BANEADAS
         Private PipeServer As Core.Pipe.ServerPipe
 
+        'POSTOFFICES
+        Public PostOfficesCenter As Cls_PostOffices
+
 
         Private Function DelegateObtenerLista() As List(Of String)
             Return IpBaneadas.ToList
         End Function
-        'Private Test1 As New TDC.MailEnable.Core.Main
 
 
         Public Sub Mod_Core_Main()
@@ -69,6 +71,12 @@ Namespace MailEnableLog
                     End Try
                 End If
 
+                'Cargar PostOffices
+                If Not String.IsNullOrEmpty(Configuracion.POST_OFFICES) Then
+                    If IO.Directory.Exists(Configuracion.POST_OFFICES) Then
+                        PostOfficesCenter = New Cls_PostOffices(Configuracion.POST_OFFICES)
+                    End If
+                End If
                 'Activar Spam Assassin
                 If Not String.IsNullOrEmpty(Configuracion.SPAM_SPAMASSASSIN) Then
                     If IO.File.Exists(Configuracion.SPAM_SPAMASSASSIN) Then

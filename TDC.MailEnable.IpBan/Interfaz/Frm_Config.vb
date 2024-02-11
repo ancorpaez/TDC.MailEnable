@@ -18,6 +18,7 @@ Namespace Interfaz
             txtImapApp.Text = Mod_Core.Configuracion.IMAP_SOCKET_APP
             txtSpamAssassin.Text = Mod_Core.Configuracion.SPAM_SPAMASSASSIN
             chkArranqueWindows.Checked = Mod_Core.Configuracion.AutoArranqueWindows
+            txtPostOffices.Text = Mod_Core.Configuracion.POST_OFFICES
         End Sub
 
         Private Function CargarCarpeta() As String
@@ -55,11 +56,12 @@ Namespace Interfaz
             Mod_Core.Configuracion.WEB_DENY = txtAWEB.Text
             Mod_Core.Configuracion.IMAP_SOCKET_APP = txtImapApp.Text
             Mod_Core.Configuracion.SPAM_SPAMASSASSIN = txtSpamAssassin.Text
+            Mod_Core.Configuracion.POST_OFFICES = txtPostOffices.Text
             Mod_Core.GuardarConfiguracion()
             Me.Close()
         End Sub
 
-        Private Sub txtAPOP_TextChanged(sender As Object, e As EventArgs) Handles txtAPOP.TextChanged, txtAWEB.TextChanged, txtASMTP.TextChanged, txtWEB.TextChanged, txtPOP.TextChanged, txtSMTP.TextChanged, txtIMAP.TextChanged, txtImapApp.TextChanged, txtSpamAssassin.TextChanged
+        Private Sub txtAPOP_TextChanged(sender As Object, e As EventArgs) Handles txtAPOP.TextChanged, txtAWEB.TextChanged, txtASMTP.TextChanged, txtWEB.TextChanged, txtPOP.TextChanged, txtSMTP.TextChanged, txtIMAP.TextChanged, txtImapApp.TextChanged, txtSpamAssassin.TextChanged, txtPostOffices.TextChanged
             If Estado = EstadosCarga.Cargado Then BtnGuardarConfig.Enabled = True
         End Sub
         Private Sub BtnCargarIMAP_Click(sender As Object, e As EventArgs) Handles BtnCargarIMAP.Click
@@ -105,6 +107,9 @@ Namespace Interfaz
             BtnGuardarConfig.Enabled = True
         End Sub
 
-
+        Private Sub BtnCargarPostOffices_Click(sender As Object, e As EventArgs) Handles BtnCargarPostOffices.Click
+            CargarCarpeta()
+            txtPostOffices.Text = CtrlBuscarCarpeta.SelectedPath
+        End Sub
     End Class
 End Namespace

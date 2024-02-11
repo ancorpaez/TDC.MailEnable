@@ -40,17 +40,19 @@ Partial Class UcAnalizador
         '
         Me.TableCarpeta.SetColumnSpan(Me.ProgresoCarpeta, 2)
         Me.ProgresoCarpeta.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.ProgresoCarpeta.Location = New System.Drawing.Point(3, 21)
+        Me.ProgresoCarpeta.Location = New System.Drawing.Point(0, 24)
+        Me.ProgresoCarpeta.Margin = New System.Windows.Forms.Padding(0)
         Me.ProgresoCarpeta.Name = "ProgresoCarpeta"
-        Me.ProgresoCarpeta.Size = New System.Drawing.Size(193, 10)
+        Me.ProgresoCarpeta.Size = New System.Drawing.Size(199, 10)
         Me.ProgresoCarpeta.TabIndex = 0
         '
         'Carpeta
         '
         Me.Carpeta.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Carpeta.Location = New System.Drawing.Point(3, 0)
+        Me.Carpeta.Location = New System.Drawing.Point(0, 0)
+        Me.Carpeta.Margin = New System.Windows.Forms.Padding(0)
         Me.Carpeta.Name = "Carpeta"
-        Me.Carpeta.Size = New System.Drawing.Size(93, 17)
+        Me.Carpeta.Size = New System.Drawing.Size(99, 17)
         Me.Carpeta.TabIndex = 1
         Me.Carpeta.Text = "..."
         Me.Carpeta.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -58,19 +60,22 @@ Partial Class UcAnalizador
         'ContadorCarpeta
         '
         Me.ContadorCarpeta.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ContadorCarpeta.Location = New System.Drawing.Point(102, 0)
+        Me.ContadorCarpeta.Location = New System.Drawing.Point(99, 0)
+        Me.ContadorCarpeta.Margin = New System.Windows.Forms.Padding(0)
         Me.ContadorCarpeta.Name = "ContadorCarpeta"
-        Me.ContadorCarpeta.Size = New System.Drawing.Size(94, 17)
+        Me.ContadorCarpeta.Size = New System.Drawing.Size(100, 17)
         Me.ContadorCarpeta.TabIndex = 2
         Me.ContadorCarpeta.Text = "0 - 0"
         Me.ContadorCarpeta.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Archivo
         '
+        Me.Archivo.AutoEllipsis = True
         Me.Archivo.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Archivo.Location = New System.Drawing.Point(3, 0)
+        Me.Archivo.Location = New System.Drawing.Point(0, 0)
+        Me.Archivo.Margin = New System.Windows.Forms.Padding(0)
         Me.Archivo.Name = "Archivo"
-        Me.Archivo.Size = New System.Drawing.Size(94, 17)
+        Me.Archivo.Size = New System.Drawing.Size(120, 17)
         Me.Archivo.TabIndex = 3
         Me.Archivo.Text = "..."
         Me.Archivo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -79,9 +84,10 @@ Partial Class UcAnalizador
         '
         Me.TableLayoutPanel2.SetColumnSpan(Me.ProgresoArchivo, 2)
         Me.ProgresoArchivo.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.ProgresoArchivo.Location = New System.Drawing.Point(3, 21)
+        Me.ProgresoArchivo.Location = New System.Drawing.Point(0, 24)
+        Me.ProgresoArchivo.Margin = New System.Windows.Forms.Padding(0)
         Me.ProgresoArchivo.Name = "ProgresoArchivo"
-        Me.ProgresoArchivo.Size = New System.Drawing.Size(194, 10)
+        Me.ProgresoArchivo.Size = New System.Drawing.Size(200, 10)
         Me.ProgresoArchivo.TabIndex = 4
         '
         'TableCarpeta
@@ -105,8 +111,8 @@ Partial Class UcAnalizador
         'TableLayoutPanel2
         '
         Me.TableLayoutPanel2.ColumnCount = 2
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.0!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.0!))
         Me.TableLayoutPanel2.Controls.Add(Me.Archivo, 0, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.ProgresoArchivo, 0, 1)
         Me.TableLayoutPanel2.Controls.Add(Me.ContadorArchivo, 1, 0)
@@ -123,9 +129,10 @@ Partial Class UcAnalizador
         '
         Me.ContadorArchivo.AutoSize = True
         Me.ContadorArchivo.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ContadorArchivo.Location = New System.Drawing.Point(103, 0)
+        Me.ContadorArchivo.Location = New System.Drawing.Point(120, 0)
+        Me.ContadorArchivo.Margin = New System.Windows.Forms.Padding(0)
         Me.ContadorArchivo.Name = "ContadorArchivo"
-        Me.ContadorArchivo.Size = New System.Drawing.Size(94, 17)
+        Me.ContadorArchivo.Size = New System.Drawing.Size(80, 17)
         Me.ContadorArchivo.TabIndex = 5
         Me.ContadorArchivo.Text = "0 - 0"
         Me.ContadorArchivo.TextAlign = System.Drawing.ContentAlignment.MiddleRight
