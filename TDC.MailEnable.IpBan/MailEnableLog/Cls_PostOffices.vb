@@ -26,6 +26,8 @@
             'Eliminar
             For Each iPostOffice In PostOfficesIndex.Keys
                 If PostOfficesDirectory.GetDirectories(iPostOffice).Count = 0 Then
+                    'Detener es escaneo de MailBoxes
+                    PostOfficesIndex(iPostOffice).Detener()
                     PostOfficesIndex.TryRemove(iPostOffice, Nothing)
                 End If
             Next

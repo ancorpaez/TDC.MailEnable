@@ -38,13 +38,14 @@
             Me.PanelIps = New System.Windows.Forms.Panel()
             Me.PanelListaNegra = New System.Windows.Forms.Panel()
             Me.lstIpBaneadas = New System.Windows.Forms.ListBox()
-            Me.lblIpsCount = New System.Windows.Forms.Label()
-            Me.Label1 = New System.Windows.Forms.Label()
             Me.PanelBotonesListaNegra = New System.Windows.Forms.Panel()
             Me.BtnAñadirIp = New System.Windows.Forms.Button()
             Me.BtnEliminarIp = New System.Windows.Forms.Button()
             Me.BtnPropagarIps = New System.Windows.Forms.Button()
             Me.ChkDetenerPublicacion = New System.Windows.Forms.CheckBox()
+            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+            Me.lblIpsCount = New System.Windows.Forms.Label()
+            Me.Label1 = New System.Windows.Forms.Label()
             Me.PanelBusqueda = New System.Windows.Forms.Panel()
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
             Me.lstBusqueda = New System.Windows.Forms.ListBox()
@@ -76,12 +77,12 @@
             Me.MenuPrincipal = New System.Windows.Forms.MenuStrip()
             Me.ConfiguraciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.TimerIpBan = New System.Windows.Forms.Timer(Me.components)
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
             Me.PanelIpBaneadas.SuspendLayout()
             Me.PanelBuscadores.SuspendLayout()
             Me.PanelIps.SuspendLayout()
             Me.PanelListaNegra.SuspendLayout()
             Me.PanelBotonesListaNegra.SuspendLayout()
+            Me.TableLayoutPanel1.SuspendLayout()
             Me.PanelBusqueda.SuspendLayout()
             CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SplitContainer1.Panel1.SuspendLayout()
@@ -98,7 +99,6 @@
             Me.Panel2.SuspendLayout()
             Me.MenuSpamAssassin.SuspendLayout()
             Me.MenuPrincipal.SuspendLayout()
-            Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
             'PanelIpBaneadas
@@ -227,34 +227,6 @@
             Me.lstIpBaneadas.Size = New System.Drawing.Size(197, 104)
             Me.lstIpBaneadas.TabIndex = 2
             '
-            'lblIpsCount
-            '
-            Me.lblIpsCount.BackColor = System.Drawing.Color.Black
-            Me.lblIpsCount.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.lblIpsCount.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.lblIpsCount.ForeColor = System.Drawing.Color.White
-            Me.lblIpsCount.Location = New System.Drawing.Point(137, 0)
-            Me.lblIpsCount.Margin = New System.Windows.Forms.Padding(0)
-            Me.lblIpsCount.Name = "lblIpsCount"
-            Me.lblIpsCount.Size = New System.Drawing.Size(60, 26)
-            Me.lblIpsCount.TabIndex = 1
-            Me.lblIpsCount.Text = "999"
-            Me.lblIpsCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-            '
-            'Label1
-            '
-            Me.Label1.BackColor = System.Drawing.Color.Black
-            Me.Label1.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.Label1.ForeColor = System.Drawing.Color.White
-            Me.Label1.Location = New System.Drawing.Point(0, 0)
-            Me.Label1.Margin = New System.Windows.Forms.Padding(0)
-            Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(137, 26)
-            Me.Label1.TabIndex = 2
-            Me.Label1.Text = "Lista NEGRA"
-            Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-            '
             'PanelBotonesListaNegra
             '
             Me.PanelBotonesListaNegra.BackColor = System.Drawing.Color.Black
@@ -315,6 +287,49 @@
             Me.ChkDetenerPublicacion.TabIndex = 5
             Me.ChkDetenerPublicacion.Text = "Pausar Propagación"
             Me.ChkDetenerPublicacion.UseVisualStyleBackColor = False
+            '
+            'TableLayoutPanel1
+            '
+            Me.TableLayoutPanel1.ColumnCount = 2
+            Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
+            Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
+            Me.TableLayoutPanel1.Controls.Add(Me.lblIpsCount, 1, 0)
+            Me.TableLayoutPanel1.Controls.Add(Me.Label1, 0, 0)
+            Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top
+            Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 3)
+            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+            Me.TableLayoutPanel1.RowCount = 1
+            Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.TableLayoutPanel1.Size = New System.Drawing.Size(197, 26)
+            Me.TableLayoutPanel1.TabIndex = 3
+            '
+            'lblIpsCount
+            '
+            Me.lblIpsCount.BackColor = System.Drawing.Color.Black
+            Me.lblIpsCount.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lblIpsCount.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.lblIpsCount.ForeColor = System.Drawing.Color.White
+            Me.lblIpsCount.Location = New System.Drawing.Point(137, 0)
+            Me.lblIpsCount.Margin = New System.Windows.Forms.Padding(0)
+            Me.lblIpsCount.Name = "lblIpsCount"
+            Me.lblIpsCount.Size = New System.Drawing.Size(60, 26)
+            Me.lblIpsCount.TabIndex = 1
+            Me.lblIpsCount.Text = "999"
+            Me.lblIpsCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+            '
+            'Label1
+            '
+            Me.Label1.BackColor = System.Drawing.Color.Black
+            Me.Label1.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Label1.ForeColor = System.Drawing.Color.White
+            Me.Label1.Location = New System.Drawing.Point(0, 0)
+            Me.Label1.Margin = New System.Windows.Forms.Padding(0)
+            Me.Label1.Name = "Label1"
+            Me.Label1.Size = New System.Drawing.Size(137, 26)
+            Me.Label1.TabIndex = 2
+            Me.Label1.Text = "Lista NEGRA"
+            Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
             '
             'PanelBusqueda
             '
@@ -500,7 +515,7 @@
             Me.TabPage2.Location = New System.Drawing.Point(4, 39)
             Me.TabPage2.Name = "TabPage2"
             Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-            Me.TabPage2.Size = New System.Drawing.Size(1032, 377)
+            Me.TabPage2.Size = New System.Drawing.Size(875, 310)
             Me.TabPage2.TabIndex = 1
             Me.TabPage2.Text = "SpamAssassin"
             Me.TabPage2.UseVisualStyleBackColor = True
@@ -510,7 +525,7 @@
             Me.txtRichSpamAssassin.Dock = System.Windows.Forms.DockStyle.Fill
             Me.txtRichSpamAssassin.Location = New System.Drawing.Point(3, 43)
             Me.txtRichSpamAssassin.Name = "txtRichSpamAssassin"
-            Me.txtRichSpamAssassin.Size = New System.Drawing.Size(1026, 331)
+            Me.txtRichSpamAssassin.Size = New System.Drawing.Size(869, 264)
             Me.txtRichSpamAssassin.TabIndex = 0
             Me.txtRichSpamAssassin.Text = ""
             '
@@ -522,7 +537,7 @@
             Me.Panel1.Location = New System.Drawing.Point(3, 3)
             Me.Panel1.Name = "Panel1"
             Me.Panel1.Padding = New System.Windows.Forms.Padding(3)
-            Me.Panel1.Size = New System.Drawing.Size(1026, 40)
+            Me.Panel1.Size = New System.Drawing.Size(869, 40)
             Me.Panel1.TabIndex = 1
             '
             'Panel2
@@ -530,7 +545,7 @@
             Me.Panel2.Controls.Add(Me.lblEstadoSpamAssasin)
             Me.Panel2.Controls.Add(Me.Label3)
             Me.Panel2.Dock = System.Windows.Forms.DockStyle.Right
-            Me.Panel2.Location = New System.Drawing.Point(911, 3)
+            Me.Panel2.Location = New System.Drawing.Point(754, 3)
             Me.Panel2.Name = "Panel2"
             Me.Panel2.Size = New System.Drawing.Size(112, 34)
             Me.Panel2.TabIndex = 1
@@ -623,21 +638,6 @@
             Me.TimerIpBan.Enabled = True
             Me.TimerIpBan.Interval = 1000
             '
-            'TableLayoutPanel1
-            '
-            Me.TableLayoutPanel1.ColumnCount = 2
-            Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
-            Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
-            Me.TableLayoutPanel1.Controls.Add(Me.lblIpsCount, 1, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.Label1, 0, 0)
-            Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top
-            Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 3)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-            Me.TableLayoutPanel1.RowCount = 1
-            Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.TableLayoutPanel1.Size = New System.Drawing.Size(197, 26)
-            Me.TableLayoutPanel1.TabIndex = 3
-            '
             'IpBan
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -656,6 +656,7 @@
             Me.PanelListaNegra.ResumeLayout(False)
             Me.PanelBotonesListaNegra.ResumeLayout(False)
             Me.PanelBotonesListaNegra.PerformLayout()
+            Me.TableLayoutPanel1.ResumeLayout(False)
             Me.PanelBusqueda.ResumeLayout(False)
             Me.SplitContainer1.Panel1.ResumeLayout(False)
             Me.SplitContainer1.Panel2.ResumeLayout(False)
@@ -676,7 +677,6 @@
             Me.MenuSpamAssassin.PerformLayout()
             Me.MenuPrincipal.ResumeLayout(False)
             Me.MenuPrincipal.PerformLayout()
-            Me.TableLayoutPanel1.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
