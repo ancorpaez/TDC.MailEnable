@@ -42,7 +42,7 @@ Namespace Interfaz
         Private Sub IpBan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
             'Posicionar Ventana
-            Me.Top = 150
+            Me.Top = 50
             'Arrancar Modulo Principal
             Mod_Core.Mod_Core_Main()
 
@@ -438,7 +438,14 @@ Namespace Interfaz
                                     If Not ChkDetenerPublicacion.Checked Then
                                         With Publicador
                                             .Lista = IpBaneadas.ToList
-                                            If InvokeRequired Then Invoke(Sub() .ShowDialog(Me)) Else .ShowDialog(Me)
+                                            If InvokeRequired Then
+                                                Invoke(Sub() .Location = New Point(Me.Location.X + (Me.Width - .Width) \ 2, Me.Location.Y + (Me.Height - .Height) \ 2))
+                                                Invoke(Sub() .ShowDialog(Me))
+                                            Else
+                                                .Location = New Point(Me.Location.X + (Me.Width - .Width) \ 2, Me.Location.Y + (Me.Height - .Height) \ 2)
+                                                .ShowDialog(Me)
+                                            End If
+
                                             Me.Invoke(Sub() ChkDetenerPublicacion.BackColor = Color.Black)
                                         End With
                                     Else
@@ -469,10 +476,6 @@ Namespace Interfaz
 
         Private Sub GridImapRechazados_DataError(sender As Object, e As DataGridViewDataErrorEventArgs)
             e.ThrowException = False
-        End Sub
-
-        Private Sub BtnDeneterSpamAssassin_Click(sender As Object, e As EventArgs)
-
         End Sub
 
         Private Sub txtRichSpamAssassin_TextChanged(sender As Object, e As EventArgs) Handles txtRichSpamAssassin.TextChanged

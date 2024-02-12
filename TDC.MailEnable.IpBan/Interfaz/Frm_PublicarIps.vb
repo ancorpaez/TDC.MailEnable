@@ -32,7 +32,7 @@ Namespace Interfaz
             ListaSMTP.Clear()
             ListaWEB.Clear()
 
-            Publicador.Intervalo = 10
+            Publicador.Intervalo = 1
             Publicador.Inicia()
             If Not IsNothing(Lista) AndAlso Lista.Count > 0 Then
                 Progreso.Maximum = Lista.Count - 1
@@ -50,6 +50,10 @@ Namespace Interfaz
             If IndexIp < (Lista.Count - 1) Then
                 'Aumentar uno
                 Me.Invoke(Sub() Progreso.Value = IndexIp)
+                Me.Invoke(Sub() lblIp.Text = Lista(IndexIp))
+                Me.Invoke(Sub() lblIndex.Text = IndexIp)
+                Me.Invoke(Sub() lblCount.Text = Lista.Count)
+
                 IndexIp += 1
             Else
                 'Salvar los datos
