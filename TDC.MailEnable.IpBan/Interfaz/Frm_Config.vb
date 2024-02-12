@@ -19,6 +19,20 @@ Namespace Interfaz
             txtSpamAssassin.Text = Mod_Core.Configuracion.SPAM_SPAMASSASSIN
             chkArranqueWindows.Checked = Mod_Core.Configuracion.AutoArranqueWindows
             txtPostOffices.Text = Mod_Core.Configuracion.POST_OFFICES
+            If IsNumeric(Mod_Core.Configuracion.TIMER_LECTURA) Then
+                TrackLectura.Value = CInt(Configuracion.TIMER_LECTURA)
+                lblTimerLectura.Text = Configuracion.TIMER_LECTURA
+            Else
+                Configuracion.TIMER_LECTURA = TrackLectura.Value
+                lblTimerLectura.Text = TrackLectura.Value
+            End If
+            If IsNumeric(Mod_Core.Configuracion.TIMER_PROPAGACION) Then
+                TrackPropagacion.Value = CInt(Configuracion.TIMER_PROPAGACION)
+                lblTimerPropagacion.Text = Configuracion.TIMER_PROPAGACION
+            Else
+                Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
+                lblTimerPropagacion.Text = TrackPropagacion.Value
+            End If
         End Sub
 
         Private Function CargarCarpeta() As String
@@ -57,6 +71,8 @@ Namespace Interfaz
             Mod_Core.Configuracion.IMAP_SOCKET_APP = txtImapApp.Text
             Mod_Core.Configuracion.SPAM_SPAMASSASSIN = txtSpamAssassin.Text
             Mod_Core.Configuracion.POST_OFFICES = txtPostOffices.Text
+            Mod_Core.Configuracion.TIMER_LECTURA = TrackLectura.Value
+            Mod_Core.Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
             Mod_Core.GuardarConfiguracion()
             Me.Close()
         End Sub
@@ -110,6 +126,16 @@ Namespace Interfaz
         Private Sub BtnCargarPostOffices_Click(sender As Object, e As EventArgs) Handles BtnCargarPostOffices.Click
             CargarCarpeta()
             txtPostOffices.Text = CtrlBuscarCarpeta.SelectedPath
+        End Sub
+
+        Private Sub TrackLectura_Scroll(sender As Object, e As EventArgs) Handles TrackLectura.Scroll
+            Configuracion.TIMER_LECTURA = TrackLectura.Value
+            lblTimerLectura.Text = TrackLectura.Value
+        End Sub
+
+        Private Sub TrackPropagacion_Scroll(sender As Object, e As EventArgs) Handles TrackPropagacion.Scroll
+            Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
+            lblTimerPropagacion.Text = TrackPropagacion.Value
         End Sub
     End Class
 End Namespace

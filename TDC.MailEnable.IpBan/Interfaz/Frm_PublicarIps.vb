@@ -32,13 +32,14 @@ Namespace Interfaz
             ListaSMTP.Clear()
             ListaWEB.Clear()
 
-            Publicador.Intervalo = 1
+            If IsNumeric(Configuracion.TIMER_PROPAGACION) Then Publicador.Intervalo = Configuracion.TIMER_PROPAGACION Else Publicador.Intervalo = 1
             Publicador.Inicia()
             If Not IsNothing(Lista) AndAlso Lista.Count > 0 Then
                 Progreso.Maximum = Lista.Count - 1
             End If
         End Sub
         Private Sub Publicador_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Publicador.IBucle_Bucle
+            If IsNumeric(Configuracion.TIMER_PROPAGACION) Then Publicador.Intervalo = Configuracion.TIMER_PROPAGACION Else Publicador.Intervalo = 1
             'Proteger
             If Lista.Count = 0 Then Exit Sub
             'Meterdatos

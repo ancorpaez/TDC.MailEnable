@@ -52,10 +52,11 @@ Namespace RegistroDeArchivos
             Catch ex As Exception
 
             End Try
-            Lector.Intervalo = 1
+            If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
         End Sub
 
         Private Sub Lector_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Lector.IBucle_Bucle
+            If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
             If IndexLinea < Lineas.Count Then
                 If Not IsNothing(Filtros) Then
                     'Si coincide cualquiera de los Filtros almacenados.
