@@ -257,14 +257,6 @@ Namespace Interfaz
         Private Function esLegible(Archivo As String) As Boolean
             Dim Devolver As Boolean = False
             Try
-                Using OpenFile As New IO.FileStream(Archivo, IO.FileMode.Open, IO.FileAccess.Read)
-                    'Intenta abrir el archivo en modo lectura y cierra.
-                End Using
-                Devolver = True
-            Catch ex As Exception
-                Devolver = False
-            End Try
-            Try
                 If Not Devolver Then
                     Using Acceso = New IO.StreamReader(IO.File.Open(Archivo, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.ReadWrite))
                         'Intenta abrir el archivo bloqueado en modo lectura y cierra.

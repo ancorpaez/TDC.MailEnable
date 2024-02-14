@@ -136,10 +136,14 @@ Namespace RegistroDeArchivos
                 'Para banear la IP Automaticamente
                 If ComprobarMailBox Then
                     Dim FullMailbox As String = ExtraerEmails(Linea)
-                    Dim PostOffice As String = FullMailbox.Split("@")(1)
-                    Dim MailBox As String = FullMailbox.Split("@")(0)
-                    'Si no existe el PostOffice o el MailBox banea la IP
-                    If Not Mod_Core.PostOfficesCenter.PostOffices.Contains(PostOffice) Then NumeroCoincidentes = 0 Else If Not Mod_Core.PostOfficesCenter.PostOffice(PostOffice).MailBoxes.ContainsKey(MailBox) Then NumeroCoincidentes = 0
+                    If Not String.IsNullOrEmpty(FullMailbox) Then
+                        Dim PostOffice As String = FullMailbox.Split("@")(1)
+                        Dim MailBox As String = FullMailbox.Split("@")(0)
+                        'Si no existe el PostOffice o el MailBox banea la IP
+                        If Not Mod_Core.PostOfficesCenter.PostOffices.Contains(PostOffice) Then NumeroCoincidentes = 0 Else If Not Mod_Core.PostOfficesCenter.PostOffice(PostOffice).MailBoxes.ContainsKey(MailBox) Then NumeroCoincidentes = 0
+                    Else
+                        NumeroCoincidentes = 0
+                    End If
                 End If
 
                 'Comprueba las coincidencias del filtro establecidas
@@ -168,7 +172,7 @@ Namespace RegistroDeArchivos
                 emails.Add(coincidencia.Value)
             Next
 
-            Return emails.First
+            If emails.Count > 0 Then Return emails.First Else Return ""
         End Function
 
     End Class

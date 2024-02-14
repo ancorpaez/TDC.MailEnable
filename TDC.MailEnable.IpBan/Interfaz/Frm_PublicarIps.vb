@@ -64,7 +64,10 @@ Namespace Interfaz
 
                 'Detener la publicacion
                 Publicador.Detener()
-                Me.Invoke(Sub() Me.Close())
+                Try
+                    Me.Invoke(Sub() Me.Close())
+                Catch ex As Exception
+                End Try
             End If
         End Sub
 
