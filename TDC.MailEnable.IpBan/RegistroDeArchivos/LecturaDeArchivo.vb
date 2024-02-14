@@ -30,6 +30,8 @@ Namespace RegistroDeArchivos
             Todo
         End Enum
 
+        Private FileMailBoxLogin As New Cls_MailBoxLogin
+
         Public Sub New(Archivo As String)
             Try
                 Lineas = IO.File.ReadAllLines(Archivo)
@@ -77,7 +79,7 @@ Namespace RegistroDeArchivos
                         End If
 
                         'Geolocalizar  la IP
-                        If Ip <> "" Then
+                        If Not String.IsNullOrEmpty(Ip) Then
                             Dim Geolocalizar As New IpInfo
                             Dim Pais As String = Geolocalizar.Geolocalizar(Ip, Mod_Core.Geolocalizador)
                             Dim GeolocalizarID As Integer = 0
@@ -86,6 +88,32 @@ Namespace RegistroDeArchivos
                             'Banear la IP (Evita Bloquear Ip[ES][ERR]) Comprueba la Bandera (GeolocalizarID, 0(Bloquea) o 1(No bloquea))
                             If GeolocalizarID = 0 Then If Not FiltroIp.Contains(Ip) Then FiltroIp.Add(Ip)
                         End If
+
+                        'Consultar estado de logins del MailBox
+                        For Each ConfFiltro In Filtros
+                            'Si algun Filtro debe comprobar el MailBox
+                            If ConfFiltro.Item3 Then
+                                Dim MailBox = ExtraerEmails(Lineas(IndexLinea))
+                                Dim Coincidencias As Integer = ConfFiltro.Item2
+                                If Not String.IsNullOrEmpty(Ip) AndAlso Not String.IsNullOrEmpty(MailBox) Then
+                                    If FileMailBoxLogin.Exist(MailBox) AndAlso FileMailBoxLogin.Count(MailBox) >= Coincidencias Then
+                                        For Each IpBox In FileMailBoxLogin.Get(MailBox)
+                                            If Not String.IsNullOrEmpty(IpBox) Then
+                                                Dim Geolocalizar As New IpInfo
+                                                Dim Pais As String = Geolocalizar.Geolocalizar(IpBox, Mod_Core.Geolocalizador)
+                                                Dim GeolocalizarID As Integer = 0
+                                                If Pais = "ES" OrElse Pais = "ERR" Then GeolocalizarID = 1
+
+                                                'Banear la IP (Evita Bloquear Ip[ES][ERR]) Comprueba la Bandera (GeolocalizarID, 0(Bloquea) o 1(No bloquea))
+                                                If GeolocalizarID = 0 Then If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
+                                            End If
+                                        Next
+
+                                    End If
+                                End If
+                            End If
+                        Next
+
                     End If
 
                 End If
@@ -140,9 +168,28 @@ Namespace RegistroDeArchivos
                         Dim PostOffice As String = FullMailbox.Split("@")(1)
                         Dim MailBox As String = FullMailbox.Split("@")(0)
                         'Si no existe el PostOffice o el MailBox banea la IP
-                        If Not Mod_Core.PostOfficesCenter.PostOffices.Contains(PostOffice) Then NumeroCoincidentes = 0 Else If Not Mod_Core.PostOfficesCenter.PostOffice(PostOffice).MailBoxes.ContainsKey(MailBox) Then NumeroCoincidentes = 0
+                        If Not Mod_Core.PostOfficesCenter.PostOffices.Contains(PostOffice) Then
+                            'No existe el PostOffice
+                            NumeroCoincidentes = 0
+                        Else
+                            If Not Mod_Core.PostOfficesCenter.PostOffice(PostOffice).MailBoxes.ContainsKey(MailBox) Then
+                                'No existe el MailBox
+                                NumeroCoincidentes = 0
+                            Else
+                                'Establece coincidencias por MailBox
+                                If Not FileMailBoxLogin.Exist(FullMailbox) Then FileMailBoxLogin.Add(FullMailbox)
+                                FileMailBoxLogin.AddIp(FullMailbox, ObtenerIp(Linea))
+                            End If
+                        End If
                     Else
                         NumeroCoincidentes = 0
+                    End If
+
+                    'Establece coincidencias por MailBox
+                    If NumeroCoincidentes > 0 AndAlso Not String.IsNullOrEmpty(FullMailbox) Then
+                        If FileMailBoxLogin.Exist(FullMailbox) AndAlso FileMailBoxLogin.Count(FullMailbox) >= NumeroCoincidentes Then
+                            NumeroCoincidentes = 0
+                        End If
                     End If
                 End If
 
@@ -152,6 +199,8 @@ Namespace RegistroDeArchivos
                     If Not Me.Coincidentes.ContainsKey(oIp) Then Me.Coincidentes.TryAdd(oIp, 1) Else Me.Coincidentes.TryUpdate(oIp, Me.Coincidentes(oIp) + 1, Me.Coincidentes(oIp))
                     If Me.Coincidentes(oIp) > NumeroCoincidentes Then Coincide = True Else Coincide = False
                 End If
+
+
             End If
 
             Return Coincide

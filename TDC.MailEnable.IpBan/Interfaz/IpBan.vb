@@ -170,10 +170,6 @@ Namespace Interfaz
                                                                                             New FiltroLectura With {.Filtro = "Cmd=LOGIN", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                             }))
             Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, False, New List(Of FiltroLectura) From {
-                                                                                            New FiltroLectura With {.Filtro = "POST", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = "/Mobile/Login.aspx", .Condicion = FiltroLectura.EnumCondicion.Contiene}
-                                                                                            }))
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, False, New List(Of FiltroLectura) From {
                                                                                             New FiltroLectura With {.Filtro = "GET", .Condicion = FiltroLectura.EnumCondicion.Contiene},
                                                                                             New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene},
                                                                                             New FiltroLectura With {.Filtro = "favicon.ico", .Condicion = FiltroLectura.EnumCondicion.NoContiene},
@@ -184,7 +180,9 @@ Namespace Interfaz
                                                                                             }))
             Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, False, New List(Of FiltroLectura) From {
                                                                                             New FiltroLectura With {.Filtro = "POST", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene}
+                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = "POST", .Condicion = FiltroLectura.EnumCondicion.Contiene},
+                                                                                            New FiltroLectura With {.Filtro = "/Mobile/Login.aspx", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                             }))
             Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, False, New List(Of FiltroLectura) From {
                                                                                             New FiltroLectura With {.Filtro = "HEAD", .Condicion = FiltroLectura.EnumCondicion.Contiene},
@@ -292,6 +290,16 @@ Namespace Interfaz
                               UcCarpeta.ContadorCarpeta.Text = String.Format("{0} - {1}", ControlCarpeta.Count, UcCarpeta.ProgresoCarpeta.Maximum)
                               'Archivo
                               UcCarpeta.Archivo.Text = Archivo.Name
+                              'Indicamos visualmente si analizamos archivos del día
+                              If Archivo.LastWriteTime.Date < Date.Now.Date Then
+                                  Me.Invoke(Sub() UcCarpeta.ContadorArchivo.ForeColor = Color.Black)
+                                  Me.Invoke(Sub() UcCarpeta.ContadorCarpeta.ForeColor = Color.Black)
+                                  Me.Invoke(Sub() UcCarpeta.Archivo.ForeColor = Color.Black)
+                              Else
+                                  Me.Invoke(Sub() UcCarpeta.ContadorArchivo.ForeColor = Color.DarkGreen)
+                                  Me.Invoke(Sub() UcCarpeta.ContadorCarpeta.ForeColor = Color.DarkGreen)
+                                  Me.Invoke(Sub() UcCarpeta.Archivo.ForeColor = Color.DarkGreen)
+                              End If
                           End Sub)
 
                 If Not ControlCarpeta.Contains(Archivo.Name) AndAlso esLegible(Archivo.FullName) Then
@@ -314,7 +322,7 @@ Namespace Interfaz
 
                     'Registramos el Archivo Analizado, si no es el LOG Actual(Now) ya que esta en continuo crecimiento.
                     If Archivo.LastWriteTime.Date < Date.Now.Date Then ControlCarpeta.Add(Archivo.Name)
-                    'If DateDiff(DateInterval.Hour, Archivo.LastWriteTime, Now) > 8 Then ControlCarpeta.Add(Archivo.Name)
+
                 End If
             Next
 
