@@ -64,8 +64,8 @@
             Me.TrackPropagacion = New System.Windows.Forms.TrackBar()
             Me.Label11 = New System.Windows.Forms.Label()
             Me.Label12 = New System.Windows.Forms.Label()
-            Me.lblTimerLectura = New System.Windows.Forms.Label()
-            Me.lblTimerPropagacion = New System.Windows.Forms.Label()
+            Me.txtLecturaArchivos = New System.Windows.Forms.TextBox()
+            Me.txtPropagacionIP = New System.Windows.Forms.TextBox()
             Me.Panel1.SuspendLayout()
             CType(Me.TrackLectura, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.TrackPropagacion, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -143,7 +143,7 @@
             Me.Panel1.Dock = System.Windows.Forms.DockStyle.Bottom
             Me.Panel1.Location = New System.Drawing.Point(0, 454)
             Me.Panel1.Name = "Panel1"
-            Me.Panel1.Size = New System.Drawing.Size(784, 40)
+            Me.Panel1.Size = New System.Drawing.Size(780, 40)
             Me.Panel1.TabIndex = 3
             '
             'BtnCancelar
@@ -171,7 +171,7 @@
             Me.CtrlSeparadorPie.Dock = System.Windows.Forms.DockStyle.Top
             Me.CtrlSeparadorPie.Location = New System.Drawing.Point(0, 0)
             Me.CtrlSeparadorPie.Name = "CtrlSeparadorPie"
-            Me.CtrlSeparadorPie.Size = New System.Drawing.Size(784, 1)
+            Me.CtrlSeparadorPie.Size = New System.Drawing.Size(780, 1)
             Me.CtrlSeparadorPie.TabIndex = 0
             '
             'BtnCargarIMAP
@@ -378,24 +378,26 @@
             '
             Me.TrackLectura.LargeChange = 100
             Me.TrackLectura.Location = New System.Drawing.Point(116, 305)
-            Me.TrackLectura.Maximum = 1000
+            Me.TrackLectura.Maximum = 300
             Me.TrackLectura.Minimum = 1
             Me.TrackLectura.Name = "TrackLectura"
-            Me.TrackLectura.Size = New System.Drawing.Size(573, 45)
-            Me.TrackLectura.SmallChange = 50
+            Me.TrackLectura.Size = New System.Drawing.Size(571, 45)
+            Me.TrackLectura.SmallChange = 10
             Me.TrackLectura.TabIndex = 8
+            Me.TrackLectura.TickFrequency = 10
             Me.TrackLectura.Value = 100
             '
             'TrackPropagacion
             '
             Me.TrackPropagacion.LargeChange = 100
             Me.TrackPropagacion.Location = New System.Drawing.Point(116, 346)
-            Me.TrackPropagacion.Maximum = 1000
+            Me.TrackPropagacion.Maximum = 300
             Me.TrackPropagacion.Minimum = 1
             Me.TrackPropagacion.Name = "TrackPropagacion"
             Me.TrackPropagacion.Size = New System.Drawing.Size(571, 45)
-            Me.TrackPropagacion.SmallChange = 50
+            Me.TrackPropagacion.SmallChange = 10
             Me.TrackPropagacion.TabIndex = 8
+            Me.TrackPropagacion.TickFrequency = 10
             Me.TrackPropagacion.Value = 100
             '
             'Label11
@@ -416,31 +418,27 @@
             Me.Label12.TabIndex = 10
             Me.Label12.Text = "Propagación IP"
             '
-            'lblTimerLectura
+            'txtLecturaArchivos
             '
-            Me.lblTimerLectura.AutoSize = True
-            Me.lblTimerLectura.Location = New System.Drawing.Point(690, 315)
-            Me.lblTimerLectura.Name = "lblTimerLectura"
-            Me.lblTimerLectura.Size = New System.Drawing.Size(25, 13)
-            Me.lblTimerLectura.TabIndex = 11
-            Me.lblTimerLectura.Text = "100"
+            Me.txtLecturaArchivos.Location = New System.Drawing.Point(693, 305)
+            Me.txtLecturaArchivos.Name = "txtLecturaArchivos"
+            Me.txtLecturaArchivos.Size = New System.Drawing.Size(75, 20)
+            Me.txtLecturaArchivos.TabIndex = 11
             '
-            'lblTimerPropagacion
+            'txtPropagacionIP
             '
-            Me.lblTimerPropagacion.AutoSize = True
-            Me.lblTimerPropagacion.Location = New System.Drawing.Point(690, 355)
-            Me.lblTimerPropagacion.Name = "lblTimerPropagacion"
-            Me.lblTimerPropagacion.Size = New System.Drawing.Size(25, 13)
-            Me.lblTimerPropagacion.TabIndex = 12
-            Me.lblTimerPropagacion.Text = "100"
+            Me.txtPropagacionIP.Location = New System.Drawing.Point(693, 346)
+            Me.txtPropagacionIP.Name = "txtPropagacionIP"
+            Me.txtPropagacionIP.Size = New System.Drawing.Size(75, 20)
+            Me.txtPropagacionIP.TabIndex = 11
             '
             'Frm_Config
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(784, 494)
-            Me.Controls.Add(Me.lblTimerPropagacion)
-            Me.Controls.Add(Me.lblTimerLectura)
+            Me.ClientSize = New System.Drawing.Size(780, 494)
+            Me.Controls.Add(Me.txtPropagacionIP)
+            Me.Controls.Add(Me.txtLecturaArchivos)
             Me.Controls.Add(Me.Label12)
             Me.Controls.Add(Me.Label11)
             Me.Controls.Add(Me.TrackPropagacion)
@@ -529,7 +527,7 @@
         Friend WithEvents TrackPropagacion As TrackBar
         Friend WithEvents Label11 As Label
         Friend WithEvents Label12 As Label
-        Friend WithEvents lblTimerLectura As Label
-        Friend WithEvents lblTimerPropagacion As Label
+        Friend WithEvents txtLecturaArchivos As TextBox
+        Friend WithEvents txtPropagacionIP As TextBox
     End Class
 End Namespace

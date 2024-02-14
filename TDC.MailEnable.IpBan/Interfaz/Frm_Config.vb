@@ -21,17 +21,17 @@ Namespace Interfaz
             txtPostOffices.Text = Mod_Core.Configuracion.POST_OFFICES
             If IsNumeric(Mod_Core.Configuracion.TIMER_LECTURA) Then
                 TrackLectura.Value = CInt(Configuracion.TIMER_LECTURA)
-                lblTimerLectura.Text = Configuracion.TIMER_LECTURA
+                txtLecturaArchivos.Text = Configuracion.TIMER_LECTURA
             Else
                 Configuracion.TIMER_LECTURA = TrackLectura.Value
-                lblTimerLectura.Text = TrackLectura.Value
+                txtLecturaArchivos.Text = TrackLectura.Value
             End If
             If IsNumeric(Mod_Core.Configuracion.TIMER_PROPAGACION) Then
                 TrackPropagacion.Value = CInt(Configuracion.TIMER_PROPAGACION)
-                lblTimerPropagacion.Text = Configuracion.TIMER_PROPAGACION
+                txtPropagacionIP.Text = Configuracion.TIMER_PROPAGACION
             Else
                 Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
-                lblTimerPropagacion.Text = TrackPropagacion.Value
+                txtPropagacionIP.Text = TrackPropagacion.Value
             End If
         End Sub
 
@@ -130,12 +130,34 @@ Namespace Interfaz
 
         Private Sub TrackLectura_Scroll(sender As Object, e As EventArgs) Handles TrackLectura.Scroll
             Configuracion.TIMER_LECTURA = TrackLectura.Value
-            lblTimerLectura.Text = TrackLectura.Value
+            txtLecturaArchivos.Text = TrackLectura.Value
         End Sub
 
         Private Sub TrackPropagacion_Scroll(sender As Object, e As EventArgs) Handles TrackPropagacion.Scroll
             Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
-            lblTimerPropagacion.Text = TrackPropagacion.Value
+            txtPropagacionIP.Text = TrackPropagacion.Value
+        End Sub
+
+        Private Sub txtxLecturaArchivos_TextChanged(sender As Object, e As EventArgs) Handles txtLecturaArchivos.TextChanged
+            If IsNumeric(txtLecturaArchivos.Text) Then
+                If CInt(txtLecturaArchivos.Text) <= TrackLectura.Maximum Then
+                    TrackLectura.Value = CInt(txtLecturaArchivos.Text)
+                Else
+                    TrackLectura.Value = TrackLectura.Maximum
+                    txtLecturaArchivos.Text = TrackLectura.Maximum
+                End If
+            End If
+        End Sub
+
+        Private Sub txtPropagacionIP_TextChanged(sender As Object, e As EventArgs) Handles txtPropagacionIP.TextChanged
+            If IsNumeric(txtPropagacionIP.Text) Then
+                If CInt(txtPropagacionIP.Text) <= TrackPropagacion.Maximum Then
+                    TrackPropagacion.Value = CInt(txtPropagacionIP.Text)
+                Else
+                    TrackPropagacion.Value = TrackPropagacion.Maximum
+                    txtPropagacionIP.Text = TrackPropagacion.Maximum
+                End If
+            End If
         End Sub
     End Class
 End Namespace
