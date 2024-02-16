@@ -13,5 +13,6 @@
         Public AutoArranqueWindows As Boolean = True
         Public TIMER_LECTURA As String = ""
         Public TIMER_PROPAGACION As String = ""
+        Public LECTURA_REPOSO As String = "60000"
     End Class
 End Namespace

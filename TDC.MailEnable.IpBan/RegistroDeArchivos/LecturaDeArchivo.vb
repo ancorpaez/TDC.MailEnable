@@ -9,7 +9,7 @@ Imports System.Text.RegularExpressions
 Namespace RegistroDeArchivos
     Public Class LecturaDeArchivo
         Private WithEvents Lector As New Bucle.Bucle
-        Private IndexLinea As Integer = 0
+        'Private IndexLinea As Integer = 0
         'Filtros.Add(New Tuple(Of Integer, List(Of String))(EnumTipoComparacion.Cualquiera, New List(Of String) From {"Uno", "Dos"}))
         ''' <summary>
         ''' Integer, Tipo de comparacion (Cualquier coincidencia del List, Todo el List)
@@ -21,112 +21,140 @@ Namespace RegistroDeArchivos
 
         Private Coincidentes As New Collections.Concurrent.ConcurrentDictionary(Of String, Integer)
 
-        Private Lineas As String() = {}
         Private Bloqueo As New ManualResetEvent(False)
         Public FiltroIp As New Concurrent.ConcurrentBindingList(Of String)
-        Public Event Progreso(Index, Total)
+
+        Public Total As Integer = 0
+        Public Index As Integer = 0
+        Public Enum EnumEstado
+            Iniciando
+            Analizando
+            Analizado
+        End Enum
+        Public Estado As EnumEstado = EnumEstado.Iniciando
+
         Public Enum EnumTipoComparacion
             Cualquiera
             Todo
         End Enum
 
-        Private FileMailBoxLogin As New Cls_MailBoxLogin
+        Private Archivo As String
+
 
         Public Sub New(Archivo As String)
+
             Try
-                Lineas = IO.File.ReadAllLines(Archivo)
+                'Identificador
+                Me.Archivo = Archivo
+
+                'Establecer una Memoria de Archivo
+                If Not FileMemory.ContainsKey(Archivo) Then FileMemory.TryAdd(Archivo, New Cls_FileMemory)
+
+                'Cargar el Archivo en Memoria
+                Using Cargar As StreamReader = New IO.StreamReader(IO.File.Open(Archivo, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.ReadWrite))
+                    Dim Linea As String
+                    Dim Index As Integer = 0
+                    Do
+                        Linea = Cargar.ReadLine
+                        If Not String.IsNullOrEmpty(Linea) Then
+                            FileMemory(Archivo).Lines.TryAdd(Index, Linea)
+                        End If
+                        Index += 1
+                    Loop While Not String.IsNullOrEmpty(Linea)
+                End Using
+
+
             Catch ex As Exception
 
             End Try
 
-            Try
-                If Lineas.Count = 0 Then
-                    Using Bloqueado As StreamReader = New IO.StreamReader(IO.File.Open(Archivo, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.ReadWrite))
-                        Dim Linea As String = Bloqueado.ReadLine
-                        Dim lLineas As New List(Of String)
-                        Do While Not String.IsNullOrEmpty(Linea)
-                            lLineas.Add(Linea)
-                            Linea = Bloqueado.ReadLine
-                        Loop
-                        Lineas = lLineas.ToArray
-                    End Using
-                End If
-            Catch ex As Exception
-
-            End Try
+            'Aplicar configuracion de los Bucles
             If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
         End Sub
 
         Private Sub Lector_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Lector.IBucle_Bucle
-            If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
-            If IndexLinea < Lineas.Count Then
-                If Not IsNothing(Filtros) Then
-                    'Si coincide cualquiera de los Filtros almacenados.
-                    If Filtros.Any(Function(Filtro) VerificarFiltro(Filtro, Lineas(IndexLinea))) Then
+            Try
+                If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
+                'If IndexLinea < Lineas.Count Then
+                If Not FileMemory.ContainsKey(Archivo) Then
+                    Estado = EnumEstado.Analizado
+                    Lector.Detener()
+                    Exit Sub
+                End If
+                If FileMemory(Archivo).Line <= FileMemory(Archivo).Lines.Count AndAlso FileMemory(Archivo).Lines.ContainsKey(FileMemory(Archivo).Line) Then
+                    Estado = EnumEstado.Analizando
+                    If Not IsNothing(Filtros) Then
+                        'Si coincide cualquiera de los Filtros almacenados.
+                        If Filtros.Any(Function(Filtro) VerificarFiltro(Filtro, FileMemory(Archivo).Lines(FileMemory(Archivo).Line))) Then
 
-                        'Solicitar la IP al Nucleo central
-                        Dim Ip As String = ObtenerIp(Lineas(IndexLinea))
-                        If Ip <> "0.0.0.0" Then
-                            Try
-                                'Testear que es una IPV4 Real, Si no es IPV4 desecha las comprobaciones
-                                Ip = Net.IPAddress.Parse(Ip).ToString
-                                If Net.IPAddress.Parse(Ip).AddressFamily = Net.Sockets.AddressFamily.InterNetworkV6 Then Ip = ""
-                            Catch ex As Exception
+                            'Solicitar la IP al Nucleo central
+                            Dim Ip As String = ObtenerIp(FileMemory(Archivo).Lines(FileMemory(Archivo).Line))
+                            If Ip <> "0.0.0.0" Then
+                                Try
+                                    'Testear que es una IPV4 Real, Si no es IPV4 desecha las comprobaciones
+                                    Ip = Net.IPAddress.Parse(Ip).ToString
+                                    If Net.IPAddress.Parse(Ip).AddressFamily = Net.Sockets.AddressFamily.InterNetworkV6 Then Ip = ""
+                                Catch ex As Exception
+                                    Ip = ""
+                                End Try
+                            Else
                                 Ip = ""
-                            End Try
-                        Else
-                            Ip = ""
-                        End If
+                            End If
 
-                        'Geolocalizar  la IP
-                        If Not String.IsNullOrEmpty(Ip) Then
-                            Dim Geolocalizar As New IpInfo
-                            Dim Pais As String = Geolocalizar.Geolocalizar(Ip, Mod_Core.Geolocalizador)
-                            Dim GeolocalizarID As Integer = 0
-                            If Pais = "ES" OrElse Pais = "ERR" Then GeolocalizarID = 1
+                            'Geolocalizar  la IP
+                            If Not String.IsNullOrEmpty(Ip) Then
+                                Dim Geolocalizar As New IpInfo
+                                Dim Pais As String = Geolocalizar.Geolocalizar(Ip, Mod_Core.Geolocalizador)
+                                Dim GeolocalizarID As Integer = 0
+                                If Pais = "ES" OrElse Pais = "ERR" Then GeolocalizarID = 1
 
-                            'Banear la IP (Evita Bloquear Ip[ES][ERR]) Comprueba la Bandera (GeolocalizarID, 0(Bloquea) o 1(No bloquea))
-                            If GeolocalizarID = 0 Then If Not FiltroIp.Contains(Ip) Then FiltroIp.Add(Ip)
-                        End If
+                                'Banear la IP (Evita Bloquear Ip[ES][ERR]) Comprueba la Bandera (GeolocalizarID, 0(Bloquea) o 1(No bloquea))
+                                If GeolocalizarID = 0 Then If Not FiltroIp.Contains(Ip) Then FiltroIp.Add(Ip)
+                            End If
 
-                        'Consultar estado de logins del MailBox
-                        For Each ConfFiltro In Filtros
-                            'Si algun Filtro debe comprobar el MailBox
-                            If ConfFiltro.Item3 Then
-                                Dim MailBox = ExtraerEmails(Lineas(IndexLinea))
-                                Dim Coincidencias As Integer = ConfFiltro.Item2
-                                If Not String.IsNullOrEmpty(Ip) AndAlso Not String.IsNullOrEmpty(MailBox) Then
-                                    If FileMailBoxLogin.Exist(MailBox) AndAlso FileMailBoxLogin.Count(MailBox) >= Coincidencias Then
-                                        For Each IpBox In FileMailBoxLogin.Get(MailBox)
-                                            If Not String.IsNullOrEmpty(IpBox) Then
-                                                Dim Geolocalizar As New IpInfo
-                                                Dim Pais As String = Geolocalizar.Geolocalizar(IpBox, Mod_Core.Geolocalizador)
-                                                Dim GeolocalizarID As Integer = 0
-                                                If Pais = "ES" OrElse Pais = "ERR" Then GeolocalizarID = 1
+                            'Consultar estado de logins del MailBox
+                            For Each ConfFiltro In Filtros
+                                'Si algun Filtro debe comprobar el MailBox
+                                If ConfFiltro.Item3 Then
+                                    Dim MailBox = ExtraerEmails(FileMemory(Archivo).Lines(FileMemory(Archivo).Line))
+                                    Dim Coincidencias As Integer = ConfFiltro.Item2
+                                    If Not String.IsNullOrEmpty(Ip) AndAlso Not String.IsNullOrEmpty(MailBox) Then
+                                        If FileMemory(Archivo).MailBoxLogin.Exist(MailBox) AndAlso FileMemory(Archivo).MailBoxLogin.Count(MailBox) >= Coincidencias Then
+                                            For Each IpBox In FileMemory(Archivo).MailBoxLogin.Get(MailBox)
+                                                If Not String.IsNullOrEmpty(IpBox) Then
+                                                    Dim Geolocalizar As New IpInfo
+                                                    Dim Pais As String = Geolocalizar.Geolocalizar(IpBox, Mod_Core.Geolocalizador)
+                                                    Dim GeolocalizarID As Integer = 0
+                                                    If Pais = "ES" OrElse Pais = "ERR" Then GeolocalizarID = 1
 
-                                                'Banear la IP (Evita Bloquear Ip[ES][ERR]) Comprueba la Bandera (GeolocalizarID, 0(Bloquea) o 1(No bloquea))
-                                                If GeolocalizarID = 0 Then If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
-                                            End If
-                                        Next
-
+                                                    'Banear la IP (Evita Bloquear Ip[ES][ERR]) Comprueba la Bandera (GeolocalizarID, 0(Bloquea) o 1(No bloquea))
+                                                    If GeolocalizarID = 0 Then If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
+                                                End If
+                                            Next
+                                        End If
                                     End If
                                 End If
-                            End If
-                        Next
+                            Next
+                        End If
 
                     End If
+                    'Informa en el avance de lectura
+                    'RaiseEvent Progreso(FileMemory(Archivo).Line + 1, FileMemory(Archivo).Lines.Count)
+                    Total = FileMemory(Archivo).Lines.Count
+                    Index = FileMemory(Archivo).Line + 1
 
+                    'Avanza en el conteo de lineas procesadas
+                    FileMemory(Archivo).Line += 1
+
+                Else
+                    Estado = EnumEstado.Analizado
+                    Lector.Detener()
+                    Bloqueo.Set()
                 End If
+            Catch ex As Exception
+                'Stop
+            End Try
 
-                'Avanza en el conteo de lineas procesadas
-                IndexLinea += 1
-
-                'Informa en el avance de lectura
-                RaiseEvent Progreso(IndexLinea, Lineas.Count)
-            Else
-                Lector.Detener()
-                Bloqueo.Set()
-            End If
         End Sub
         Private Function VerificarFiltro(Filtro As Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura)), Linea As String) As Boolean
             Dim TipoComparacion As EnumTipoComparacion = Filtro.Item1
@@ -177,8 +205,8 @@ Namespace RegistroDeArchivos
                                 NumeroCoincidentes = 0
                             Else
                                 'Establece coincidencias por MailBox
-                                If Not FileMailBoxLogin.Exist(FullMailbox) Then FileMailBoxLogin.Add(FullMailbox)
-                                FileMailBoxLogin.AddIp(FullMailbox, ObtenerIp(Linea))
+                                If Not FileMemory(Archivo).MailBoxLogin.Exist(FullMailbox) Then FileMemory(Archivo).MailBoxLogin.Add(FullMailbox)
+                                FileMemory(Archivo).MailBoxLogin.AddIp(FullMailbox, ObtenerIp(Linea))
                             End If
                         End If
                     Else
@@ -187,7 +215,7 @@ Namespace RegistroDeArchivos
 
                     'Establece coincidencias por MailBox
                     If NumeroCoincidentes > 0 AndAlso Not String.IsNullOrEmpty(FullMailbox) Then
-                        If FileMailBoxLogin.Exist(FullMailbox) AndAlso FileMailBoxLogin.Count(FullMailbox) >= NumeroCoincidentes Then
+                        If FileMemory(Archivo).MailBoxLogin.Exist(FullMailbox) AndAlso FileMemory(Archivo).MailBoxLogin.Count(FullMailbox) >= NumeroCoincidentes Then
                             NumeroCoincidentes = 0
                         End If
                     End If

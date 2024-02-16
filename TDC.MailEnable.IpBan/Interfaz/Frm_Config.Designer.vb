@@ -66,9 +66,12 @@
             Me.Label12 = New System.Windows.Forms.Label()
             Me.txtLecturaArchivos = New System.Windows.Forms.TextBox()
             Me.txtPropagacionIP = New System.Windows.Forms.TextBox()
+            Me.Label13 = New System.Windows.Forms.Label()
+            Me.NumReposoLectura = New System.Windows.Forms.NumericUpDown()
             Me.Panel1.SuspendLayout()
             CType(Me.TrackLectura, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.TrackPropagacion, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.NumReposoLectura, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'Label1
@@ -381,7 +384,7 @@
             Me.TrackLectura.Maximum = 300
             Me.TrackLectura.Minimum = 1
             Me.TrackLectura.Name = "TrackLectura"
-            Me.TrackLectura.Size = New System.Drawing.Size(571, 45)
+            Me.TrackLectura.Size = New System.Drawing.Size(338, 45)
             Me.TrackLectura.SmallChange = 10
             Me.TrackLectura.TabIndex = 8
             Me.TrackLectura.TickFrequency = 10
@@ -394,7 +397,7 @@
             Me.TrackPropagacion.Maximum = 300
             Me.TrackPropagacion.Minimum = 1
             Me.TrackPropagacion.Name = "TrackPropagacion"
-            Me.TrackPropagacion.Size = New System.Drawing.Size(571, 45)
+            Me.TrackPropagacion.Size = New System.Drawing.Size(492, 45)
             Me.TrackPropagacion.SmallChange = 10
             Me.TrackPropagacion.TabIndex = 8
             Me.TrackPropagacion.TickFrequency = 10
@@ -420,23 +423,45 @@
             '
             'txtLecturaArchivos
             '
-            Me.txtLecturaArchivos.Location = New System.Drawing.Point(693, 305)
+            Me.txtLecturaArchivos.Location = New System.Drawing.Point(460, 309)
             Me.txtLecturaArchivos.Name = "txtLecturaArchivos"
             Me.txtLecturaArchivos.Size = New System.Drawing.Size(75, 20)
             Me.txtLecturaArchivos.TabIndex = 11
             '
             'txtPropagacionIP
             '
-            Me.txtPropagacionIP.Location = New System.Drawing.Point(693, 346)
+            Me.txtPropagacionIP.Location = New System.Drawing.Point(614, 348)
             Me.txtPropagacionIP.Name = "txtPropagacionIP"
             Me.txtPropagacionIP.Size = New System.Drawing.Size(75, 20)
             Me.txtPropagacionIP.TabIndex = 11
+            '
+            'Label13
+            '
+            Me.Label13.AutoSize = True
+            Me.Label13.Location = New System.Drawing.Point(558, 312)
+            Me.Label13.Name = "Label13"
+            Me.Label13.Size = New System.Drawing.Size(44, 13)
+            Me.Label13.TabIndex = 12
+            Me.Label13.Text = "Reposo"
+            '
+            'NumReposoLectura
+            '
+            Me.NumReposoLectura.Increment = New Decimal(New Integer() {1000, 0, 0, 0})
+            Me.NumReposoLectura.Location = New System.Drawing.Point(608, 308)
+            Me.NumReposoLectura.Maximum = New Decimal(New Integer() {600000, 0, 0, 0})
+            Me.NumReposoLectura.Minimum = New Decimal(New Integer() {1000, 0, 0, 0})
+            Me.NumReposoLectura.Name = "NumReposoLectura"
+            Me.NumReposoLectura.Size = New System.Drawing.Size(81, 20)
+            Me.NumReposoLectura.TabIndex = 13
+            Me.NumReposoLectura.Value = New Decimal(New Integer() {1000, 0, 0, 0})
             '
             'Frm_Config
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(780, 494)
+            Me.Controls.Add(Me.NumReposoLectura)
+            Me.Controls.Add(Me.Label13)
             Me.Controls.Add(Me.txtPropagacionIP)
             Me.Controls.Add(Me.txtLecturaArchivos)
             Me.Controls.Add(Me.Label12)
@@ -481,6 +506,7 @@
             Me.Panel1.ResumeLayout(False)
             CType(Me.TrackLectura, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.TrackPropagacion, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.NumReposoLectura, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -529,5 +555,7 @@
         Friend WithEvents Label12 As Label
         Friend WithEvents txtLecturaArchivos As TextBox
         Friend WithEvents txtPropagacionIP As TextBox
+        Friend WithEvents Label13 As Label
+        Friend WithEvents NumReposoLectura As NumericUpDown
     End Class
 End Namespace

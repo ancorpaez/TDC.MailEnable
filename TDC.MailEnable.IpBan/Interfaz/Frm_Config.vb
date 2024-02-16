@@ -19,6 +19,8 @@ Namespace Interfaz
             txtSpamAssassin.Text = Mod_Core.Configuracion.SPAM_SPAMASSASSIN
             chkArranqueWindows.Checked = Mod_Core.Configuracion.AutoArranqueWindows
             txtPostOffices.Text = Mod_Core.Configuracion.POST_OFFICES
+            NumReposoLectura.Value = CInt(Configuracion.LECTURA_REPOSO)
+
             If IsNumeric(Mod_Core.Configuracion.TIMER_LECTURA) Then
                 TrackLectura.Value = CInt(Configuracion.TIMER_LECTURA)
                 txtLecturaArchivos.Text = Configuracion.TIMER_LECTURA
@@ -73,6 +75,7 @@ Namespace Interfaz
             Mod_Core.Configuracion.POST_OFFICES = txtPostOffices.Text
             Mod_Core.Configuracion.TIMER_LECTURA = TrackLectura.Value
             Mod_Core.Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
+            Mod_Core.Configuracion.LECTURA_REPOSO = NumReposoLectura.Value
             Mod_Core.GuardarConfiguracion()
             Me.Close()
         End Sub

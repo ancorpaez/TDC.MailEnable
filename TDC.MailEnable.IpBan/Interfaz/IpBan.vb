@@ -5,6 +5,7 @@ Imports TDC.MailEnable.IpBan.MailEnableLog
 Imports TDC.MailEnable.IpBan.RegistroDeArchivos
 Imports TDC.MailEnable.IpBan.RegistroDeArchivos.LecturaDeArchivo
 Imports TDC.MailEnable.Core
+Imports System.Reflection
 
 Namespace Interfaz
     Public Class IpBan
@@ -36,8 +37,11 @@ Namespace Interfaz
 
         'PUBLICAR IP
         Private Publicador As Frm_PublicarIps = Nothing
-        Private Shared SyncLockPublicador As New Object()
+        Private Shared SyncLockPublicador As New Object
 
+        'CONTROL DE PROGRESO
+        Private iFaceControlIndex As New System.Collections.Concurrent.ConcurrentDictionary(Of UcAnalizador, LecturaDeArchivo)
+        Private Shared SyncActualizarProgresoArchivo As New Object
 
         Private Sub IpBan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -111,7 +115,7 @@ Namespace Interfaz
                                                                                             New FiltroLectura With {.Filtro = "-ERR Unable to log on", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                             }))
             Trabajador_POP.Intervalo = 1000
-            Trabajador_POP.Inicia()
+            'Trabajador_POP.Inicia()
 
             'POP(W3C)
             Registro_POPW3C.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 5, False, New List(Of FiltroLectura) From {
@@ -132,7 +136,7 @@ Namespace Interfaz
                                                                                             New FiltroLectura With {.Filtro = "@", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                             }))
             Trabajador_SMTP.Intervalo = 1000
-            Trabajador_SMTP.Inicia()
+            'Trabajador_SMTP.Inicia()
 
             'SMTP(W3C)
             Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, True, New List(Of FiltroLectura) From {
@@ -155,7 +159,7 @@ Namespace Interfaz
                                                                                              New FiltroLectura With {.Filtro = "Invalid username or password", .Condicion = FiltroLectura.EnumCondicion.Contiene}
                                                                                              }))
             Trabajador_IMAP.Intervalo = 1000
-            Trabajador_IMAP.Inicia()
+            'Trabajador_IMAP.Inicia()
 
             'IMAP (W3C)
             Registro_IMAPW3C.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 5, False, New List(Of FiltroLectura) From {
@@ -267,53 +271,31 @@ Namespace Interfaz
             Return Devolver
         End Function
         Private Sub EscanearCarpeta(UcCarpeta As UcAnalizador, DelimitadorIp As Func(Of String, String), Trabajador As Bucle.Bucle, Carpeta As String, ControlCarpeta As RegistroDeArchivos.RegistroDeArchivos, FiltroCarpeta As String)
-            'Marcador para evitar analizar los archivos del Dia
-            'Dim Ahora As String = Now.Year.ToString("00").Substring(2) & Now.Month.ToString("00") & Now.Day.ToString("00")
-
-            'Actualizar el Interface
-            Me.Invoke(Sub() UcCarpeta.ProgresoCarpeta.Maximum = New IO.DirectoryInfo(Carpeta).GetFiles(FiltroCarpeta, IO.SearchOption.TopDirectoryOnly).Count)
-            If Not UcCarpeta.Archivo.Text.Contains("-") Then Me.Invoke(Sub() UcCarpeta.Archivo.Text = "0 - 0")
-            'Buscar Archivos en la Carpeta
-            'Dim Archivos As IO.FileInfo() = New IO.DirectoryInfo(Carpeta).GetFiles(FiltroCarpeta, IO.SearchOption.TopDirectoryOnly)
-            'Dim Ordenados = Archivos.OrderBy(Function(file) file.CreationTime)
+            'Ordenar los Archivos por FECHA
             Dim Ordenados = From Archivo In New IO.DirectoryInfo(Carpeta).GetFiles(FiltroCarpeta, IO.SearchOption.TopDirectoryOnly)
                             Order By Archivo.LastWriteTime Ascending
                             Select Archivo
 
-            'For Each Archivo In New IO.DirectoryInfo(Carpeta).GetFiles(FiltroCarpeta, IO.SearchOption.TopDirectoryOnly)
+            'Actualizar el Interface
+            Me.Invoke(Sub() UcCarpeta.ProgresoCarpeta.Maximum = Ordenados.Count)
+
+            'Analizar cada archvivo
             For Each Archivo In Ordenados
-                'Actualizar Interface
-                Me.Invoke(Sub()
-                              'Progreso
-                              UcCarpeta.ProgresoCarpeta.Value = ControlCarpeta.Count
-                              'Label
-                              UcCarpeta.ContadorCarpeta.Text = String.Format("{0} - {1}", ControlCarpeta.Count, UcCarpeta.ProgresoCarpeta.Maximum)
-                              'Archivo
-                              UcCarpeta.Archivo.Text = Archivo.Name
-                              'Indicamos visualmente si analizamos archivos del día
-                              If Archivo.LastWriteTime.Date < Date.Now.Date Then
-                                  Me.Invoke(Sub() UcCarpeta.ContadorArchivo.ForeColor = Color.Black)
-                                  Me.Invoke(Sub() UcCarpeta.ContadorCarpeta.ForeColor = Color.Black)
-                                  Me.Invoke(Sub() UcCarpeta.Archivo.ForeColor = Color.Black)
-                              Else
-                                  Me.Invoke(Sub() UcCarpeta.ContadorArchivo.ForeColor = Color.DarkGreen)
-                                  Me.Invoke(Sub() UcCarpeta.ContadorCarpeta.ForeColor = Color.DarkGreen)
-                                  Me.Invoke(Sub() UcCarpeta.Archivo.ForeColor = Color.DarkGreen)
-                              End If
-                          End Sub)
 
                 If Not ControlCarpeta.Contains(Archivo.Name) AndAlso esLegible(Archivo.FullName) Then
                     'Analizar Archivo
                     Dim EscanearArchivo As New LecturaDeArchivo(Archivo.FullName) With {.ObtenerIp = DelimitadorIp, .Filtros = ControlCarpeta.Filtro}
-                    'Enlazar con el Evento para visualizar el progreso de la lectura
-                    AddHandler EscanearArchivo.Progreso, Sub(Index, Total)
-                                                             'Actualizar el Interface
-                                                             Me.Invoke(Sub()
-                                                                           UcCarpeta.ProgresoArchivo.Maximum = Total
-                                                                           UcCarpeta.ProgresoArchivo.Value = Index
-                                                                           UcCarpeta.ContadorArchivo.Text = String.Format("{0} - {1}", Index, Total)
-                                                                       End Sub)
-                                                         End Sub
+
+                    'Actualizar Progreso Archivos
+                    Me.Invoke(Sub()
+                                  UcCarpeta.ProgresoCarpeta.Value = ControlCarpeta.Count
+                                  UcCarpeta.ContadorCarpeta.Text = String.Format("{0} - {1}", ControlCarpeta.Count, UcCarpeta.ProgresoCarpeta.Maximum)
+                                  UcCarpeta.Archivo.Text = Archivo.Name
+                              End Sub)
+
+                    'Enlazar Archivo al Control para Visualizacion de Progreso de la Lectura del Archivo
+                    If Not iFaceControlIndex.ContainsKey(UcCarpeta) Then iFaceControlIndex.TryAdd(UcCarpeta, EscanearArchivo) Else iFaceControlIndex.TryUpdate(UcCarpeta, EscanearArchivo, iFaceControlIndex(UcCarpeta))
+
                     'Mandar a analizar y esperar
                     EscanearArchivo.Escanear()
 
@@ -321,15 +303,21 @@ Namespace Interfaz
                     If EscanearArchivo.FiltroIp.Count > 0 Then BloquearIps(EscanearArchivo.FiltroIp)
 
                     'Registramos el Archivo Analizado, si no es el LOG Actual(Now) ya que esta en continuo crecimiento.
-                    If Archivo.LastWriteTime.Date < Date.Now.Date Then ControlCarpeta.Add(Archivo.Name)
+                    If Archivo.LastWriteTime.Date < Date.Now.Date Then
+                        'Registramos el Archivo como Analizado
+                        ControlCarpeta.Add(Archivo.Name)
+
+                        'Eliminamos el Control de Valores del Archivo
+                        If FileMemory.ContainsKey(Archivo.FullName) Then FileMemory.TryRemove(Archivo.FullName, Nothing)
+                    End If
 
                 End If
             Next
 
-            'Mandamos a analizar Cada Minuto
-            Trabajador.Intervalo = 60000
+            'Relajamos en bucle de Busqueda de Archivos
+            Trabajador.Intervalo = Configuracion.LECTURA_REPOSO
 
-            'Propagamos la configuracion
+            'Propagamos la configuracion de Bloqueo de IP
             BtnPropagarIps_Click(Nothing, New EventArgs)
 
         End Sub
@@ -428,7 +416,7 @@ Namespace Interfaz
 
         Private Sub BtnPropagarIps_Click(sender As Object, e As EventArgs) Handles BtnPropagarIps.Click
             Try
-                If Monitor.TryEnter(syncLockPublicador) Then
+                If Monitor.TryEnter(SyncLockPublicador) Then
 
                     If IsNothing(Publicador) Then
                         'Cerrar Entrada a los otros Trabajadores
@@ -457,7 +445,7 @@ Namespace Interfaz
                             End Using
                         End Using
                         Publicador = Nothing
-                        Monitor.Exit(syncLockPublicador)
+                        Monitor.Exit(SyncLockPublicador)
                     End If
                 End If
             Catch ex As Exception
@@ -510,6 +498,25 @@ Namespace Interfaz
 
         Private Sub TSMIniciarSmapAssassinOculto_Click(sender As Object, e As EventArgs) Handles TSMIniciarSmapAssassinOculto.Click
             SpamAssassin.Start(Spam.SpamAssassin.SpamAssassinModoInicio.Oculto)
+        End Sub
+
+        Private Sub TimerGuiAnalizador_Tick(sender As Object, e As EventArgs) Handles TimerGuiAnalizador.Tick
+            If Monitor.TryEnter(SyncActualizarProgresoArchivo) Then
+                Dim iFace As UcAnalizador
+                Dim Lector As LecturaDeArchivo
+                For Each iUserControl In iFaceControlIndex
+                    Try
+                        iFace = iUserControl.Key
+                        Lector = iUserControl.Value
+                        iFace.ProgresoArchivo.Maximum = Lector.Total
+                        If Lector.Index <= iFace.ProgresoArchivo.Maximum Then iFace.ProgresoArchivo.Value = Lector.Index
+                        iFace.ContadorArchivo.Text = String.Format("{0} - {1}", Lector.Index, Lector.Total)
+                    Catch ex As Exception
+                    End Try
+                Next
+                Monitor.Exit(SyncActualizarProgresoArchivo)
+            End If
+
         End Sub
     End Class
 End Namespace

@@ -11,6 +11,14 @@ Namespace Bucle
         Private WithEvents _TrabajadorDeFondo As New BackgroundWorker
         Private WithEvents _Disparador As New Timers.Timer
 
+        Public Enum EnumEstado
+            Iniciando
+            Trabajando
+            Deteniendo
+            Detenido
+        End Enum
+        Public Estado As EnumEstado = EnumEstado.Iniciando
+
         Public Sub New()
             _Disparador.AutoReset = False
         End Sub
@@ -39,6 +47,7 @@ Namespace Bucle
         Public Sub Detener() Implements IBucle.Detener
             _Detener = True
             _Disparador.Stop()
+            Estado = EnumEstado.Deteniendo
         End Sub
 
         Private Sub _Disparador_Elapsed(sender As Object, e As ElapsedEventArgs) Handles _Disparador.Elapsed
@@ -48,6 +57,7 @@ Namespace Bucle
         End Sub
 
         Private Sub _TrabajadorDeFondo_DoWork(sender As Object, e As DoWorkEventArgs) Handles _TrabajadorDeFondo.DoWork
+            Estado = EnumEstado.Trabajando
             RaiseEvent IBucle_Bucle(Me, _Detener)
         End Sub
 

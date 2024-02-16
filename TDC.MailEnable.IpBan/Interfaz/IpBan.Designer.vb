@@ -77,6 +77,7 @@
             Me.MenuPrincipal = New System.Windows.Forms.MenuStrip()
             Me.ConfiguraciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.TimerIpBan = New System.Windows.Forms.Timer(Me.components)
+            Me.TimerGuiAnalizador = New System.Windows.Forms.Timer(Me.components)
             Me.PanelIpBaneadas.SuspendLayout()
             Me.PanelBuscadores.SuspendLayout()
             Me.PanelIps.SuspendLayout()
@@ -153,6 +154,7 @@
             Me.UcIMAPAct.Name = "UcIMAPAct"
             Me.UcIMAPAct.Size = New System.Drawing.Size(513, 40)
             Me.UcIMAPAct.TabIndex = 0
+            Me.UcIMAPAct.Visible = False
             '
             'UcSMTPEx
             '
@@ -169,6 +171,7 @@
             Me.UcSMTPAct.Name = "UcSMTPAct"
             Me.UcSMTPAct.Size = New System.Drawing.Size(513, 40)
             Me.UcSMTPAct.TabIndex = 0
+            Me.UcSMTPAct.Visible = False
             '
             'UcPOPEx
             '
@@ -185,6 +188,7 @@
             Me.UcPOPAct.Name = "UcPOPAct"
             Me.UcPOPAct.Size = New System.Drawing.Size(513, 40)
             Me.UcPOPAct.TabIndex = 0
+            Me.UcPOPAct.Visible = False
             '
             'Splitter1
             '
@@ -638,6 +642,11 @@
             Me.TimerIpBan.Enabled = True
             Me.TimerIpBan.Interval = 1000
             '
+            'TimerGuiAnalizador
+            '
+            Me.TimerGuiAnalizador.Enabled = True
+            Me.TimerGuiAnalizador.Interval = 1
+            '
             'IpBan
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -733,5 +742,6 @@
         Friend WithEvents TSMIniciarSmapAssassinNormal As ToolStripMenuItem
         Friend WithEvents TSMIniciarSmapAssassinOculto As ToolStripMenuItem
         Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+        Friend WithEvents TimerGuiAnalizador As Timer
     End Class
 End Namespace
