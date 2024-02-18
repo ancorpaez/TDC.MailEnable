@@ -7,7 +7,8 @@ Namespace RegistroDeArchivos
         Public Property Archivos As New Concurrent.ConcurrentBindingList(Of String)
         'Configurar Filtro
         'EnumTipoComparacion, Coincidencias,ComprobarMailBox,Lista
-        Public Filtro As New List(Of Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura)))
+        'Public Filtro As New List(Of Tuple(Of Integer, Integer, Boolean, List(Of Cls_Coincidencia)))
+        Public Filtro As New List(Of Cls_Filtro)
         Private File_Registro As String = ""
         Public Sub New(Contenedor As String)
             File_Registro = Contenedor & ".xml"

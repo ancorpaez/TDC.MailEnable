@@ -9,14 +9,9 @@ Imports System.Text.RegularExpressions
 Namespace RegistroDeArchivos
     Public Class LecturaDeArchivo
         Private WithEvents Lector As New Bucle.Bucle
-        'Private IndexLinea As Integer = 0
-        'Filtros.Add(New Tuple(Of Integer, List(Of String))(EnumTipoComparacion.Cualquiera, New List(Of String) From {"Uno", "Dos"}))
-        ''' <summary>
-        ''' Integer, Tipo de comparacion (Cualquier coincidencia del List, Todo el List)
-        ''' Integer, Numero de Concidencias por IP
-        ''' List, Comparaciones del Filtro
-        ''' </summary>
-        Public Filtros As New List(Of Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura)))
+
+        'Public Filtros As New List(Of Tuple(Of Integer, Integer, Boolean, List(Of Cls_Coincidencia)))
+        Public Filtros As New List(Of Cls_Filtro)
         Public Property ObtenerIp As Func(Of String, String)
 
         Private Coincidentes As New Collections.Concurrent.ConcurrentDictionary(Of String, Integer)
@@ -33,10 +28,10 @@ Namespace RegistroDeArchivos
         End Enum
         Public Estado As EnumEstado = EnumEstado.Iniciando
 
-        Public Enum EnumTipoComparacion
-            Cualquiera
-            Todo
-        End Enum
+        'Public Enum EnumTipoComparacion
+        '    Cualquiera
+        '    Todo
+        'End Enum
 
         Private Archivo As String
 
@@ -57,12 +52,14 @@ Namespace RegistroDeArchivos
                     Do
                         Linea = Cargar.ReadLine
                         If Not String.IsNullOrEmpty(Linea) Then
-                            FileMemory(Archivo).Lines.TryAdd(Index, Linea)
+                            If Not FileMemory(Archivo).Lines.TryAdd(Index, Linea) AndAlso Not FileMemory(Archivo).Lines.ContainsKey(Index) Then
+                                Stop
+                            End If
                         End If
                         Index += 1
                     Loop While Not String.IsNullOrEmpty(Linea)
                 End Using
-
+                Total = FileMemory(Archivo).Lines.Count
 
             Catch ex As Exception
 
@@ -75,12 +72,15 @@ Namespace RegistroDeArchivos
         Private Sub Lector_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Lector.IBucle_Bucle
             Try
                 If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
-                'If IndexLinea < Lineas.Count Then
+
+                'Si el Control de Datos no contiene el archivo detenemos el analizador.
                 If Not FileMemory.ContainsKey(Archivo) Then
                     Estado = EnumEstado.Analizado
                     Lector.Detener()
                     Exit Sub
                 End If
+
+                'Analizamos Linea por Linea
                 If FileMemory(Archivo).Line <= FileMemory(Archivo).Lines.Count AndAlso FileMemory(Archivo).Lines.ContainsKey(FileMemory(Archivo).Line) Then
                     Estado = EnumEstado.Analizando
                     If Not IsNothing(Filtros) Then
@@ -115,9 +115,9 @@ Namespace RegistroDeArchivos
                             'Consultar estado de logins del MailBox
                             For Each ConfFiltro In Filtros
                                 'Si algun Filtro debe comprobar el MailBox
-                                If ConfFiltro.Item3 Then
+                                If ConfFiltro.VerificarMailBox Then
                                     Dim MailBox = ExtraerEmails(FileMemory(Archivo).Lines(FileMemory(Archivo).Line))
-                                    Dim Coincidencias As Integer = ConfFiltro.Item2
+                                    Dim Coincidencias As Integer = ConfFiltro.Repeteciones
                                     If Not String.IsNullOrEmpty(Ip) AndAlso Not String.IsNullOrEmpty(MailBox) Then
                                         If FileMemory(Archivo).MailBoxLogin.Exist(MailBox) AndAlso FileMemory(Archivo).MailBoxLogin.Count(MailBox) >= Coincidencias Then
                                             For Each IpBox In FileMemory(Archivo).MailBoxLogin.Get(MailBox)
@@ -138,10 +138,16 @@ Namespace RegistroDeArchivos
                         End If
 
                     End If
+
                     'Informa en el avance de lectura
-                    'RaiseEvent Progreso(FileMemory(Archivo).Line + 1, FileMemory(Archivo).Lines.Count)
-                    Total = FileMemory(Archivo).Lines.Count
                     Index = FileMemory(Archivo).Line + 1
+
+                    'Evitamos el Avance si hemos llegdo al final.
+                    If Index = Total Then
+                        Lector.Detener()
+                        Bloqueo.Set()
+                        Exit Sub
+                    End If
 
                     'Avanza en el conteo de lineas procesadas
                     FileMemory(Archivo).Line += 1
@@ -152,36 +158,36 @@ Namespace RegistroDeArchivos
                     Bloqueo.Set()
                 End If
             Catch ex As Exception
-                'Stop
+                Stop
             End Try
 
         End Sub
-        Private Function VerificarFiltro(Filtro As Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura)), Linea As String) As Boolean
-            Dim TipoComparacion As EnumTipoComparacion = Filtro.Item1
-            Dim NumeroCoincidentes As Integer = Filtro.Item2
-            Dim ComprobarMailBox As Boolean = Filtro.Item3
-            Dim Comparaciones As List(Of FiltroLectura) = Filtro.Item4
+        Private Function VerificarFiltro(Filtro As Cls_Filtro, Linea As String) As Boolean
+            Dim TipoComparacion As Cls_Filtro.EnumTipoComparacion = Filtro.TrueSi
+            Dim NumeroCoincidentes As Integer = Filtro.Repeteciones
+            Dim ComprobarMailBox As Boolean = Filtro.VerificarMailBox
+            Dim Comparaciones As List(Of Cls_Coincidencia) = Filtro.Coincidencias
             Dim Coincide As Boolean
 
             Select Case TipoComparacion
-                Case EnumTipoComparacion.Todo
+                Case Cls_Filtro.EnumTipoComparacion.Todo
                     Coincide = True
                     For Each Comparador In Comparaciones
                         Select Case Comparador.Condicion
-                            Case FiltroLectura.EnumCondicion.Contiene
+                            Case Cls_Coincidencia.EnumCondicion.Contiene
                                 If Not Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = False
-                            Case FiltroLectura.EnumCondicion.NoContiene
+                            Case Cls_Coincidencia.EnumCondicion.NoContiene
                                 If Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = False
                         End Select
                     Next
 
-                Case EnumTipoComparacion.Cualquiera
+                Case Cls_Filtro.EnumTipoComparacion.Cualquiera
                     Coincide = False
                     For Each Comparador In Comparaciones
                         Select Case Comparador.Condicion
-                            Case FiltroLectura.EnumCondicion.Contiene
+                            Case Cls_Coincidencia.EnumCondicion.Contiene
                                 If Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = True
-                            Case FiltroLectura.EnumCondicion.NoContiene
+                            Case Cls_Coincidencia.EnumCondicion.NoContiene
                                 If Not Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = True
                         End Select
                     Next

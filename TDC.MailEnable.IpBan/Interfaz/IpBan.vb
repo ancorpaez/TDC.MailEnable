@@ -110,88 +110,62 @@ Namespace Interfaz
             ':::::::::::::::::::::::
 
             'Empezar a Trabajar
-            'POP(Actividad)
-            Registro_POP.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, False, New List(Of FiltroLectura) From {
-                                                                                            New FiltroLectura With {.Filtro = "-ERR Unable to log on", .Condicion = FiltroLectura.EnumCondicion.Contiene}
-                                                                                            }))
-            Trabajador_POP.Intervalo = 1000
-            'Trabajador_POP.Inicia()
 
             'POP(W3C)
-            Registro_POPW3C.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 5, False, New List(Of FiltroLectura) From {
-                                                                                               New FiltroLectura With {.Filtro = "-ERR+Unable+to+log+on", .Condicion = FiltroLectura.EnumCondicion.Contiene}
-                                                                                               }))
+            Registro_POPW3C.Filtro.Add(New Cls_Filtro With {
+                                       .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 5, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                       New Cls_Coincidencia With {.Filtro = "-ERR+Unable+to+log+on", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             Trabajador_POPW3C.Intervalo = 1000
             Trabajador_POPW3C.Inicia()
 
-            'SMTP (Actividad)
-            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 0, False, New List(Of FiltroLectura) From {
-                                                                                              New FiltroLectura With {.Filtro = "This mail server requires authentication before sending mail", .Condicion = FiltroLectura.EnumCondicion.Contiene}}))
-            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, False, New List(Of FiltroLectura) From {
-                                                                                            New FiltroLectura With {.Filtro = "Invalid Username or Password", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = "@", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
-                                                                                            }))
-            Registro_SMTP.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, True, New List(Of FiltroLectura) From {
-                                                                                            New FiltroLectura With {.Filtro = "Invalid Username or Password", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = "@", .Condicion = FiltroLectura.EnumCondicion.Contiene}
-                                                                                            }))
-            Trabajador_SMTP.Intervalo = 1000
-            'Trabajador_SMTP.Inicia()
-
             'SMTP(W3C)
-            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, True, New List(Of FiltroLectura) From {
-                                                                                                New FiltroLectura With {.Filtro = "Invalid+Username+or+Password", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                                New FiltroLectura With {.Filtro = "@", .Condicion = FiltroLectura.EnumCondicion.Contiene}
-                                                                                                }))
-            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, False, New List(Of FiltroLectura) From {
-                                                                                                New FiltroLectura With {.Filtro = "Invalid+Username+or+Password", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                                New FiltroLectura With {.Filtro = "@", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
-                                                                                                }))
-            Registro_SMTPW3C.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 0, False, New List(Of FiltroLectura) From {
-                                                                                               New FiltroLectura With {.Filtro = "This+mail+server+requires+authentication+before+sending+mail", .Condicion = FiltroLectura.EnumCondicion.Contiene}
-                                                                                               }))
-
+            Registro_SMTPW3C.Filtro.Add(New Cls_Filtro With {
+                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 5, .VerificarMailBox = True, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                        New Cls_Coincidencia With {.Filtro = "Invalid+Username+or+Password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
+                                        New Cls_Coincidencia With {.Filtro = "@", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
+            Registro_SMTPW3C.Filtro.Add(New Cls_Filtro With {
+                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                        New Cls_Coincidencia With {.Filtro = "Invalid+Username+or+Password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
+                                        New Cls_Coincidencia With {.Filtro = "@", .Condicion = Cls_Coincidencia.EnumCondicion.NoContiene}}})
+            Registro_SMTPW3C.Filtro.Add(New Cls_Filtro With {
+                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                        New Cls_Coincidencia With {.Filtro = "This+mail+server+requires+authentication+before+sending+mail", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             Trabajador_SMTPW3C.Intervalo = 1000
             Trabajador_SMTPW3C.Inicia()
 
-            'IMAP(Actividad)
-            Registro_IMAP.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 5, False, New List(Of FiltroLectura) From {
-                                                                                             New FiltroLectura With {.Filtro = "Invalid username or password", .Condicion = FiltroLectura.EnumCondicion.Contiene}
-                                                                                             }))
-            Trabajador_IMAP.Intervalo = 1000
-            'Trabajador_IMAP.Inicia()
+
 
             'IMAP (W3C)
-            Registro_IMAPW3C.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Cualquiera, 5, False, New List(Of FiltroLectura) From {
-                                                                                                New FiltroLectura With {.Filtro = "Invalid+username+or+password", .Condicion = FiltroLectura.EnumCondicion.Contiene}
-                                                                                                }))
+            Registro_IMAPW3C.Filtro.Add(New Cls_Filtro With {
+                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 5, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                        New Cls_Coincidencia With {.Filtro = "Invalid+username+or+password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             Trabajador_IMAPW3C.Intervalo = 1000
             Trabajador_IMAPW3C.Inicia()
 
             'WEB
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, False, New List(Of FiltroLectura) From {
-                                                                                            New FiltroLectura With {.Filtro = "POST", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = "Cmd=LOGIN", .Condicion = FiltroLectura.EnumCondicion.Contiene}
-                                                                                            }))
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 5, False, New List(Of FiltroLectura) From {
-                                                                                            New FiltroLectura With {.Filtro = "GET", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = "favicon.ico", .Condicion = FiltroLectura.EnumCondicion.NoContiene},
-                                                                                            New FiltroLectura With {.Filtro = "robots.txt", .Condicion = FiltroLectura.EnumCondicion.NoContiene},
-                                                                                            New FiltroLectura With {.Filtro = "sitemap.xml", .Condicion = FiltroLectura.EnumCondicion.NoContiene},
-                                                                                            New FiltroLectura With {.Filtro = "BingSiteAuth.xml", .Condicion = FiltroLectura.EnumCondicion.NoContiene},
-                                                                                            New FiltroLectura With {.Filtro = "google-site-verification", .Condicion = FiltroLectura.EnumCondicion.NoContiene}
-                                                                                            }))
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, False, New List(Of FiltroLectura) From {
-                                                                                            New FiltroLectura With {.Filtro = "POST", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = "POST", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = "/Mobile/Login.aspx", .Condicion = FiltroLectura.EnumCondicion.Contiene}
-                                                                                            }))
-            Registro_WEB.Filtro.Add(New Tuple(Of Integer, Integer, Boolean, List(Of FiltroLectura))(EnumTipoComparacion.Todo, 0, False, New List(Of FiltroLectura) From {
-                                                                                            New FiltroLectura With {.Filtro = "HEAD", .Condicion = FiltroLectura.EnumCondicion.Contiene},
-                                                                                            New FiltroLectura With {.Filtro = " 404 ", .Condicion = FiltroLectura.EnumCondicion.Contiene}
-                                                                                            }))
+            Registro_WEB.Filtro.Add(New Cls_Filtro With {
+                                    .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 5, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                    New Cls_Coincidencia With {.Filtro = "POST", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
+                                    New Cls_Coincidencia With {.Filtro = "Cmd=LOGIN", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
+            Registro_WEB.Filtro.Add(New Cls_Filtro With {
+                                    .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                    New Cls_Coincidencia With {.Filtro = "GET", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
+                                    New Cls_Coincidencia With {.Filtro = " 404 ", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
+                                    New Cls_Coincidencia With {.Filtro = "favicon.ico", .Condicion = Cls_Coincidencia.EnumCondicion.NoContiene},
+                                    New Cls_Coincidencia With {.Filtro = "robots.txt", .Condicion = Cls_Coincidencia.EnumCondicion.NoContiene},
+                                    New Cls_Coincidencia With {.Filtro = "sitemap.xml", .Condicion = Cls_Coincidencia.EnumCondicion.NoContiene},
+                                    New Cls_Coincidencia With {.Filtro = "BingSiteAuth.xml", .Condicion = Cls_Coincidencia.EnumCondicion.NoContiene},
+                                    New Cls_Coincidencia With {.Filtro = "google-site-verification", .Condicion = Cls_Coincidencia.EnumCondicion.NoContiene}}})
+            Registro_WEB.Filtro.Add(New Cls_Filtro With {
+                                    .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                    New Cls_Coincidencia With {.Filtro = "POST", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
+                                    New Cls_Coincidencia With {.Filtro = " 404 ", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
+                                    New Cls_Coincidencia With {.Filtro = "POST", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
+                                    New Cls_Coincidencia With {.Filtro = "/Mobile/Login.aspx", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
+            Registro_WEB.Filtro.Add(New Cls_Filtro With {
+                                    .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                    New Cls_Coincidencia With {.Filtro = "HEAD", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
+                                    New Cls_Coincidencia With {.Filtro = " 404 ", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             Trabajador_WEB.Intervalo = 1000
             Trabajador_WEB.Inicia()
 
@@ -283,8 +257,10 @@ Namespace Interfaz
             For Each Archivo In Ordenados
 
                 If Not ControlCarpeta.Contains(Archivo.Name) AndAlso esLegible(Archivo.FullName) Then
+                    'Establecer una Memoria de Archivo
+                    If Not FileMemory.ContainsKey(Archivo.FullName) Then FileMemory.TryAdd(Archivo.FullName, New Cls_FileMemory)
                     'Analizar Archivo
-                    Dim EscanearArchivo As New LecturaDeArchivo(Archivo.FullName) With {.ObtenerIp = DelimitadorIp, .Filtros = ControlCarpeta.Filtro}
+                    Dim EscanearArchivo As New LecturaDeArchivo(Archivo.FullName) With {.ObtenerIp = DelimitadorIp, .Filtros = ControlCarpeta.Filtro, .Index = FileMemory(Archivo.FullName).Line}
 
                     'Actualizar Progreso Archivos
                     Me.Invoke(Sub()

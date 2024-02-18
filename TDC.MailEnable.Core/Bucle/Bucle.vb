@@ -7,20 +7,13 @@ Namespace Bucle
         Implements IBucle
 
         Private _Detener As Boolean = False
-        Private _EstaTrabajando As Boolean = False
         Private WithEvents _TrabajadorDeFondo As New BackgroundWorker
-        Private WithEvents _Disparador As New Timers.Timer
+        Private WithEvents _Disparador As New Timers.Timer With {.AutoReset = False}
+        Private TryMonitorBucle As New Object
 
-        Public Enum EnumEstado
-            Iniciando
-            Trabajando
-            Deteniendo
-            Detenido
-        End Enum
-        Public Estado As EnumEstado = EnumEstado.Iniciando
 
         Public Sub New()
-            _Disparador.AutoReset = False
+            '_Disparador.AutoReset = False
         End Sub
         Public Property Intervalo As Integer Implements IBucle.Intervalo
             Get
@@ -47,23 +40,24 @@ Namespace Bucle
         Public Sub Detener() Implements IBucle.Detener
             _Detener = True
             _Disparador.Stop()
-            Estado = EnumEstado.Deteniendo
         End Sub
 
         Private Sub _Disparador_Elapsed(sender As Object, e As ElapsedEventArgs) Handles _Disparador.Elapsed
-            If Not _EstaTrabajando Then
-                If Not _TrabajadorDeFondo.IsBusy Then _TrabajadorDeFondo.RunWorkerAsync()
-            End If
+            'If Threading.Monitor.TryEnter(TryMonitorBucle) Then
+            If Not _TrabajadorDeFondo.IsBusy AndAlso Not _Detener Then _TrabajadorDeFondo.RunWorkerAsync()
+            'End If
         End Sub
 
         Private Sub _TrabajadorDeFondo_DoWork(sender As Object, e As DoWorkEventArgs) Handles _TrabajadorDeFondo.DoWork
-            Estado = EnumEstado.Trabajando
             RaiseEvent IBucle_Bucle(Me, _Detener)
         End Sub
 
         Private Sub _TrabajadorDeFondo_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles _TrabajadorDeFondo.RunWorkerCompleted
-            _EstaTrabajando = False
+            'If Threading.Monitor.IsEntered(TryMonitorBucle) Then
+            '    Threading.Monitor.Exit(TryMonitorBucle)
+            'End If
             If Not _Detener Then _Disparador.Start()
+
         End Sub
     End Class
 End Namespace
