@@ -6,6 +6,7 @@ Imports TDC.MailEnable.IpBan.RegistroDeArchivos
 Imports TDC.MailEnable.IpBan.RegistroDeArchivos.LecturaDeArchivo
 Imports TDC.MailEnable.Core
 Imports System.Reflection
+Imports System.Net.NetworkInformation
 
 Namespace Interfaz
     Public Class IpBan
@@ -44,7 +45,14 @@ Namespace Interfaz
         Private Shared SyncActualizarProgresoArchivo As New Object
 
         Private Sub IpBan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+            '**** TEST****
+            'Dim Test As New Core.GeoLocalizacion.MyNsLookUp
+            'Dim Tes2 = Test.EsLegitima("104.26.7.164")
+            'Dim Tes0 = Test.EsLegitima("185.92.245.33")
+            'Dim Tes1 = Test.EsLegitima("129.126.197.254")
+            '*************
 
+            Mod_Core.IpBanForm = Me
             'Posicionar Ventana
             Me.Top = 50
             'Arrancar Modulo Principal
@@ -120,7 +128,7 @@ Namespace Interfaz
 
             'SMTP(W3C)
             Registro_SMTPW3C.Filtro.Add(New Cls_Filtro With {
-                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 5, .VerificarMailBox = True, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 3, .VerificarMailBox = True, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                         New Cls_Coincidencia With {.Filtro = "Invalid+Username+or+Password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
                                         New Cls_Coincidencia With {.Filtro = "@", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             Registro_SMTPW3C.Filtro.Add(New Cls_Filtro With {
@@ -137,14 +145,14 @@ Namespace Interfaz
 
             'IMAP (W3C)
             Registro_IMAPW3C.Filtro.Add(New Cls_Filtro With {
-                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 5, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 3, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                         New Cls_Coincidencia With {.Filtro = "Invalid+username+or+password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             Trabajador_IMAPW3C.Intervalo = 1000
             Trabajador_IMAPW3C.Inicia()
 
             'WEB
             Registro_WEB.Filtro.Add(New Cls_Filtro With {
-                                    .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 5, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                    .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 3, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                     New Cls_Coincidencia With {.Filtro = "POST", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
                                     New Cls_Coincidencia With {.Filtro = "Cmd=LOGIN", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             Registro_WEB.Filtro.Add(New Cls_Filtro With {
@@ -190,6 +198,47 @@ Namespace Interfaz
                 Mod_Core.SpamAssassin.Salida = txtRichSpamAssassin
                 SpamAssassin.Read()
             End If
+            'Indexar los Emails del Backup
+            Dim Accion As Action = Async Sub() Await Backup.Indexar()
+            Dim Lanzar As Task = Task.Run(Accion)
+
+
+            'Cargar PostOffices del Backup
+            Dim Desechar As Task = Task.Run(Sub() LoadFolders(Configuracion.CARPETA_BACKUP, TreePostOffices))
+        End Sub
+
+
+        Private Sub LoadFolders(rootPath As String, treeView As TreeView)
+            ' Limpia el TreeView
+            treeView.Nodes.Clear()
+            treeView.Enabled = False
+
+            ' Agrega el nodo raíz al TreeView
+            Dim rootNode As New TreeNode(rootPath)
+            treeView.Nodes.Add(rootNode)
+
+            ' Llama a la función recursiva para agregar las subcarpetas
+            LoadSubfolders(rootPath, rootNode)
+            Me.Invoke(Sub() treeView.Enabled = True)
+        End Sub
+
+        Private Sub LoadSubfolders(folderPath As String, parentNode As TreeNode)
+            ' Recorre las subcarpetas del directorio dado
+
+            For Each subFolder In IO.Directory.GetDirectories(folderPath)
+                ' Agrega cada subcarpeta como un nodo hijo
+                If Not {"indexroot", "pubroot", "fileroot", "calendar", "contacts", "notes", "tasks"}.Any(Function(Carpeta) subFolder.ToLower.Contains(Carpeta)) Then
+                    Try
+                        Dim subFolderNode As New TreeNode(IO.Path.GetFileName(subFolder))
+                        Me.Invoke(Sub() parentNode.Nodes.Add(subFolderNode))
+
+                        ' Llama recursivamente a esta función para agregar subcarpetas de forma recursiva
+                        LoadSubfolders(subFolder, subFolderNode)
+                    Catch ex As Exception
+
+                    End Try
+                End If
+            Next
         End Sub
 
         Private Function RecuperarIpSplit(Linea, Index) As String
@@ -493,6 +542,114 @@ Namespace Interfaz
                 Monitor.Exit(SyncActualizarProgresoArchivo)
             End If
 
+        End Sub
+
+        Private Sub TreePostOffices_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles TreePostOffices.AfterSelect
+            txtFAsunto.Text = String.Empty
+            txtFRemitente.Text = String.Empty
+            txtFDestinatarios.Text = String.Empty
+
+            Try
+                TreePostOffices.Enabled = False
+
+                Dim Filtro() As DataRow = Backup.Indexacion.Tabla.Select("Archivo LIKE '%" & e.Node.FullPath & "%'")
+                Dim Datos As DataTable = Backup.Indexacion.Tabla.Clone
+                For Each Linea In Filtro
+                    Datos.ImportRow(Linea)
+                Next
+                TablaMailBackup.DataSource = Datos
+                TreePostOffices.Enabled = True
+                LabelErroresDataTable.Text = ""
+            Catch ex As Exception
+                LabelErroresDataTable.Text = ex.Message
+                TreePostOffices.Enabled = True
+            End Try
+
+        End Sub
+
+        Private Sub TablaMailBackup_DataSourceChanged(sender As Object, e As EventArgs) Handles TablaMailBackup.DataSourceChanged
+            Try
+                If TablaMailBackup.DataSource.GetType = GetType(DataTable) Then
+                    LabelCorreosEliminados.Text = $"{CType(TablaMailBackup.DataSource, DataTable).Rows.Count} Correos eliminados."
+                Else
+                    LabelCorreosEliminados.Text = $"{CType(TablaMailBackup.DataSource, DataView).Count} Encontrados."
+                End If
+                TablaMailBackup.Columns("ID").Visible = False
+                TablaMailBackup.Columns("Archivo").Visible = False
+                TablaMailBackup.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.Fill)
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Private Sub txtFAsunto_TextChanged(sender As Object, e As EventArgs) Handles txtFAsunto.TextChanged, txtFRemitente.TextChanged, txtFDestinatarios.TextChanged
+            Dim Filtro As DataView
+            If TablaMailBackup.DataSource.GetType = GetType(DataTable) Then
+                Filtro = New DataView(TablaMailBackup.DataSource)
+                TablaMailBackup.DataSource = Filtro
+            Else
+                Filtro = TablaMailBackup.DataSource
+            End If
+            Filtro.RowFilter = $"Asunto LIKE '%{txtFAsunto.Text}%' 
+                                AND Remitente LIKE '%{txtFRemitente.Text}%'
+                                AND Destinatarios LIKE '%{txtFDestinatarios.Text}%'"
+            LabelCorreosEliminados.Text = $"{CType(TablaMailBackup.DataSource, DataView).Count} Encontrados."
+        End Sub
+
+        Private Sub TablaMailBackup_Resize(sender As Object, e As EventArgs) Handles TablaMailBackup.Resize
+            If Not IsNothing(TablaMailBackup.Columns) AndAlso TablaMailBackup.Columns.Contains("Asunto") Then TablaMailBackup.Columns("Asunto").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        End Sub
+
+        Private Sub BtnLimpiarFiltro_Click(sender As Object, e As EventArgs) Handles BtnLimpiarFiltro.Click
+            Dim Controles() As TextBox = {txtFAsunto, txtFDestinatarios, txtFRemitente}
+            For Each txt In Controles
+                txt.Text = String.Empty
+            Next
+        End Sub
+
+        Private Sub ReindexarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReindexarToolStripMenuItem.Click
+            If TablaMailBackup.SelectedRows.Count > 0 Then
+                'MsgBox(TablaMailBackup.SelectedRows(0).Cells(1).Value)
+                Dim Analizar As New Backup.Email(TablaMailBackup.SelectedRows(0).Cells(1).Value)
+                Console.WriteLine(Analizar.Asunto)
+                Dim IdMail = Backup.Indexacion.GetItemIndex("Archivo", TablaMailBackup.SelectedRows(0).Cells(1).Value)
+                If Not IsNothing(IdMail) Then
+                    TablaMailBackup.Enabled = False
+                    Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Remitente), If(String.IsNullOrEmpty(Analizar.Remitente), "", Analizar.Remitente))
+                    Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Asunto), If(String.IsNullOrEmpty(Analizar.Remitente), "", Analizar.Asunto))
+                    Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Destinatarios), If(IsNothing(Analizar.Destinatarios), "", String.Join(";", Analizar.Destinatarios)))
+                    Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.ConCopia), If(IsNothing(Analizar.ConCopia), "", String.Join(";", Analizar.ConCopia)))
+                    Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Fecha), Analizar.Fecha)
+                    Backup.Indexacion.Tabla.WriteXml("Indexacion.xml")
+                    TablaMailBackup.Enabled = True
+                Else
+                    Task.Run(Sub()
+                                 Me.Invoke(Sub() LabelErroresDataTable.Text = "No se pudo indexar el mensaje, inténtelo más tarde.")
+                                 Thread.Sleep(3000)
+                                 Me.Invoke(Sub() LabelErroresDataTable.Text = "")
+                             End Sub)
+                End If
+            End If
+        End Sub
+
+        Private Sub VisualizarEnNotepadToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VisualizarEnNotepadToolStripMenuItem.Click
+            If TablaMailBackup.SelectedRows.Count > 0 Then
+                Process.Start("C:\Program Files\Notepad++\notepad++.exe", TablaMailBackup.SelectedRows(0).Cells(1).Value)
+            End If
+        End Sub
+
+        Private Sub ReindexarTodoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReindexarTodoToolStripMenuItem.Click
+            Backup.Indexacion.Tabla.Clear()
+            IO.File.Delete("Indexacion.xml")
+            TablaMailBackup.Refresh()
+            TablaMailBackup.Enabled = False
+            LabelErroresDataTable.Text = "Indexando..."
+            Dim Accion As Action = Async Sub() Await Backup.Indexar()
+            Dim Lanzar As Task = Task.Run(Accion)
+        End Sub
+
+        Private Sub TablaMailBackup_EnabledChanged(sender As Object, e As EventArgs) Handles TablaMailBackup.EnabledChanged
+            TablaMailBackup.ForeColor = If(TablaMailBackup.Enabled, Color.Black, Color.LightGray)
         End Sub
     End Class
 End Namespace

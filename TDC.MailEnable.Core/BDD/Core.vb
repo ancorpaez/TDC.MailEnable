@@ -19,8 +19,7 @@
             Columnas = Inicializar()
             Tabla.Columns.Add(CrearID)
             For Each Propiedad In Columnas.GetType.GetProperties
-                If IsNothing(Propiedad.GetValue(Columnas)) AndAlso
-                        Not String.IsNullOrEmpty(Propiedad.GetValue(Columnas)) Then
+                If IsNothing(Propiedad.GetValue(Columnas)) AndAlso Not String.IsNullOrEmpty(Propiedad.GetValue(Columnas)) Then
                     Dim esUnique As Boolean = False
                     Select Case Propiedad.GetMethod.ReturnType
                         Case GetType(System.String)
@@ -61,8 +60,6 @@
                 Try
                     Dim Objeto As DataRow() = Tabla.Select(String.Format(Columna & "='{0}'", Valor))
                     If Objeto.Count > 0 Then Return True Else Return False
-
-                    'If Tabla.Select(String.Format(Columna & "='{0}'", Valor)).Count > 0 Then Return True Else Return False
                 Catch ex As Exception
                     Return False
                 End Try
@@ -76,7 +73,6 @@
                     If Actualizar.Count > 0 Then
                         Actualizar.First.Item(Columna) = Valor
                     End If
-                    'Tabla.Select("ID='" & Id & "'").First.Item(Columna) = Valor
                 Catch ex As Exception
                 End Try
             End SyncLock
@@ -88,7 +84,6 @@
                     If Devolver.Count > 0 Then
                         Return Devolver.First.Item(Columna)
                     End If
-                    'Return Tabla.Select("ID='" & Id & "'").First.Item(Columna)
                 Catch ex As Exception
                     Return Nothing
                 End Try
@@ -104,7 +99,6 @@
                             Return Devolucion.First.Item("ID")
                         End If
                     End If
-                    'If Tabla.Select(String.Format(Columna & "='{0}'", Valor)).Count > 0 Then Return CInt(Tabla.Select(String.Format(Columna & "='{0}'", Valor)).First.Item("ID"))
                 Catch ex As Exception
                     Return Nothing
                 End Try

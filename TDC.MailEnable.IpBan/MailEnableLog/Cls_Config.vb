@@ -14,5 +14,6 @@
         Public TIMER_LECTURA As String = ""
         Public TIMER_PROPAGACION As String = ""
         Public LECTURA_REPOSO As String = "60000"
+        Public CARPETA_BACKUP As String = ""
     End Class
 End Namespace

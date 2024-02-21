@@ -68,6 +68,9 @@
             Me.txtPropagacionIP = New System.Windows.Forms.TextBox()
             Me.Label13 = New System.Windows.Forms.Label()
             Me.NumReposoLectura = New System.Windows.Forms.NumericUpDown()
+            Me.Label14 = New System.Windows.Forms.Label()
+            Me.txtBackupEmail = New System.Windows.Forms.TextBox()
+            Me.CmdCargarCarpetaBackupEmail = New System.Windows.Forms.Button()
             Me.Panel1.SuspendLayout()
             CType(Me.TrackLectura, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.TrackPropagacion, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -455,6 +458,31 @@
             Me.NumReposoLectura.TabIndex = 13
             Me.NumReposoLectura.Value = New Decimal(New Integer() {1000, 0, 0, 0})
             '
+            'Label14
+            '
+            Me.Label14.AutoSize = True
+            Me.Label14.Location = New System.Drawing.Point(12, 399)
+            Me.Label14.Name = "Label14"
+            Me.Label14.Size = New System.Drawing.Size(44, 13)
+            Me.Label14.TabIndex = 0
+            Me.Label14.Text = "Backup"
+            '
+            'txtBackupEmail
+            '
+            Me.txtBackupEmail.Location = New System.Drawing.Point(116, 396)
+            Me.txtBackupEmail.Name = "txtBackupEmail"
+            Me.txtBackupEmail.Size = New System.Drawing.Size(571, 20)
+            Me.txtBackupEmail.TabIndex = 1
+            '
+            'CmdCargarCarpetaBackupEmail
+            '
+            Me.CmdCargarCarpetaBackupEmail.Location = New System.Drawing.Point(693, 395)
+            Me.CmdCargarCarpetaBackupEmail.Name = "CmdCargarCarpetaBackupEmail"
+            Me.CmdCargarCarpetaBackupEmail.Size = New System.Drawing.Size(75, 21)
+            Me.CmdCargarCarpetaBackupEmail.TabIndex = 4
+            Me.CmdCargarCarpetaBackupEmail.Text = "Buscar"
+            Me.CmdCargarCarpetaBackupEmail.UseVisualStyleBackColor = True
+            '
             'Frm_Config
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -469,6 +497,7 @@
             Me.Controls.Add(Me.TrackPropagacion)
             Me.Controls.Add(Me.TrackLectura)
             Me.Controls.Add(Me.chkArranqueWindows)
+            Me.Controls.Add(Me.CmdCargarCarpetaBackupEmail)
             Me.Controls.Add(Me.CmdCargarSpamAssassin)
             Me.Controls.Add(Me.CmdCargarImapApp)
             Me.Controls.Add(Me.BtnCargarAWEB)
@@ -478,11 +507,13 @@
             Me.Controls.Add(Me.BtnCargarPOP)
             Me.Controls.Add(Me.BtnCargarSMTP)
             Me.Controls.Add(Me.BtnCargarPostOffices)
+            Me.Controls.Add(Me.txtBackupEmail)
             Me.Controls.Add(Me.BtnCargarIMAP)
             Me.Controls.Add(Me.txtSpamAssassin)
             Me.Controls.Add(Me.txtImapApp)
             Me.Controls.Add(Me.txtAWEB)
             Me.Controls.Add(Me.txtAPOP)
+            Me.Controls.Add(Me.Label14)
             Me.Controls.Add(Me.Panel1)
             Me.Controls.Add(Me.Label9)
             Me.Controls.Add(Me.txtASMTP)
@@ -557,5 +588,8 @@
         Friend WithEvents txtPropagacionIP As TextBox
         Friend WithEvents Label13 As Label
         Friend WithEvents NumReposoLectura As NumericUpDown
+        Friend WithEvents Label14 As Label
+        Friend WithEvents txtBackupEmail As TextBox
+        Friend WithEvents CmdCargarCarpetaBackupEmail As Button
     End Class
 End Namespace

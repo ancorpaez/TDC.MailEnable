@@ -73,6 +73,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -95,6 +96,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Backup\Email.vb" />
+    <Compile Include="Backup\Mod_BackupIndex.vb" />
+    <Compile Include="Backup\Cls_IndexMailScan.vb" />
     <Compile Include="Interfaz\Frm_PublicarIps.Designer.vb">
       <DependentUpon>Frm_PublicarIps.vb</DependentUpon>
     </Compile>
@@ -220,5 +224,6 @@
     <Content Include="IpBan1.ico" />
     <Content Include="Spam_Assassin.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

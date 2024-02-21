@@ -20,6 +20,7 @@ Namespace Interfaz
             chkArranqueWindows.Checked = Mod_Core.Configuracion.AutoArranqueWindows
             txtPostOffices.Text = Mod_Core.Configuracion.POST_OFFICES
             NumReposoLectura.Value = CInt(Configuracion.LECTURA_REPOSO)
+            txtBackupEmail.Text = Configuracion.CARPETA_BACKUP
 
             If IsNumeric(Mod_Core.Configuracion.TIMER_LECTURA) Then
                 TrackLectura.Value = CInt(Configuracion.TIMER_LECTURA)
@@ -76,11 +77,12 @@ Namespace Interfaz
             Mod_Core.Configuracion.TIMER_LECTURA = TrackLectura.Value
             Mod_Core.Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
             Mod_Core.Configuracion.LECTURA_REPOSO = NumReposoLectura.Value
+            Mod_Core.Configuracion.CARPETA_BACKUP = txtBackupEmail.Text
             Mod_Core.GuardarConfiguracion()
             Me.Close()
         End Sub
 
-        Private Sub txtAPOP_TextChanged(sender As Object, e As EventArgs) Handles txtAPOP.TextChanged, txtAWEB.TextChanged, txtASMTP.TextChanged, txtWEB.TextChanged, txtPOP.TextChanged, txtSMTP.TextChanged, txtIMAP.TextChanged, txtImapApp.TextChanged, txtSpamAssassin.TextChanged, txtPostOffices.TextChanged
+        Private Sub txtAPOP_TextChanged(sender As Object, e As EventArgs) Handles txtAPOP.TextChanged, txtAWEB.TextChanged, txtASMTP.TextChanged, txtWEB.TextChanged, txtPOP.TextChanged, txtSMTP.TextChanged, txtIMAP.TextChanged, txtImapApp.TextChanged, txtSpamAssassin.TextChanged, txtPostOffices.TextChanged, txtBackupEmail.TextChanged
             If Estado = EstadosCarga.Cargado Then BtnGuardarConfig.Enabled = True
         End Sub
         Private Sub BtnCargarIMAP_Click(sender As Object, e As EventArgs) Handles BtnCargarIMAP.Click
@@ -161,6 +163,11 @@ Namespace Interfaz
                     txtPropagacionIP.Text = TrackPropagacion.Maximum
                 End If
             End If
+        End Sub
+
+        Private Sub CmdCargarCarpetaBackupEmail_Click(sender As Object, e As EventArgs) Handles CmdCargarCarpetaBackupEmail.Click
+            CargarCarpeta()
+            txtBackupEmail.Text = CtrlBuscarCarpeta.SelectedPath
         End Sub
     End Class
 End Namespace

@@ -29,10 +29,8 @@ Namespace MailEnableLog
         'POSTOFFICES
         Public PostOfficesCenter As Cls_PostOffices
 
+        Public IpBanForm As Interfaz.IpBan
 
-        Private Function DelegateObtenerLista() As List(Of String)
-            Return IpBaneadas.ToList
-        End Function
 
 
         Public Sub Mod_Core_Main()
@@ -91,6 +89,7 @@ Namespace MailEnableLog
                     End If
                 End If
             End If
+
         End Sub
 
         '::::::::: ARCHIVO DE CONFIGURACION
