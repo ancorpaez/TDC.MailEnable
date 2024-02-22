@@ -27,7 +27,6 @@
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(IpBan))
             Me.PanelIpBaneadas = New System.Windows.Forms.Panel()
             Me.PanelBuscadores = New System.Windows.Forms.Panel()
-            Me.Splitter1 = New System.Windows.Forms.Splitter()
             Me.PanelIps = New System.Windows.Forms.Panel()
             Me.PanelListaNegra = New System.Windows.Forms.Panel()
             Me.lstIpBaneadas = New System.Windows.Forms.ListBox()
@@ -62,14 +61,14 @@
             Me.lblEstadoSpamAssasin = New System.Windows.Forms.Label()
             Me.Label3 = New System.Windows.Forms.Label()
             Me.MenuSpamAssassin = New System.Windows.Forms.MenuStrip()
-            Me.TSMDetener = New System.Windows.Forms.ToolStripMenuItem()
-            Me.TSMIniciarSpamAssassin = New System.Windows.Forms.ToolStripMenuItem()
-            Me.TSMIniciarSmapAssassinNormal = New System.Windows.Forms.ToolStripMenuItem()
-            Me.TSMIniciarSmapAssassinOculto = New System.Windows.Forms.ToolStripMenuItem()
             Me.TabMailBackup = New System.Windows.Forms.TabPage()
             Me.SplitContainer2 = New System.Windows.Forms.SplitContainer()
             Me.TreePostOffices = New System.Windows.Forms.TreeView()
             Me.TablaMailBackup = New System.Windows.Forms.DataGridView()
+            Me.MenuTablaBackup = New System.Windows.Forms.ContextMenuStrip(Me.components)
+            Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripSeparator()
+            Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripSeparator()
             Me.Panel3 = New System.Windows.Forms.Panel()
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
             Me.txtFAsunto = New System.Windows.Forms.TextBox()
@@ -81,15 +80,14 @@
             Me.BtnLimpiarFiltro = New System.Windows.Forms.Button()
             Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
             Me.LabelCorreosEliminados = New System.Windows.Forms.ToolStripStatusLabel()
+            Me.ProgresoIndexacion = New System.Windows.Forms.ToolStripProgressBar()
             Me.LabelErroresDataTable = New System.Windows.Forms.ToolStripStatusLabel()
             Me.IconosTab = New System.Windows.Forms.ImageList(Me.components)
             Me.MenuPrincipal = New System.Windows.Forms.MenuStrip()
             Me.ConfiguraciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.TimerIpBan = New System.Windows.Forms.Timer(Me.components)
             Me.TimerGuiAnalizador = New System.Windows.Forms.Timer(Me.components)
-            Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
-            Me.MenuTablaBackup = New System.Windows.Forms.ContextMenuStrip(Me.components)
-            Me.ReindexarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.StatusStrip2 = New System.Windows.Forms.StatusStrip()
             Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcIMAPAct = New TDC.MailEnable.IpBan.UcAnalizador()
@@ -97,11 +95,19 @@
             Me.UcSMTPAct = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcPOPAct = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.iMenuTabla = New System.Windows.Forms.ImageList(Me.components)
+            Me.TSMDetener = New System.Windows.Forms.ToolStripMenuItem()
+            Me.TSMIniciarSpamAssassin = New System.Windows.Forms.ToolStripMenuItem()
+            Me.TSMIniciarSmapAssassinNormal = New System.Windows.Forms.ToolStripMenuItem()
+            Me.TSMIniciarSmapAssassinOculto = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ReindexarEmail = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ReindexarCarpeta = New System.Windows.Forms.ToolStripMenuItem()
             Me.VisualizarEnNotepadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-            Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
-            Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripSeparator()
             Me.ReindexarTodoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-            Me.ProgresoIndexacion = New System.Windows.Forms.ToolStripProgressBar()
+            Me.IndexarNuevosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.RestaurarEmail = New System.Windows.Forms.ToolStripMenuItem()
+            Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
+            Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
             Me.PanelIpBaneadas.SuspendLayout()
             Me.PanelBuscadores.SuspendLayout()
             Me.PanelIps.SuspendLayout()
@@ -129,24 +135,23 @@
             Me.SplitContainer2.Panel2.SuspendLayout()
             Me.SplitContainer2.SuspendLayout()
             CType(Me.TablaMailBackup, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.MenuTablaBackup.SuspendLayout()
             Me.Panel3.SuspendLayout()
             Me.TableLayoutPanel2.SuspendLayout()
             Me.StatusStrip1.SuspendLayout()
             Me.MenuPrincipal.SuspendLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.MenuTablaBackup.SuspendLayout()
             Me.SuspendLayout()
             '
             'PanelIpBaneadas
             '
             Me.PanelIpBaneadas.Controls.Add(Me.PanelBuscadores)
-            Me.PanelIpBaneadas.Controls.Add(Me.Splitter1)
             Me.PanelIpBaneadas.Controls.Add(Me.PanelIps)
             Me.PanelIpBaneadas.Dock = System.Windows.Forms.DockStyle.Fill
             Me.PanelIpBaneadas.Location = New System.Drawing.Point(3, 3)
             Me.PanelIpBaneadas.Name = "PanelIpBaneadas"
             Me.PanelIpBaneadas.Padding = New System.Windows.Forms.Padding(3)
-            Me.PanelIpBaneadas.Size = New System.Drawing.Size(869, 304)
+            Me.PanelIpBaneadas.Size = New System.Drawing.Size(869, 282)
             Me.PanelIpBaneadas.TabIndex = 1
             '
             'PanelBuscadores
@@ -160,19 +165,11 @@
             Me.PanelBuscadores.Controls.Add(Me.UcPOPEx)
             Me.PanelBuscadores.Controls.Add(Me.UcPOPAct)
             Me.PanelBuscadores.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.PanelBuscadores.Location = New System.Drawing.Point(347, 3)
+            Me.PanelBuscadores.Location = New System.Drawing.Point(337, 3)
             Me.PanelBuscadores.Name = "PanelBuscadores"
             Me.PanelBuscadores.Padding = New System.Windows.Forms.Padding(3)
-            Me.PanelBuscadores.Size = New System.Drawing.Size(519, 298)
+            Me.PanelBuscadores.Size = New System.Drawing.Size(529, 276)
             Me.PanelBuscadores.TabIndex = 3
-            '
-            'Splitter1
-            '
-            Me.Splitter1.Location = New System.Drawing.Point(337, 3)
-            Me.Splitter1.Name = "Splitter1"
-            Me.Splitter1.Size = New System.Drawing.Size(10, 298)
-            Me.Splitter1.TabIndex = 2
-            Me.Splitter1.TabStop = False
             '
             'PanelIps
             '
@@ -182,7 +179,7 @@
             Me.PanelIps.Dock = System.Windows.Forms.DockStyle.Left
             Me.PanelIps.Location = New System.Drawing.Point(3, 3)
             Me.PanelIps.Name = "PanelIps"
-            Me.PanelIps.Size = New System.Drawing.Size(334, 298)
+            Me.PanelIps.Size = New System.Drawing.Size(334, 276)
             Me.PanelIps.TabIndex = 1
             '
             'PanelListaNegra
@@ -194,7 +191,7 @@
             Me.PanelListaNegra.Location = New System.Drawing.Point(0, 0)
             Me.PanelListaNegra.Name = "PanelListaNegra"
             Me.PanelListaNegra.Padding = New System.Windows.Forms.Padding(3)
-            Me.PanelListaNegra.Size = New System.Drawing.Size(203, 198)
+            Me.PanelListaNegra.Size = New System.Drawing.Size(203, 176)
             Me.PanelListaNegra.TabIndex = 6
             '
             'lstIpBaneadas
@@ -204,7 +201,7 @@
             Me.lstIpBaneadas.IntegralHeight = False
             Me.lstIpBaneadas.Location = New System.Drawing.Point(3, 29)
             Me.lstIpBaneadas.Name = "lstIpBaneadas"
-            Me.lstIpBaneadas.Size = New System.Drawing.Size(197, 104)
+            Me.lstIpBaneadas.Size = New System.Drawing.Size(197, 82)
             Me.lstIpBaneadas.TabIndex = 2
             '
             'PanelBotonesListaNegra
@@ -215,7 +212,7 @@
             Me.PanelBotonesListaNegra.Controls.Add(Me.BtnPropagarIps)
             Me.PanelBotonesListaNegra.Controls.Add(Me.ChkDetenerPublicacion)
             Me.PanelBotonesListaNegra.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.PanelBotonesListaNegra.Location = New System.Drawing.Point(3, 133)
+            Me.PanelBotonesListaNegra.Location = New System.Drawing.Point(3, 111)
             Me.PanelBotonesListaNegra.Name = "PanelBotonesListaNegra"
             Me.PanelBotonesListaNegra.Padding = New System.Windows.Forms.Padding(1)
             Me.PanelBotonesListaNegra.Size = New System.Drawing.Size(197, 62)
@@ -316,7 +313,7 @@
             Me.PanelBusqueda.Controls.Add(Me.SplitContainer1)
             Me.PanelBusqueda.Controls.Add(Me.PanelTexto)
             Me.PanelBusqueda.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.PanelBusqueda.Location = New System.Drawing.Point(0, 198)
+            Me.PanelBusqueda.Location = New System.Drawing.Point(0, 176)
             Me.PanelBusqueda.Name = "PanelBusqueda"
             Me.PanelBusqueda.Size = New System.Drawing.Size(203, 100)
             Me.PanelBusqueda.TabIndex = 7
@@ -397,7 +394,7 @@
             Me.Panel15.Location = New System.Drawing.Point(203, 0)
             Me.Panel15.Name = "Panel15"
             Me.Panel15.Padding = New System.Windows.Forms.Padding(3)
-            Me.Panel15.Size = New System.Drawing.Size(131, 298)
+            Me.Panel15.Size = New System.Drawing.Size(131, 276)
             Me.Panel15.TabIndex = 5
             '
             'lstIpBlancas
@@ -407,7 +404,7 @@
             Me.lstIpBlancas.IntegralHeight = False
             Me.lstIpBlancas.Location = New System.Drawing.Point(3, 23)
             Me.lstIpBlancas.Name = "lstIpBlancas"
-            Me.lstIpBlancas.Size = New System.Drawing.Size(125, 230)
+            Me.lstIpBlancas.Size = New System.Drawing.Size(125, 208)
             Me.lstIpBlancas.TabIndex = 0
             '
             'PanelBotonesBlanca
@@ -415,7 +412,7 @@
             Me.PanelBotonesBlanca.Controls.Add(Me.BtnEliminarBlanca)
             Me.PanelBotonesBlanca.Controls.Add(Me.BtnAnadirBlanca)
             Me.PanelBotonesBlanca.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.PanelBotonesBlanca.Location = New System.Drawing.Point(3, 253)
+            Me.PanelBotonesBlanca.Location = New System.Drawing.Point(3, 231)
             Me.PanelBotonesBlanca.Name = "PanelBotonesBlanca"
             Me.PanelBotonesBlanca.Size = New System.Drawing.Size(125, 42)
             Me.PanelBotonesBlanca.TabIndex = 4
@@ -460,7 +457,7 @@
             Me.Fondo.Location = New System.Drawing.Point(0, 24)
             Me.Fondo.Name = "Fondo"
             Me.Fondo.Padding = New System.Windows.Forms.Padding(10)
-            Me.Fondo.Size = New System.Drawing.Size(903, 373)
+            Me.Fondo.Size = New System.Drawing.Size(903, 351)
             Me.Fondo.TabIndex = 1
             '
             'TabControl1
@@ -473,7 +470,7 @@
             Me.TabControl1.Location = New System.Drawing.Point(10, 10)
             Me.TabControl1.Name = "TabControl1"
             Me.TabControl1.SelectedIndex = 0
-            Me.TabControl1.Size = New System.Drawing.Size(883, 353)
+            Me.TabControl1.Size = New System.Drawing.Size(883, 331)
             Me.TabControl1.TabIndex = 3
             '
             'TabPIpBan
@@ -483,7 +480,7 @@
             Me.TabPIpBan.Location = New System.Drawing.Point(4, 39)
             Me.TabPIpBan.Name = "TabPIpBan"
             Me.TabPIpBan.Padding = New System.Windows.Forms.Padding(3)
-            Me.TabPIpBan.Size = New System.Drawing.Size(875, 310)
+            Me.TabPIpBan.Size = New System.Drawing.Size(875, 288)
             Me.TabPIpBan.TabIndex = 0
             Me.TabPIpBan.Text = "IpBan"
             Me.TabPIpBan.UseVisualStyleBackColor = True
@@ -496,7 +493,7 @@
             Me.TabPage2.Location = New System.Drawing.Point(4, 39)
             Me.TabPage2.Name = "TabPage2"
             Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-            Me.TabPage2.Size = New System.Drawing.Size(875, 310)
+            Me.TabPage2.Size = New System.Drawing.Size(875, 288)
             Me.TabPage2.TabIndex = 1
             Me.TabPage2.Text = "SpamAssassin"
             Me.TabPage2.UseVisualStyleBackColor = True
@@ -506,7 +503,7 @@
             Me.txtRichSpamAssassin.Dock = System.Windows.Forms.DockStyle.Fill
             Me.txtRichSpamAssassin.Location = New System.Drawing.Point(3, 43)
             Me.txtRichSpamAssassin.Name = "txtRichSpamAssassin"
-            Me.txtRichSpamAssassin.Size = New System.Drawing.Size(869, 264)
+            Me.txtRichSpamAssassin.Size = New System.Drawing.Size(869, 242)
             Me.txtRichSpamAssassin.TabIndex = 0
             Me.txtRichSpamAssassin.Text = ""
             '
@@ -563,39 +560,13 @@
             Me.MenuSpamAssassin.TabIndex = 2
             Me.MenuSpamAssassin.Text = "MenuStrip1"
             '
-            'TSMDetener
-            '
-            Me.TSMDetener.Image = CType(resources.GetObject("TSMDetener.Image"), System.Drawing.Image)
-            Me.TSMDetener.Name = "TSMDetener"
-            Me.TSMDetener.Size = New System.Drawing.Size(76, 30)
-            Me.TSMDetener.Text = "Detener"
-            '
-            'TSMIniciarSpamAssassin
-            '
-            Me.TSMIniciarSpamAssassin.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TSMIniciarSmapAssassinNormal, Me.TSMIniciarSmapAssassinOculto})
-            Me.TSMIniciarSpamAssassin.Image = CType(resources.GetObject("TSMIniciarSpamAssassin.Image"), System.Drawing.Image)
-            Me.TSMIniciarSpamAssassin.Name = "TSMIniciarSpamAssassin"
-            Me.TSMIniciarSpamAssassin.Size = New System.Drawing.Size(67, 30)
-            Me.TSMIniciarSpamAssassin.Text = "Iniciar"
-            '
-            'TSMIniciarSmapAssassinNormal
-            '
-            Me.TSMIniciarSmapAssassinNormal.Name = "TSMIniciarSmapAssassinNormal"
-            Me.TSMIniciarSmapAssassinNormal.Size = New System.Drawing.Size(114, 22)
-            Me.TSMIniciarSmapAssassinNormal.Text = "Normal"
-            '
-            'TSMIniciarSmapAssassinOculto
-            '
-            Me.TSMIniciarSmapAssassinOculto.Name = "TSMIniciarSmapAssassinOculto"
-            Me.TSMIniciarSmapAssassinOculto.Size = New System.Drawing.Size(114, 22)
-            Me.TSMIniciarSmapAssassinOculto.Text = "Oculto"
-            '
             'TabMailBackup
             '
             Me.TabMailBackup.Controls.Add(Me.SplitContainer2)
+            Me.TabMailBackup.ImageKey = "MB"
             Me.TabMailBackup.Location = New System.Drawing.Point(4, 39)
             Me.TabMailBackup.Name = "TabMailBackup"
-            Me.TabMailBackup.Size = New System.Drawing.Size(875, 310)
+            Me.TabMailBackup.Size = New System.Drawing.Size(875, 288)
             Me.TabMailBackup.TabIndex = 2
             Me.TabMailBackup.Text = "MAIL BACKUP"
             Me.TabMailBackup.UseVisualStyleBackColor = True
@@ -615,7 +586,7 @@
             Me.SplitContainer2.Panel2.Controls.Add(Me.TablaMailBackup)
             Me.SplitContainer2.Panel2.Controls.Add(Me.Panel3)
             Me.SplitContainer2.Panel2.Controls.Add(Me.StatusStrip1)
-            Me.SplitContainer2.Size = New System.Drawing.Size(875, 310)
+            Me.SplitContainer2.Size = New System.Drawing.Size(875, 288)
             Me.SplitContainer2.SplitterDistance = 291
             Me.SplitContainer2.TabIndex = 0
             '
@@ -624,7 +595,7 @@
             Me.TreePostOffices.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TreePostOffices.Location = New System.Drawing.Point(0, 0)
             Me.TreePostOffices.Name = "TreePostOffices"
-            Me.TreePostOffices.Size = New System.Drawing.Size(291, 310)
+            Me.TreePostOffices.Size = New System.Drawing.Size(291, 288)
             Me.TreePostOffices.TabIndex = 0
             '
             'TablaMailBackup
@@ -638,13 +609,34 @@
             Me.TablaMailBackup.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
             Me.TablaMailBackup.Enabled = False
             Me.TablaMailBackup.Location = New System.Drawing.Point(0, 48)
-            Me.TablaMailBackup.MultiSelect = False
             Me.TablaMailBackup.Name = "TablaMailBackup"
             Me.TablaMailBackup.ReadOnly = True
+            Me.TablaMailBackup.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
             Me.TablaMailBackup.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
             Me.TablaMailBackup.ShowEditingIcon = False
-            Me.TablaMailBackup.Size = New System.Drawing.Size(580, 240)
+            Me.TablaMailBackup.Size = New System.Drawing.Size(580, 216)
             Me.TablaMailBackup.TabIndex = 0
+            '
+            'MenuTablaBackup
+            '
+            Me.MenuTablaBackup.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RestaurarEmail, Me.ToolStripMenuItem3, Me.ReindexarEmail, Me.ReindexarCarpeta, Me.ToolStripMenuItem1, Me.VisualizarEnNotepadToolStripMenuItem, Me.ToolStripMenuItem2, Me.ReindexarTodoToolStripMenuItem, Me.IndexarNuevosToolStripMenuItem})
+            Me.MenuTablaBackup.Name = "MenuTablaBackup"
+            Me.MenuTablaBackup.Size = New System.Drawing.Size(208, 176)
+            '
+            'ToolStripMenuItem1
+            '
+            Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+            Me.ToolStripMenuItem1.Size = New System.Drawing.Size(204, 6)
+            '
+            'ToolStripMenuItem2
+            '
+            Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+            Me.ToolStripMenuItem2.Size = New System.Drawing.Size(204, 6)
+            '
+            'ToolStripMenuItem3
+            '
+            Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
+            Me.ToolStripMenuItem3.Size = New System.Drawing.Size(204, 6)
             '
             'Panel3
             '
@@ -669,13 +661,14 @@
             Me.TableLayoutPanel2.Controls.Add(Me.Label4, 0, 0)
             Me.TableLayoutPanel2.Controls.Add(Me.Label5, 1, 0)
             Me.TableLayoutPanel2.Controls.Add(Me.Label7, 2, 0)
-            Me.TableLayoutPanel2.Controls.Add(Me.BtnLimpiarFiltro, 3, 1)
+            Me.TableLayoutPanel2.Controls.Add(Me.BtnLimpiarFiltro, 3, 0)
             Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TableLayoutPanel2.Location = New System.Drawing.Point(0, 0)
             Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
             Me.TableLayoutPanel2.RowCount = 2
             Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
             Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
             Me.TableLayoutPanel2.Size = New System.Drawing.Size(577, 45)
             Me.TableLayoutPanel2.TabIndex = 2
             '
@@ -737,10 +730,11 @@
             '
             Me.BtnLimpiarFiltro.Dock = System.Windows.Forms.DockStyle.Fill
             Me.BtnLimpiarFiltro.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.BtnLimpiarFiltro.Location = New System.Drawing.Point(527, 22)
+            Me.BtnLimpiarFiltro.Location = New System.Drawing.Point(527, 0)
             Me.BtnLimpiarFiltro.Margin = New System.Windows.Forms.Padding(0)
             Me.BtnLimpiarFiltro.Name = "BtnLimpiarFiltro"
-            Me.BtnLimpiarFiltro.Size = New System.Drawing.Size(50, 23)
+            Me.TableLayoutPanel2.SetRowSpan(Me.BtnLimpiarFiltro, 2)
+            Me.BtnLimpiarFiltro.Size = New System.Drawing.Size(50, 45)
             Me.BtnLimpiarFiltro.TabIndex = 5
             Me.BtnLimpiarFiltro.Text = "X"
             Me.BtnLimpiarFiltro.UseVisualStyleBackColor = True
@@ -749,23 +743,31 @@
             '
             Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LabelCorreosEliminados, Me.ProgresoIndexacion, Me.LabelErroresDataTable})
             Me.StatusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
-            Me.StatusStrip1.Location = New System.Drawing.Point(0, 288)
+            Me.StatusStrip1.Location = New System.Drawing.Point(0, 264)
             Me.StatusStrip1.Name = "StatusStrip1"
-            Me.StatusStrip1.Size = New System.Drawing.Size(580, 22)
+            Me.StatusStrip1.Size = New System.Drawing.Size(580, 24)
             Me.StatusStrip1.SizingGrip = False
             Me.StatusStrip1.TabIndex = 1
             Me.StatusStrip1.Text = "StatusStrip1"
             '
             'LabelCorreosEliminados
             '
+            Me.LabelCorreosEliminados.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right
             Me.LabelCorreosEliminados.Name = "LabelCorreosEliminados"
-            Me.LabelCorreosEliminados.Size = New System.Drawing.Size(13, 17)
+            Me.LabelCorreosEliminados.Size = New System.Drawing.Size(17, 19)
             Me.LabelCorreosEliminados.Text = "0"
+            '
+            'ProgresoIndexacion
+            '
+            Me.ProgresoIndexacion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            Me.ProgresoIndexacion.Name = "ProgresoIndexacion"
+            Me.ProgresoIndexacion.Size = New System.Drawing.Size(100, 18)
             '
             'LabelErroresDataTable
             '
+            Me.LabelErroresDataTable.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right
             Me.LabelErroresDataTable.Name = "LabelErroresDataTable"
-            Me.LabelErroresDataTable.Size = New System.Drawing.Size(16, 17)
+            Me.LabelErroresDataTable.Size = New System.Drawing.Size(20, 19)
             Me.LabelErroresDataTable.Text = "..."
             '
             'IconosTab
@@ -776,6 +778,7 @@
             Me.IconosTab.Images.SetKeyName(1, "ME")
             Me.IconosTab.Images.SetKeyName(2, "play")
             Me.IconosTab.Images.SetKeyName(3, "stop")
+            Me.IconosTab.Images.SetKeyName(4, "MB")
             '
             'MenuPrincipal
             '
@@ -802,24 +805,20 @@
             Me.TimerGuiAnalizador.Enabled = True
             Me.TimerGuiAnalizador.Interval = 1
             '
-            'MenuTablaBackup
+            'StatusStrip2
             '
-            Me.MenuTablaBackup.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ReindexarToolStripMenuItem, Me.ToolStripMenuItem1, Me.VisualizarEnNotepadToolStripMenuItem, Me.ToolStripMenuItem2, Me.ReindexarTodoToolStripMenuItem})
-            Me.MenuTablaBackup.Name = "MenuTablaBackup"
-            Me.MenuTablaBackup.Size = New System.Drawing.Size(208, 82)
-            '
-            'ReindexarToolStripMenuItem
-            '
-            Me.ReindexarToolStripMenuItem.Name = "ReindexarToolStripMenuItem"
-            Me.ReindexarToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
-            Me.ReindexarToolStripMenuItem.Text = "Reindexar"
+            Me.StatusStrip2.Location = New System.Drawing.Point(0, 375)
+            Me.StatusStrip2.Name = "StatusStrip2"
+            Me.StatusStrip2.Size = New System.Drawing.Size(903, 22)
+            Me.StatusStrip2.TabIndex = 1
+            Me.StatusStrip2.Text = "StatusStrip2"
             '
             'UcWEB
             '
             Me.UcWEB.Dock = System.Windows.Forms.DockStyle.Top
             Me.UcWEB.Location = New System.Drawing.Point(3, 243)
             Me.UcWEB.Name = "UcWEB"
-            Me.UcWEB.Size = New System.Drawing.Size(513, 40)
+            Me.UcWEB.Size = New System.Drawing.Size(523, 40)
             Me.UcWEB.TabIndex = 0
             '
             'UcIMAPEx
@@ -827,7 +826,7 @@
             Me.UcIMAPEx.Dock = System.Windows.Forms.DockStyle.Top
             Me.UcIMAPEx.Location = New System.Drawing.Point(3, 203)
             Me.UcIMAPEx.Name = "UcIMAPEx"
-            Me.UcIMAPEx.Size = New System.Drawing.Size(513, 40)
+            Me.UcIMAPEx.Size = New System.Drawing.Size(523, 40)
             Me.UcIMAPEx.TabIndex = 0
             '
             'UcIMAPAct
@@ -835,7 +834,7 @@
             Me.UcIMAPAct.Dock = System.Windows.Forms.DockStyle.Top
             Me.UcIMAPAct.Location = New System.Drawing.Point(3, 163)
             Me.UcIMAPAct.Name = "UcIMAPAct"
-            Me.UcIMAPAct.Size = New System.Drawing.Size(513, 40)
+            Me.UcIMAPAct.Size = New System.Drawing.Size(523, 40)
             Me.UcIMAPAct.TabIndex = 0
             Me.UcIMAPAct.Visible = False
             '
@@ -844,7 +843,7 @@
             Me.UcSMTPEx.Dock = System.Windows.Forms.DockStyle.Top
             Me.UcSMTPEx.Location = New System.Drawing.Point(3, 123)
             Me.UcSMTPEx.Name = "UcSMTPEx"
-            Me.UcSMTPEx.Size = New System.Drawing.Size(513, 40)
+            Me.UcSMTPEx.Size = New System.Drawing.Size(523, 40)
             Me.UcSMTPEx.TabIndex = 0
             '
             'UcSMTPAct
@@ -852,7 +851,7 @@
             Me.UcSMTPAct.Dock = System.Windows.Forms.DockStyle.Top
             Me.UcSMTPAct.Location = New System.Drawing.Point(3, 83)
             Me.UcSMTPAct.Name = "UcSMTPAct"
-            Me.UcSMTPAct.Size = New System.Drawing.Size(513, 40)
+            Me.UcSMTPAct.Size = New System.Drawing.Size(523, 40)
             Me.UcSMTPAct.TabIndex = 0
             Me.UcSMTPAct.Visible = False
             '
@@ -861,7 +860,7 @@
             Me.UcPOPEx.Dock = System.Windows.Forms.DockStyle.Top
             Me.UcPOPEx.Location = New System.Drawing.Point(3, 43)
             Me.UcPOPEx.Name = "UcPOPEx"
-            Me.UcPOPEx.Size = New System.Drawing.Size(513, 40)
+            Me.UcPOPEx.Size = New System.Drawing.Size(523, 40)
             Me.UcPOPEx.TabIndex = 0
             '
             'UcPOPAct
@@ -869,37 +868,94 @@
             Me.UcPOPAct.Dock = System.Windows.Forms.DockStyle.Top
             Me.UcPOPAct.Location = New System.Drawing.Point(3, 3)
             Me.UcPOPAct.Name = "UcPOPAct"
-            Me.UcPOPAct.Size = New System.Drawing.Size(513, 40)
+            Me.UcPOPAct.Size = New System.Drawing.Size(523, 40)
             Me.UcPOPAct.TabIndex = 0
             Me.UcPOPAct.Visible = False
             '
+            'iMenuTabla
+            '
+            Me.iMenuTabla.ImageStream = CType(resources.GetObject("iMenuTabla.ImageStream"), System.Windows.Forms.ImageListStreamer)
+            Me.iMenuTabla.TransparentColor = System.Drawing.Color.Transparent
+            Me.iMenuTabla.Images.SetKeyName(0, "ReindexarNuevos.png")
+            Me.iMenuTabla.Images.SetKeyName(1, "ReindexarTodo.png")
+            Me.iMenuTabla.Images.SetKeyName(2, "RestaurarEmail.png")
+            Me.iMenuTabla.Images.SetKeyName(3, "ReindexEmail.png")
+            Me.iMenuTabla.Images.SetKeyName(4, "ReindexCarpeta.png")
+            '
+            'TSMDetener
+            '
+            Me.TSMDetener.Image = CType(resources.GetObject("TSMDetener.Image"), System.Drawing.Image)
+            Me.TSMDetener.Name = "TSMDetener"
+            Me.TSMDetener.Size = New System.Drawing.Size(76, 30)
+            Me.TSMDetener.Text = "Detener"
+            '
+            'TSMIniciarSpamAssassin
+            '
+            Me.TSMIniciarSpamAssassin.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TSMIniciarSmapAssassinNormal, Me.TSMIniciarSmapAssassinOculto})
+            Me.TSMIniciarSpamAssassin.Image = CType(resources.GetObject("TSMIniciarSpamAssassin.Image"), System.Drawing.Image)
+            Me.TSMIniciarSpamAssassin.Name = "TSMIniciarSpamAssassin"
+            Me.TSMIniciarSpamAssassin.Size = New System.Drawing.Size(67, 30)
+            Me.TSMIniciarSpamAssassin.Text = "Iniciar"
+            '
+            'TSMIniciarSmapAssassinNormal
+            '
+            Me.TSMIniciarSmapAssassinNormal.Name = "TSMIniciarSmapAssassinNormal"
+            Me.TSMIniciarSmapAssassinNormal.Size = New System.Drawing.Size(114, 22)
+            Me.TSMIniciarSmapAssassinNormal.Text = "Normal"
+            '
+            'TSMIniciarSmapAssassinOculto
+            '
+            Me.TSMIniciarSmapAssassinOculto.Name = "TSMIniciarSmapAssassinOculto"
+            Me.TSMIniciarSmapAssassinOculto.Size = New System.Drawing.Size(114, 22)
+            Me.TSMIniciarSmapAssassinOculto.Text = "Oculto"
+            '
+            'ReindexarEmail
+            '
+            Me.ReindexarEmail.Image = Global.TDC.MailEnable.IpBan.My.Resources.Resources.ReindexEmail
+            Me.ReindexarEmail.Name = "ReindexarEmail"
+            Me.ReindexarEmail.Size = New System.Drawing.Size(207, 22)
+            Me.ReindexarEmail.Text = "Reindexar Email"
+            '
+            'ReindexarCarpeta
+            '
+            Me.ReindexarCarpeta.Image = Global.TDC.MailEnable.IpBan.My.Resources.Resources.ReindexCarpeta
+            Me.ReindexarCarpeta.Name = "ReindexarCarpeta"
+            Me.ReindexarCarpeta.Size = New System.Drawing.Size(207, 22)
+            Me.ReindexarCarpeta.Text = "Indexar Carpeta"
+            '
             'VisualizarEnNotepadToolStripMenuItem
             '
+            Me.VisualizarEnNotepadToolStripMenuItem.Image = CType(resources.GetObject("VisualizarEnNotepadToolStripMenuItem.Image"), System.Drawing.Image)
             Me.VisualizarEnNotepadToolStripMenuItem.Name = "VisualizarEnNotepadToolStripMenuItem"
             Me.VisualizarEnNotepadToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
             Me.VisualizarEnNotepadToolStripMenuItem.Text = "Visualizar en Notepad ++"
             '
-            'ToolStripMenuItem1
-            '
-            Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-            Me.ToolStripMenuItem1.Size = New System.Drawing.Size(204, 6)
-            '
-            'ToolStripMenuItem2
-            '
-            Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-            Me.ToolStripMenuItem2.Size = New System.Drawing.Size(204, 6)
-            '
             'ReindexarTodoToolStripMenuItem
             '
+            Me.ReindexarTodoToolStripMenuItem.Image = CType(resources.GetObject("ReindexarTodoToolStripMenuItem.Image"), System.Drawing.Image)
             Me.ReindexarTodoToolStripMenuItem.Name = "ReindexarTodoToolStripMenuItem"
             Me.ReindexarTodoToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
             Me.ReindexarTodoToolStripMenuItem.Text = "Reindexar Todo"
             '
-            'ProgresoIndexacion
+            'IndexarNuevosToolStripMenuItem
             '
-            Me.ProgresoIndexacion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-            Me.ProgresoIndexacion.Name = "ProgresoIndexacion"
-            Me.ProgresoIndexacion.Size = New System.Drawing.Size(100, 16)
+            Me.IndexarNuevosToolStripMenuItem.Image = CType(resources.GetObject("IndexarNuevosToolStripMenuItem.Image"), System.Drawing.Image)
+            Me.IndexarNuevosToolStripMenuItem.Name = "IndexarNuevosToolStripMenuItem"
+            Me.IndexarNuevosToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
+            Me.IndexarNuevosToolStripMenuItem.Text = "Indexar Nuevos"
+            '
+            'RestaurarEmail
+            '
+            Me.RestaurarEmail.Image = CType(resources.GetObject("RestaurarEmail.Image"), System.Drawing.Image)
+            Me.RestaurarEmail.Name = "RestaurarEmail"
+            Me.RestaurarEmail.Size = New System.Drawing.Size(207, 22)
+            Me.RestaurarEmail.Text = "Restaurar Email"
+            '
+            'ImageList1
+            '
+            Me.ImageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
+            Me.ImageList1.ImageSize = New System.Drawing.Size(16, 16)
+            Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
             '
             'IpBan
             '
@@ -908,6 +964,7 @@
             Me.ClientSize = New System.Drawing.Size(903, 397)
             Me.Controls.Add(Me.Fondo)
             Me.Controls.Add(Me.MenuPrincipal)
+            Me.Controls.Add(Me.StatusStrip2)
             Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
             Me.MainMenuStrip = Me.MenuSpamAssassin
             Me.Name = "IpBan"
@@ -945,6 +1002,7 @@
             CType(Me.SplitContainer2, System.ComponentModel.ISupportInitialize).EndInit()
             Me.SplitContainer2.ResumeLayout(False)
             CType(Me.TablaMailBackup, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.MenuTablaBackup.ResumeLayout(False)
             Me.Panel3.ResumeLayout(False)
             Me.TableLayoutPanel2.ResumeLayout(False)
             Me.TableLayoutPanel2.PerformLayout()
@@ -953,7 +1011,6 @@
             Me.MenuPrincipal.ResumeLayout(False)
             Me.MenuPrincipal.PerformLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.MenuTablaBackup.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -964,7 +1021,6 @@
         Friend WithEvents BtnAñadirIp As Button
         Friend WithEvents BtnEliminarIp As Button
         Friend WithEvents PanelBuscadores As Panel
-        Friend WithEvents Splitter1 As Splitter
         Friend WithEvents PanelIps As Panel
         Friend WithEvents UcPOPEx As UcAnalizador
         Friend WithEvents UcSMTPAct As UcAnalizador
@@ -1029,11 +1085,18 @@
         Friend WithEvents Label7 As Label
         Friend WithEvents BtnLimpiarFiltro As Button
         Friend WithEvents MenuTablaBackup As ContextMenuStrip
-        Friend WithEvents ReindexarToolStripMenuItem As ToolStripMenuItem
+        Friend WithEvents ReindexarEmail As ToolStripMenuItem
         Friend WithEvents VisualizarEnNotepadToolStripMenuItem As ToolStripMenuItem
         Friend WithEvents ToolStripMenuItem1 As ToolStripSeparator
         Friend WithEvents ToolStripMenuItem2 As ToolStripSeparator
         Friend WithEvents ReindexarTodoToolStripMenuItem As ToolStripMenuItem
         Friend WithEvents ProgresoIndexacion As ToolStripProgressBar
+        Friend WithEvents IndexarNuevosToolStripMenuItem As ToolStripMenuItem
+        Friend WithEvents ToolStripMenuItem3 As ToolStripSeparator
+        Friend WithEvents RestaurarEmail As ToolStripMenuItem
+        Friend WithEvents ReindexarCarpeta As ToolStripMenuItem
+        Friend WithEvents StatusStrip2 As StatusStrip
+        Friend WithEvents iMenuTabla As ImageList
+        Friend WithEvents ImageList1 As ImageList
     End Class
 End Namespace

@@ -576,7 +576,7 @@ Namespace Interfaz
                 End If
                 TablaMailBackup.Columns("ID").Visible = False
                 TablaMailBackup.Columns("Archivo").Visible = False
-                TablaMailBackup.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.Fill)
+                'TablaMailBackup.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.Fill)
             Catch ex As Exception
 
             End Try
@@ -607,28 +607,29 @@ Namespace Interfaz
             Next
         End Sub
 
-        Private Sub ReindexarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReindexarToolStripMenuItem.Click
+        Private Sub ReindexarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReindexarEmail.Click
             If TablaMailBackup.SelectedRows.Count > 0 Then
                 'MsgBox(TablaMailBackup.SelectedRows(0).Cells(1).Value)
-                Dim Analizar As New Backup.Email(TablaMailBackup.SelectedRows(0).Cells(1).Value)
-                Console.WriteLine(Analizar.Asunto)
-                Dim IdMail = Backup.Indexacion.GetItemIndex("Archivo", TablaMailBackup.SelectedRows(0).Cells(1).Value)
-                If Not IsNothing(IdMail) Then
-                    TablaMailBackup.Enabled = False
-                    Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Remitente), If(String.IsNullOrEmpty(Analizar.Remitente), "", Analizar.Remitente))
-                    Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Asunto), If(String.IsNullOrEmpty(Analizar.Remitente), "", Analizar.Asunto))
-                    Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Destinatarios), If(IsNothing(Analizar.Destinatarios), "", String.Join(";", Analizar.Destinatarios)))
-                    Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.ConCopia), If(IsNothing(Analizar.ConCopia), "", String.Join(";", Analizar.ConCopia)))
-                    Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Fecha), Analizar.Fecha)
-                    Backup.Indexacion.Tabla.WriteXml("Indexacion.xml")
-                    TablaMailBackup.Enabled = True
-                Else
-                    Task.Run(Sub()
-                                 Me.Invoke(Sub() LabelErroresDataTable.Text = "No se pudo indexar el mensaje, inténtelo más tarde.")
-                                 Thread.Sleep(3000)
-                                 Me.Invoke(Sub() LabelErroresDataTable.Text = "")
-                             End Sub)
-                End If
+                For Each Fila In TablaMailBackup.SelectedRows
+                    Dim Analizar As New Backup.Email(Fila.Cells(1).Value)
+                    Dim IdMail = Backup.Indexacion.GetItemIndex("Archivo", Fila.Cells(1).Value)
+                    If Not IsNothing(IdMail) Then
+                        TablaMailBackup.Enabled = False
+                        Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Remitente), If(String.IsNullOrEmpty(Analizar.Remitente), "", Analizar.Remitente))
+                        Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Asunto), If(String.IsNullOrEmpty(Analizar.Remitente), "", Analizar.Asunto))
+                        Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Destinatarios), If(IsNothing(Analizar.Destinatarios), "", String.Join(";", Analizar.Destinatarios)))
+                        Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.ConCopia), If(IsNothing(Analizar.ConCopia), "", String.Join(";", Analizar.ConCopia)))
+                        Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Fecha), Analizar.Fecha)
+                        Backup.Indexacion.Tabla.WriteXml("Indexacion.xml")
+                    Else
+                        Task.Run(Sub()
+                                     Me.Invoke(Sub() LabelErroresDataTable.Text = "No se pudo indexar el mensaje, inténtelo más tarde.")
+                                     Thread.Sleep(3000)
+                                     Me.Invoke(Sub() LabelErroresDataTable.Text = "")
+                                 End Sub)
+                    End If
+                Next
+                TablaMailBackup.Enabled = True
             End If
         End Sub
 
@@ -637,7 +638,11 @@ Namespace Interfaz
                 Process.Start("C:\Program Files\Notepad++\notepad++.exe", TablaMailBackup.SelectedRows(0).Cells(1).Value)
             End If
         End Sub
-
+        Private Sub RestaurarEmailToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RestaurarEmail.Click
+            For Each Fila As DataGridViewRow In TablaMailBackup.SelectedRows
+                Backup.Restaurar(Fila.Cells(1).Value)
+            Next
+        End Sub
         Private Sub ReindexarTodoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReindexarTodoToolStripMenuItem.Click
             Backup.Indexacion.Tabla.Clear()
             IO.File.Delete("Indexacion.xml")
@@ -647,9 +652,69 @@ Namespace Interfaz
             Dim Accion As Action = Async Sub() Await Backup.Indexar()
             Dim Lanzar As Task = Task.Run(Accion)
         End Sub
-
+        Private Sub IndexarNuevosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles IndexarNuevosToolStripMenuItem.Click
+            Backup.Indexacion.Tabla.Clear()
+            TablaMailBackup.Enabled = False
+            LabelErroresDataTable.Text = "Indexando..."
+            Dim Accion As Action = Async Sub() Await Backup.Indexar()
+            Dim Lanzar As Task = Task.Run(Accion)
+        End Sub
         Private Sub TablaMailBackup_EnabledChanged(sender As Object, e As EventArgs) Handles TablaMailBackup.EnabledChanged
             TablaMailBackup.ForeColor = If(TablaMailBackup.Enabled, Color.Black, Color.LightGray)
+        End Sub
+
+
+        Private Sub TablaMailBackup_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles TablaMailBackup.RowEnter
+            If TablaMailBackup.SelectedRows.Count > 0 Then
+                LabelErroresDataTable.Text = TablaMailBackup.SelectedRows(0).Cells(1).Value
+            End If
+        End Sub
+
+        Private Sub MenuTablaBackup_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles MenuTablaBackup.Opening
+            If Not IsNothing(TreePostOffices.SelectedNode) Then
+                ReindexarCarpeta.Enabled = True
+                ReindexarCarpeta.Text = $"Indexar: {TreePostOffices.SelectedNode.Text}"
+            Else
+                ReindexarCarpeta.Text = "Indexar Carpeta"
+                ReindexarCarpeta.Enabled = False
+            End If
+
+            If TablaMailBackup.SelectedRows.Count > 0 Then
+                ReindexarEmail.Enabled = True
+                RestaurarEmail.Enabled = True
+
+                If TablaMailBackup.SelectedRows.Count = 1 Then
+                    ReindexarEmail.Text = $"Reindexar: {TablaMailBackup.SelectedRows(0).Cells(5).Value}"
+                    RestaurarEmail.Text = $"Restaurar: {TablaMailBackup.SelectedRows(0).Cells(5).Value}"
+                Else
+                    ReindexarEmail.Text = $"Reindexar: Emails seleccionados."
+                    RestaurarEmail.Text = $"Restaurar: Emails seleccionados."
+                End If
+
+            Else
+                RestaurarEmail.Enabled = False
+                RestaurarEmail.Text = "Restaurar Email"
+                ReindexarEmail.Enabled = False
+                ReindexarEmail.Text = "Reindexar Email"
+            End If
+        End Sub
+
+        Private Sub ReindexarCarpeta_Click(sender As Object, e As EventArgs) Handles ReindexarCarpeta.Click
+            If Not IsNothing(TreePostOffices.SelectedNode) Then
+                TablaMailBackup.Enabled = False
+                Dim Ruta As String = TreePostOffices.SelectedNode.FullPath
+                Dim Accion As Action = Async Sub() Await Backup.Indexar(Ruta)
+                Dim Lanzar As Task = Task.Run(Accion)
+                'TablaMailBackup.Enabled = True
+            End If
+        End Sub
+
+        Private Sub TablaMailBackup_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles TablaMailBackup.CellContentClick
+
+        End Sub
+
+        Private Sub TablaMailBackup_CellContentDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles TablaMailBackup.CellContentDoubleClick
+            VisualizarEnNotepadToolStripMenuItem_Click(sender, e)
         End Sub
     End Class
 End Namespace

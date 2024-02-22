@@ -222,6 +222,8 @@
   <ItemGroup>
     <Content Include="CloudShield.ico" />
     <Content Include="IpBan1.ico" />
+    <None Include="Resources\ReindexEmail.png" />
+    <None Include="Resources\ReindexCarpeta.png" />
     <Content Include="Spam_Assassin.ico" />
   </ItemGroup>
   <ItemGroup />

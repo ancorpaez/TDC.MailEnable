@@ -106,6 +106,15 @@
             End SyncLock
         End Function
 
+        Public Function GetRow(Columna As String, Valor As Object) As DataRow
+            Try
+                Dim Devolucion As DataRow() = Tabla.Select(String.Format(Columna & "='{0}'", Valor))
+                If Not IsNothing(Devolucion) Then Return Devolucion.First
+            Catch ex As Exception
+
+            End Try
+            Return Nothing
+        End Function
         Protected Friend Function CrearID() As DataColumn
             Dim Columna As New DataColumn With {
                 .DataType = GetType(Int32),
