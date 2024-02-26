@@ -101,6 +101,7 @@
             Me.iMenuTabla = New System.Windows.Forms.ImageList(Me.components)
             Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
+            Me.BtnRecargarTreeNodePostOffices = New System.Windows.Forms.Button()
             Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcIMAPAct = New TDC.MailEnable.IpBan.UcAnalizador()
@@ -108,7 +109,6 @@
             Me.UcSMTPAct = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcPOPAct = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.BtnRecargarTreeNodePostOffices = New System.Windows.Forms.Button()
             Me.PanelIpBaneadas.SuspendLayout()
             Me.PanelBuscadores.SuspendLayout()
             Me.PanelIps.SuspendLayout()
@@ -621,6 +621,7 @@
             '
             'TreePostOffices
             '
+            Me.TreePostOffices.ContextMenuStrip = Me.MenuTablaBackup
             Me.TreePostOffices.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TreePostOffices.Location = New System.Drawing.Point(0, 0)
             Me.TreePostOffices.Name = "TreePostOffices"
@@ -900,6 +901,16 @@
             Me.ImageList1.ImageSize = New System.Drawing.Size(16, 16)
             Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
             '
+            'BtnRecargarTreeNodePostOffices
+            '
+            Me.BtnRecargarTreeNodePostOffices.Dock = System.Windows.Forms.DockStyle.Bottom
+            Me.BtnRecargarTreeNodePostOffices.Location = New System.Drawing.Point(0, 255)
+            Me.BtnRecargarTreeNodePostOffices.Name = "BtnRecargarTreeNodePostOffices"
+            Me.BtnRecargarTreeNodePostOffices.Size = New System.Drawing.Size(291, 33)
+            Me.BtnRecargarTreeNodePostOffices.TabIndex = 1
+            Me.BtnRecargarTreeNodePostOffices.Text = "Recargar PostOffices"
+            Me.BtnRecargarTreeNodePostOffices.UseVisualStyleBackColor = True
+            '
             'UcWEB
             '
             Me.UcWEB.Dock = System.Windows.Forms.DockStyle.Top
@@ -958,16 +969,6 @@
             Me.UcPOPAct.Size = New System.Drawing.Size(523, 40)
             Me.UcPOPAct.TabIndex = 0
             Me.UcPOPAct.Visible = False
-            '
-            'BtnRecargarTreeNodePostOffices
-            '
-            Me.BtnRecargarTreeNodePostOffices.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.BtnRecargarTreeNodePostOffices.Location = New System.Drawing.Point(0, 255)
-            Me.BtnRecargarTreeNodePostOffices.Name = "BtnRecargarTreeNodePostOffices"
-            Me.BtnRecargarTreeNodePostOffices.Size = New System.Drawing.Size(291, 33)
-            Me.BtnRecargarTreeNodePostOffices.TabIndex = 1
-            Me.BtnRecargarTreeNodePostOffices.Text = "Recargar PostOffices"
-            Me.BtnRecargarTreeNodePostOffices.UseVisualStyleBackColor = True
             '
             'IpBan
             '

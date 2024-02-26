@@ -681,6 +681,7 @@ Namespace Interfaz
         End Sub
 
         Private Sub MenuTablaBackup_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles MenuTablaBackup.Opening
+
             If Not IsNothing(TreePostOffices.SelectedNode) Then
                 ReindexarCarpeta.Enabled = True
                 ReindexarCarpeta.Text = $"Indexar: {TreePostOffices.SelectedNode.Text}"
@@ -692,6 +693,7 @@ Namespace Interfaz
             If TablaMailBackup.SelectedRows.Count > 0 Then
                 ReindexarEmail.Enabled = True
                 RestaurarEmail.Enabled = True
+                VisualizarEnNotepadToolStripMenuItem.Enabled = True
 
                 If TablaMailBackup.SelectedRows.Count = 1 Then
                     ReindexarEmail.Text = $"Reindexar: {TablaMailBackup.SelectedRows(0).Cells(5).Value}"
@@ -706,6 +708,7 @@ Namespace Interfaz
                 RestaurarEmail.Text = "Restaurar Email"
                 ReindexarEmail.Enabled = False
                 ReindexarEmail.Text = "Reindexar Email"
+                VisualizarEnNotepadToolStripMenuItem.Enabled = False
             End If
         End Sub
 
