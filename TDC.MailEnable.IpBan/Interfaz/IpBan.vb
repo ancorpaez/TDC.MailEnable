@@ -198,6 +198,7 @@ Namespace Interfaz
                 Mod_Core.SpamAssassin.Salida = txtRichSpamAssassin
                 SpamAssassin.Read()
             End If
+
             'Indexar los Emails del Backup
             Dim Accion As Action = Async Sub() Await Backup.Indexar()
             Dim Lanzar As Task = Task.Run(Accion)
@@ -210,12 +211,17 @@ Namespace Interfaz
 
         Private Sub LoadFolders(rootPath As String, treeView As TreeView)
             ' Limpia el TreeView
-            treeView.Nodes.Clear()
-            treeView.Enabled = False
+            'treeView.Nodes.Clear()
+            Me.Invoke(Sub() treeView.Enabled = False)
 
             ' Agrega el nodo raíz al TreeView
-            Dim rootNode As New TreeNode(rootPath)
-            treeView.Nodes.Add(rootNode)
+            Dim rootNode As TreeNode
+            If Not treeView.Nodes.ContainsKey(rootPath) Then
+                rootNode = New TreeNode(rootPath) With {.Name = rootPath}
+                Me.Invoke(Sub() treeView.Nodes.Add(rootNode))
+            Else
+                rootNode = treeView.Nodes(rootPath)
+            End If
 
             ' Llama a la función recursiva para agregar las subcarpetas
             LoadSubfolders(rootPath, rootNode)
@@ -225,13 +231,17 @@ Namespace Interfaz
         Private Sub LoadSubfolders(folderPath As String, parentNode As TreeNode)
             ' Recorre las subcarpetas del directorio dado
 
-            For Each subFolder In IO.Directory.GetDirectories(folderPath)
+            For Each subFolder In IO.Directory.GetDirectories(folderPath, "*", IO.SearchOption.TopDirectoryOnly)
                 ' Agrega cada subcarpeta como un nodo hijo
                 If Not {"indexroot", "pubroot", "fileroot", "calendar", "contacts", "notes", "tasks"}.Any(Function(Carpeta) subFolder.ToLower.Contains(Carpeta)) Then
                     Try
-                        Dim subFolderNode As New TreeNode(IO.Path.GetFileName(subFolder))
-                        Me.Invoke(Sub() parentNode.Nodes.Add(subFolderNode))
-
+                        Dim subFolderNode As TreeNode
+                        If Not parentNode.Nodes.ContainsKey(subFolder) Then
+                            subFolderNode = New TreeNode(IO.Path.GetFileName(subFolder)) With {.Name = subFolder}
+                            Me.Invoke(Sub() parentNode.Nodes.Add(subFolderNode))
+                        Else
+                            subFolderNode = parentNode.Nodes(subFolder)
+                        End If
                         ' Llama recursivamente a esta función para agregar subcarpetas de forma recursiva
                         LoadSubfolders(subFolder, subFolderNode)
                     Catch ex As Exception
@@ -715,6 +725,10 @@ Namespace Interfaz
 
         Private Sub TablaMailBackup_CellContentDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles TablaMailBackup.CellContentDoubleClick
             VisualizarEnNotepadToolStripMenuItem_Click(sender, e)
+        End Sub
+
+        Private Sub BtnRecargarTreeNodePostOffices_Click(sender As Object, e As EventArgs) Handles BtnRecargarTreeNodePostOffices.Click
+            Dim Desechar As Task = Task.Run(Sub() LoadFolders(Configuracion.CARPETA_BACKUP, TreePostOffices))
         End Sub
     End Class
 End Namespace

@@ -61,14 +61,24 @@
             Me.lblEstadoSpamAssasin = New System.Windows.Forms.Label()
             Me.Label3 = New System.Windows.Forms.Label()
             Me.MenuSpamAssassin = New System.Windows.Forms.MenuStrip()
+            Me.TSMDetener = New System.Windows.Forms.ToolStripMenuItem()
+            Me.TSMIniciarSpamAssassin = New System.Windows.Forms.ToolStripMenuItem()
+            Me.TSMIniciarSmapAssassinNormal = New System.Windows.Forms.ToolStripMenuItem()
+            Me.TSMIniciarSmapAssassinOculto = New System.Windows.Forms.ToolStripMenuItem()
             Me.TabMailBackup = New System.Windows.Forms.TabPage()
             Me.SplitContainer2 = New System.Windows.Forms.SplitContainer()
             Me.TreePostOffices = New System.Windows.Forms.TreeView()
             Me.TablaMailBackup = New System.Windows.Forms.DataGridView()
             Me.MenuTablaBackup = New System.Windows.Forms.ContextMenuStrip(Me.components)
-            Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
-            Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripSeparator()
+            Me.RestaurarEmail = New System.Windows.Forms.ToolStripMenuItem()
             Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripSeparator()
+            Me.ReindexarEmail = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ReindexarCarpeta = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.VisualizarEnNotepadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripSeparator()
+            Me.ReindexarTodoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.IndexarNuevosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.Panel3 = New System.Windows.Forms.Panel()
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
             Me.txtFAsunto = New System.Windows.Forms.TextBox()
@@ -88,6 +98,9 @@
             Me.TimerIpBan = New System.Windows.Forms.Timer(Me.components)
             Me.TimerGuiAnalizador = New System.Windows.Forms.Timer(Me.components)
             Me.StatusStrip2 = New System.Windows.Forms.StatusStrip()
+            Me.iMenuTabla = New System.Windows.Forms.ImageList(Me.components)
+            Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
+            Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
             Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcIMAPAct = New TDC.MailEnable.IpBan.UcAnalizador()
@@ -95,19 +108,7 @@
             Me.UcSMTPAct = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcPOPAct = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.iMenuTabla = New System.Windows.Forms.ImageList(Me.components)
-            Me.TSMDetener = New System.Windows.Forms.ToolStripMenuItem()
-            Me.TSMIniciarSpamAssassin = New System.Windows.Forms.ToolStripMenuItem()
-            Me.TSMIniciarSmapAssassinNormal = New System.Windows.Forms.ToolStripMenuItem()
-            Me.TSMIniciarSmapAssassinOculto = New System.Windows.Forms.ToolStripMenuItem()
-            Me.ReindexarEmail = New System.Windows.Forms.ToolStripMenuItem()
-            Me.ReindexarCarpeta = New System.Windows.Forms.ToolStripMenuItem()
-            Me.VisualizarEnNotepadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-            Me.ReindexarTodoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-            Me.IndexarNuevosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-            Me.RestaurarEmail = New System.Windows.Forms.ToolStripMenuItem()
-            Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
-            Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
+            Me.BtnRecargarTreeNodePostOffices = New System.Windows.Forms.Button()
             Me.PanelIpBaneadas.SuspendLayout()
             Me.PanelBuscadores.SuspendLayout()
             Me.PanelIps.SuspendLayout()
@@ -560,6 +561,33 @@
             Me.MenuSpamAssassin.TabIndex = 2
             Me.MenuSpamAssassin.Text = "MenuStrip1"
             '
+            'TSMDetener
+            '
+            Me.TSMDetener.Image = CType(resources.GetObject("TSMDetener.Image"), System.Drawing.Image)
+            Me.TSMDetener.Name = "TSMDetener"
+            Me.TSMDetener.Size = New System.Drawing.Size(76, 30)
+            Me.TSMDetener.Text = "Detener"
+            '
+            'TSMIniciarSpamAssassin
+            '
+            Me.TSMIniciarSpamAssassin.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TSMIniciarSmapAssassinNormal, Me.TSMIniciarSmapAssassinOculto})
+            Me.TSMIniciarSpamAssassin.Image = CType(resources.GetObject("TSMIniciarSpamAssassin.Image"), System.Drawing.Image)
+            Me.TSMIniciarSpamAssassin.Name = "TSMIniciarSpamAssassin"
+            Me.TSMIniciarSpamAssassin.Size = New System.Drawing.Size(67, 30)
+            Me.TSMIniciarSpamAssassin.Text = "Iniciar"
+            '
+            'TSMIniciarSmapAssassinNormal
+            '
+            Me.TSMIniciarSmapAssassinNormal.Name = "TSMIniciarSmapAssassinNormal"
+            Me.TSMIniciarSmapAssassinNormal.Size = New System.Drawing.Size(114, 22)
+            Me.TSMIniciarSmapAssassinNormal.Text = "Normal"
+            '
+            'TSMIniciarSmapAssassinOculto
+            '
+            Me.TSMIniciarSmapAssassinOculto.Name = "TSMIniciarSmapAssassinOculto"
+            Me.TSMIniciarSmapAssassinOculto.Size = New System.Drawing.Size(114, 22)
+            Me.TSMIniciarSmapAssassinOculto.Text = "Oculto"
+            '
             'TabMailBackup
             '
             Me.TabMailBackup.Controls.Add(Me.SplitContainer2)
@@ -580,6 +608,7 @@
             'SplitContainer2.Panel1
             '
             Me.SplitContainer2.Panel1.Controls.Add(Me.TreePostOffices)
+            Me.SplitContainer2.Panel1.Controls.Add(Me.BtnRecargarTreeNodePostOffices)
             '
             'SplitContainer2.Panel2
             '
@@ -595,7 +624,7 @@
             Me.TreePostOffices.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TreePostOffices.Location = New System.Drawing.Point(0, 0)
             Me.TreePostOffices.Name = "TreePostOffices"
-            Me.TreePostOffices.Size = New System.Drawing.Size(291, 288)
+            Me.TreePostOffices.Size = New System.Drawing.Size(291, 255)
             Me.TreePostOffices.TabIndex = 0
             '
             'TablaMailBackup
@@ -621,22 +650,64 @@
             '
             Me.MenuTablaBackup.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RestaurarEmail, Me.ToolStripMenuItem3, Me.ReindexarEmail, Me.ReindexarCarpeta, Me.ToolStripMenuItem1, Me.VisualizarEnNotepadToolStripMenuItem, Me.ToolStripMenuItem2, Me.ReindexarTodoToolStripMenuItem, Me.IndexarNuevosToolStripMenuItem})
             Me.MenuTablaBackup.Name = "MenuTablaBackup"
-            Me.MenuTablaBackup.Size = New System.Drawing.Size(208, 176)
+            Me.MenuTablaBackup.Size = New System.Drawing.Size(208, 154)
+            '
+            'RestaurarEmail
+            '
+            Me.RestaurarEmail.Image = CType(resources.GetObject("RestaurarEmail.Image"), System.Drawing.Image)
+            Me.RestaurarEmail.Name = "RestaurarEmail"
+            Me.RestaurarEmail.Size = New System.Drawing.Size(207, 22)
+            Me.RestaurarEmail.Text = "Restaurar Email"
+            '
+            'ToolStripMenuItem3
+            '
+            Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
+            Me.ToolStripMenuItem3.Size = New System.Drawing.Size(204, 6)
+            '
+            'ReindexarEmail
+            '
+            Me.ReindexarEmail.Image = Global.TDC.MailEnable.IpBan.My.Resources.Resources.ReindexEmail
+            Me.ReindexarEmail.Name = "ReindexarEmail"
+            Me.ReindexarEmail.Size = New System.Drawing.Size(207, 22)
+            Me.ReindexarEmail.Text = "Reindexar Email"
+            '
+            'ReindexarCarpeta
+            '
+            Me.ReindexarCarpeta.Image = Global.TDC.MailEnable.IpBan.My.Resources.Resources.ReindexCarpeta
+            Me.ReindexarCarpeta.Name = "ReindexarCarpeta"
+            Me.ReindexarCarpeta.Size = New System.Drawing.Size(207, 22)
+            Me.ReindexarCarpeta.Text = "Indexar Carpeta"
             '
             'ToolStripMenuItem1
             '
             Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
             Me.ToolStripMenuItem1.Size = New System.Drawing.Size(204, 6)
             '
+            'VisualizarEnNotepadToolStripMenuItem
+            '
+            Me.VisualizarEnNotepadToolStripMenuItem.Image = CType(resources.GetObject("VisualizarEnNotepadToolStripMenuItem.Image"), System.Drawing.Image)
+            Me.VisualizarEnNotepadToolStripMenuItem.Name = "VisualizarEnNotepadToolStripMenuItem"
+            Me.VisualizarEnNotepadToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
+            Me.VisualizarEnNotepadToolStripMenuItem.Text = "Visualizar en Notepad ++"
+            '
             'ToolStripMenuItem2
             '
             Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
             Me.ToolStripMenuItem2.Size = New System.Drawing.Size(204, 6)
             '
-            'ToolStripMenuItem3
+            'ReindexarTodoToolStripMenuItem
             '
-            Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
-            Me.ToolStripMenuItem3.Size = New System.Drawing.Size(204, 6)
+            Me.ReindexarTodoToolStripMenuItem.Image = CType(resources.GetObject("ReindexarTodoToolStripMenuItem.Image"), System.Drawing.Image)
+            Me.ReindexarTodoToolStripMenuItem.Name = "ReindexarTodoToolStripMenuItem"
+            Me.ReindexarTodoToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
+            Me.ReindexarTodoToolStripMenuItem.Text = "Reindexar Todo"
+            '
+            'IndexarNuevosToolStripMenuItem
+            '
+            Me.IndexarNuevosToolStripMenuItem.Image = CType(resources.GetObject("IndexarNuevosToolStripMenuItem.Image"), System.Drawing.Image)
+            Me.IndexarNuevosToolStripMenuItem.Name = "IndexarNuevosToolStripMenuItem"
+            Me.IndexarNuevosToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
+            Me.IndexarNuevosToolStripMenuItem.Text = "Indexar Nuevos"
             '
             'Panel3
             '
@@ -813,6 +884,22 @@
             Me.StatusStrip2.TabIndex = 1
             Me.StatusStrip2.Text = "StatusStrip2"
             '
+            'iMenuTabla
+            '
+            Me.iMenuTabla.ImageStream = CType(resources.GetObject("iMenuTabla.ImageStream"), System.Windows.Forms.ImageListStreamer)
+            Me.iMenuTabla.TransparentColor = System.Drawing.Color.Transparent
+            Me.iMenuTabla.Images.SetKeyName(0, "ReindexarNuevos.png")
+            Me.iMenuTabla.Images.SetKeyName(1, "ReindexarTodo.png")
+            Me.iMenuTabla.Images.SetKeyName(2, "RestaurarEmail.png")
+            Me.iMenuTabla.Images.SetKeyName(3, "ReindexEmail.png")
+            Me.iMenuTabla.Images.SetKeyName(4, "ReindexCarpeta.png")
+            '
+            'ImageList1
+            '
+            Me.ImageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
+            Me.ImageList1.ImageSize = New System.Drawing.Size(16, 16)
+            Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
+            '
             'UcWEB
             '
             Me.UcWEB.Dock = System.Windows.Forms.DockStyle.Top
@@ -872,90 +959,15 @@
             Me.UcPOPAct.TabIndex = 0
             Me.UcPOPAct.Visible = False
             '
-            'iMenuTabla
+            'BtnRecargarTreeNodePostOffices
             '
-            Me.iMenuTabla.ImageStream = CType(resources.GetObject("iMenuTabla.ImageStream"), System.Windows.Forms.ImageListStreamer)
-            Me.iMenuTabla.TransparentColor = System.Drawing.Color.Transparent
-            Me.iMenuTabla.Images.SetKeyName(0, "ReindexarNuevos.png")
-            Me.iMenuTabla.Images.SetKeyName(1, "ReindexarTodo.png")
-            Me.iMenuTabla.Images.SetKeyName(2, "RestaurarEmail.png")
-            Me.iMenuTabla.Images.SetKeyName(3, "ReindexEmail.png")
-            Me.iMenuTabla.Images.SetKeyName(4, "ReindexCarpeta.png")
-            '
-            'TSMDetener
-            '
-            Me.TSMDetener.Image = CType(resources.GetObject("TSMDetener.Image"), System.Drawing.Image)
-            Me.TSMDetener.Name = "TSMDetener"
-            Me.TSMDetener.Size = New System.Drawing.Size(76, 30)
-            Me.TSMDetener.Text = "Detener"
-            '
-            'TSMIniciarSpamAssassin
-            '
-            Me.TSMIniciarSpamAssassin.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TSMIniciarSmapAssassinNormal, Me.TSMIniciarSmapAssassinOculto})
-            Me.TSMIniciarSpamAssassin.Image = CType(resources.GetObject("TSMIniciarSpamAssassin.Image"), System.Drawing.Image)
-            Me.TSMIniciarSpamAssassin.Name = "TSMIniciarSpamAssassin"
-            Me.TSMIniciarSpamAssassin.Size = New System.Drawing.Size(67, 30)
-            Me.TSMIniciarSpamAssassin.Text = "Iniciar"
-            '
-            'TSMIniciarSmapAssassinNormal
-            '
-            Me.TSMIniciarSmapAssassinNormal.Name = "TSMIniciarSmapAssassinNormal"
-            Me.TSMIniciarSmapAssassinNormal.Size = New System.Drawing.Size(114, 22)
-            Me.TSMIniciarSmapAssassinNormal.Text = "Normal"
-            '
-            'TSMIniciarSmapAssassinOculto
-            '
-            Me.TSMIniciarSmapAssassinOculto.Name = "TSMIniciarSmapAssassinOculto"
-            Me.TSMIniciarSmapAssassinOculto.Size = New System.Drawing.Size(114, 22)
-            Me.TSMIniciarSmapAssassinOculto.Text = "Oculto"
-            '
-            'ReindexarEmail
-            '
-            Me.ReindexarEmail.Image = Global.TDC.MailEnable.IpBan.My.Resources.Resources.ReindexEmail
-            Me.ReindexarEmail.Name = "ReindexarEmail"
-            Me.ReindexarEmail.Size = New System.Drawing.Size(207, 22)
-            Me.ReindexarEmail.Text = "Reindexar Email"
-            '
-            'ReindexarCarpeta
-            '
-            Me.ReindexarCarpeta.Image = Global.TDC.MailEnable.IpBan.My.Resources.Resources.ReindexCarpeta
-            Me.ReindexarCarpeta.Name = "ReindexarCarpeta"
-            Me.ReindexarCarpeta.Size = New System.Drawing.Size(207, 22)
-            Me.ReindexarCarpeta.Text = "Indexar Carpeta"
-            '
-            'VisualizarEnNotepadToolStripMenuItem
-            '
-            Me.VisualizarEnNotepadToolStripMenuItem.Image = CType(resources.GetObject("VisualizarEnNotepadToolStripMenuItem.Image"), System.Drawing.Image)
-            Me.VisualizarEnNotepadToolStripMenuItem.Name = "VisualizarEnNotepadToolStripMenuItem"
-            Me.VisualizarEnNotepadToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
-            Me.VisualizarEnNotepadToolStripMenuItem.Text = "Visualizar en Notepad ++"
-            '
-            'ReindexarTodoToolStripMenuItem
-            '
-            Me.ReindexarTodoToolStripMenuItem.Image = CType(resources.GetObject("ReindexarTodoToolStripMenuItem.Image"), System.Drawing.Image)
-            Me.ReindexarTodoToolStripMenuItem.Name = "ReindexarTodoToolStripMenuItem"
-            Me.ReindexarTodoToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
-            Me.ReindexarTodoToolStripMenuItem.Text = "Reindexar Todo"
-            '
-            'IndexarNuevosToolStripMenuItem
-            '
-            Me.IndexarNuevosToolStripMenuItem.Image = CType(resources.GetObject("IndexarNuevosToolStripMenuItem.Image"), System.Drawing.Image)
-            Me.IndexarNuevosToolStripMenuItem.Name = "IndexarNuevosToolStripMenuItem"
-            Me.IndexarNuevosToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
-            Me.IndexarNuevosToolStripMenuItem.Text = "Indexar Nuevos"
-            '
-            'RestaurarEmail
-            '
-            Me.RestaurarEmail.Image = CType(resources.GetObject("RestaurarEmail.Image"), System.Drawing.Image)
-            Me.RestaurarEmail.Name = "RestaurarEmail"
-            Me.RestaurarEmail.Size = New System.Drawing.Size(207, 22)
-            Me.RestaurarEmail.Text = "Restaurar Email"
-            '
-            'ImageList1
-            '
-            Me.ImageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
-            Me.ImageList1.ImageSize = New System.Drawing.Size(16, 16)
-            Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
+            Me.BtnRecargarTreeNodePostOffices.Dock = System.Windows.Forms.DockStyle.Bottom
+            Me.BtnRecargarTreeNodePostOffices.Location = New System.Drawing.Point(0, 255)
+            Me.BtnRecargarTreeNodePostOffices.Name = "BtnRecargarTreeNodePostOffices"
+            Me.BtnRecargarTreeNodePostOffices.Size = New System.Drawing.Size(291, 33)
+            Me.BtnRecargarTreeNodePostOffices.TabIndex = 1
+            Me.BtnRecargarTreeNodePostOffices.Text = "Recargar PostOffices"
+            Me.BtnRecargarTreeNodePostOffices.UseVisualStyleBackColor = True
             '
             'IpBan
             '
@@ -1098,5 +1110,6 @@
         Friend WithEvents StatusStrip2 As StatusStrip
         Friend WithEvents iMenuTabla As ImageList
         Friend WithEvents ImageList1 As ImageList
+        Friend WithEvents BtnRecargarTreeNodePostOffices As Button
     End Class
 End Namespace
