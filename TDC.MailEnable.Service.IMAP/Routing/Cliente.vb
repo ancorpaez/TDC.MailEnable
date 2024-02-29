@@ -13,8 +13,8 @@ Namespace Routing
         Private BufferOrigen As BufferConexion
         Private BufferDestino As BufferConexion
         Private disposedValue As Boolean
-        Private WithEvents Temporizador As New Bucle.Bucle
-        Private WithEvents Enrutador As New Bucle.Bucle
+        Private WithEvents Temporizador As New Bucle.DoBucle
+        Private WithEvents Enrutador As New Bucle.DoBucle
         Private Actividad As Date
         Private EsperarSync As New ManualResetEvent(False)
 
@@ -63,11 +63,11 @@ Namespace Routing
                 'Establecer Temporizador de Inactividad
                 Temporizador.Intervalo = 1000
                 Actividad = Now
-                Temporizador.Inicia()
+                Temporizador.Iniciar()
 
                 'Enrutar la Conexion
                 Enrutador.Intervalo = 150
-                Enrutador.Inicia()
+                Enrutador.Iniciar()
 
                 'Esperar al enrutamiento
                 EsperarSync.WaitOne()
@@ -103,7 +103,7 @@ Namespace Routing
             End Try
         End Sub
 
-        Private Sub Temporizador_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Temporizador.IBucle_Bucle
+        Private Sub Temporizador_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Temporizador.Background
             If DateDiff(DateInterval.Second, Actividad, Now) > 20 Then
                 'If DateDiff(DateInterval.Second, Actividad, Now) > 3600 Then
                 Me.Dispose()
@@ -166,7 +166,7 @@ Namespace Routing
             GC.SuppressFinalize(Me)
         End Sub
 
-        Private Sub Enrutador_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Enrutador.IBucle_Bucle
+        Private Sub Enrutador_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Enrutador.Background
             'Enrutar la conexion
             Try
                 Me.Destino = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)

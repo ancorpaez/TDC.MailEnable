@@ -6,8 +6,8 @@ Imports TDC.MailEnable.Core.BDD
 Namespace Routing
     Module Core
         'Private ReadOnly listaBlanca As New List(Of String) From {"127.0.0.1"} ' Puedes agregar direcciones IP permitidas aquí
-        Private WithEvents EscuchadorImap As New Bucle.Bucle
-        Private WithEvents EscuchadorImapSsl As New Bucle.Bucle
+        Private WithEvents EscuchadorImap As New Bucle.DoBucle
+        Private WithEvents EscuchadorImapSsl As New Bucle.DoBucle
 
         Public imapListener As New TcpListener(IPAddress.Any, 144)
         Public imapSslListener As New TcpListener(IPAddress.Any, 994)
@@ -49,11 +49,11 @@ Namespace Routing
             Console.WriteLine("Servidor IMAP escuchando en los puertos " & imapListener.LocalEndpoint.ToString & " y " & imapSslListener.LocalEndpoint.ToString & "...")
 
             EscuchadorImap.Intervalo = 10
-            EscuchadorImap.Inicia()
+            EscuchadorImap.Iniciar()
             EscuchadorImapSsl.Intervalo = 10
-            EscuchadorImapSsl.Inicia()
+            EscuchadorImapSsl.Iniciar()
         End Sub
-        Private Sub EscuchadorImap_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles EscuchadorImap.IBucle_Bucle
+        Private Sub EscuchadorImap_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles EscuchadorImap.Background
             'Intento de proteger el Bucle de errores Inesperados
             Try
                 Dim NuevoCliente As Cliente = Nothing
@@ -71,7 +71,7 @@ Namespace Routing
             End Try
         End Sub
 
-        Private Sub EscuchadorImapSsl_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles EscuchadorImapSsl.IBucle_Bucle
+        Private Sub EscuchadorImapSsl_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles EscuchadorImapSsl.Background
             'Intento de proteger el Bucle de errores Inesperados
             Try
                 Dim NuevoCliente As Cliente = Nothing

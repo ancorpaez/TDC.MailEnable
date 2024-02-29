@@ -385,7 +385,6 @@
             Me.TrackLectura.LargeChange = 100
             Me.TrackLectura.Location = New System.Drawing.Point(116, 305)
             Me.TrackLectura.Maximum = 300
-            Me.TrackLectura.Minimum = 1
             Me.TrackLectura.Name = "TrackLectura"
             Me.TrackLectura.Size = New System.Drawing.Size(338, 45)
             Me.TrackLectura.SmallChange = 10
@@ -398,7 +397,6 @@
             Me.TrackPropagacion.LargeChange = 100
             Me.TrackPropagacion.Location = New System.Drawing.Point(116, 346)
             Me.TrackPropagacion.Maximum = 300
-            Me.TrackPropagacion.Minimum = 1
             Me.TrackPropagacion.Name = "TrackPropagacion"
             Me.TrackPropagacion.Size = New System.Drawing.Size(492, 45)
             Me.TrackPropagacion.SmallChange = 10

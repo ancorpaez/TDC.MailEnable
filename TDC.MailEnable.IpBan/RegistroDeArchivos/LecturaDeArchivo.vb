@@ -8,7 +8,7 @@ Imports System.Text.RegularExpressions
 
 Namespace RegistroDeArchivos
     Public Class LecturaDeArchivo
-        Private WithEvents Lector As New Bucle.Bucle
+        Private WithEvents Lector As New Bucle.DoBucle
 
         'Public Filtros As New List(Of Tuple(Of Integer, Integer, Boolean, List(Of Cls_Coincidencia)))
         Public Filtros As New List(Of Cls_Filtro)
@@ -69,7 +69,7 @@ Namespace RegistroDeArchivos
             If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
         End Sub
 
-        Private Sub Lector_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Lector.IBucle_Bucle
+        Private Sub Lector_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Lector.Background
             Try
                 If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
 
@@ -241,7 +241,7 @@ Namespace RegistroDeArchivos
         End Function
 
         Public Sub Escanear()
-            Lector.Inicia()
+            Lector.Iniciar()
             Bloqueo.WaitOne()
         End Sub
 

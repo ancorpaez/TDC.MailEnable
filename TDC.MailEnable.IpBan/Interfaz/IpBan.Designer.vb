@@ -68,7 +68,6 @@
             Me.TabMailBackup = New System.Windows.Forms.TabPage()
             Me.SplitContainer2 = New System.Windows.Forms.SplitContainer()
             Me.TreePostOffices = New System.Windows.Forms.TreeView()
-            Me.TablaMailBackup = New System.Windows.Forms.DataGridView()
             Me.MenuTablaBackup = New System.Windows.Forms.ContextMenuStrip(Me.components)
             Me.RestaurarEmail = New System.Windows.Forms.ToolStripMenuItem()
             Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripSeparator()
@@ -79,6 +78,8 @@
             Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripSeparator()
             Me.ReindexarTodoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.IndexarNuevosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.BtnRecargarTreeNodePostOffices = New System.Windows.Forms.Button()
+            Me.TablaMailBackup = New System.Windows.Forms.DataGridView()
             Me.Panel3 = New System.Windows.Forms.Panel()
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
             Me.txtFAsunto = New System.Windows.Forms.TextBox()
@@ -98,10 +99,11 @@
             Me.TimerIpBan = New System.Windows.Forms.Timer(Me.components)
             Me.TimerGuiAnalizador = New System.Windows.Forms.Timer(Me.components)
             Me.StatusStrip2 = New System.Windows.Forms.StatusStrip()
+            Me.lblPrueba = New System.Windows.Forms.ToolStripStatusLabel()
+            Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
             Me.iMenuTabla = New System.Windows.Forms.ImageList(Me.components)
             Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
-            Me.BtnRecargarTreeNodePostOffices = New System.Windows.Forms.Button()
             Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcIMAPAct = New TDC.MailEnable.IpBan.UcAnalizador()
@@ -135,12 +137,13 @@
             Me.SplitContainer2.Panel1.SuspendLayout()
             Me.SplitContainer2.Panel2.SuspendLayout()
             Me.SplitContainer2.SuspendLayout()
-            CType(Me.TablaMailBackup, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.MenuTablaBackup.SuspendLayout()
+            CType(Me.TablaMailBackup, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.Panel3.SuspendLayout()
             Me.TableLayoutPanel2.SuspendLayout()
             Me.StatusStrip1.SuspendLayout()
             Me.MenuPrincipal.SuspendLayout()
+            Me.StatusStrip2.SuspendLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
@@ -628,25 +631,6 @@
             Me.TreePostOffices.Size = New System.Drawing.Size(291, 255)
             Me.TreePostOffices.TabIndex = 0
             '
-            'TablaMailBackup
-            '
-            Me.TablaMailBackup.AllowUserToAddRows = False
-            Me.TablaMailBackup.AllowUserToDeleteRows = False
-            Me.TablaMailBackup.AllowUserToResizeRows = False
-            Me.TablaMailBackup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-            Me.TablaMailBackup.ContextMenuStrip = Me.MenuTablaBackup
-            Me.TablaMailBackup.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.TablaMailBackup.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-            Me.TablaMailBackup.Enabled = False
-            Me.TablaMailBackup.Location = New System.Drawing.Point(0, 48)
-            Me.TablaMailBackup.Name = "TablaMailBackup"
-            Me.TablaMailBackup.ReadOnly = True
-            Me.TablaMailBackup.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-            Me.TablaMailBackup.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-            Me.TablaMailBackup.ShowEditingIcon = False
-            Me.TablaMailBackup.Size = New System.Drawing.Size(580, 216)
-            Me.TablaMailBackup.TabIndex = 0
-            '
             'MenuTablaBackup
             '
             Me.MenuTablaBackup.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RestaurarEmail, Me.ToolStripMenuItem3, Me.ReindexarEmail, Me.ReindexarCarpeta, Me.ToolStripMenuItem1, Me.VisualizarEnNotepadToolStripMenuItem, Me.ToolStripMenuItem2, Me.ReindexarTodoToolStripMenuItem, Me.IndexarNuevosToolStripMenuItem})
@@ -709,6 +693,35 @@
             Me.IndexarNuevosToolStripMenuItem.Name = "IndexarNuevosToolStripMenuItem"
             Me.IndexarNuevosToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
             Me.IndexarNuevosToolStripMenuItem.Text = "Indexar Nuevos"
+            '
+            'BtnRecargarTreeNodePostOffices
+            '
+            Me.BtnRecargarTreeNodePostOffices.Dock = System.Windows.Forms.DockStyle.Bottom
+            Me.BtnRecargarTreeNodePostOffices.Location = New System.Drawing.Point(0, 255)
+            Me.BtnRecargarTreeNodePostOffices.Name = "BtnRecargarTreeNodePostOffices"
+            Me.BtnRecargarTreeNodePostOffices.Size = New System.Drawing.Size(291, 33)
+            Me.BtnRecargarTreeNodePostOffices.TabIndex = 1
+            Me.BtnRecargarTreeNodePostOffices.Text = "Recargar PostOffices"
+            Me.BtnRecargarTreeNodePostOffices.UseVisualStyleBackColor = True
+            '
+            'TablaMailBackup
+            '
+            Me.TablaMailBackup.AllowUserToAddRows = False
+            Me.TablaMailBackup.AllowUserToDeleteRows = False
+            Me.TablaMailBackup.AllowUserToResizeRows = False
+            Me.TablaMailBackup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+            Me.TablaMailBackup.ContextMenuStrip = Me.MenuTablaBackup
+            Me.TablaMailBackup.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.TablaMailBackup.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
+            Me.TablaMailBackup.Enabled = False
+            Me.TablaMailBackup.Location = New System.Drawing.Point(0, 48)
+            Me.TablaMailBackup.Name = "TablaMailBackup"
+            Me.TablaMailBackup.ReadOnly = True
+            Me.TablaMailBackup.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+            Me.TablaMailBackup.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+            Me.TablaMailBackup.ShowEditingIcon = False
+            Me.TablaMailBackup.Size = New System.Drawing.Size(580, 216)
+            Me.TablaMailBackup.TabIndex = 0
             '
             'Panel3
             '
@@ -879,11 +892,24 @@
             '
             'StatusStrip2
             '
+            Me.StatusStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblPrueba, Me.ToolStripStatusLabel1})
             Me.StatusStrip2.Location = New System.Drawing.Point(0, 375)
             Me.StatusStrip2.Name = "StatusStrip2"
             Me.StatusStrip2.Size = New System.Drawing.Size(903, 22)
             Me.StatusStrip2.TabIndex = 1
             Me.StatusStrip2.Text = "StatusStrip2"
+            '
+            'lblPrueba
+            '
+            Me.lblPrueba.Name = "lblPrueba"
+            Me.lblPrueba.Size = New System.Drawing.Size(13, 17)
+            Me.lblPrueba.Text = "0"
+            '
+            'ToolStripStatusLabel1
+            '
+            Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
+            Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(120, 17)
+            Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
             '
             'iMenuTabla
             '
@@ -900,16 +926,6 @@
             Me.ImageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
             Me.ImageList1.ImageSize = New System.Drawing.Size(16, 16)
             Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
-            '
-            'BtnRecargarTreeNodePostOffices
-            '
-            Me.BtnRecargarTreeNodePostOffices.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.BtnRecargarTreeNodePostOffices.Location = New System.Drawing.Point(0, 255)
-            Me.BtnRecargarTreeNodePostOffices.Name = "BtnRecargarTreeNodePostOffices"
-            Me.BtnRecargarTreeNodePostOffices.Size = New System.Drawing.Size(291, 33)
-            Me.BtnRecargarTreeNodePostOffices.TabIndex = 1
-            Me.BtnRecargarTreeNodePostOffices.Text = "Recargar PostOffices"
-            Me.BtnRecargarTreeNodePostOffices.UseVisualStyleBackColor = True
             '
             'UcWEB
             '
@@ -1014,8 +1030,8 @@
             Me.SplitContainer2.Panel2.PerformLayout()
             CType(Me.SplitContainer2, System.ComponentModel.ISupportInitialize).EndInit()
             Me.SplitContainer2.ResumeLayout(False)
-            CType(Me.TablaMailBackup, System.ComponentModel.ISupportInitialize).EndInit()
             Me.MenuTablaBackup.ResumeLayout(False)
+            CType(Me.TablaMailBackup, System.ComponentModel.ISupportInitialize).EndInit()
             Me.Panel3.ResumeLayout(False)
             Me.TableLayoutPanel2.ResumeLayout(False)
             Me.TableLayoutPanel2.PerformLayout()
@@ -1023,6 +1039,8 @@
             Me.StatusStrip1.PerformLayout()
             Me.MenuPrincipal.ResumeLayout(False)
             Me.MenuPrincipal.PerformLayout()
+            Me.StatusStrip2.ResumeLayout(False)
+            Me.StatusStrip2.PerformLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
@@ -1112,5 +1130,7 @@
         Friend WithEvents iMenuTabla As ImageList
         Friend WithEvents ImageList1 As ImageList
         Friend WithEvents BtnRecargarTreeNodePostOffices As Button
+        Friend WithEvents lblPrueba As ToolStripStatusLabel
+        Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel
     End Class
 End Namespace

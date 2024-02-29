@@ -7,7 +7,7 @@ Namespace Bucle
         Implements IBucle
 
         Private _Detener As Boolean = False
-        Private WithEvents _TrabajadorDeFondo As New BackgroundWorker
+        Private WithEvents _TrabajadorDeFondo As New BackgroundWorker With {.WorkerReportsProgress = True, .WorkerSupportsCancellation = True}
         Private WithEvents _Disparador As New Timers.Timer With {.AutoReset = False}
         Private _VidaTimer As DateTime
 
@@ -70,7 +70,11 @@ Namespace Bucle
             'If Threading.Monitor.IsEntered(TryMonitorBucle) Then
             '    Threading.Monitor.Exit(TryMonitorBucle)
             'End If
-            If Not _Detener Then _Disparador.Start()
+            If Not _Detener AndAlso Not IsNothing(_Disparador) Then _Disparador.Start()
+
+        End Sub
+
+        Private Sub _TrabajadorDeFondo_ProgressChanged(sender As Object, e As ProgressChangedEventArgs) Handles _TrabajadorDeFondo.ProgressChanged
 
         End Sub
     End Class

@@ -3,7 +3,7 @@ Imports System.IO.Pipes
 
 Namespace Pipe
     Public Class ClientPipe
-        Private WithEvents BucleDatos As New Bucle.Bucle
+        Private WithEvents BucleDatos As New Bucle.DoBucle
         Private Lista As List(Of String) = Nothing
         Public Event AlObtenerLaLista(Lista As List(Of String))
         Public Enum EnumEstadoPipe
@@ -15,10 +15,10 @@ Namespace Pipe
 
         Public Sub New()
             BucleDatos.Intervalo = 100
-            BucleDatos.Inicia()
+            BucleDatos.Iniciar()
         End Sub
 
-        Private Sub BucleDatos_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles BucleDatos.IBucle_Bucle
+        Private Sub BucleDatos_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles BucleDatos.Background
 
             'Pasar el Bucle a 10 Minutos de Interaccion
             If BucleDatos.Intervalo = 100 Then BucleDatos.Intervalo = 6000

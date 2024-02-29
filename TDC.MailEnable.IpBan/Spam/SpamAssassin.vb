@@ -34,7 +34,7 @@
             End Set
         End Property
         Public Salida As RichTextBox
-        Private WithEvents Lectura As Core.Bucle.Bucle
+        Private WithEvents Lectura As Core.Bucle.DoBucle
 
         Private _Corriendo As Boolean = False
         Public ReadOnly Property Corriendo As Boolean
@@ -78,8 +78,8 @@
             ShowWindow(_Proceso.MainWindowHandle, SW_SHOW)
         End Sub
         Public Sub Read()
-            Lectura = New Core.Bucle.Bucle With {.Intervalo = 1000}
-            Lectura.Inicia()
+            Lectura = New Core.Bucle.DoBucle With {.Intervalo = 1000}
+            Lectura.Iniciar()
         End Sub
         Public Sub Kill()
             If Not IsNothing(Proceso) Then
@@ -92,7 +92,7 @@
         End Sub
 
 
-        Private Sub Lectura_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Lectura.IBucle_Bucle
+        Private Sub Lectura_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Lectura.Background
             If IsNothing(LogFile) Then LogFile = New IO.FileInfo(Ejecutable.FullName.Replace("exe", "log"))
             If Not LogFile.Exists Then
                 LogFile.Refresh()

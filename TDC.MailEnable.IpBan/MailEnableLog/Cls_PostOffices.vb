@@ -2,7 +2,7 @@
     Public Class Cls_PostOffices
         Private PostOfficesPath As String = ""
         Private PostOfficesDirectory As IO.DirectoryInfo
-        Private WithEvents PostOfficeSearch As MailEnable.Core.Bucle.Bucle
+        Private WithEvents PostOfficeSearch As MailEnable.Core.Bucle.DoBucle
         Private PostOfficesIndex As New Concurrent.ConcurrentDictionary(Of String, Cls_MailBoxes)
 
         Public Sub New(PostOffices As String)
@@ -10,13 +10,13 @@
             If IO.Directory.Exists(PostOffices) Then PostOfficesDirectory = New IO.DirectoryInfo(PostOffices)
 
             If Not IsNothing(PostOfficesDirectory) Then
-                PostOfficeSearch = New Core.Bucle.Bucle
+                PostOfficeSearch = New Core.Bucle.DoBucle
                 PostOfficeSearch.Intervalo = 10
-                PostOfficeSearch.Inicia()
+                PostOfficeSearch.Iniciar()
             End If
         End Sub
 
-        Private Sub PostOfficeSearch_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles PostOfficeSearch.IBucle_Bucle
+        Private Sub PostOfficeSearch_Background(Sender As Object, ByRef Detener As Boolean) Handles PostOfficeSearch.Background
             PostOfficeSearch.Intervalo = 10000
             'Añadir
             For Each iPostOffice In PostOfficesDirectory.GetDirectories("*.*", IO.SearchOption.TopDirectoryOnly)

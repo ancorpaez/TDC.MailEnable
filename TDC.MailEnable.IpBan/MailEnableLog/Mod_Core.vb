@@ -75,6 +75,7 @@ Namespace MailEnableLog
                         PostOfficesCenter = New Cls_PostOffices(Configuracion.POST_OFFICES)
                     End If
                 End If
+
                 'Activar Spam Assassin
                 If Not String.IsNullOrEmpty(Configuracion.SPAM_SPAMASSASSIN) Then
                     If IO.File.Exists(Configuracion.SPAM_SPAMASSASSIN) Then

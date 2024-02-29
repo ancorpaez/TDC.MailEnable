@@ -69,8 +69,7 @@
     <Compile Include="BDD\MailBackupIndex.vb" />
     <Compile Include="BDD\IMAPBaneadas.vb" />
     <Compile Include="BDD\IMAPCorrectas.vb" />
-    <Compile Include="Bucle\Bucle.vb" />
-    <Compile Include="Bucle\IBucle.vb" />
+    <Compile Include="Bucle\DoBucle.vb" />
     <Compile Include="Concurrent\ConcurrentBindingList.vb" />
     <Compile Include="GeoLocalizacion\Cls_Geolocalizacion.vb" />
     <Compile Include="GeoLocalizacion\IpInfo.vb" />

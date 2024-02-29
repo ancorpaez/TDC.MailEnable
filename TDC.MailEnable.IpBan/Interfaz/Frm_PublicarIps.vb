@@ -4,7 +4,7 @@ Imports TDC.MailEnable.Core
 
 Namespace Interfaz
     Public Class Frm_PublicarIps
-        Private WithEvents Publicador As New Bucle.Bucle
+        Private WithEvents Publicador As New Bucle.DoBucle
         Private IndexIp As Integer = 0
         Private ListaSMTP As Cls_MailEnableDeny
         Private ListaPOP As Cls_MailEnableDeny
@@ -33,12 +33,12 @@ Namespace Interfaz
             ListaWEB.Clear()
 
             If IsNumeric(Configuracion.TIMER_PROPAGACION) Then Publicador.Intervalo = Configuracion.TIMER_PROPAGACION Else Publicador.Intervalo = 1
-            Publicador.Inicia()
+            Publicador.Iniciar()
             If Not IsNothing(Lista) AndAlso Lista.Count > 0 Then
                 Progreso.Maximum = Lista.Count - 1
             End If
         End Sub
-        Private Sub Publicador_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Publicador.IBucle_Bucle
+        Private Sub Publicador_Background(Sender As Object, ByRef Detener As Boolean) Handles Publicador.Background
             If IsNumeric(Configuracion.TIMER_PROPAGACION) Then Publicador.Intervalo = Configuracion.TIMER_PROPAGACION Else Publicador.Intervalo = 1
             'Proteger
             If Lista.Count = 0 Then Exit Sub
@@ -50,10 +50,10 @@ Namespace Interfaz
             'Comprobar el Index
             If IndexIp < (Lista.Count - 1) Then
                 'Aumentar uno
-                Me.Invoke(Sub() Progreso.Value = IndexIp)
-                Me.Invoke(Sub() lblIp.Text = Lista(IndexIp))
-                Me.Invoke(Sub() lblIndex.Text = IndexIp)
-                Me.Invoke(Sub() lblCount.Text = Lista.Count)
+                'Me.Invoke(Sub() Progreso.Value = IndexIp)
+                'Me.Invoke(Sub() lblIp.Text = Lista(IndexIp))
+                'Me.Invoke(Sub() lblIndex.Text = IndexIp)
+                'Me.Invoke(Sub() lblCount.Text = Lista.Count)
 
                 IndexIp += 1
             Else
@@ -71,11 +71,18 @@ Namespace Interfaz
             End If
         End Sub
 
+        Private Sub Publicador_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Publicador.Foreground
+            If IndexIp < (Lista.Count - 1) Then
+                Progreso.Value = IndexIp
+                lblIp.Text = Lista(IndexIp)
+                lblIndex.Text = IndexIp
+                lblCount.Text = Lista.Count
+            End If
+        End Sub
         Private Sub BtnCancelar_Click(sender As Object, e As EventArgs) Handles BtnCancelar.Click
             Publicador.Detener()
             Me.Close()
         End Sub
-
 
     End Class
 End Namespace

@@ -12,27 +12,27 @@ Namespace Interfaz
     Public Class IpBan
 
         'POP
-        Private WithEvents Trabajador_POP As New Bucle.Bucle
+        Private WithEvents Trabajador_POP As New Bucle.DoBucle
         Private Registro_POP As New RegistroDeArchivos.RegistroDeArchivos(NameOf(Registro_POP))
-        Private WithEvents Trabajador_POPW3C As New Bucle.Bucle
+        Private WithEvents Trabajador_POPW3C As New Bucle.DoBucle
         Private Registro_POPW3C As New RegistroDeArchivos.RegistroDeArchivos(NameOf(Registro_POPW3C))
         'Private POP_DENY As Cls_MailEnableDeny
 
         'SMTP
-        Private WithEvents Trabajador_SMTP As New Bucle.Bucle
+        Private WithEvents Trabajador_SMTP As New Bucle.DoBucle
         Private Registro_SMTP As New RegistroDeArchivos.RegistroDeArchivos(NameOf(Registro_SMTP))
-        Private WithEvents Trabajador_SMTPW3C As New Bucle.Bucle
+        Private WithEvents Trabajador_SMTPW3C As New Bucle.DoBucle
         Private Registro_SMTPW3C As New RegistroDeArchivos.RegistroDeArchivos(NameOf(Registro_SMTPW3C))
         'Private SMTP_DENY As Cls_MailEnableDeny
 
         'IMAP
-        Private WithEvents Trabajador_IMAP As New Bucle.Bucle
+        Private WithEvents Trabajador_IMAP As New Bucle.DoBucle
         Private Registro_IMAP As New RegistroDeArchivos.RegistroDeArchivos(NameOf(Registro_IMAP))
-        Private WithEvents Trabajador_IMAPW3C As New Bucle.Bucle
+        Private WithEvents Trabajador_IMAPW3C As New Bucle.DoBucle
         Private Registro_IMAPW3C As New RegistroDeArchivos.RegistroDeArchivos(NameOf(Registro_IMAPW3C))
 
         'WEB
-        Private WithEvents Trabajador_WEB As New Bucle.Bucle
+        Private WithEvents Trabajador_WEB As New Bucle.DoBucle
         Private Registro_WEB As New RegistroDeArchivos.RegistroDeArchivos(NameOf(Registro_WEB))
         'Private ISSServer As Cls_ISS
 
@@ -44,12 +44,17 @@ Namespace Interfaz
         Private iFaceControlIndex As New System.Collections.Concurrent.ConcurrentDictionary(Of UcAnalizador, LecturaDeArchivo)
         Private Shared SyncActualizarProgresoArchivo As New Object
 
+        'Pruebas
+        Private WithEvents MiBucle As New Core.Bucle.DoBucle
+
         Private Sub IpBan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             '**** TEST****
             'Dim Test As New Core.GeoLocalizacion.MyNsLookUp
             'Dim Tes2 = Test.EsLegitima("104.26.7.164")
             'Dim Tes0 = Test.EsLegitima("185.92.245.33")
             'Dim Tes1 = Test.EsLegitima("129.126.197.254")
+            MiBucle.Intervalo = 1
+            'MiBucle.Iniciar()
             '*************
 
             Mod_Core.IpBanForm = Me
@@ -124,7 +129,7 @@ Namespace Interfaz
                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 5, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                        New Cls_Coincidencia With {.Filtro = "-ERR+Unable+to+log+on", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             Trabajador_POPW3C.Intervalo = 1000
-            Trabajador_POPW3C.Inicia()
+            Trabajador_POPW3C.Iniciar()
 
             'SMTP(W3C)
             Registro_SMTPW3C.Filtro.Add(New Cls_Filtro With {
@@ -139,7 +144,7 @@ Namespace Interfaz
                                         .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                         New Cls_Coincidencia With {.Filtro = "This+mail+server+requires+authentication+before+sending+mail", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             Trabajador_SMTPW3C.Intervalo = 1000
-            Trabajador_SMTPW3C.Inicia()
+            Trabajador_SMTPW3C.Iniciar()
 
 
 
@@ -148,7 +153,7 @@ Namespace Interfaz
                                         .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 3, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                         New Cls_Coincidencia With {.Filtro = "Invalid+username+or+password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             Trabajador_IMAPW3C.Intervalo = 1000
-            Trabajador_IMAPW3C.Inicia()
+            Trabajador_IMAPW3C.Iniciar()
 
             'WEB
             Registro_WEB.Filtro.Add(New Cls_Filtro With {
@@ -175,7 +180,7 @@ Namespace Interfaz
                                     New Cls_Coincidencia With {.Filtro = "HEAD", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
                                     New Cls_Coincidencia With {.Filtro = " 404 ", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             Trabajador_WEB.Intervalo = 1000
-            Trabajador_WEB.Inicia()
+            Trabajador_WEB.Iniciar()
 
             'Interfaz
             UcPOPEx.Carpeta.Text = "POP (Ex)"
@@ -303,7 +308,7 @@ Namespace Interfaz
             End Try
             Return Devolver
         End Function
-        Private Sub EscanearCarpeta(UcCarpeta As UcAnalizador, DelimitadorIp As Func(Of String, String), Trabajador As Bucle.Bucle, Carpeta As String, ControlCarpeta As RegistroDeArchivos.RegistroDeArchivos, FiltroCarpeta As String)
+        Private Sub EscanearCarpeta(UcCarpeta As UcAnalizador, DelimitadorIp As Func(Of String, String), Trabajador As Bucle.DoBucle, Carpeta As String, ControlCarpeta As RegistroDeArchivos.RegistroDeArchivos, FiltroCarpeta As String)
             'Ordenar los Archivos por FECHA
             Dim Ordenados = From Archivo In New IO.DirectoryInfo(Carpeta).GetFiles(FiltroCarpeta, IO.SearchOption.TopDirectoryOnly)
                             Order By Archivo.LastWriteTime Ascending
@@ -376,35 +381,35 @@ Namespace Interfaz
         End Sub
 
 
-        Private Sub Trabajador_POP_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_POP.IBucle_Bucle
+        Private Sub Trabajador_POP_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_POP.Background
             'Trabajo en BackGround
             EscanearCarpeta(UcPOPAct, Function(Linea) RecuperarIpTab(Linea, 3), Trabajador_POP, Mod_Core.Configuracion.POP, Registro_POP, "POP-Activity*.log")
         End Sub
 
-        Private Sub Trabajador_POPW3C_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_POPW3C.IBucle_Bucle
+        Private Sub Trabajador_POPW3C_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_POPW3C.Background
             'Trabajo en BackGround
             EscanearCarpeta(UcPOPEx, Function(Linea) RecuperarIpSplit(Linea, 2), Trabajador_POPW3C, Mod_Core.Configuracion.POP, Registro_POPW3C, "ex*.log")
         End Sub
 
-        Private Sub Trabajador_SMTP_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_SMTP.IBucle_Bucle
+        Private Sub Trabajador_SMTP_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_SMTP.Background
             'Trabajo en BackGround
             EscanearCarpeta(UcSMTPAct, Function(linea) RecuperarIpTab(linea, 4), Trabajador_SMTP, Mod_Core.Configuracion.SMTP, Registro_SMTP, "SMTP-Activity*.log")
         End Sub
-        Private Sub Trabajador_SMTPW3C_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_SMTPW3C.IBucle_Bucle
+        Private Sub Trabajador_SMTPW3C_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_SMTPW3C.Background
             'Trabajo en BackGround
             'EscanearCarpeta(UcSMTPEx, Function(Linea) Linea.Split(" ")(2), Trabajador_SMTPW3C, Mod_Core.Configuracion.SMTP, Registro_SMTPW3C, "ex*.log")
             EscanearCarpeta(UcSMTPEx, Function(Linea) RecuperarIpSplit(Linea, 2), Trabajador_SMTPW3C, Mod_Core.Configuracion.SMTP, Registro_SMTPW3C, "ex*.log")
         End Sub
-        Private Sub Trabajador_IMAP_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_IMAP.IBucle_Bucle
+        Private Sub Trabajador_IMAP_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_IMAP.Background
             'Trabajo en BackGround
             EscanearCarpeta(UcIMAPAct, Function(Linea) RecuperarIpTab(Linea, 4), Trabajador_IMAP, Mod_Core.Configuracion.IMAP, Registro_IMAP, "IMAP-Activity*.log")
         End Sub
-        Private Sub Trabajador_IMAPW3C_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_IMAPW3C.IBucle_Bucle
+        Private Sub Trabajador_IMAPW3C_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_IMAPW3C.Background
             'Trabajo en BackGround
             EscanearCarpeta(UcIMAPEx, Function(Linea) RecuperarIpSplit(Linea, 2), Trabajador_IMAPW3C, Mod_Core.Configuracion.IMAP, Registro_IMAPW3C, "ex*.log")
         End Sub
 
-        Private Sub Trabajador_WEB_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_WEB.IBucle_Bucle
+        Private Sub Trabajador_WEB_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_WEB.Background
             'Trabajo en BackGround
             EscanearCarpeta(UcWEB, Function(Linea) RecuperarIpSplit(Linea, 8), Trabajador_WEB, Mod_Core.Configuracion.WEB, Registro_WEB, "u_ex*.log")
         End Sub
@@ -733,5 +738,20 @@ Namespace Interfaz
         Private Sub BtnRecargarTreeNodePostOffices_Click(sender As Object, e As EventArgs) Handles BtnRecargarTreeNodePostOffices.Click
             Dim Desechar As Task = Task.Run(Sub() LoadFolders(Configuracion.CARPETA_BACKUP, TreePostOffices))
         End Sub
+
+
+        Private Sub ToolStripStatusLabel1_Click(sender As Object, e As EventArgs) Handles ToolStripStatusLabel1.Click
+            Test1 += 1
+            MiBucle.Intervalo = 0
+            MiBucle.Iniciar()
+        End Sub
+        Dim Test1 As Integer = 0
+
+        Private Sub MiBucle_Background(Sender As Object, ByRef Detener As Boolean) Handles MiBucle.Background
+            Test1 += 1
+            If Test1 = 1000 Then MiBucle.Detener()
+            lblPrueba.Text = Test1
+        End Sub
+
     End Class
 End Namespace
