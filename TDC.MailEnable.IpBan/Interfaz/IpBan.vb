@@ -45,7 +45,7 @@ Namespace Interfaz
         Private Shared SyncActualizarProgresoArchivo As New Object
 
         'Pruebas
-        'Private WithEvents MiBucle As New Core.Bucle.DoBucle("MiBucle")
+        Private WithEvents MiBucle As New Core.Bucle.DoBucle("MiBucle")
 
         Private Sub IpBan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             '**** TEST****
@@ -53,8 +53,8 @@ Namespace Interfaz
             'Dim Tes2 = Test.EsLegitima("104.26.7.164")
             'Dim Tes0 = Test.EsLegitima("185.92.245.33")
             'Dim Tes1 = Test.EsLegitima("129.126.197.254")
-            'MiBucle.Intervalo = 1
-            'MiBucle.Iniciar()
+            MiBucle.Intervalo = 1
+            MiBucle.Iniciar()
             '*************
 
             Mod_Core.IpBanForm = Me
@@ -742,22 +742,29 @@ Namespace Interfaz
             Dim Desechar As Task = Task.Run(Sub() LoadFolders(Configuracion.CARPETA_BACKUP, TreePostOffices))
         End Sub
 
+        Dim Test1 As Integer = 0
+        Private Sub ToolStripStatusLabel1_Click(sender As Object, e As EventArgs) Handles ToolStripStatusLabel1.Click
+            Test1 += 1
+            MiBucle.Intervalo = 1
+            MiBucle.Iniciar()
+        End Sub
 
-        'Private Sub ToolStripStatusLabel1_Click(sender As Object, e As EventArgs) Handles ToolStripStatusLabel1.Click
-        '    Test1 += 1
-        '    MiBucle.Intervalo = 0
-        '    MiBucle.Iniciar()
-        'End Sub
-        'Dim Test1 As Integer = 0
-
-        'Private Sub MiBucle_Background(Sender As Object, ByRef Detener As Boolean) Handles MiBucle.Background
-        '    Test1 += 1
-        '    If Test1 = 1000 Then MiBucle.Detener()
-        'End Sub
+        Private Sub MiBucle_Background(Sender As Object, ByRef Detener As Boolean) Handles MiBucle.Background
+            'Thread.Sleep(1000)
+            Test1 += 1
+            If Test1 = 1000 Then MiBucle.Detener()
+        End Sub
 
         Private Sub MiBucle_Foreground(Sender As Object, ByRef Detener As Boolean) Handles MiBucle.Foreground
+            'Thread.Sleep(1000)
             lblPrueba.Text = Test1
-            Dim te As Form
+            'If Test1 = 1000 Then Detener = True
+        End Sub
+
+        Private Sub MiBucle_Endground(Sender As Object, ByRef Detener As Boolean) Handles MiBucle.Endground
+            lblPrueba.Text = $"End {Test1}"
+            'MiBucle.Matar()
+            'MiBucle = Nothing
         End Sub
     End Class
 End Namespace
