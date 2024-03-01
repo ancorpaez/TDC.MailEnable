@@ -4,7 +4,7 @@ Imports System.IO.Pipes
 Namespace Pipe
     Public Class ServerPipe
         'Private Server As NamedPipeServerStream
-        Private WithEvents BucleDatos As New Bucle.DoBucle
+        Private WithEvents BucleDatos As New Bucle.DoBucle("ServerPipe")
         Private Csv As String = String.Empty
         Public ObtenerLista As Func(Of List(Of String)) = Nothing
 

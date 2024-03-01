@@ -46,6 +46,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -70,6 +71,7 @@
     <Compile Include="BDD\IMAPBaneadas.vb" />
     <Compile Include="BDD\IMAPCorrectas.vb" />
     <Compile Include="Bucle\DoBucle.vb" />
+    <Compile Include="Bucle\Mod_GlobalDoBucle.vb" />
     <Compile Include="Concurrent\ConcurrentBindingList.vb" />
     <Compile Include="GeoLocalizacion\Cls_Geolocalizacion.vb" />
     <Compile Include="GeoLocalizacion\IpInfo.vb" />

@@ -4,7 +4,7 @@ Imports TDC.MailEnable.Core
 
 Namespace Interfaz
     Public Class Frm_PublicarIps
-        Private WithEvents Publicador As New Bucle.DoBucle
+        Private WithEvents Publicador As Bucle.DoBucle
         Private IndexIp As Integer = 0
         Private ListaSMTP As Cls_MailEnableDeny
         Private ListaPOP As Cls_MailEnableDeny
@@ -19,6 +19,7 @@ Namespace Interfaz
             ListaSMTP = New Cls_MailEnableDeny(Mod_Core.Configuracion.SMTP_DENY)
             ListaPOP = New Cls_MailEnableDeny(Mod_Core.Configuracion.POP_DENY)
             ListaWEB = New Cls_ISS()
+            Me.Invoke(Sub() Publicador = New Bucle.DoBucle(Me.Name))
         End Sub
         Private Sub Frm_PublicarIps_Activated(sender As Object, e As EventArgs) Handles Me.Activated
             If Estado = EnumEstado.Cargando Then

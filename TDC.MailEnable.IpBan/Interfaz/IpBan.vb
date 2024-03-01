@@ -12,27 +12,27 @@ Namespace Interfaz
     Public Class IpBan
 
         'POP
-        Private WithEvents Trabajador_POP As New Bucle.DoBucle
+        Private WithEvents Trabajador_POP As New Bucle.DoBucle("Trabajador_POP")
         Private Registro_POP As New RegistroDeArchivos.RegistroDeArchivos(NameOf(Registro_POP))
-        Private WithEvents Trabajador_POPW3C As New Bucle.DoBucle
+        Private WithEvents Trabajador_POPW3C As New Bucle.DoBucle("Trabajador_POPW3C")
         Private Registro_POPW3C As New RegistroDeArchivos.RegistroDeArchivos(NameOf(Registro_POPW3C))
         'Private POP_DENY As Cls_MailEnableDeny
 
         'SMTP
-        Private WithEvents Trabajador_SMTP As New Bucle.DoBucle
+        Private WithEvents Trabajador_SMTP As New Bucle.DoBucle("Trabajador_SMTP")
         Private Registro_SMTP As New RegistroDeArchivos.RegistroDeArchivos(NameOf(Registro_SMTP))
-        Private WithEvents Trabajador_SMTPW3C As New Bucle.DoBucle
+        Private WithEvents Trabajador_SMTPW3C As New Bucle.DoBucle("Trabajador_SMTPW3C")
         Private Registro_SMTPW3C As New RegistroDeArchivos.RegistroDeArchivos(NameOf(Registro_SMTPW3C))
         'Private SMTP_DENY As Cls_MailEnableDeny
 
         'IMAP
-        Private WithEvents Trabajador_IMAP As New Bucle.DoBucle
+        Private WithEvents Trabajador_IMAP As New Bucle.DoBucle("Trabajador_IMAP")
         Private Registro_IMAP As New RegistroDeArchivos.RegistroDeArchivos(NameOf(Registro_IMAP))
-        Private WithEvents Trabajador_IMAPW3C As New Bucle.DoBucle
+        Private WithEvents Trabajador_IMAPW3C As New Bucle.DoBucle("Trabajador_IMAPW3C")
         Private Registro_IMAPW3C As New RegistroDeArchivos.RegistroDeArchivos(NameOf(Registro_IMAPW3C))
 
         'WEB
-        Private WithEvents Trabajador_WEB As New Bucle.DoBucle
+        Private WithEvents Trabajador_WEB As New Bucle.DoBucle("Trabajador_WEB")
         Private Registro_WEB As New RegistroDeArchivos.RegistroDeArchivos(NameOf(Registro_WEB))
         'Private ISSServer As Cls_ISS
 
@@ -45,7 +45,7 @@ Namespace Interfaz
         Private Shared SyncActualizarProgresoArchivo As New Object
 
         'Pruebas
-        Private WithEvents MiBucle As New Core.Bucle.DoBucle
+        'Private WithEvents MiBucle As New Core.Bucle.DoBucle("MiBucle")
 
         Private Sub IpBan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             '**** TEST****
@@ -53,7 +53,7 @@ Namespace Interfaz
             'Dim Tes2 = Test.EsLegitima("104.26.7.164")
             'Dim Tes0 = Test.EsLegitima("185.92.245.33")
             'Dim Tes1 = Test.EsLegitima("129.126.197.254")
-            MiBucle.Intervalo = 1
+            'MiBucle.Intervalo = 1
             'MiBucle.Iniciar()
             '*************
 
@@ -128,7 +128,7 @@ Namespace Interfaz
             Registro_POPW3C.Filtro.Add(New Cls_Filtro With {
                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 5, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                        New Cls_Coincidencia With {.Filtro = "-ERR+Unable+to+log+on", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
-            Trabajador_POPW3C.Intervalo = 1000
+            Trabajador_POPW3C.Intervalo = 100
             Trabajador_POPW3C.Iniciar()
 
             'SMTP(W3C)
@@ -143,7 +143,7 @@ Namespace Interfaz
             Registro_SMTPW3C.Filtro.Add(New Cls_Filtro With {
                                         .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                         New Cls_Coincidencia With {.Filtro = "This+mail+server+requires+authentication+before+sending+mail", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
-            Trabajador_SMTPW3C.Intervalo = 1000
+            Trabajador_SMTPW3C.Intervalo = 100
             Trabajador_SMTPW3C.Iniciar()
 
 
@@ -152,7 +152,7 @@ Namespace Interfaz
             Registro_IMAPW3C.Filtro.Add(New Cls_Filtro With {
                                         .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 3, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                         New Cls_Coincidencia With {.Filtro = "Invalid+username+or+password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
-            Trabajador_IMAPW3C.Intervalo = 1000
+            Trabajador_IMAPW3C.Intervalo = 100
             Trabajador_IMAPW3C.Iniciar()
 
             'WEB
@@ -179,7 +179,7 @@ Namespace Interfaz
                                     .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                     New Cls_Coincidencia With {.Filtro = "HEAD", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
                                     New Cls_Coincidencia With {.Filtro = " 404 ", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
-            Trabajador_WEB.Intervalo = 1000
+            Trabajador_WEB.Intervalo = 100
             Trabajador_WEB.Iniciar()
 
             'Interfaz
@@ -349,6 +349,9 @@ Namespace Interfaz
 
                         'Eliminamos el Control de Valores del Archivo
                         If FileMemory.ContainsKey(Archivo.FullName) Then FileMemory.TryRemove(Archivo.FullName, Nothing)
+
+                        'Eliminamos el Bucle del archivo
+                        Core.Bucle.Remove(Archivo.FullName)
                     End If
 
                 End If
@@ -740,18 +743,21 @@ Namespace Interfaz
         End Sub
 
 
-        Private Sub ToolStripStatusLabel1_Click(sender As Object, e As EventArgs) Handles ToolStripStatusLabel1.Click
-            Test1 += 1
-            MiBucle.Intervalo = 0
-            MiBucle.Iniciar()
-        End Sub
-        Dim Test1 As Integer = 0
+        'Private Sub ToolStripStatusLabel1_Click(sender As Object, e As EventArgs) Handles ToolStripStatusLabel1.Click
+        '    Test1 += 1
+        '    MiBucle.Intervalo = 0
+        '    MiBucle.Iniciar()
+        'End Sub
+        'Dim Test1 As Integer = 0
 
-        Private Sub MiBucle_Background(Sender As Object, ByRef Detener As Boolean) Handles MiBucle.Background
-            Test1 += 1
-            If Test1 = 1000 Then MiBucle.Detener()
+        'Private Sub MiBucle_Background(Sender As Object, ByRef Detener As Boolean) Handles MiBucle.Background
+        '    Test1 += 1
+        '    If Test1 = 1000 Then MiBucle.Detener()
+        'End Sub
+
+        Private Sub MiBucle_Foreground(Sender As Object, ByRef Detener As Boolean) Handles MiBucle.Foreground
             lblPrueba.Text = Test1
+            Dim te As Form
         End Sub
-
     End Class
 End Namespace

@@ -78,7 +78,7 @@
             ShowWindow(_Proceso.MainWindowHandle, SW_SHOW)
         End Sub
         Public Sub Read()
-            Lectura = New Core.Bucle.DoBucle With {.Intervalo = 1000}
+            Lectura = New Core.Bucle.DoBucle("Lectura") With {.Intervalo = 1000}
             Lectura.Iniciar()
         End Sub
         Public Sub Kill()

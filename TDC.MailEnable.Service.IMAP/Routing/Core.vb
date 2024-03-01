@@ -6,8 +6,8 @@ Imports TDC.MailEnable.Core.BDD
 Namespace Routing
     Module Core
         'Private ReadOnly listaBlanca As New List(Of String) From {"127.0.0.1"} ' Puedes agregar direcciones IP permitidas aquí
-        Private WithEvents EscuchadorImap As New Bucle.DoBucle
-        Private WithEvents EscuchadorImapSsl As New Bucle.DoBucle
+        Private WithEvents EscuchadorImap As New Bucle.DoBucle("EscuchadorImap")
+        Private WithEvents EscuchadorImapSsl As New Bucle.DoBucle("EscuchadorImapSsl")
 
         Public imapListener As New TcpListener(IPAddress.Any, 144)
         Public imapSslListener As New TcpListener(IPAddress.Any, 994)

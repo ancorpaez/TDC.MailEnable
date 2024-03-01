@@ -8,7 +8,7 @@ Imports System.Text.RegularExpressions
 
 Namespace RegistroDeArchivos
     Public Class LecturaDeArchivo
-        Private WithEvents Lector As New Bucle.DoBucle
+        Private WithEvents Lector As Bucle.DoBucle
 
         'Public Filtros As New List(Of Tuple(Of Integer, Integer, Boolean, List(Of Cls_Coincidencia)))
         Public Filtros As New List(Of Cls_Filtro)
@@ -39,6 +39,7 @@ Namespace RegistroDeArchivos
         Public Sub New(Archivo As String)
 
             Try
+                Mod_Core.IpBanForm.Invoke(Sub() Lector = Core.Bucle.GetOrCreate(Archivo))
                 'Identificador
                 Me.Archivo = Archivo
 
@@ -69,7 +70,7 @@ Namespace RegistroDeArchivos
             If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
         End Sub
 
-        Private Sub Lector_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Lector.Background
+        Private Sub Lector_Background(Sender As Object, ByRef Detener As Boolean) Handles Lector.Background
             Try
                 If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
 

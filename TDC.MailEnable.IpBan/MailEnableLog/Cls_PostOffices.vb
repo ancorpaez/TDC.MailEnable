@@ -10,7 +10,7 @@
             If IO.Directory.Exists(PostOffices) Then PostOfficesDirectory = New IO.DirectoryInfo(PostOffices)
 
             If Not IsNothing(PostOfficesDirectory) Then
-                PostOfficeSearch = New Core.Bucle.DoBucle
+                PostOfficeSearch = New Core.Bucle.DoBucle("PostOfficeSearch")
                 PostOfficeSearch.Intervalo = 10
                 PostOfficeSearch.Iniciar()
             End If
@@ -20,7 +20,7 @@
             PostOfficeSearch.Intervalo = 10000
             'Añadir
             For Each iPostOffice In PostOfficesDirectory.GetDirectories("*.*", IO.SearchOption.TopDirectoryOnly)
-                PostOfficesIndex.TryAdd(iPostOffice.Name, New Cls_MailBoxes(iPostOffice))
+                If Not PostOfficesIndex.ContainsKey(iPostOffice.Name) Then Mod_Core.IpBanForm.Invoke(Sub() PostOfficesIndex.TryAdd(iPostOffice.Name, New Cls_MailBoxes(iPostOffice)))
             Next
 
             'Eliminar

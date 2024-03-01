@@ -13,8 +13,8 @@ Namespace Routing
         Private BufferOrigen As BufferConexion
         Private BufferDestino As BufferConexion
         Private disposedValue As Boolean
-        Private WithEvents Temporizador As New Bucle.DoBucle
-        Private WithEvents Enrutador As New Bucle.DoBucle
+        Private WithEvents Temporizador As New Bucle.DoBucle("Temporizador")
+        Private WithEvents Enrutador As New Bucle.DoBucle("Enrutador")
         Private Actividad As Date
         Private EsperarSync As New ManualResetEvent(False)
 

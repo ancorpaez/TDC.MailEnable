@@ -3,7 +3,7 @@ Imports System.IO.Pipes
 
 Namespace Pipe
     Public Class ClientPipe
-        Private WithEvents BucleDatos As New Bucle.DoBucle
+        Private WithEvents BucleDatos As New Bucle.DoBucle("ClientPipe")
         Private Lista As List(Of String) = Nothing
         Public Event AlObtenerLaLista(Lista As List(Of String))
         Public Enum EnumEstadoPipe

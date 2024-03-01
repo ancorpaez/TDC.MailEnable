@@ -2,9 +2,11 @@
     Public Class Cls_MailBoxes
         Private MailBoxesDirectory As IO.DirectoryInfo
         Public MailBoxes As New Concurrent.ConcurrentDictionary(Of String, String)
-        Private WithEvents MailBoxesScan As New MailEnable.Core.Bucle.DoBucle
+        'Private WithEvents MailBoxesScan As New MailEnable.Core.Bucle.DoBucle("MailBoxesScan")
+        Private WithEvents MailBoxesScan As Core.Bucle.DoBucle
 
         Public Sub New(PostOffice As IO.DirectoryInfo)
+            MailBoxesScan = Core.Bucle.GetOrCreate("MailBoxesScan")
             If PostOffice.GetDirectories("MAILROOT", IO.SearchOption.TopDirectoryOnly).Count > 0 Then
                 MailBoxesDirectory = PostOffice.GetDirectories("MAILROOT", IO.SearchOption.TopDirectoryOnly)(0)
                 If MailBoxesDirectory.Exists Then
@@ -13,14 +15,14 @@
                     Next
                     MailBoxesScan.Intervalo = 10000
                     MailBoxesScan.Iniciar()
-                End if
+                End If
             End If
         End Sub
 
         Public Sub Detener()
             MailBoxesScan.Detener()
         End Sub
-        Private Sub MailBoxesScan_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles MailBoxesScan.Background
+        Private Sub MailBoxesScan_Background(Sender As Object, ByRef Detener As Boolean) Handles MailBoxesScan.Background
             MailBoxesDirectory.Refresh()
 
             If MailBoxesDirectory.Exists Then
