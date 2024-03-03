@@ -39,9 +39,11 @@ Namespace RegistroDeArchivos
         Public Sub New(Archivo As String)
 
             Try
-                Mod_Core.IpBanForm.Invoke(Sub() Lector = Core.Bucle.GetOrCreate(Archivo))
                 'Identificador
                 Me.Archivo = Archivo
+
+                'Crear o Enlazar Bucle
+                Mod_Core.IpBanForm.Invoke(Sub() Lector = Core.Bucle.GetOrCreate(Archivo))
 
                 'Establecer una Memoria de Archivo
                 If Not FileMemory.ContainsKey(Archivo) Then FileMemory.TryAdd(Archivo, New Cls_FileMemory)

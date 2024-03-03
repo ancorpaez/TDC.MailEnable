@@ -60,7 +60,7 @@ Namespace Bucle
                 Try
                     Dim CancelBackground As Boolean = False
                     RaiseEvent Background(Me, CancelBackground)
-                    If CancelBackground Then
+                    If CancelBackground OrElse Cancelar Then
                         e.Cancel = True
                         Cancelar = True
                         Exit Do
@@ -75,7 +75,7 @@ Namespace Bucle
                 Try
                     Dim CancelForeground As Boolean = False
                     If Not IsNothing(InvokeForm) AndAlso InvokeForm.Created Then InvokeForm.Invoke(Sub() RaiseEvent Foreground(Me, CancelForeground))
-                    If CancelForeground Then
+                    If CancelForeground OrElse Cancelar Then
                         e.Cancel = True
                         Cancelar = True
                         Exit Do
@@ -88,8 +88,14 @@ Namespace Bucle
             Loop
         End Sub
         Private Sub _Trabajador_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles _Trabajador.RunWorkerCompleted
-            RaiseEvent Endground(Me, False)
-            If Not Cancelar Then _Trabajador.RunWorkerAsync()
+            Dim CancelarEndground As Boolean = False
+            RaiseEvent Endground(Me, CancelarEndground)
+            If Not CancelarEndground AndAlso Not Cancelar Then
+                _Trabajador.RunWorkerAsync()
+            Else
+                Cancelar = True
+                _Trabajador.CancelAsync()
+            End If
         End Sub
 
     End Class

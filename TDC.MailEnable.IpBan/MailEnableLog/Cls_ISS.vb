@@ -36,8 +36,12 @@ Class Cls_ISS
     End Function
 
     Private Function BuscarIp(Nodo As XmlNode, Ip As String) As XmlNode
-        Dim Busqueda As String = $"//add[@ipAddress='{Ip}']"
-        Return Nodo.SelectSingleNode(Busqueda)
+        If Not IsNothing(Nodo) Then
+            Dim Busqueda As String = $"//add[@ipAddress='{Ip}']"
+            Return Nodo.SelectSingleNode(Busqueda)
+        Else
+            Return Nothing
+        End If
     End Function
 
     Function FindNodeByAttribute(xmlDoc As XmlDocument, elementName As String, attributeName As String, attributeValue As String) As XmlNode
@@ -54,7 +58,7 @@ Class Cls_ISS
         Element.SetAttribute("allowed", allowed)
 
         ' Añade el elemento <add> a la lista <ipSecurity>
-        securityNode.AppendChild(Element)
+        If Not IsNothing(securityNode) Then securityNode.AppendChild(Element)
     End Sub
     Private Sub RemoveIpSecurityElement(securityNode As XmlNode, Node As XmlNode)
 
@@ -62,7 +66,7 @@ Class Cls_ISS
         securityNode.RemoveChild(Node)
     End Sub
     Private Sub ClearIpSecurityElement(securityNode As XmlNode)
-        securityNode.RemoveAll()
+        If Not IsNothing(securityNode) Then securityNode.RemoveAll()
     End Sub
     Public Function Cargado() As Boolean
         Return XmlCargado

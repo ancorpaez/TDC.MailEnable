@@ -61,29 +61,34 @@ Namespace Interfaz
                 'Salvar los datos
                 ListaPOP.Guardar()
                 ListaSMTP.Guardar()
-                ListaWEB.Guardar()
-
-                'Detener la publicacion
-                Publicador.Detener()
-                Try
-                    Me.Invoke(Sub() Me.Close())
-                Catch ex As Exception
-                End Try
+                Do While Not ListaWEB.Guardar()
+                    Threading.Thread.Sleep(100)
+                Loop
+                IndexIp += 1
             End If
         End Sub
 
         Private Sub Publicador_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Publicador.Foreground
-            If IndexIp < (Lista.Count - 1) Then
+            If IndexIp < Lista.Count Then
                 Progreso.Value = IndexIp
                 lblIp.Text = Lista(IndexIp)
                 lblIndex.Text = IndexIp
                 lblCount.Text = Lista.Count
+            Else
+                'Detener la publicacion
+                Detener = True
+                Publicador.Detener()
             End If
         End Sub
         Private Sub BtnCancelar_Click(sender As Object, e As EventArgs) Handles BtnCancelar.Click
             Publicador.Detener()
-            Me.Close()
+            'Me.Close()
         End Sub
 
+        Private Sub Publicador_Endground(Sender As Object, ByRef Detener As Boolean) Handles Publicador.Endground
+            ListaSMTP.Dispose()
+            ListaPOP.Dispose()
+            Me.Close()
+        End Sub
     End Class
 End Namespace
