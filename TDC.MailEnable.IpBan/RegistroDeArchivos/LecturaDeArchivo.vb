@@ -8,9 +8,10 @@ Imports System.Text.RegularExpressions
 
 Namespace RegistroDeArchivos
     Public Class LecturaDeArchivo
+        Implements IDisposable
+
         Private WithEvents Lector As Bucle.DoBucle
 
-        'Public Filtros As New List(Of Tuple(Of Integer, Integer, Boolean, List(Of Cls_Coincidencia)))
         Public Filtros As New List(Of Cls_Filtro)
         Public Property ObtenerIp As Func(Of String, String)
 
@@ -34,7 +35,7 @@ Namespace RegistroDeArchivos
         'End Enum
 
         Private Archivo As String
-
+        Private disposedValue As Boolean
 
         Public Sub New(Archivo As String)
 
@@ -44,21 +45,37 @@ Namespace RegistroDeArchivos
 
                 'Crear o Enlazar Bucle
                 Mod_Core.IpBanForm.Invoke(Sub() Lector = Core.Bucle.GetOrCreate(Archivo))
+                AddHandler Lector.Background, AddressOf Lector_Background
+                AddHandler Lector.Foreground, AddressOf Lector_Foreground
+                AddHandler Lector.Endground, AddressOf Lector_Endground
 
                 'Establecer una Memoria de Archivo
                 If Not FileMemory.ContainsKey(Archivo) Then FileMemory.TryAdd(Archivo, New Cls_FileMemory)
 
                 'Cargar el Archivo en Memoria
                 Using Cargar As StreamReader = New IO.StreamReader(IO.File.Open(Archivo, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.ReadWrite))
-                    Dim Linea As String
+                    Dim Linea As String = String.Empty
                     Dim Index As Integer = 0
                     Do
-                        Linea = Cargar.ReadLine
-                        If Not String.IsNullOrEmpty(Linea) Then
-                            If Not FileMemory(Archivo).Lines.TryAdd(Index, Linea) AndAlso Not FileMemory(Archivo).Lines.ContainsKey(Index) Then
-                                Stop
+                        If Not FileMemory(Archivo).Lines.ContainsKey(Index) Then
+
+                            'Obtener la linea
+                            Linea = Cargar.ReadLine
+                            If Not String.IsNullOrEmpty(Linea) Then
+
+                                'Cargar la linea
+                                If Not FileMemory(Archivo).Lines.TryAdd(Index, Linea) Then
+                                    Console.WriteLine($"No se pudo cargar la línea{Index} del Archivo {Archivo}.")
+                                End If
                             End If
+                        Else
+
+                            'Desechar la Linea
+                            Cargar.ReadLine()
+                            Linea = " "
                         End If
+
+                        'Avanzar una línea
                         Index += 1
                     Loop While Not String.IsNullOrEmpty(Linea)
                 End Using
@@ -72,8 +89,9 @@ Namespace RegistroDeArchivos
             If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
         End Sub
 
-        Private Sub Lector_Background(Sender As Object, ByRef Detener As Boolean) Handles Lector.Background
+        Private Sub Lector_Background(Sender As Object, ByRef Detener As Boolean)
             Try
+                'Establecer el punto más rapido en caso de falla de configuración
                 If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
 
                 'Si el Control de Datos no contiene el archivo detenemos el analizador.
@@ -143,27 +161,50 @@ Namespace RegistroDeArchivos
                     End If
 
                     'Informa en el avance de lectura
-                    Index = FileMemory(Archivo).Line + 1
+                    'Index = FileMemory(Archivo).Line + 1
 
                     'Evitamos el Avance si hemos llegdo al final.
-                    If Index = Total Then
-                        Lector.Detener()
-                        Bloqueo.Set()
-                        Exit Sub
-                    End If
+                    'If Index = Total Then
+                    '    Lector.Detener()
+                    '    Bloqueo.Set()
+                    '    Exit Sub
+                    'End If
 
                     'Avanza en el conteo de lineas procesadas
-                    FileMemory(Archivo).Line += 1
+                    'FileMemory(Archivo).Line += 1
 
                 Else
                     Estado = EnumEstado.Analizado
-                    Lector.Detener()
-                    Bloqueo.Set()
+                    'Lector.Detener()
+                    'Bloqueo.Set()
                 End If
             Catch ex As Exception
                 Stop
             End Try
 
+        End Sub
+        Private Sub Lector_Foreground(Sender As Object, ByRef Detener As Boolean)
+            If Estado = EnumEstado.Analizando Then
+                'Avanza en el conteo de lineas procesadas
+                FileMemory(Archivo).Line += 1
+
+                'Informa en el avance de lectura
+                Index = FileMemory(Archivo).Line
+            Else
+                Detener = True
+            End If
+
+
+            'Evitamos el Avance si hemos llegdo al final.
+            'If Index = Total Then
+            '    Lector.Detener()
+            '    Bloqueo.Set()
+            '    Exit Sub
+            'End If
+        End Sub
+        Private Sub Lector_Endground(Sender As Object, ByRef Detener As Boolean)
+            'Quitamos el Bloque de Analisis
+            Bloqueo.Set()
         End Sub
         Private Function VerificarFiltro(Filtro As Cls_Filtro, Linea As String) As Boolean
             Dim TipoComparacion As Cls_Filtro.EnumTipoComparacion = Filtro.TrueSi
@@ -261,5 +302,34 @@ Namespace RegistroDeArchivos
             If emails.Count > 0 Then Return emails.First Else Return ""
         End Function
 
+        Protected Overridable Sub Dispose(disposing As Boolean)
+            If Not disposedValue Then
+                If disposing Then
+                    ' TODO: eliminar el estado administrado (objetos administrados)
+                    RemoveHandler Lector.Background, AddressOf Lector_Background
+                    RemoveHandler Lector.Foreground, AddressOf Lector_Foreground
+                    RemoveHandler Lector.Endground, AddressOf Lector_Endground
+
+                    'Lector.Matar()
+                End If
+
+                ' TODO: liberar los recursos no administrados (objetos no administrados) y reemplazar el finalizador
+                ' TODO: establecer los campos grandes como NULL
+                disposedValue = True
+            End If
+        End Sub
+
+        ' ' TODO: reemplazar el finalizador solo si "Dispose(disposing As Boolean)" tiene código para liberar los recursos no administrados
+        ' Protected Overrides Sub Finalize()
+        '     ' No cambie este código. Coloque el código de limpieza en el método "Dispose(disposing As Boolean)".
+        '     Dispose(disposing:=False)
+        '     MyBase.Finalize()
+        ' End Sub
+
+        Public Sub Dispose() Implements IDisposable.Dispose
+            ' No cambie este código. Coloque el código de limpieza en el método "Dispose(disposing As Boolean)".
+            Dispose(disposing:=True)
+            GC.SuppressFinalize(Me)
+        End Sub
     End Class
 End Namespace

@@ -357,14 +357,15 @@ Namespace Interfaz
                         Core.Bucle.Remove(Archivo.FullName)
                     End If
 
+                    EscanearArchivo.Dispose()
                 End If
             Next
 
-            'Relajamos en bucle de Busqueda de Archivos
-            Trabajador.Intervalo = Configuracion.LECTURA_REPOSO
+            ''Relajamos en bucle de Busqueda de Archivos
+            'Trabajador.Intervalo = Configuracion.LECTURA_REPOSO
 
-            'Propagamos la configuracion de Bloqueo de IP
-            BtnPropagarIps_Click(Nothing, New EventArgs)
+            ''Propagamos la configuracion de Bloqueo de IP
+            'BtnPropagarIps_Click(Nothing, New EventArgs)
 
         End Sub
 
@@ -386,38 +387,71 @@ Namespace Interfaz
             End If
         End Sub
 
-
-        'Private Sub Trabajador_POP_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_POP.Background
-        '    'Trabajo en BackGround
-        '    EscanearCarpeta(UcPOPAct, Function(Linea) RecuperarIpTab(Linea, 3), Trabajador_POP, Mod_Core.Configuracion.POP, Registro_POP, "POP-Activity*.log")
-        'End Sub
-
         Private Sub Trabajador_POPW3C_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_POPW3C.Background
             'Trabajo en BackGround
             EscanearCarpeta(UcPOPEx, Function(Linea) RecuperarIpSplit(Linea, 2), Trabajador_POPW3C, Mod_Core.Configuracion.POP, Registro_POPW3C, "ex*.log")
-        End Sub
 
-        'Private Sub Trabajador_SMTP_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_SMTP.Background
-        '    'Trabajo en BackGround
-        '    EscanearCarpeta(UcSMTPAct, Function(linea) RecuperarIpTab(linea, 4), Trabajador_SMTP, Mod_Core.Configuracion.SMTP, Registro_SMTP, "SMTP-Activity*.log")
-        'End Sub
+            'Propagamos la configuracion de Bloqueo de IP
+            BtnPropagarIps_Click(Nothing, New EventArgs)
+        End Sub
+        Private Sub Trabajador_POPW3C_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_POPW3C.Foreground
+            'Detenemos el procesamiento
+            Trabajador_POPW3C.Detener()
+        End Sub
+        Private Sub Trabajador_POPW3C_Endground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_POPW3C.Endground
+            'Relajamos en bucle de Busqueda de Archivos
+            Trabajador_POPW3C.Cancelar = False
+            Trabajador_POPW3C.Intervalo = Configuracion.LECTURA_REPOSO
+        End Sub
         Private Sub Trabajador_SMTPW3C_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_SMTPW3C.Background
             'Trabajo en BackGround
-            'EscanearCarpeta(UcSMTPEx, Function(Linea) Linea.Split(" ")(2), Trabajador_SMTPW3C, Mod_Core.Configuracion.SMTP, Registro_SMTPW3C, "ex*.log")
             EscanearCarpeta(UcSMTPEx, Function(Linea) RecuperarIpSplit(Linea, 2), Trabajador_SMTPW3C, Mod_Core.Configuracion.SMTP, Registro_SMTPW3C, "ex*.log")
+
+            'Propagamos la configuracion de Bloqueo de IP
+            BtnPropagarIps_Click(Nothing, New EventArgs)
         End Sub
-        'Private Sub Trabajador_IMAP_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_IMAP.Background
-        '    'Trabajo en BackGround
-        '    EscanearCarpeta(UcIMAPAct, Function(Linea) RecuperarIpTab(Linea, 4), Trabajador_IMAP, Mod_Core.Configuracion.IMAP, Registro_IMAP, "IMAP-Activity*.log")
-        'End Sub
+        Private Sub Trabajador_SMTPW3C_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_SMTPW3C.Foreground
+            'Detenemos el procesamiento
+            Trabajador_SMTPW3C.Detener()
+        End Sub
+
+        Private Sub Trabajador_SMTPW3C_Endground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_SMTPW3C.Endground
+            'Relajamos en bucle de Busqueda de Archivos
+            Trabajador_SMTPW3C.Cancelar = False
+            Trabajador_SMTPW3C.Intervalo = Configuracion.LECTURA_REPOSO
+        End Sub
         Private Sub Trabajador_IMAPW3C_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_IMAPW3C.Background
             'Trabajo en BackGround
             EscanearCarpeta(UcIMAPEx, Function(Linea) RecuperarIpSplit(Linea, 2), Trabajador_IMAPW3C, Mod_Core.Configuracion.IMAP, Registro_IMAPW3C, "ex*.log")
+
+            'Propagamos la configuracion de Bloqueo de IP
+            BtnPropagarIps_Click(Nothing, New EventArgs)
+        End Sub
+        Private Sub Trabajador_IMAPW3C_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_IMAPW3C.Foreground
+            'Detenemos el procesamiento
+            Trabajador_IMAPW3C.Detener()
         End Sub
 
+        Private Sub Trabajador_IMAPW3C_Endground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_IMAPW3C.Endground
+            'Relajamos en bucle de Busqueda de Archivos
+            Trabajador_IMAPW3C.Cancelar = False
+            Trabajador_IMAPW3C.Intervalo = Configuracion.LECTURA_REPOSO
+        End Sub
         Private Sub Trabajador_WEB_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_WEB.Background
             'Trabajo en BackGround
             EscanearCarpeta(UcWEB, Function(Linea) RecuperarIpSplit(Linea, 8), Trabajador_WEB, Mod_Core.Configuracion.WEB, Registro_WEB, "u_ex*.log")
+
+            'Propagamos la configuracion de Bloqueo de IP
+            BtnPropagarIps_Click(Nothing, New EventArgs)
+        End Sub
+        Private Sub Trabajador_WEB_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_WEB.Foreground
+            'Detenemos el procesamiento
+            Trabajador_WEB.Detener()
+        End Sub
+        Private Sub Trabajador_WEB_Endground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_WEB.Endground
+            'Relajamos en bucle de Busqueda de Archivos
+            Trabajador_WEB.Cancelar = False
+            Trabajador_WEB.Intervalo = Configuracion.LECTURA_REPOSO
         End Sub
         Private Sub lstIpBaneadas_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstIpBaneadas.SelectedIndexChanged
             lblIpsCount.Text = lstIpBaneadas.Items.Count
@@ -770,5 +804,7 @@ Namespace Interfaz
             'MiBucle.Matar()
             'MiBucle = Nothing
         End Sub
+
+
     End Class
 End Namespace
