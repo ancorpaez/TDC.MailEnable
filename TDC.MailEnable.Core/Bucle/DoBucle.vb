@@ -69,8 +69,10 @@ Namespace Bucle
         Public Sub Matar()
             _Trabajador.Dispose()
             InvokeForm.Invoke(Sub() LabelCount.Dispose())
+            InvokeForm.Invoke(Sub() BtnDetenerBackground.Dispose())
+            InvokeForm.Invoke(Sub() BtnDetenerForeground.Dispose())
+            InvokeForm.Invoke(Sub() BtnDetenerEndground.Dispose())
             InvokeForm.Invoke(Sub() InvokeForm.Dispose())
-            GC.SuppressFinalize(Me)
         End Sub
         Private Sub _Trabajador_DoWork(sender As Object, e As DoWorkEventArgs) Handles _Trabajador.DoWork
             Do While Not e.Cancel
