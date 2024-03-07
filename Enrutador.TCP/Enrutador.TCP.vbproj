@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6BE451F9-B0F0-47AC-90C2-F44B9F464BA9}</ProjectGuid>
+    <ProjectGuid>{690836B6-0C53-4D05-887A-07F91365BB20}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>TDC.MailEnable.Service.IMAP.My.MyApplication</StartupObject>
-    <RootNamespace>TDC.MailEnable.Service.IMAP</RootNamespace>
-    <AssemblyName>TDC.MailEnable.Service.IMAP</AssemblyName>
+    <StartupObject>Enrutador.TCP.My.MyApplication</StartupObject>
+    <RootNamespace>Enrutador.TCP</RootNamespace>
+    <AssemblyName>Enrutador.TCP</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -22,7 +22,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>TDC.MailEnable.Service.IMAP.xml</DocumentationFile>
+    <DocumentationFile>Enrutador.TCP.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -32,7 +32,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>TDC.MailEnable.Service.IMAP.xml</DocumentationFile>
+    <DocumentationFile>Enrutador.TCP.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -46,6 +46,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>RouterMail.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -73,6 +76,19 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aplicacion\Core.vb" />
+    <Compile Include="ENAT\Core.vb" />
+    <Compile Include="ENAT\ENATIP.vb" />
+    <Compile Include="Enrutadores\AcceptSocketSubProcess.vb" />
+    <Compile Include="Enrutadores\BufferEnrutador.vb" />
+    <Compile Include="Enrutadores\Core.vb" />
+    <Compile Include="Enrutadores\Enrutador.vb" />
+    <Compile Include="Interfaz\Conexion.Designer.vb">
+      <DependentUpon>Conexion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaz\Conexion.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Interfaz\Main.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -80,14 +96,13 @@
       <DependentUpon>Main.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Routing\BufferConexion.vb" />
-    <Compile Include="Routing\Cliente.vb" />
-    <Compile Include="Routing\Core.vb" />
+    <Compile Include="Escuchadores\Core.vb" />
+    <Compile Include="Escuchadores\Escuchador.vb" />
+    <Compile Include="IpBanPipe\Core.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -99,9 +114,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Routing\NetSH.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Interfaz\Conexion.resx">
+      <DependentUpon>Conexion.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interfaz\Main.resx">
       <DependentUpon>Main.vb</DependentUpon>
     </EmbeddedResource>
@@ -130,6 +147,8 @@
       <Name>TDC.MailEnable.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="RouterMail.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

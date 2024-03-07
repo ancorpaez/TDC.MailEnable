@@ -19,14 +19,15 @@ Namespace Bucle
         Public Event Foreground(Sender As Object, ByRef Detener As Boolean)
         Public Event Endground(Sender As Object, ByRef Detener As Boolean)
 
-        Public Sub New(Name As String)
+        Public Sub New(Name As String, Optional Visible As Boolean = False)
             'If Not {"MailBoxesScan", "PostOfficeSearch", "MiBucle"}.Any(Function(BucleDo) Name = BucleDo) Then Exit Sub
             Me.Name = Name
             LabelCount = New Label With {.Text = 0, .Dock = DockStyle.Top}
-            InvokeForm = New Form With {.Text = Name, .Name = Name, .ShowInTaskbar = False, .Opacity = 0}
-            'InvokeForm = New Form With {.Text = Name, .Name = Name, .Height = 140}
-
-
+            If Not Visible Then
+                InvokeForm = New Form With {.Text = Name, .Name = Name, .ShowInTaskbar = False, .Opacity = 0}
+            Else
+                InvokeForm = New Form With {.Text = Name, .Name = Name, .Height = 140}
+            End If
 
             If InvokeForm.Opacity <> 0 Then
                 BtnDetenerBackground = New Button With {.Text = "Stop Background", .Dock = DockStyle.Bottom}
@@ -56,7 +57,7 @@ Namespace Bucle
             If InvokeForm.Opacity = 0 Then InvokeForm.Hide() Else InvokeForm.Refresh()
 
             _Trabajador = New BackgroundWorker With {.WorkerReportsProgress = True, .WorkerSupportsCancellation = True}
-                                               End Sub
+        End Sub
 
         Public Sub Iniciar()
             Cancelar = False
@@ -68,11 +69,16 @@ Namespace Bucle
         End Sub
         Public Sub Matar()
             _Trabajador.Dispose()
-            InvokeForm.Invoke(Sub() LabelCount.Dispose())
-            InvokeForm.Invoke(Sub() BtnDetenerBackground.Dispose())
-            InvokeForm.Invoke(Sub() BtnDetenerForeground.Dispose())
-            InvokeForm.Invoke(Sub() BtnDetenerEndground.Dispose())
-            InvokeForm.Invoke(Sub() InvokeForm.Dispose())
+            Try
+                If InvokeForm.Created Then
+                    InvokeForm.Invoke(Sub() If Not IsNothing(LabelCount) Then LabelCount.Dispose())
+                    InvokeForm.Invoke(Sub() If Not IsNothing(BtnDetenerBackground) Then BtnDetenerBackground.Dispose())
+                    InvokeForm.Invoke(Sub() If Not IsNothing(BtnDetenerForeground) Then BtnDetenerForeground.Dispose())
+                    InvokeForm.Invoke(Sub() If Not IsNothing(BtnDetenerEndground) Then BtnDetenerEndground.Dispose())
+                    InvokeForm.Invoke(Sub() InvokeForm.Dispose())
+                End If
+            Catch ex As Exception
+            End Try
         End Sub
         Private Sub _Trabajador_DoWork(sender As Object, e As DoWorkEventArgs) Handles _Trabajador.DoWork
             Do While Not e.Cancel
@@ -85,9 +91,6 @@ Namespace Bucle
                     Cancelar = True
                     Exit Do
                 End If
-
-                'Visualizar el Bucle
-                If InvokeForm.Visible AndAlso InvokeForm.Created Then InvokeForm.Invoke(Sub() LabelCount.Text = CInt(LabelCount.Text) + 1)
 
                 'Lanzamos el Bucle Background
                 Try
@@ -115,6 +118,10 @@ Namespace Bucle
                         Cancelar = True
                         Exit Do
                     End If
+
+                    'Visualizar el Contador del Bucle
+                    If InvokeForm.Visible AndAlso InvokeForm.Created Then InvokeForm.Invoke(Sub() LabelCount.Text = CInt(LabelCount.Text) + 1)
+
                 Catch ex As Exception
                     Cancelar = True
                     e.Cancel = True

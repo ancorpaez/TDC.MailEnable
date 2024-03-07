@@ -25,7 +25,6 @@
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
             Me.SplitIMAPConexiones = New System.Windows.Forms.SplitContainer()
-            Me.lstConexionesImapActivas = New System.Windows.Forms.ListBox()
             Me.lblConexionesActivas = New System.Windows.Forms.Label()
             Me.Label5 = New System.Windows.Forms.Label()
             Me.SplitIMAPTables = New System.Windows.Forms.SplitContainer()
@@ -40,11 +39,15 @@
             Me.Panel1 = New System.Windows.Forms.Panel()
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
             Me.lblImapSsl = New System.Windows.Forms.Label()
-            Me.Label6 = New System.Windows.Forms.Label()
+            Me.lblImapSslString = New System.Windows.Forms.Label()
             Me.PanelImapListener = New System.Windows.Forms.Panel()
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
             Me.lblImap = New System.Windows.Forms.Label()
-            Me.Label1 = New System.Windows.Forms.Label()
+            Me.lblImapString = New System.Windows.Forms.Label()
+            Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+            Me.lstViewConexionesImapActivas = New System.Windows.Forms.ListView()
+            Me.cIP = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.cTime = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             CType(Me.SplitIMAPConexiones, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SplitIMAPConexiones.Panel1.SuspendLayout()
             Me.SplitIMAPConexiones.Panel2.SuspendLayout()
@@ -74,33 +77,23 @@
             '
             'SplitIMAPConexiones.Panel1
             '
-            Me.SplitIMAPConexiones.Panel1.Controls.Add(Me.lstConexionesImapActivas)
+            Me.SplitIMAPConexiones.Panel1.Controls.Add(Me.lstViewConexionesImapActivas)
             Me.SplitIMAPConexiones.Panel1.Controls.Add(Me.lblConexionesActivas)
             Me.SplitIMAPConexiones.Panel1.Controls.Add(Me.Label5)
             '
             'SplitIMAPConexiones.Panel2
             '
             Me.SplitIMAPConexiones.Panel2.Controls.Add(Me.SplitIMAPTables)
-            Me.SplitIMAPConexiones.Size = New System.Drawing.Size(745, 432)
-            Me.SplitIMAPConexiones.SplitterDistance = 157
+            Me.SplitIMAPConexiones.Size = New System.Drawing.Size(770, 204)
+            Me.SplitIMAPConexiones.SplitterDistance = 161
             Me.SplitIMAPConexiones.TabIndex = 2
-            '
-            'lstConexionesImapActivas
-            '
-            Me.lstConexionesImapActivas.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.lstConexionesImapActivas.FormattingEnabled = True
-            Me.lstConexionesImapActivas.IntegralHeight = False
-            Me.lstConexionesImapActivas.Location = New System.Drawing.Point(0, 49)
-            Me.lstConexionesImapActivas.Name = "lstConexionesImapActivas"
-            Me.lstConexionesImapActivas.Size = New System.Drawing.Size(157, 383)
-            Me.lstConexionesImapActivas.TabIndex = 2
             '
             'lblConexionesActivas
             '
             Me.lblConexionesActivas.Dock = System.Windows.Forms.DockStyle.Top
             Me.lblConexionesActivas.Location = New System.Drawing.Point(0, 25)
             Me.lblConexionesActivas.Name = "lblConexionesActivas"
-            Me.lblConexionesActivas.Size = New System.Drawing.Size(157, 24)
+            Me.lblConexionesActivas.Size = New System.Drawing.Size(161, 24)
             Me.lblConexionesActivas.TabIndex = 3
             Me.lblConexionesActivas.Text = "0"
             Me.lblConexionesActivas.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -113,7 +106,7 @@
             Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label5.Location = New System.Drawing.Point(0, 0)
             Me.Label5.Name = "Label5"
-            Me.Label5.Size = New System.Drawing.Size(157, 25)
+            Me.Label5.Size = New System.Drawing.Size(161, 25)
             Me.Label5.TabIndex = 1
             Me.Label5.Text = "CONEXIONES"
             Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -133,8 +126,8 @@
             '
             Me.SplitIMAPTables.Panel2.Controls.Add(Me.GridImapRechazados)
             Me.SplitIMAPTables.Panel2.Controls.Add(Me.Label4)
-            Me.SplitIMAPTables.Size = New System.Drawing.Size(584, 432)
-            Me.SplitIMAPTables.SplitterDistance = 272
+            Me.SplitIMAPTables.Size = New System.Drawing.Size(605, 204)
+            Me.SplitIMAPTables.SplitterDistance = 280
             Me.SplitIMAPTables.TabIndex = 0
             '
             'GridImapClientes
@@ -152,7 +145,7 @@
             Me.GridImapClientes.ReadOnly = True
             Me.GridImapClientes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
             Me.GridImapClientes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-            Me.GridImapClientes.Size = New System.Drawing.Size(272, 407)
+            Me.GridImapClientes.Size = New System.Drawing.Size(280, 179)
             Me.GridImapClientes.TabIndex = 1
             '
             'MenuGridClientes
@@ -175,7 +168,7 @@
             Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label3.Location = New System.Drawing.Point(0, 0)
             Me.Label3.Name = "Label3"
-            Me.Label3.Size = New System.Drawing.Size(272, 25)
+            Me.Label3.Size = New System.Drawing.Size(280, 25)
             Me.Label3.TabIndex = 0
             Me.Label3.Text = "CLIENTES"
             Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -194,7 +187,7 @@
             Me.GridImapRechazados.ReadOnly = True
             Me.GridImapRechazados.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
             Me.GridImapRechazados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-            Me.GridImapRechazados.Size = New System.Drawing.Size(308, 407)
+            Me.GridImapRechazados.Size = New System.Drawing.Size(321, 179)
             Me.GridImapRechazados.TabIndex = 1
             '
             'Label4
@@ -205,7 +198,7 @@
             Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Label4.Location = New System.Drawing.Point(0, 0)
             Me.Label4.Name = "Label4"
-            Me.Label4.Size = New System.Drawing.Size(308, 25)
+            Me.Label4.Size = New System.Drawing.Size(321, 25)
             Me.Label4.TabIndex = 0
             Me.Label4.Text = "RECHAZADOS"
             Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -228,8 +221,8 @@
             'SplitListeners.Panel2
             '
             Me.SplitListeners.Panel2.Controls.Add(Me.SplitIMAPConexiones)
-            Me.SplitListeners.Size = New System.Drawing.Size(874, 432)
-            Me.SplitListeners.SplitterDistance = 125
+            Me.SplitListeners.Size = New System.Drawing.Size(903, 204)
+            Me.SplitListeners.SplitterDistance = 129
             Me.SplitListeners.TabIndex = 3
             '
             'Panel1
@@ -239,7 +232,7 @@
             Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
             Me.Panel1.Location = New System.Drawing.Point(0, 33)
             Me.Panel1.Name = "Panel1"
-            Me.Panel1.Size = New System.Drawing.Size(125, 33)
+            Me.Panel1.Size = New System.Drawing.Size(129, 33)
             Me.Panel1.TabIndex = 1
             '
             'TableLayoutPanel2
@@ -248,13 +241,13 @@
             Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
             Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80.0!))
             Me.TableLayoutPanel2.Controls.Add(Me.lblImapSsl, 0, 0)
-            Me.TableLayoutPanel2.Controls.Add(Me.Label6, 1, 0)
+            Me.TableLayoutPanel2.Controls.Add(Me.lblImapSslString, 1, 0)
             Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TableLayoutPanel2.Location = New System.Drawing.Point(0, 0)
             Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
             Me.TableLayoutPanel2.RowCount = 1
             Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.TableLayoutPanel2.Size = New System.Drawing.Size(123, 31)
+            Me.TableLayoutPanel2.Size = New System.Drawing.Size(127, 31)
             Me.TableLayoutPanel2.TabIndex = 0
             '
             'lblImapSsl
@@ -262,21 +255,21 @@
             Me.lblImapSsl.Anchor = System.Windows.Forms.AnchorStyles.None
             Me.lblImapSsl.AutoSize = True
             Me.lblImapSsl.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-            Me.lblImapSsl.Location = New System.Drawing.Point(4, 2)
+            Me.lblImapSsl.Location = New System.Drawing.Point(3, 2)
             Me.lblImapSsl.Name = "lblImapSsl"
-            Me.lblImapSsl.Size = New System.Drawing.Size(16, 26)
+            Me.lblImapSsl.Size = New System.Drawing.Size(19, 26)
             Me.lblImapSsl.TabIndex = 0
             Me.lblImapSsl.Text = "      "
             '
-            'Label6
+            'lblImapSslString
             '
-            Me.Label6.Anchor = System.Windows.Forms.AnchorStyles.Left
-            Me.Label6.AutoSize = True
-            Me.Label6.Location = New System.Drawing.Point(27, 9)
-            Me.Label6.Name = "Label6"
-            Me.Label6.Size = New System.Drawing.Size(65, 13)
-            Me.Label6.TabIndex = 1
-            Me.Label6.Text = "IMAP  (SSL)"
+            Me.lblImapSslString.Anchor = System.Windows.Forms.AnchorStyles.Left
+            Me.lblImapSslString.AutoSize = True
+            Me.lblImapSslString.Location = New System.Drawing.Point(28, 9)
+            Me.lblImapSslString.Name = "lblImapSslString"
+            Me.lblImapSslString.Size = New System.Drawing.Size(65, 13)
+            Me.lblImapSslString.TabIndex = 1
+            Me.lblImapSslString.Text = "IMAP  (SSL)"
             '
             'PanelImapListener
             '
@@ -285,7 +278,7 @@
             Me.PanelImapListener.Dock = System.Windows.Forms.DockStyle.Top
             Me.PanelImapListener.Location = New System.Drawing.Point(0, 0)
             Me.PanelImapListener.Name = "PanelImapListener"
-            Me.PanelImapListener.Size = New System.Drawing.Size(125, 33)
+            Me.PanelImapListener.Size = New System.Drawing.Size(129, 33)
             Me.PanelImapListener.TabIndex = 0
             '
             'TableLayoutPanel1
@@ -294,13 +287,13 @@
             Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
             Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80.0!))
             Me.TableLayoutPanel1.Controls.Add(Me.lblImap, 0, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.Label1, 1, 0)
+            Me.TableLayoutPanel1.Controls.Add(Me.lblImapString, 1, 0)
             Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
             Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
             Me.TableLayoutPanel1.RowCount = 1
             Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.TableLayoutPanel1.Size = New System.Drawing.Size(123, 31)
+            Me.TableLayoutPanel1.Size = New System.Drawing.Size(127, 31)
             Me.TableLayoutPanel1.TabIndex = 0
             '
             'lblImap
@@ -308,29 +301,61 @@
             Me.lblImap.Anchor = System.Windows.Forms.AnchorStyles.None
             Me.lblImap.AutoSize = True
             Me.lblImap.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-            Me.lblImap.Location = New System.Drawing.Point(4, 2)
+            Me.lblImap.Location = New System.Drawing.Point(3, 2)
             Me.lblImap.Name = "lblImap"
-            Me.lblImap.Size = New System.Drawing.Size(16, 26)
+            Me.lblImap.Size = New System.Drawing.Size(19, 26)
             Me.lblImap.TabIndex = 0
             Me.lblImap.Text = "      "
             '
-            'Label1
+            'lblImapString
             '
-            Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.Left
-            Me.Label1.AutoSize = True
-            Me.Label1.Location = New System.Drawing.Point(27, 9)
-            Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(36, 13)
-            Me.Label1.TabIndex = 1
-            Me.Label1.Text = "IMAP "
+            Me.lblImapString.Anchor = System.Windows.Forms.AnchorStyles.Left
+            Me.lblImapString.AutoSize = True
+            Me.lblImapString.Location = New System.Drawing.Point(28, 9)
+            Me.lblImapString.Name = "lblImapString"
+            Me.lblImapString.Size = New System.Drawing.Size(36, 13)
+            Me.lblImapString.TabIndex = 1
+            Me.lblImapString.Text = "IMAP "
+            '
+            'StatusStrip1
+            '
+            Me.StatusStrip1.Location = New System.Drawing.Point(0, 204)
+            Me.StatusStrip1.Name = "StatusStrip1"
+            Me.StatusStrip1.Size = New System.Drawing.Size(903, 22)
+            Me.StatusStrip1.TabIndex = 4
+            Me.StatusStrip1.Text = "StatusStrip1"
+            '
+            'lstViewConexionesImapActivas
+            '
+            Me.lstViewConexionesImapActivas.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.cIP, Me.cTime})
+            Me.lstViewConexionesImapActivas.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lstViewConexionesImapActivas.GridLines = True
+            Me.lstViewConexionesImapActivas.HideSelection = False
+            Me.lstViewConexionesImapActivas.Location = New System.Drawing.Point(0, 49)
+            Me.lstViewConexionesImapActivas.Name = "lstViewConexionesImapActivas"
+            Me.lstViewConexionesImapActivas.Size = New System.Drawing.Size(161, 155)
+            Me.lstViewConexionesImapActivas.TabIndex = 4
+            Me.lstViewConexionesImapActivas.UseCompatibleStateImageBehavior = False
+            Me.lstViewConexionesImapActivas.View = System.Windows.Forms.View.Details
+            '
+            'cIP
+            '
+            Me.cIP.Text = "IP"
+            Me.cIP.Width = 81
+            '
+            'cTime
+            '
+            Me.cTime.Text = "Left"
             '
             'Main
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(874, 432)
+            Me.ClientSize = New System.Drawing.Size(903, 226)
             Me.Controls.Add(Me.SplitListeners)
+            Me.Controls.Add(Me.StatusStrip1)
             Me.Name = "Main"
+            Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
             Me.Text = "IMAP"
             Me.SplitIMAPConexiones.Panel1.ResumeLayout(False)
             Me.SplitIMAPConexiones.Panel2.ResumeLayout(False)
@@ -354,10 +379,10 @@
             Me.TableLayoutPanel1.ResumeLayout(False)
             Me.TableLayoutPanel1.PerformLayout()
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
         Friend WithEvents SplitIMAPConexiones As SplitContainer
-        Friend WithEvents lstConexionesImapActivas As ListBox
         Friend WithEvents lblConexionesActivas As Label
         Friend WithEvents Label5 As Label
         Friend WithEvents SplitIMAPTables As SplitContainer
@@ -370,13 +395,17 @@
         Friend WithEvents PanelImapListener As Panel
         Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
         Friend WithEvents lblImap As Label
-        Friend WithEvents Label1 As Label
+        Friend WithEvents lblImapString As Label
         Friend WithEvents Panel1 As Panel
         Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
         Friend WithEvents lblImapSsl As Label
-        Friend WithEvents Label6 As Label
+        Friend WithEvents lblImapSslString As Label
         Friend WithEvents MenuGridClientes As ContextMenuStrip
         Friend WithEvents CopiarToolStripMenuItem As ToolStripMenuItem
+        Friend WithEvents StatusStrip1 As StatusStrip
+        Friend WithEvents lstViewConexionesImapActivas As ListView
+        Friend WithEvents cIP As ColumnHeader
+        Friend WithEvents cTime As ColumnHeader
     End Class
 
 End Namespace

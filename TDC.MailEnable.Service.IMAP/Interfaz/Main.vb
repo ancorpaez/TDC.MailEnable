@@ -16,11 +16,12 @@ Namespace Interfaz
 
             ' Definir las nuevas coordenadas para la esquina inferior derecha
             'Dim newLeft As Integer = screenWidth - Me.Width
-            Dim newTop As Integer = screenHeight - Me.Height
+            'Dim newTop As Integer = screenHeight - Me.Height
+            Dim newTop As Integer = 486
 
             ' Establecer las nuevas coordenadas
-            Me.Left = 0
-            Me.Width = screenWidth
+            'Me.Left = (screenHeight / 2) - (Me.Height / 2)
+            'Me.Width = screenWidth
             Me.Top = newTop
 
             'Iniciar Lista IpBan
@@ -48,21 +49,66 @@ Namespace Interfaz
             End If
         End Sub
 
-        Private Function ActualizarConexiones() As String
+        Public Sub AddConexionIFace(Cliente As Routing.Cliente)
+            Try
+                Dim IpItem As New ListViewItem(Cliente.Cliente.ToString)
+                IpItem.SubItems.Add("-")
+                If lstViewConexionesImapActivas.InvokeRequired Then
+                    lstViewConexionesImapActivas.Invoke(Sub()
+                                                            lstViewConexionesImapActivas.Items.Add(IpItem)
+                                                        End Sub)
+                Else
+                    lstViewConexionesImapActivas.Items.Add(IpItem)
+                End If
+
+
+                If lblConexionesActivas.InvokeRequired Then
+
+                    lblConexionesActivas.Invoke(Sub()
+                                                    lblConexionesActivas.Text = lstViewConexionesImapActivas.Items.Count
+                                                End Sub)
+                Else
+                    lblConexionesActivas.Text = lstViewConexionesImapActivas.Items.Count
+                End If
+
+            Catch ex As Exception
+                Stop
+            End Try
+        End Sub
+        Public Sub RemoveConexionIFace(Cliente As Routing.Cliente)
+            Dim IpItem As ListViewItem
+            If lstViewConexionesImapActivas.InvokeRequired Then
+                Me.Invoke(Sub()
+                              IpItem = lstViewConexionesImapActivas.FindItemWithText(Cliente.Cliente.ToString)
+                              If Not IsNothing(IpItem) Then lstViewConexionesImapActivas.Items.Remove(IpItem)
+                              lblConexionesActivas.Text = lstViewConexionesImapActivas.Items.Count
+                          End Sub)
+            Else
+                IpItem = lstViewConexionesImapActivas.FindItemWithText(Cliente.Cliente.ToString)
+                If Not IsNothing(IpItem) Then lstViewConexionesImapActivas.Items.Remove(IpItem)
+                lblConexionesActivas.Text = lstViewConexionesImapActivas.Items.Count
+            End If
+        End Sub
+
+        Public Function ActualizarConexiones() As String
             If Monitor.TryEnter(SyncLockActualizarConexiones) Then
                 Me.Invoke(Sub()
                               Try
-                                  lstConexionesImapActivas.Items.Clear()
+                                  lstViewConexionesImapActivas.Items.Clear()
                                   For Each Cliente In Routing.Conexiones
-                                      lstConexionesImapActivas.Items.Add(Cliente.Key)
+                                      Dim IpItem As New ListViewItem(Cliente.Key)
+                                      IpItem.SubItems.Add("-")
+                                      lstViewConexionesImapActivas.Items.Add(IpItem)
+                                      'lstConexionesImapActivas.Items.Add(Cliente.Key)
                                   Next
-                                  lblConexionesActivas.Text = lstConexionesImapActivas.Items.Count
+                                  lblConexionesActivas.Text = lstViewConexionesImapActivas.Items.Count
                                   'GridImapClientes.Refresh()
                                   'GridImapRechazados.Refresh()
                               Catch ex As Exception
                                   Stop
                               End Try
                           End Sub)
+                Monitor.Exit(SyncLockActualizarConexiones)
             End If
             Return Nothing
         End Function

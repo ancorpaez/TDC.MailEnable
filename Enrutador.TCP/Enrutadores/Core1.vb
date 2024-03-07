@@ -3,7 +3,7 @@ Imports System.Net.Sockets
 Imports TDC.MailEnable.Core
 Imports TDC.MailEnable.Core.BDD
 
-Namespace Routing
+Namespace Enrutador
     Module Core
         'Private ReadOnly listaBlanca As New List(Of String) From {"127.0.0.1"} ' Puedes agregar direcciones IP permitidas aquí
         Private WithEvents EscuchadorImap As New Bucle.DoBucle("EscuchadorImap", False)

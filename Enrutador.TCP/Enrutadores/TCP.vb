@@ -6,8 +6,8 @@ Imports System.Text
 Imports System.Threading
 Imports TDC.MailEnable.Core
 
-Namespace Routing
-    Public Class Cliente
+Namespace Enrutador
+    Public Class TCP
         Implements IDisposable
 
         Private BufferOrigen As BufferConexion
@@ -22,8 +22,8 @@ Namespace Routing
         Public Destino As Socket
         Public Cliente As IPEndPoint
         Public IpRuteada As New NetSH(Me)
-        Public Event TimeLeft(Left As Integer, Cliente As Cliente)
-        Public Event AlCerrarConexion(Cliente As Cliente)
+        Public Event TimeLeft(Left As Integer, Cliente As TCP)
+        Public Event AlCerrarConexion(Cliente As TCP)
         Public PuertoDestino As Integer = 0
         Private Function BuscarPuertoLibre() As Integer
             Dim Local As TcpListener = New TcpListener(IPAddress.Loopback, 0)

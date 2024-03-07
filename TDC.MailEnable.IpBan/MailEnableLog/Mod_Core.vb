@@ -16,7 +16,7 @@ Namespace MailEnableLog
         Public IpBlancas As New Cls_IpBlanca
 
         'ARCHIVO UNICO GEOLOCALIZACION
-        Const File_Geolocalizacion As String = "Geolocalizacion.lst"
+        Const File_Geolocalizacion As String = "C:\tdc\GeolocalizacionIpInfo\Geolocalizacion.lst"
         Public Geolocalizador As New Cls_Geolocalizacion(File_Geolocalizacion)
 
         'SPAMASSASSIN
@@ -89,8 +89,25 @@ Namespace MailEnableLog
                         End If
                     End If
                 End If
+
+                'Activar Enrutador IMAP
+                If Not String.IsNullOrEmpty(Configuracion.IMAP_SOCKET_APP) Then
+                    If IO.File.Exists(Configuracion.IMAP_SOCKET_APP) Then
+                        If New IO.FileInfo(Configuracion.IMAP_SOCKET_APP).Extension.ToLower.Contains("exe") Then
+                            Dim BuscarProceso As Integer = Process.GetProcessesByName(New IO.FileInfo(Configuracion.IMAP_SOCKET_APP).Name.Replace(".exe", "")).Length
+                            If BuscarProceso = 0 Then
+                                'SpamAssassin = New Spam.SpamAssassin With {.Ejecutable = New IO.FileInfo(Configuracion.IMAP_SOCKET_APP)}
+                                Process.Start(Configuracion.IMAP_SOCKET_APP)
+                            Else
+                                ' SpamAssassin = New Spam.SpamAssassin With {.Proceso = Process.GetProcessesByName(New IO.FileInfo(Configuracion.IMAP_SOCKET_APP).Name.Replace(".exe", ""))(0)}
+                            End If
+                        End If
+                    End If
+                End If
             End If
 
+            'Activar Lista IpBan compartida en memoria
+            PipeServer = New Core.Pipe.ServerPipe With {.ObtenerLista = Function() IpBaneadas.ToList}
         End Sub
 
         '::::::::: ARCHIVO DE CONFIGURACION

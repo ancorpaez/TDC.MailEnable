@@ -15,7 +15,7 @@ Namespace Routing
                 LaunchCommand = StringCommandAdd.Replace("0.0.0.0", RoutingAddress)
                 LaunchCommandProcess()
                 Do While Not IsIPInNetworkInterface(RoutingAddress, "ENRUTADOR")
-                    Threading.Thread.Sleep(100)
+                    Threading.Thread.Sleep(10)
                 Loop
             End If
         End Sub
