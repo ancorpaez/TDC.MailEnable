@@ -21,27 +21,28 @@ Namespace Aplicacion
 
             'Inicar Lista de Bloqueo
             IpBanPipe.Main()
+            If Not IsNothing(IpBanPipe.Pipe) Then AddHandler IpBanPipe.Pipe.AlObtenerLaLista, AddressOf AlActualizarPipe
 
             'Iniciar Escuchadores
             If Not Escuchadores.Existe(Escuchadores.Core.EnumEscuchadores.ImapSSl) Then
-                If Escuchadores.Crear(Escuchadores.Core.EnumEscuchadores.ImapSSl, 993) Then
-                    AddHandler Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.ImapSSl).ConexionEntrante, AddressOf ConexionEntranteSsl
+                    If Escuchadores.Crear(Escuchadores.Core.EnumEscuchadores.ImapSSl, 994) Then
+                        AddHandler Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.ImapSSl).ConexionEntrante, AddressOf ConexionEntranteSsl
+                    End If
                 End If
-            End If
-            If Not Escuchadores.Existe(Escuchadores.Core.EnumEscuchadores.Imap) Then
-                If Escuchadores.Crear(Escuchadores.Core.EnumEscuchadores.Imap, 143) Then
+                If Not Escuchadores.Existe(Escuchadores.Core.EnumEscuchadores.Imap) Then
+                If Escuchadores.Crear(Escuchadores.Core.EnumEscuchadores.Imap, 144) Then
                     AddHandler Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.Imap).ConexionEntrante, AddressOf ConexionEntranteSsl
                 End If
             End If
 
         End Sub
         Private Sub ConexionEntranteSsl()
-            Dim Aceptar As New Enrutadores.AcceptSocketSubProcess(Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.ImapSSl).GetFirst, 994)
+            Dim Aceptar As New Enrutadores.AcceptSocketSubProcess(Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.ImapSSl).GetFirst, 993)
             AddHandler Aceptar.ConexionAceptada, AddressOf ConexionAceptada
             AddHandler Aceptar.ConexionRechadaza, AddressOf ConexionRechazada
         End Sub
         Private Sub ConexionEntrante()
-            Dim Aceptar As New Enrutadores.AcceptSocketSubProcess(Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.Imap).GetFirst, 144)
+            Dim Aceptar As New Enrutadores.AcceptSocketSubProcess(Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.Imap).GetFirst, 143)
             AddHandler Aceptar.ConexionAceptada, AddressOf ConexionAceptada
             AddHandler Aceptar.ConexionRechadaza, AddressOf ConexionRechazada
         End Sub
@@ -78,6 +79,10 @@ Namespace Aplicacion
             Catch ex As Exception
                 Console.WriteLine(ex.Message)
             End Try
+        End Sub
+
+        Private Sub AlActualizarPipe(Lista As List(Of String))
+            MainForm.lblIpBan.Text = $"IpBan ({Lista.Count})"
         End Sub
     End Module
 End Namespace

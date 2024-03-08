@@ -19,7 +19,7 @@ Namespace Enrutadores
         End Sub
 
         Private Sub Proceso_DoWork(sender As Object, e As DoWorkEventArgs) Handles Proceso.DoWork
-            If Not Aceptado Then If Not IpBanPipe.Contains(CType(Conexion.RemoteEndPoint, IPEndPoint).Address.ToString) Then Aceptado = True
+            If Not Aceptado AndAlso Conexion IsNot Nothing Then If Not IpBanPipe.Contains(CType(Conexion.RemoteEndPoint, IPEndPoint).Address.ToString) Then Aceptado = True
         End Sub
 
         Private Sub Proceso_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles Proceso.RunWorkerCompleted
@@ -27,7 +27,7 @@ Namespace Enrutadores
                 Add(Conexion, ObtenerIPv4Principal, Puerto)
                 RaiseEvent ConexionAceptada(Me, Conexion)
             Else
-                RaiseEvent ConexionRechadaza(Me, Conexion)
+                If Conexion IsNot Nothing Then RaiseEvent ConexionRechadaza(Me, Conexion)
                 If Conexion IsNot Nothing Then Conexion.Close()
             End If
         End Sub

@@ -18,7 +18,7 @@ Namespace Pipe
             BucleDatos.Iniciar()
         End Sub
 
-        Private Sub BucleDatos_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles BucleDatos.Background
+        Private Sub BucleDatos_Background(Sender As Object, ByRef Detener As Boolean) Handles BucleDatos.Background
 
             'Pasar el Bucle a 10 Minutos de Interaccion
             If BucleDatos.Intervalo = 100 Then BucleDatos.Intervalo = 6000
@@ -36,14 +36,17 @@ Namespace Pipe
                             Lista = New List(Of String)(Reader.ReadToEnd.Split(","))
                         End Using
 
-                        'Enviar la lista al proceso principal
-                        RaiseEvent AlObtenerLaLista(Lista)
                         EstadoPipe = EnumEstadoPipe.Esperando
                     Catch ex As Exception
                         Lista = Nothing
                     End Try
                 End With
             End Using
+        End Sub
+
+        Private Sub BucleDatos_Foreground(Sender As Object, ByRef Detener As Boolean) Handles BucleDatos.Foreground
+            'Enviar la lista al proceso principal
+            RaiseEvent AlObtenerLaLista(Lista)
         End Sub
     End Class
 End Namespace

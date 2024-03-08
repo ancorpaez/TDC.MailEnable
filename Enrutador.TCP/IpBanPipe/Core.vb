@@ -16,6 +16,12 @@ Namespace IpBanPipe
         End Enum
         Public Property Estado As EnumEstadoIpBanPipe = EnumEstadoIpBanPipe.Iniciando
 
+        Public ReadOnly Property Pipe As Pipe.ClientPipe
+            Get
+                Return IpBaneadasPipe
+            End Get
+        End Property
+
         Public Sub Main()
             IpBaneadasPipe = New Pipe.ClientPipe
         End Sub
