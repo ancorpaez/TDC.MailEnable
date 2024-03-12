@@ -53,7 +53,6 @@
             Me.FlowPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
             Me.FlowPanel.Location = New System.Drawing.Point(197, 0)
             Me.FlowPanel.Name = "FlowPanel"
-            Me.FlowPanel.Padding = New System.Windows.Forms.Padding(5)
             Me.FlowPanel.Size = New System.Drawing.Size(706, 311)
             Me.FlowPanel.TabIndex = 0
             '
