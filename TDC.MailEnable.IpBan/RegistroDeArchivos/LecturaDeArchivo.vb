@@ -127,14 +127,15 @@ Namespace RegistroDeArchivos
                                 Dim Geolocalizar As New IpInfo
                                 Dim Pais As String = Geolocalizar.Geolocalizar(Ip, Mod_Core.Geolocalizador)
                                 Dim GeolocalizarID As Integer = 0
-                                If Pais = "ES" OrElse Pais = "ERR" Then GeolocalizarID = 1
+
+                                If PaisesExcluidos.Any(Function(Concide) Concide = Pais) Then GeolocalizarID = 1
 
                                 'Banear la IP (Evita Bloquear Ip[ES][ERR]) Comprueba la Bandera (GeolocalizarID, 0(Bloquea) o 1(No bloquea))
                                 If GeolocalizarID = 0 Then If Not FiltroIp.Contains(Ip) Then FiltroIp.Add(Ip)
-                            End If
+                                End If
 
-                            'Consultar estado de logins del MailBox
-                            For Each ConfFiltro In Filtros
+                                'Consultar estado de logins del MailBox
+                                For Each ConfFiltro In Filtros
                                 'Si algun Filtro debe comprobar el MailBox
                                 If ConfFiltro.VerificarMailBox Then
                                     Dim MailBox = ExtraerEmails(FileMemory(Archivo).Lines(FileMemory(Archivo).Line))
@@ -146,7 +147,7 @@ Namespace RegistroDeArchivos
                                                     Dim Geolocalizar As New IpInfo
                                                     Dim Pais As String = Geolocalizar.Geolocalizar(IpBox, Mod_Core.Geolocalizador)
                                                     Dim GeolocalizarID As Integer = 0
-                                                    If Pais = "ES" OrElse Pais = "ERR" Then GeolocalizarID = 1
+                                                    If PaisesExcluidos.Any(Function(Concide) Concide = Pais) Then GeolocalizarID = 1
 
                                                     'Banear la IP (Evita Bloquear Ip[ES][ERR]) Comprueba la Bandera (GeolocalizarID, 0(Bloquea) o 1(No bloquea))
                                                     If GeolocalizarID = 0 Then If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
