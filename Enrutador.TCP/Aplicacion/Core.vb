@@ -6,7 +6,7 @@ Namespace Aplicacion
         Public WithEvents MainForm As Interfaz.Main
         Private esIniciado As Boolean = False
         Public ReadOnly VC As New Concurrent.ConcurrentBag(Of Interfaz.Conexion)
-        Private WithEvents VCView As New TDC.MailEnable.Core.Bucle.DoBucle("VCView")
+        Private WithEvents VCView As New TDC.MailEnable.Core.Bucle.DoBucle("VCView") With {.Intervalo = 1000}
 
         Private Sub ActivatedMainForm() Handles MainForm.Activated
             If Not esIniciado Then
@@ -54,23 +54,22 @@ Namespace Aplicacion
             End If
 
             'Activar VC
-            VCView.Intervalo = 1000
             VCView.Iniciar()
 
             'RouteTable.Test()
         End Sub
         Private Sub ConexionEntranteSsl()
-            Dim Retirar As Sockets.Socket = Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.ImapSSl).GetFirst
-            If Retirar IsNot Nothing Then
-                Dim Aceptar As New Enrutadores.AcceptSocketSubProcess(Retirar, 994)
+            Dim Recoger As Sockets.Socket = Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.ImapSSl).GetFirst
+            If Recoger IsNot Nothing Then
+                Dim Aceptar As New Enrutadores.AcceptSocketSubProcess(Recoger, 994)
                 AddHandler Aceptar.ConexionAceptada, AddressOf ConexionAceptada
                 AddHandler Aceptar.ConexionRechadaza, AddressOf ConexionRechazada
             End If
         End Sub
         Private Sub ConexionEntrante()
-            Dim Retirar As Sockets.Socket = Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.Imap).GetFirst
-            If Retirar IsNot Nothing Then
-                Dim Aceptar As New Enrutadores.AcceptSocketSubProcess(Retirar, 144)
+            Dim Recoger As Sockets.Socket = Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.Imap).GetFirst
+            If Recoger IsNot Nothing Then
+                Dim Aceptar As New Enrutadores.AcceptSocketSubProcess(Recoger, 144)
                 AddHandler Aceptar.ConexionAceptada, AddressOf ConexionAceptada
                 AddHandler Aceptar.ConexionRechadaza, AddressOf ConexionRechazada
             End If
@@ -82,7 +81,7 @@ Namespace Aplicacion
                 RemoveHandler Aceptador.ConexionRechadaza, AddressOf ConexionRechazada
 
                 Console.WriteLine($"Aceptada: {Conexion.RemoteEndPoint.ToString}")
-                VC.Add(New Interfaz.Conexion(Enrutadores.Obtener(Conexion.RemoteEndPoint.ToString)) With {.TopLevel = False, .ShowInTaskbar = False, .ControlBox = False})
+                VC.Add(New Interfaz.Conexion(Enrutadores.Obtener(Conexion.RemoteEndPoint.ToString)) With {.TopLevel = False, .ShowInTaskbar = False, .ControlBox = False, .Opacity = 0, .WindowState = FormWindowState.Minimized})
             Catch ex As Exception
                 Stop
             End Try
@@ -120,12 +119,14 @@ Namespace Aplicacion
 
         Private Sub VCView_Foreground(Sender As Object, ByRef Detener As Boolean) Handles VCView.Foreground
             For Each VCCreate In VC
-                If Not VCCreate.Created AndAlso Not VCCreate.Disposing AndAlso Not VCCreate.IsDisposed Then
-                    MainForm.FlowPanel.Controls.Add(VCCreate)
-                    VCCreate.CreateControl()
-                    VCCreate.Show()
-                End If
+                With VCCreate
+                    If Not .Created AndAlso Not .Disposing AndAlso Not .IsDisposed Then
+                        MainForm.FlowPanel.Controls.Add(VCCreate)
+                        .CreateControl()
+                    End If
+                End With
             Next
+
         End Sub
     End Module
 End Namespace

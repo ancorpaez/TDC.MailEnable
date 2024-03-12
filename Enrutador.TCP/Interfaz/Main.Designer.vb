@@ -53,7 +53,7 @@
             Me.FlowPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
             Me.FlowPanel.Location = New System.Drawing.Point(197, 0)
             Me.FlowPanel.Name = "FlowPanel"
-            Me.FlowPanel.Padding = New System.Windows.Forms.Padding(30)
+            Me.FlowPanel.Padding = New System.Windows.Forms.Padding(5)
             Me.FlowPanel.Size = New System.Drawing.Size(706, 311)
             Me.FlowPanel.TabIndex = 0
             '
@@ -95,7 +95,7 @@
             '
             Me.ToolStripStatusLabel2.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left
             Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-            Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(572, 19)
+            Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(603, 19)
             Me.ToolStripStatusLabel2.Spring = True
             Me.ToolStripStatusLabel2.Text = " "
             '
