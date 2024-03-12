@@ -5,8 +5,6 @@ VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TDC.MailEnable.Core", "TDC.MailEnable.Core\TDC.MailEnable.Core.vbproj", "{85E52E14-0789-4003-BB92-E3F59FE5A650}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TDC.MailEnable.Service.IMAP", "TDC.MailEnable.Service.IMAP\TDC.MailEnable.Service.IMAP.vbproj", "{6BE451F9-B0F0-47AC-90C2-F44B9F464BA9}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TDC.MailEnable.Pruebas", "TDC.MailEnable.Pruebas\TDC.MailEnable.Pruebas.vbproj", "{7BD19DF9-6099-4B28-9FAB-01B16C9CFA58}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Enrutador.TCP", "Enrutador.TCP\Enrutador.TCP.vbproj", "{690836B6-0C53-4D05-887A-07F91365BB20}"
@@ -15,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TDC.MailEnable.IpBan", "TDC.MailEnable.IpBan\TDC.MailEnable.IpBan.vbproj", "{68394ABB-9295-489E-9E95-648E61EEF50C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,10 +26,6 @@ Global
 		{85E52E14-0789-4003-BB92-E3F59FE5A650}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85E52E14-0789-4003-BB92-E3F59FE5A650}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85E52E14-0789-4003-BB92-E3F59FE5A650}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6BE451F9-B0F0-47AC-90C2-F44B9F464BA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6BE451F9-B0F0-47AC-90C2-F44B9F464BA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6BE451F9-B0F0-47AC-90C2-F44B9F464BA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6BE451F9-B0F0-47AC-90C2-F44B9F464BA9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7BD19DF9-6099-4B28-9FAB-01B16C9CFA58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7BD19DF9-6099-4B28-9FAB-01B16C9CFA58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BD19DF9-6099-4B28-9FAB-01B16C9CFA58}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -38,6 +34,10 @@ Global
 		{690836B6-0C53-4D05-887A-07F91365BB20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{690836B6-0C53-4D05-887A-07F91365BB20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{690836B6-0C53-4D05-887A-07F91365BB20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68394ABB-9295-489E-9E95-648E61EEF50C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68394ABB-9295-489E-9E95-648E61EEF50C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68394ABB-9295-489E-9E95-648E61EEF50C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68394ABB-9295-489E-9E95-648E61EEF50C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
