@@ -75,6 +75,7 @@
     <Compile Include="Concurrent\ConcurrentBindingList.vb" />
     <Compile Include="GeoLocalizacion\Cls_Geolocalizacion.vb" />
     <Compile Include="GeoLocalizacion\IpInfo.vb" />
+    <Compile Include="GeoLocalizacion\IpInfoPrivate.vb" />
     <Compile Include="GeoLocalizacion\MyNsLookUp.vb" />
     <Compile Include="Main.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
