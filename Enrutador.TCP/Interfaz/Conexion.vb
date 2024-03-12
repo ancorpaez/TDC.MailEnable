@@ -16,8 +16,11 @@
         End Sub
 
         Private Sub Enrutador_AlCerrarEnrutador(Enrutador As Enrutadores.Enrutador) Handles Enrutador.AlCerrarEnrutador
-            Me.Enrutador = Nothing
-            Me.Close()
+            If Aplicacion.VC.TryTake(Me) Then
+                Me.Close()
+            Else
+                lblConexion.Text = "ERROR"
+            End If
         End Sub
     End Class
 End Namespace

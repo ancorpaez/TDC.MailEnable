@@ -30,6 +30,9 @@
             Me.lblConexiones = New System.Windows.Forms.ToolStripStatusLabel()
             Me.tsSeparador1 = New System.Windows.Forms.ToolStripStatusLabel()
             Me.lblIpBan = New System.Windows.Forms.ToolStripStatusLabel()
+            Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
+            Me.lblImap = New System.Windows.Forms.ToolStripStatusLabel()
+            Me.lblImapSsl = New System.Windows.Forms.ToolStripStatusLabel()
             Me.PanelBaneadas = New System.Windows.Forms.Panel()
             Me.lstRechazadas = New System.Windows.Forms.ListView()
             Me.cIP = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -56,7 +59,7 @@
             '
             'StatusStrip1
             '
-            Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.lblConexiones, Me.tsSeparador1, Me.lblIpBan})
+            Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.lblConexiones, Me.tsSeparador1, Me.lblIpBan, Me.ToolStripStatusLabel2, Me.lblImap, Me.lblImapSsl})
             Me.StatusStrip1.Location = New System.Drawing.Point(0, 311)
             Me.StatusStrip1.Name = "StatusStrip1"
             Me.StatusStrip1.Size = New System.Drawing.Size(903, 24)
@@ -87,6 +90,29 @@
             Me.lblIpBan.Name = "lblIpBan"
             Me.lblIpBan.Size = New System.Drawing.Size(54, 19)
             Me.lblIpBan.Text = "IpBan (0)"
+            '
+            'ToolStripStatusLabel2
+            '
+            Me.ToolStripStatusLabel2.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left
+            Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
+            Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(572, 19)
+            Me.ToolStripStatusLabel2.Spring = True
+            Me.ToolStripStatusLabel2.Text = " "
+            '
+            'lblImap
+            '
+            Me.lblImap.BackColor = System.Drawing.SystemColors.Control
+            Me.lblImap.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left
+            Me.lblImap.Name = "lblImap"
+            Me.lblImap.Size = New System.Drawing.Size(75, 19)
+            Me.lblImap.Text = "Imap (False)"
+            '
+            'lblImapSsl
+            '
+            Me.lblImapSsl.BackColor = System.Drawing.SystemColors.Control
+            Me.lblImapSsl.Name = "lblImapSsl"
+            Me.lblImapSsl.Size = New System.Drawing.Size(58, 19)
+            Me.lblImapSsl.Text = "Ssl (False)"
             '
             'PanelBaneadas
             '
@@ -190,5 +216,8 @@
         Friend WithEvents PanelEstadoBaneadas As Panel
         Friend WithEvents tsSeparador1 As ToolStripStatusLabel
         Friend WithEvents lblIpBan As ToolStripStatusLabel
+        Friend WithEvents ToolStripStatusLabel2 As ToolStripStatusLabel
+        Friend WithEvents lblImap As ToolStripStatusLabel
+        Friend WithEvents lblImapSsl As ToolStripStatusLabel
     End Class
 End Namespace

@@ -13,7 +13,8 @@ Namespace Escuchadores
         Public Event ConexionEntrante()
         Public Sub New(Puerto As Integer)
             Me.Puerto = Puerto
-            Aceptador = New Bucle.DoBucle(Puerto, False)
+            Aceptador = New Bucle.DoBucle("Aceptador " & Puerto, False)
+            Aceptador = New Bucle.DoBucle("Avisador " & Puerto, False)
         End Sub
 
         Private Sub Aceptador_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Aceptador.Foreground
@@ -25,13 +26,15 @@ Namespace Escuchadores
         End Sub
 
         Public Function GetFirst() As Socket
+            Console.WriteLine($"Left: {Aceptadas.Count}")
             Dim Aceptada As Socket = Nothing
             If Aceptadas.TryDequeue(Aceptada) Then
-                Console.WriteLine($"Left: {Aceptadas.Count}")
                 Return Aceptada
             End If
-            Console.WriteLine($"Left: {Aceptadas.Count}")
             Return Nothing
+        End Function
+        Public Function QuenedConections() As Boolean
+            Return Aceptadas.Count > 0
         End Function
         Public Function Escuchar() As Boolean
             Try

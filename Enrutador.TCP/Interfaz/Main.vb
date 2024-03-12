@@ -17,6 +17,5 @@
             lblConexiones.Text = FlowPanel.Controls.Count
         End Sub
 
-
     End Class
 End Namespace

@@ -1,6 +1,5 @@
 ﻿Imports System.Net
 Imports System.Net.Sockets
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Header
 Imports TDC.MailEnable.Core
 
 Namespace Enrutadores
@@ -44,7 +43,7 @@ Namespace Enrutadores
         Public Sub Iniciar()
             Dispadaror.Iniciar()
         End Sub
-        Function EsRedClaseC(EnatIp As IPAddress) As Boolean
+        Private Function EsRedClaseC(EnatIp As IPAddress) As Boolean
             Dim ipBytes As Byte() = EnatIp.GetAddressBytes()
             If ipBytes(0) >= 192 AndAlso ipBytes(0) <= 223 Then
                 Return True

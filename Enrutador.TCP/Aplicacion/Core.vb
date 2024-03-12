@@ -5,6 +5,9 @@ Namespace Aplicacion
     Module Core
         Public WithEvents MainForm As Interfaz.Main
         Private esIniciado As Boolean = False
+        Public ReadOnly VC As New Concurrent.ConcurrentBag(Of Interfaz.Conexion)
+        Private WithEvents VCView As New TDC.MailEnable.Core.Bucle.DoBucle("VCView")
+
         Private Sub ActivatedMainForm() Handles MainForm.Activated
             If Not esIniciado Then
                 esIniciado = Not esIniciado
@@ -25,40 +28,70 @@ Namespace Aplicacion
 
             'Iniciar Escuchadores
             If Not Escuchadores.Existe(Escuchadores.Core.EnumEscuchadores.ImapSSl) Then
-                    If Escuchadores.Crear(Escuchadores.Core.EnumEscuchadores.ImapSSl, 994) Then
+                With MainForm.lblImapSsl
+                    If Escuchadores.Crear(Escuchadores.Core.EnumEscuchadores.ImapSSl, 993) Then
                         AddHandler Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.ImapSSl).ConexionEntrante, AddressOf ConexionEntranteSsl
+                        .Text = "Ssl (True)"
+                        .ForeColor = Color.DarkGreen
+                    Else
+                        .Font = New Font(.Font, FontStyle.Bold)
+                        .ForeColor = Color.DarkRed
                     End If
-                End If
-                If Not Escuchadores.Existe(Escuchadores.Core.EnumEscuchadores.Imap) Then
-                If Escuchadores.Crear(Escuchadores.Core.EnumEscuchadores.Imap, 144) Then
-                    AddHandler Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.Imap).ConexionEntrante, AddressOf ConexionEntranteSsl
-                End If
+                End With
             End If
 
+            If Not Escuchadores.Existe(Escuchadores.Core.EnumEscuchadores.Imap) Then
+                With MainForm.lblImap
+                    If Escuchadores.Crear(Escuchadores.Core.EnumEscuchadores.Imap, 143) Then
+                        AddHandler Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.Imap).ConexionEntrante, AddressOf ConexionEntrante
+                        .Text = "Imap (True)"
+                        .ForeColor = Color.DarkGreen
+                    Else
+                        .Font = New Font(.Font, FontStyle.Bold)
+                        .ForeColor = Color.DarkRed
+                    End If
+                End With
+            End If
+
+            'Activar VC
+            VCView.Intervalo = 1000
+            VCView.Iniciar()
+
+            'RouteTable.Test()
         End Sub
         Private Sub ConexionEntranteSsl()
-            Dim Aceptar As New Enrutadores.AcceptSocketSubProcess(Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.ImapSSl).GetFirst, 993)
-            AddHandler Aceptar.ConexionAceptada, AddressOf ConexionAceptada
-            AddHandler Aceptar.ConexionRechadaza, AddressOf ConexionRechazada
+            Dim Retirar As Sockets.Socket = Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.ImapSSl).GetFirst
+            If Retirar IsNot Nothing Then
+                Dim Aceptar As New Enrutadores.AcceptSocketSubProcess(Retirar, 994)
+                AddHandler Aceptar.ConexionAceptada, AddressOf ConexionAceptada
+                AddHandler Aceptar.ConexionRechadaza, AddressOf ConexionRechazada
+            End If
         End Sub
         Private Sub ConexionEntrante()
-            Dim Aceptar As New Enrutadores.AcceptSocketSubProcess(Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.Imap).GetFirst, 143)
-            AddHandler Aceptar.ConexionAceptada, AddressOf ConexionAceptada
-            AddHandler Aceptar.ConexionRechadaza, AddressOf ConexionRechazada
+            Dim Retirar As Sockets.Socket = Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.Imap).GetFirst
+            If Retirar IsNot Nothing Then
+                Dim Aceptar As New Enrutadores.AcceptSocketSubProcess(Retirar, 144)
+                AddHandler Aceptar.ConexionAceptada, AddressOf ConexionAceptada
+                AddHandler Aceptar.ConexionRechadaza, AddressOf ConexionRechazada
+            End If
         End Sub
 
         Private Sub ConexionAceptada(Aceptador As Enrutadores.AcceptSocketSubProcess, Conexion As Sockets.Socket)
-            RemoveHandler Aceptador.ConexionAceptada, AddressOf ConexionAceptada
-            RemoveHandler Aceptador.ConexionRechadaza, AddressOf ConexionRechazada
-            Console.WriteLine($"Aceptada: {Conexion.RemoteEndPoint.ToString}")
-            Dim Visualizar As New Interfaz.Conexion(Enrutadores.Obtener(Conexion.RemoteEndPoint.ToString)) With {.TopLevel = False}
-            MainForm.FlowPanel.Controls.Add(Visualizar)
-            Visualizar.Show()
+            Try
+                RemoveHandler Aceptador.ConexionAceptada, AddressOf ConexionAceptada
+                RemoveHandler Aceptador.ConexionRechadaza, AddressOf ConexionRechazada
+
+                Console.WriteLine($"Aceptada: {Conexion.RemoteEndPoint.ToString}")
+                VC.Add(New Interfaz.Conexion(Enrutadores.Obtener(Conexion.RemoteEndPoint.ToString)) With {.TopLevel = False, .ShowInTaskbar = False, .ControlBox = False})
+            Catch ex As Exception
+                Stop
+            End Try
         End Sub
         Private Sub ConexionRechazada(Aceptador As Enrutadores.AcceptSocketSubProcess, Conexion As Sockets.Socket)
-            RemoveHandler Aceptador.ConexionAceptada, AddressOf ConexionAceptada
-            RemoveHandler Aceptador.ConexionRechadaza, AddressOf ConexionRechazada
             Try
+                RemoveHandler Aceptador.ConexionAceptada, AddressOf ConexionAceptada
+                RemoveHandler Aceptador.ConexionRechadaza, AddressOf ConexionRechazada
+
                 Dim cKey As String = CType(Aceptador.Conexion.RemoteEndPoint, IPEndPoint).Address.ToString
                 Dim lstControl As ListView = MainForm.lstRechazadas
                 With lstControl
@@ -83,6 +116,16 @@ Namespace Aplicacion
 
         Private Sub AlActualizarPipe(Lista As List(Of String))
             MainForm.lblIpBan.Text = $"IpBan ({Lista.Count})"
+        End Sub
+
+        Private Sub VCView_Foreground(Sender As Object, ByRef Detener As Boolean) Handles VCView.Foreground
+            For Each VCCreate In VC
+                If Not VCCreate.Created AndAlso Not VCCreate.Disposing AndAlso Not VCCreate.IsDisposed Then
+                    MainForm.FlowPanel.Controls.Add(VCCreate)
+                    VCCreate.CreateControl()
+                    VCCreate.Show()
+                End If
+            Next
         End Sub
     End Module
 End Namespace

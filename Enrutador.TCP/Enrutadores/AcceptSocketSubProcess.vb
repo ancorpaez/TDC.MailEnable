@@ -28,7 +28,7 @@ Namespace Enrutadores
                 RaiseEvent ConexionAceptada(Me, Conexion)
             Else
                 If Conexion IsNot Nothing Then RaiseEvent ConexionRechadaza(Me, Conexion)
-                If Conexion IsNot Nothing Then Conexion.Close()
+                If Conexion IsNot Nothing AndAlso Conexion.Connected Then Conexion.Close()
             End If
         End Sub
         Private Function ObtenerIPv4Principal() As IPAddress
