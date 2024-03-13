@@ -126,23 +126,28 @@ Namespace Interfaz
 
             'POP(W3C)
             Registro_POPW3C.Filtro.Add(New Cls_Filtro With {
-                                       .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 5, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                       .Key = FilterKeys.FilterKey.PopLoginFail, .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 5, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                        New Cls_Coincidencia With {.Filtro = "-ERR+Unable+to+log+on", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
+
+            EstablecerConcidenciasPais(FilterKeys.FilterKey.PopLoginFail, "PT", 20)
             Trabajador_POPW3C.Intervalo = 100
             Trabajador_POPW3C.Iniciar()
 
             'SMTP(W3C)
             Registro_SMTPW3C.Filtro.Add(New Cls_Filtro With {
-                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 3, .VerificarMailBox = True, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                        .Key = FilterKeys.FilterKey.SMTPLoginFailMailBox, .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 3, .VerificarMailBox = True, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                         New Cls_Coincidencia With {.Filtro = "Invalid+Username+or+Password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
                                         New Cls_Coincidencia With {.Filtro = "@", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
+            EstablecerConcidenciasPais(FilterKeys.FilterKey.SMTPLoginFailMailBox, "PT", 20)
             Registro_SMTPW3C.Filtro.Add(New Cls_Filtro With {
-                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                        .Key = FilterKeys.FilterKey.SMTPLoginFailNoMailBox, .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                         New Cls_Coincidencia With {.Filtro = "Invalid+Username+or+Password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
                                         New Cls_Coincidencia With {.Filtro = "@", .Condicion = Cls_Coincidencia.EnumCondicion.NoContiene}}})
+            EstablecerConcidenciasPais(FilterKeys.FilterKey.SMTPLoginFailNoMailBox, "PT", 20)
             Registro_SMTPW3C.Filtro.Add(New Cls_Filtro With {
-                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                        .Key = FilterKeys.FilterKey.SMTPOutNoLogin, .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                         New Cls_Coincidencia With {.Filtro = "This+mail+server+requires+authentication+before+sending+mail", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
+            EstablecerConcidenciasPais(FilterKeys.FilterKey.SMTPOutNoLogin, "PT", 20)
             Trabajador_SMTPW3C.Intervalo = 100
             Trabajador_SMTPW3C.Iniciar()
 
@@ -150,18 +155,20 @@ Namespace Interfaz
 
             'IMAP (W3C)
             Registro_IMAPW3C.Filtro.Add(New Cls_Filtro With {
-                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 3, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                        .Key = FilterKeys.FilterKey.IMAPLoginFail, .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 3, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                         New Cls_Coincidencia With {.Filtro = "Invalid+username+or+password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
+            EstablecerConcidenciasPais(FilterKeys.FilterKey.IMAPLoginFail, "PT", 20)
             Trabajador_IMAPW3C.Intervalo = 100
             Trabajador_IMAPW3C.Iniciar()
 
             'WEB
             Registro_WEB.Filtro.Add(New Cls_Filtro With {
-                                    .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 3, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                    .Key = FilterKeys.FilterKey.WEBPostLogin, .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 3, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                     New Cls_Coincidencia With {.Filtro = "POST", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
                                     New Cls_Coincidencia With {.Filtro = "Cmd=LOGIN", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
+            EstablecerConcidenciasPais(FilterKeys.FilterKey.WEBPostLogin, "PT", 20)
             Registro_WEB.Filtro.Add(New Cls_Filtro With {
-                                    .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                    .Key = FilterKeys.FilterKey.WEBGetFail, .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                     New Cls_Coincidencia With {.Filtro = "GET", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
                                     New Cls_Coincidencia With {.Filtro = " 404 ", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
                                     New Cls_Coincidencia With {.Filtro = "favicon.ico", .Condicion = Cls_Coincidencia.EnumCondicion.NoContiene},
@@ -169,16 +176,19 @@ Namespace Interfaz
                                     New Cls_Coincidencia With {.Filtro = "sitemap.xml", .Condicion = Cls_Coincidencia.EnumCondicion.NoContiene},
                                     New Cls_Coincidencia With {.Filtro = "BingSiteAuth.xml", .Condicion = Cls_Coincidencia.EnumCondicion.NoContiene},
                                     New Cls_Coincidencia With {.Filtro = "google-site-verification", .Condicion = Cls_Coincidencia.EnumCondicion.NoContiene}}})
+            EstablecerConcidenciasPais(FilterKeys.FilterKey.WEBGetFail, "PT", 20)
             Registro_WEB.Filtro.Add(New Cls_Filtro With {
-                                    .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                    .Key = FilterKeys.FilterKey.WEBPost404, .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                     New Cls_Coincidencia With {.Filtro = "POST", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
                                     New Cls_Coincidencia With {.Filtro = " 404 ", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
                                     New Cls_Coincidencia With {.Filtro = "POST", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
                                     New Cls_Coincidencia With {.Filtro = "/Mobile/Login.aspx", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
+            EstablecerConcidenciasPais(FilterKeys.FilterKey.WEBPost404, "PT", 20)
             Registro_WEB.Filtro.Add(New Cls_Filtro With {
-                                    .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                    .Key = FilterKeys.FilterKey.WEBHead404, .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                     New Cls_Coincidencia With {.Filtro = "HEAD", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
                                     New Cls_Coincidencia With {.Filtro = " 404 ", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
+            EstablecerConcidenciasPais(FilterKeys.FilterKey.WEBHead404, "PT", 20)
             Trabajador_WEB.Intervalo = 100
             Trabajador_WEB.Iniciar()
 

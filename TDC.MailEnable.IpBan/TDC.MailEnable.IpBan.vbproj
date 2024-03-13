@@ -153,6 +153,7 @@
     </Compile>
     <Compile Include="RegistroDeArchivos\Cls_Coincidencia.vb" />
     <Compile Include="RegistroDeArchivos\Cls_Filtro.vb" />
+    <Compile Include="RegistroDeArchivos\Core.vb" />
     <Compile Include="RegistroDeArchivos\LecturaDeArchivo.vb" />
     <Compile Include="RegistroDeArchivos\RegistroDeArchivos.vb" />
     <Compile Include="Spam\SpamAssassin.vb" />

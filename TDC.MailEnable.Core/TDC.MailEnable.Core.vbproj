@@ -74,7 +74,6 @@
     <Compile Include="Bucle\Mod_GlobalDoBucle.vb" />
     <Compile Include="Concurrent\ConcurrentBindingList.vb" />
     <Compile Include="GeoLocalizacion\Cls_Geolocalizacion.vb" />
-    <Compile Include="GeoLocalizacion\Core.vb" />
     <Compile Include="GeoLocalizacion\IpInfo.vb" />
     <Compile Include="GeoLocalizacion\IpInfoPrivate.vb" />
     <Compile Include="GeoLocalizacion\MyNsLookUp.vb" />
