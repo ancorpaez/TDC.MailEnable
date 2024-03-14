@@ -196,7 +196,7 @@ Namespace RegistroDeArchivos
                                         If Not ComprobarMailBox Then
                                             'Se requiere Banear sin Comprobar MailBox
                                             If Not FiltroIp.Contains(Ip) Then FiltroIp.Add(Ip)
-                                            Console.WriteLine($"BAN({Filtro.Key.ToString}): {Ip},{FullMailbox},{Pais},{Coincidentes(Ip)}")
+                                            Console.WriteLine($"BAN({Filtro.Key.ToString}): {Ip},{FullMailbox},{Pais},IpCount:{Coincidentes(Ip)},MailCount:No")
                                         Else
                                             'Se solicita Banear comprobando el MailBox
                                             If FileMemory(Archivo).MailBoxLogin.Exist(FullMailbox) Then
@@ -204,8 +204,33 @@ Namespace RegistroDeArchivos
                                                 For Each IpBox In FileMemory(Archivo).MailBoxLogin.Get(FullMailbox)
                                                     If Not String.IsNullOrEmpty(IpBox) Then
                                                         'Banear la IP (Evita Bloquear Ip[ES][ERR]) Comprueba la Bandera (GeolocalizarID, 0(Bloquea) o 1(No bloquea))
-                                                        If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
-                                                        Console.WriteLine($"BAN({Filtro.Key.ToString}): {Ip},{FullMailbox},{Pais},{Coincidentes(Ip)},{FileMemory(Archivo).MailBoxLogin.Count(FullMailbox)}")
+                                                        Dim IpGeolocalizar As New IpInfo
+                                                        Dim IpPais As String = IpGeolocalizar.Geolocalizar(IpBox, Mod_Core.Geolocalizador)
+                                                        Dim IpCoincidencias As Integer = 0
+                                                        If CoincidenciasPais.ContainsKey(IpPais) AndAlso CoincidenciasPais(IpPais).ContainsKey(Filtro.Key) Then IpCoincidencias = CoincidenciasPais(IpPais)(Filtro.Key)
+                                                        'Intenta Respetar el Limite Por Pais si Existe
+                                                        If Coincidentes.ContainsKey(IpBox) Then
+                                                            'Ya ha sido Contabilizada la Ip
+                                                            If Coincidentes(IpBox) > IpCoincidencias Then
+                                                                If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
+                                                                Console.WriteLine($"BAN({Filtro.Key.ToString}): {IpBox},{FullMailbox},{IpPais},IpCount:{Coincidentes(IpBox)},MailCount:{FileMemory(Archivo).MailBoxLogin.Count(FullMailbox)}")
+                                                            End If
+                                                        Else
+                                                            'No ha sido contabilizada la Ip, Excluiremos si tiene Reasignacion de Concurrentes por Pais
+                                                            If Not CoincidenciasPais.ContainsKey(IpPais) Then
+                                                                'Baneamos la Ip
+                                                                If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
+                                                                Console.WriteLine($"BAN({Filtro.Key.ToString}): {IpBox},{FullMailbox},{IpPais},IpCount:0,MailCount:{FileMemory(Archivo).MailBoxLogin.Count(FullMailbox)}")
+                                                            Else
+                                                                'No ha sido contabilizada la Ip  Pero Tiene Pais asociado a la Reasignacion
+                                                                'Si tiene Reasignacion para este Filtro, Y está esta establecida en 0 o en 1
+                                                                If CoincidenciasPais(IpPais).ContainsKey(Filtro.Key) AndAlso Not CoincidenciasPais(IpPais)(Filtro.Key) > 1 Then
+                                                                    'Baneamos la Ip
+                                                                    If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
+                                                                    Console.WriteLine($"BAN({Filtro.Key.ToString}): {IpBox},{FullMailbox},{IpPais},IpCount:0,MailCount:{FileMemory(Archivo).MailBoxLogin.Count(FullMailbox)}")
+                                                                End If
+                                                            End If
+                                                        End If
                                                     End If
                                                 Next
                                             Else
