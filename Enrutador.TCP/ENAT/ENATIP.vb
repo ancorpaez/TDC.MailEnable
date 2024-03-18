@@ -38,7 +38,7 @@ Namespace ENAT
                         Limite += 1
                         Sleep(100)
                         If Limite > 49 Then Exit While
-                        Console.WriteLine($"Add - Limite: {50 - Limite}")
+                        Console.WriteLine($"Ethernet_Add - Limite:({Ip.ToString}) {50 - Limite}")
                     End While
                     If Limite > 49 Then Return False
                 End If
@@ -59,7 +59,7 @@ Namespace ENAT
                         Limite += 1
                         Sleep(100)
                         If Limite > 49 Then Exit While
-                        Console.WriteLine($"Del - Limite: {50 - Limite}")
+                        Console.WriteLine($"Ethernet_Delete - Limite:({Ip.ToString}) {50 - Limite}")
                     End While
                     If Limite > 49 Then Return False
                 End If
@@ -89,6 +89,7 @@ Namespace ENAT
                             .Verb = "runas"
                             .Arguments = LanzarComando
                             .CreateNoWindow = True
+                            .WindowStyle = ProcessWindowStyle.Hidden
                             .UseShellExecute = False
                         End With
                         .Start()

@@ -145,38 +145,38 @@ Namespace RegistroDeArchivos
                                 'Ip Remota del cliente
                                 Dim Ip As String = ObtenerIp(Linea)
                                 'Verifica que sea IPv4
-                                If Not VerificarIp(Ip) Then Exit For
+                                If VerificarIpV4(Ip) Then
+                                    'Datos necesarios para las condiciones
+                                    Dim Geolocalizar As New IpInfo
+                                    Dim Pais As String = Geolocalizar.Geolocalizar(Ip, Mod_Core.Geolocalizador)
+                                    Dim FullMailbox = ExtraerEmails(Linea)
 
-                                'Datos necesarios para la Logica
-                                Dim Geolocalizar As New IpInfo
-                                Dim Pais As String = Geolocalizar.Geolocalizar(Ip, Mod_Core.Geolocalizador)
-                                Dim FullMailbox = ExtraerEmails(Linea)
-                                'Bandera para saber si se debe Banear la IP
-                                Dim Banear As Boolean = False
-                                'Almacena la Ip Remota o Suma en Contador de la Misma
-                                If Not Coincidentes.ContainsKey(Ip) Then Me.Coincidentes.TryAdd(Ip, 1) Else Me.Coincidentes.TryUpdate(Ip, Me.Coincidentes(Ip) + 1, Me.Coincidentes(Ip))
+                                    'Bandera para saber si se debe Banear la IP
+                                    Dim Banear As Boolean = False
 
-                                'Comprueba si es Aplicable el Filtro por Pais
-                                If Not ExclusionPais.Any(Function(Concide) Concide = Pais) Then
-                                    'Pais no Excluido
+                                    'Almacena la Ip Remota o Suma en Contador de la Misma
+                                    If Not Coincidentes.ContainsKey(Ip) Then Coincidentes.TryAdd(Ip, 1) Else Coincidentes(Ip) += 1
 
-                                    'Actualiza el numero de coincidencias maximo por pais (Defecto en su contra)
-                                    If CoincidenciasPais.ContainsKey(Pais) AndAlso CoincidenciasPais(Pais).ContainsKey(Filtro.Key) Then NumeroCoincidentes = CoincidenciasPais(Pais)(Filtro.Key)
+                                    'Comprueba si es Aplicable el Filtro por exclusion de Pais
+                                    If Not ExclusionPais.Any(Function(Concide) Concide = Pais) Then
 
-                                    'Comprueba si la Ip Remota supera el Maximo de coincidencias para el Filtro
-                                    If Coincidentes(Ip) > NumeroCoincidentes Then Banear = True
+                                        'Actualiza el numero de coincidencias maximo por pais (Defecto en su contra)
+                                        If CoincidenciasPais.ContainsKey(Pais) AndAlso CoincidenciasPais(Pais).ContainsKey(Filtro.Key) Then NumeroCoincidentes = CoincidenciasPais(Pais)(Filtro.Key)
 
-                                    'Si el Filtro solicita comprobar el MailBox
-                                    If Filtro.VerificarMailBox AndAlso Not Banear Then
-                                        If Not String.IsNullOrEmpty(FullMailbox) Then
-                                            Dim PostOffice As String = FullMailbox.Split("@")(1)
-                                            Dim MailBox As String = FullMailbox.Split("@")(0)
-                                            'Si no existe el PostOffice o el MailBox banea la IP
-                                            If Not Mod_Core.PostOfficesCenter.PostOffices.Contains(PostOffice) Then
-                                                'No existe el PostOffice
-                                                Banear = True
-                                            Else
-                                                If Not Mod_Core.PostOfficesCenter.PostOffice(PostOffice).MailBoxes.ContainsKey(MailBox) Then
+                                        'Comprueba si la Ip Remota supera el Maximo de coincidencias para el Filtro
+                                        If Coincidentes(Ip) > NumeroCoincidentes Then Banear = True
+
+                                        'Si el Filtro solicita comprobar el MailBox y la Ip no requiere ser Baneada
+                                        If Filtro.VerificarMailBox AndAlso Not Banear Then
+                                            If Not String.IsNullOrEmpty(FullMailbox) Then
+                                                'Si existe el MailBox en la linea
+                                                Dim PostOffice As String = FullMailbox.Split("@")(1)
+                                                Dim MailBox As String = FullMailbox.Split("@")(0)
+                                                'Si no existe el PostOffice o el MailBox banea la IP
+                                                If Not Mod_Core.PostOfficesCenter.PostOffices.Contains(PostOffice) Then
+                                                    'No existe el PostOffice
+                                                    Banear = True
+                                                ElseIf Not Mod_Core.PostOfficesCenter.PostOffice(PostOffice).MailBoxes.ContainsKey(MailBox) Then
                                                     'No existe el MailBox
                                                     Banear = True
                                                 Else
@@ -188,55 +188,62 @@ Namespace RegistroDeArchivos
                                                         Banear = True
                                                     End If
                                                 End If
+                                            Else
+                                                'Solicita verificar MailBox pero no existe en la linea
+                                                Banear = True
                                             End If
                                         End If
-                                    End If
 
-                                    If Banear Then
-                                        If Not ComprobarMailBox Then
-                                            'Se requiere Banear sin Comprobar MailBox
-                                            If Not FiltroIp.Contains(Ip) Then FiltroIp.Add(Ip)
-                                            Console.WriteLine($"BAN({Filtro.Key.ToString}): {Ip},{FullMailbox},{Pais},IpCount:{Coincidentes(Ip)},MailCount:No")
-                                        Else
-                                            'Se solicita Banear comprobando el MailBox
-                                            If FileMemory(Archivo).MailBoxLogin.Exist(FullMailbox) Then
-                                                'Existe el MailBox se Banean todas las Ip Almacenadas que intentaron hacer login a la cuenta
-                                                For Each IpBox In FileMemory(Archivo).MailBoxLogin.Get(FullMailbox)
-                                                    If Not String.IsNullOrEmpty(IpBox) Then
-                                                        'Banear la IP (Evita Bloquear Ip[ES][ERR]) Comprueba la Bandera (GeolocalizarID, 0(Bloquea) o 1(No bloquea))
-                                                        Dim IpGeolocalizar As New IpInfo
-                                                        Dim IpPais As String = IpGeolocalizar.Geolocalizar(IpBox, Mod_Core.Geolocalizador)
-                                                        Dim IpCoincidencias As Integer = 0
-                                                        If CoincidenciasPais.ContainsKey(IpPais) AndAlso CoincidenciasPais(IpPais).ContainsKey(Filtro.Key) Then IpCoincidencias = CoincidenciasPais(IpPais)(Filtro.Key)
-                                                        'Intenta Respetar el Limite Por Pais si Existe
-                                                        If Coincidentes.ContainsKey(IpBox) Then
-                                                            'Ya ha sido Contabilizada la Ip
-                                                            If Coincidentes(IpBox) > IpCoincidencias Then
-                                                                If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
-                                                                Console.WriteLine($"BAN({Filtro.Key.ToString}): {IpBox},{FullMailbox},{IpPais},IpCount:{Coincidentes(IpBox)},MailCount:{FileMemory(Archivo).MailBoxLogin.Count(FullMailbox)}")
-                                                            End If
-                                                        Else
-                                                            'No ha sido contabilizada la Ip, Excluiremos si tiene Reasignacion de Concurrentes por Pais
-                                                            If Not CoincidenciasPais.ContainsKey(IpPais) Then
-                                                                'Baneamos la Ip
-                                                                If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
-                                                                Console.WriteLine($"BAN({Filtro.Key.ToString}): {IpBox},{FullMailbox},{IpPais},IpCount:0,MailCount:{FileMemory(Archivo).MailBoxLogin.Count(FullMailbox)}")
+                                        If Banear Then
+                                            If Not ComprobarMailBox Then
+                                                'Se requiere Banear sin Comprobar MailBox
+                                                If Not FiltroIp.Contains(Ip) Then FiltroIp.Add(Ip)
+                                                Console.WriteLine($"BAN({Filtro.Key.ToString}): {Ip},{FullMailbox},{Pais},IpCount:{Coincidentes(Ip)},MailCount:No")
+                                            Else
+                                                'Se solicita Banear comprobando el MailBox
+                                                If FileMemory(Archivo).MailBoxLogin.Exist(FullMailbox) Then
+                                                    'Existe el MailBox se Banean todas las Ip Almacenadas que intentaron hacer login a la cuenta
+                                                    For Each IpBox In FileMemory(Archivo).MailBoxLogin.Get(FullMailbox)
+                                                        If Not String.IsNullOrEmpty(IpBox) Then
+                                                            'Banear la IP (Evita Bloquear Ip[ES][ERR]) Comprueba la Bandera (GeolocalizarID, 0(Bloquea) o 1(No bloquea))
+                                                            Dim IpGeolocalizar As New IpInfo
+                                                            Dim IpPais As String = IpGeolocalizar.Geolocalizar(IpBox, Mod_Core.Geolocalizador)
+                                                            Dim IpCoincidencias As Integer = 0
+                                                            If CoincidenciasPais.ContainsKey(IpPais) AndAlso CoincidenciasPais(IpPais).ContainsKey(Filtro.Key) Then IpCoincidencias = CoincidenciasPais(IpPais)(Filtro.Key)
+                                                            'Intenta Respetar el Limite Por Pais si Existe
+                                                            If Coincidentes.ContainsKey(IpBox) Then
+                                                                'Ya ha sido Contabilizada la Ip
+                                                                If Coincidentes(IpBox) > IpCoincidencias Then
+                                                                    If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
+                                                                    Console.WriteLine($"BAN({Filtro.Key.ToString}): {IpBox},{FullMailbox},{IpPais},IpCount:{Coincidentes(IpBox)},MailCount:{FileMemory(Archivo).MailBoxLogin.Count(FullMailbox)}")
+                                                                End If
                                                             Else
-                                                                'No ha sido contabilizada la Ip  Pero Tiene Pais asociado a la Reasignacion
-                                                                'Si tiene Reasignacion para este Filtro, Y está esta establecida en 0 o en 1
-                                                                If CoincidenciasPais(IpPais).ContainsKey(Filtro.Key) AndAlso Not CoincidenciasPais(IpPais)(Filtro.Key) > 1 Then
+                                                                'No ha sido contabilizada la Ip, Excluiremos si tiene Reasignacion de Concurrentes por Pais
+                                                                If Not CoincidenciasPais.ContainsKey(IpPais) Then
                                                                     'Baneamos la Ip
                                                                     If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
                                                                     Console.WriteLine($"BAN({Filtro.Key.ToString}): {IpBox},{FullMailbox},{IpPais},IpCount:0,MailCount:{FileMemory(Archivo).MailBoxLogin.Count(FullMailbox)}")
+                                                                Else
+                                                                    'No ha sido contabilizada la Ip  Pero Tiene Pais asociado a la Reasignacion
+                                                                    'Si tiene Reasignacion para este Filtro, Y está esta establecida en 0 o en 1
+                                                                    If CoincidenciasPais(IpPais).ContainsKey(Filtro.Key) AndAlso Not CoincidenciasPais(IpPais)(Filtro.Key) > 1 Then
+                                                                        'Baneamos la Ip
+                                                                        If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
+                                                                        Console.WriteLine($"BAN({Filtro.Key.ToString}): {IpBox},{FullMailbox},{IpPais},IpCount:0,MailCount:{FileMemory(Archivo).MailBoxLogin.Count(FullMailbox)}")
+                                                                    End If
                                                                 End If
                                                             End If
                                                         End If
+                                                    Next
+                                                Else
+                                                    'No existe el MailBox Banea la IP
+                                                    If Not FiltroIp.Contains(Ip) Then FiltroIp.Add(Ip)
+                                                    If Coincidentes.ContainsKey(Ip) Then
+                                                        Console.WriteLine($"BAN({Filtro.Key.ToString}): {Ip},{FullMailbox},{Pais},IpCount:{Coincidentes(Ip)},MailCount:0")
+                                                    Else
+                                                        Console.WriteLine($"BAN({Filtro.Key.ToString}): {Ip},{FullMailbox},{Pais},IpCount:0,MailCount:0")
                                                     End If
-                                                Next
-                                            Else
-                                                'No existe el MailBox Banea la IP
-                                                If Not FiltroIp.Contains(Ip) Then FiltroIp.Add(Ip)
-                                                Console.WriteLine($"BAN({Filtro.Key.ToString}): {Ip},{FullMailbox},{Pais},{Coincidentes(Ip)}")
+                                                End If
                                             End If
                                         End If
                                     End If
@@ -252,20 +259,7 @@ Namespace RegistroDeArchivos
                 Stop
             End Try
         End Sub
-        Private Function VerificarIp(Ip As String) As Boolean
-            If Ip <> "0.0.0.0" Then
-                Try
-                    'Testear que es una IPV4 Real, Si no es IPV4 desecha las comprobaciones
-                    Ip = Net.IPAddress.Parse(Ip).ToString
-                    If Net.IPAddress.Parse(Ip).AddressFamily = Net.Sockets.AddressFamily.InterNetworkV6 Then Return False
-                    Return True
-                Catch ex As Exception
-                    Return False
-                End Try
-            Else
-                Return False
-            End If
-        End Function
+
         Private Sub Lector_Foreground(Sender As Object, ByRef Detener As Boolean)
             If Estado = EnumEstado.Analizando Then
                 'Avanza en el conteo de lineas procesadas
@@ -286,6 +280,20 @@ Namespace RegistroDeArchivos
             Bloqueo.WaitOne()
         End Sub
 
+        Private Function VerificarIpV4(Ip As String) As Boolean
+            If Ip <> "0.0.0.0" Then
+                Try
+                    'Testear que es una IPV4 Real, Si no es IPV4 desecha las comprobaciones
+                    Ip = Net.IPAddress.Parse(Ip).ToString
+                    If Net.IPAddress.Parse(Ip).AddressFamily = Net.Sockets.AddressFamily.InterNetworkV6 Then Return False
+                    Return True
+                Catch ex As Exception
+                    Return False
+                End Try
+            Else
+                Return False
+            End If
+        End Function
         Private Function ExtraerEmails(texto As String) As String
             Dim emails As New List(Of String)
             Dim regex As New Regex("\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")

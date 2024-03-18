@@ -7,7 +7,7 @@ Namespace Enrutadores
         Public Conexion As Socket = Nothing
         Public Servidor As Socket = Nothing
 
-        Private WithEvents Dispadaror As Bucle.DoBucle
+        Public WithEvents Dispadaror As Bucle.DoBucle
         Private PuertoServidor As Integer
         Private IPENAT As IPEndPoint = New IPEndPoint(IPAddress.Any, 0)
         Public Property ENATAddress As IPEndPoint = New IPEndPoint(IPAddress.Any, 0)
@@ -17,8 +17,8 @@ Namespace Enrutadores
         Private BufferServidor As BufferEnrutador
         Private Activo As Date
 
-        Private WithEvents Temporizador As Bucle.DoBucle
-        Private TimeOut As Integer = 3600
+        Public WithEvents Temporizador As Bucle.DoBucle
+
 
         Private Enum EnumTipoRouting
             ESTABLECIENDO
@@ -26,8 +26,6 @@ Namespace Enrutadores
             NORMAL
         End Enum
         Private TipoEnrutamiento As EnumTipoRouting = EnumTipoRouting.ESTABLECIENDO
-
-        Public Property ConexionAceptada As Boolean = False
 
         Public Event Actividad(Activo As Integer, Enrutador As Enrutador)
         Public Event AlCerrarEnrutador(Enrutador As Enrutador)
@@ -105,7 +103,7 @@ Namespace Enrutadores
                 End Select
                 If Servidor IsNot Nothing AndAlso Servidor.Connected Then Dispadaror.Detener()
             Catch ex As Exception
-                'Stop
+                'Temporizador.Detener()
             End Try
         End Sub
         Private Sub Dispadaror_Endground(Sender As Object, ByRef Detener As Boolean) Handles Dispadaror.Endground
@@ -145,14 +143,14 @@ Namespace Enrutadores
         End Sub
 
         Private Sub Temporizador_Background(Sender As Object, ByRef Detener As Boolean) Handles Temporizador.Background
-            If DateDiff(DateInterval.Second, Activo, Now) > TimeOut OrElse IpBanPipe.Contains(CType(Conexion.RemoteEndPoint, IPEndPoint).Address.ToString) Then
+            If DateDiff(DateInterval.Second, Activo, Now) > InactiveTimeOut OrElse IpBanPipe.Contains(CType(Conexion.RemoteEndPoint, IPEndPoint).Address.ToString) Then
                 Detener = True
             End If
         End Sub
 
         Private Sub Temporizador_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Temporizador.Foreground
-            RaiseEvent Actividad(TimeOut - DateDiff(DateInterval.Second, Activo, Now), Me)
-            Console.WriteLine(TimeOut - DateDiff(DateInterval.Second, Activo, Now), Me)
+            RaiseEvent Actividad(InactiveTimeOut - DateDiff(DateInterval.Second, Activo, Now), Me)
+            'Console.WriteLine(TimeOut - DateDiff(DateInterval.Second, Activo, Now), Me)
         End Sub
 
         Private Sub Temporizador_Endground(Sender As Object, ByRef Detener As Boolean) Handles Temporizador.Endground

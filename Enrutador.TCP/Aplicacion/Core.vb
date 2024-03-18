@@ -1,12 +1,11 @@
 ﻿Imports System.Net
 Imports System.Net.NetworkInformation
+Imports Enrutador.TCP.Enrutadores
 
 Namespace Aplicacion
     Module Core
         Public WithEvents MainForm As Interfaz.Main
         Private esIniciado As Boolean = False
-        Public ReadOnly VC As New Concurrent.ConcurrentBag(Of Interfaz.Conexion)
-        Private WithEvents VCView As New TDC.MailEnable.Core.Bucle.DoBucle("VCView") With {.Intervalo = 1000}
 
         Private Sub ActivatedMainForm() Handles MainForm.Activated
             If Not esIniciado Then
@@ -29,9 +28,9 @@ Namespace Aplicacion
             'Iniciar Escuchadores
             If Not Escuchadores.Existe(Escuchadores.Core.EnumEscuchadores.ImapSSl) Then
                 With MainForm.lblImapSsl
-                    If Escuchadores.Crear(Escuchadores.Core.EnumEscuchadores.ImapSSl, 993) Then
+                    .Text = $"Ssl ({NET.EasyPortManagerSsl.Listen})"
+                    If Escuchadores.Crear(Escuchadores.Core.EnumEscuchadores.ImapSSl, NET.EasyPortManagerSsl.Listen) Then
                         AddHandler Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.ImapSSl).ConexionEntrante, AddressOf ConexionEntranteSsl
-                        .Text = "Ssl (True)"
                         .ForeColor = Color.DarkGreen
                     Else
                         .Font = New Font(.Font, FontStyle.Bold)
@@ -42,9 +41,9 @@ Namespace Aplicacion
 
             If Not Escuchadores.Existe(Escuchadores.Core.EnumEscuchadores.Imap) Then
                 With MainForm.lblImap
-                    If Escuchadores.Crear(Escuchadores.Core.EnumEscuchadores.Imap, 143) Then
+                    .Text = $"Imap ({NET.EasyPortManager.Listen})"
+                    If Escuchadores.Crear(Escuchadores.Core.EnumEscuchadores.Imap, NET.EasyPortManager.Listen) Then
                         AddHandler Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.Imap).ConexionEntrante, AddressOf ConexionEntrante
-                        .Text = "Imap (True)"
                         .ForeColor = Color.DarkGreen
                     Else
                         .Font = New Font(.Font, FontStyle.Bold)
@@ -53,61 +52,82 @@ Namespace Aplicacion
                 End With
             End If
 
-            'Activar VC
-            VCView.Iniciar()
-
-            'RouteTable.Test()
         End Sub
         Private Sub ConexionEntranteSsl()
             Dim Recoger As Sockets.Socket = Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.ImapSSl).GetFirst
             If Recoger IsNot Nothing Then
-                Dim Aceptar As New Enrutadores.AcceptSocketSubProcess(Recoger, 994)
-                AddHandler Aceptar.ConexionAceptada, AddressOf ConexionAceptada
-                AddHandler Aceptar.ConexionRechadaza, AddressOf ConexionRechazada
+                Dim Analizar As New Enrutadores.AcceptSocketSubProcess(Recoger, NET.EasyPortManagerSsl.Route)
+                AddHandler Analizar.ConexionAceptada, AddressOf ConexionAceptada
+                AddHandler Analizar.ConexionRechadaza, AddressOf ConexionRechazada
             End If
         End Sub
         Private Sub ConexionEntrante()
             Dim Recoger As Sockets.Socket = Escuchadores.Obtener(Escuchadores.Core.EnumEscuchadores.Imap).GetFirst
             If Recoger IsNot Nothing Then
-                Dim Aceptar As New Enrutadores.AcceptSocketSubProcess(Recoger, 144)
-                AddHandler Aceptar.ConexionAceptada, AddressOf ConexionAceptada
-                AddHandler Aceptar.ConexionRechadaza, AddressOf ConexionRechazada
+                Dim Analizar As New Enrutadores.AcceptSocketSubProcess(Recoger, NET.EasyPortManager.Route)
+                AddHandler Analizar.ConexionAceptada, AddressOf ConexionAceptada
+                AddHandler Analizar.ConexionRechadaza, AddressOf ConexionRechazada
             End If
         End Sub
 
         Private Sub ConexionAceptada(Aceptador As Enrutadores.AcceptSocketSubProcess, Conexion As Sockets.Socket)
             Try
+                'Asignar el Control de Lista
+                If IsNothing(Interfaz.ListViewAceptadas) Then Interfaz.ListViewAceptadas = MainForm.lstAceptadas
+                If IsNothing(Interfaz.ListViewConexiones) Then Interfaz.ListViewConexiones = MainForm.lstConexiones
+
+                'Remover eventos
                 RemoveHandler Aceptador.ConexionAceptada, AddressOf ConexionAceptada
                 RemoveHandler Aceptador.ConexionRechadaza, AddressOf ConexionRechazada
 
-                Console.WriteLine($"Aceptada: {Conexion.RemoteEndPoint.ToString}")
-                VC.Add(New Interfaz.Conexion(Enrutadores.Obtener(Conexion.RemoteEndPoint.ToString)) With {.TopLevel = False, .ShowInTaskbar = False, .ControlBox = False, .Opacity = 0, .WindowState = FormWindowState.Minimized})
+                'Actualizar Control
+                Dim cKey As String = CType(Aceptador.Conexion.RemoteEndPoint, IPEndPoint).Address.ToString
+                Dim nItem As New ListViewItem(cKey) With {.Name = cKey}
+                Dim nSubitem As New ListViewItem.ListViewSubItem()
+                nSubitem.Text = 1
+                nSubitem.Name = $"c{cKey}"
+                nItem.SubItems.Add(nSubitem)
+                Interfaz.ToAddAceptadas(nItem)
+                MainForm.lblAceptadas.Text = MainForm.lstAceptadas.Items.Count
+                Console.WriteLine($"Aceptada: { CType(Aceptador.Conexion.RemoteEndPoint, IPEndPoint).Address.ToString}")
+
+                Dim cFullKey As String = Aceptador.Conexion.RemoteEndPoint.ToString
+                Dim cItem As New ListViewItem(cFullKey) With {.Name = cFullKey}
+                Dim cSubItem As New ListViewItem.ListViewSubItem()
+                cSubItem.Text = Enrutadores.InactiveTimeOut
+                cSubItem.Name = $"c{cFullKey}"
+                cItem.SubItems.Add(cSubItem)
+                Interfaz.ToAddConexiones(cItem)
+                MainForm.lblConexiones.Text = MainForm.lstConexiones.Items.Count
+                Console.WriteLine($"Conexión: {Conexion.RemoteEndPoint.ToString}")
+
+                'Activar Eventos del Enrutador
+                AddHandler Enrutadores.Obtener(Conexion.RemoteEndPoint.ToString).Actividad, AddressOf AlActualizarEnrutador
+                AddHandler Enrutadores.Obtener(Conexion.RemoteEndPoint.ToString).AlCerrarEnrutador, AddressOf AlCerrarEnrutador
+
             Catch ex As Exception
-                Stop
+                Console.WriteLine(ex.Message)
             End Try
         End Sub
         Private Sub ConexionRechazada(Aceptador As Enrutadores.AcceptSocketSubProcess, Conexion As Sockets.Socket)
             Try
+                'Asignar el Control de Lista
+                If IsNothing(Interfaz.ListViewRechazadas) Then Interfaz.ListViewRechazadas = MainForm.lstRechazadas
+
+                'Remover eventos
                 RemoveHandler Aceptador.ConexionAceptada, AddressOf ConexionAceptada
                 RemoveHandler Aceptador.ConexionRechadaza, AddressOf ConexionRechazada
 
+                'Actualizar Control
                 Dim cKey As String = CType(Aceptador.Conexion.RemoteEndPoint, IPEndPoint).Address.ToString
-                Dim lstControl As ListView = MainForm.lstRechazadas
-                With lstControl
-                    If Not .Items.ContainsKey(cKey) Then
-                        Dim nItem As New ListViewItem(cKey) With {.Name = cKey}
-                        Dim nSubitem As New ListViewItem.ListViewSubItem()
-                        nSubitem.Text = 1
-                        nSubitem.Name = $"c{cKey}"
-                        nItem.SubItems.Add(nSubitem)
-                        lstControl.Items.Add(nItem)
-                    Else
-                        Dim nItem As ListViewItem = lstControl.Items(cKey) 'Stop
-                        Dim nSubItem As ListViewItem.ListViewSubItem = nItem.SubItems($"c{cKey}")
-                        nSubItem.Text = CInt(nSubItem.Text) + 1
-                    End If
-                End With
-                MainForm.lblRechazadas.Text = CInt(MainForm.lblRechazadas.Text) + 1
+                Dim nItem As New ListViewItem(cKey) With {.Name = cKey}
+                Dim nSubitem As New ListViewItem.ListViewSubItem()
+                nSubitem.Text = 1
+                nSubitem.Name = $"c{cKey}"
+                nItem.SubItems.Add(nSubitem)
+                Interfaz.ToRechazadas(nItem)
+                MainForm.lblRechazadas.Text = MainForm.lstRechazadas.Items.Count
+                Console.WriteLine($"Rechazada: {Conexion.RemoteEndPoint.ToString}")
             Catch ex As Exception
                 Console.WriteLine(ex.Message)
             End Try
@@ -117,16 +137,16 @@ Namespace Aplicacion
             MainForm.lblIpBan.Text = $"IpBan ({Lista.Count})"
         End Sub
 
-        Private Sub VCView_Foreground(Sender As Object, ByRef Detener As Boolean) Handles VCView.Foreground
-            For Each VCCreate In VC
-                With VCCreate
-                    If Not .Created AndAlso Not .Disposing AndAlso Not .IsDisposed Then
-                        MainForm.FlowPanel.Controls.Add(VCCreate)
-                        .CreateControl()
-                    End If
-                End With
-            Next
-
+        Private Sub AlActualizarEnrutador(Activo As Integer, Enrutador As Enrutadores.Enrutador)
+            Interfaz.ToContadorEnrutador(Enrutador.Conexion.RemoteEndPoint.ToString, Activo)
+        End Sub
+        Private Sub AlCerrarEnrutador(Enrutador As Enrutadores.Enrutador)
+            RemoveHandler Enrutador.Actividad, AddressOf AlActualizarEnrutador
+            RemoveHandler Enrutador.AlCerrarEnrutador, AddressOf AlCerrarEnrutador
+            Interfaz.ToRemoveConexiones(Enrutador.Conexion.RemoteEndPoint.ToString)
+            MainForm.lblConexiones.Text = MainForm.lstConexiones.Items.Count
+            Interfaz.ToRemoveAceptadas(CType(Enrutador.Conexion.RemoteEndPoint, IPEndPoint).Address.ToString)
+            MainForm.lblAceptadas.Text = MainForm.lstAceptadas.Items.Count
         End Sub
     End Module
 End Namespace

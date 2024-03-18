@@ -84,12 +84,6 @@
     <Compile Include="Enrutadores\BufferEnrutador.vb" />
     <Compile Include="Enrutadores\Core.vb" />
     <Compile Include="Enrutadores\Enrutador.vb" />
-    <Compile Include="Interfaz\Conexion.Designer.vb">
-      <DependentUpon>Conexion.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Interfaz\Conexion.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Interfaz\Main.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -99,6 +93,7 @@
     </Compile>
     <Compile Include="Escuchadores\Core.vb" />
     <Compile Include="Escuchadores\Escuchador.vb" />
+    <Compile Include="Interfaz\ToInterfaz.vb" />
     <Compile Include="IpBanPipe\Core.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -115,11 +110,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="NET\AsociadorPuertos.vb" />
+    <Compile Include="NET\Core.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Interfaz\Conexion.resx">
-      <DependentUpon>Conexion.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Interfaz\Main.resx">
       <DependentUpon>Main.vb</DependentUpon>
     </EmbeddedResource>

@@ -19,10 +19,20 @@ Namespace Enrutadores
         End Sub
 
         Private Sub Proceso_DoWork(sender As Object, e As DoWorkEventArgs) Handles Proceso.DoWork
-            If Not Aceptado AndAlso Conexion IsNot Nothing Then If Not IpBanPipe.Contains(CType(Conexion.RemoteEndPoint, IPEndPoint).Address.ToString) Then Aceptado = True
+            If Not Aceptado AndAlso Conexion IsNot Nothing Then
+                'Acepta si no Esta en la lista de Bloqueo
+                If Not IpBanPipe.Contains(CType(Conexion.RemoteEndPoint, IPEndPoint).Address.ToString) Then Aceptado = True
+                'Deniega si llega al Maximo de conexiones concurrentes permitidas
+                If ConcurrentENATS(CType(Conexion.RemoteEndPoint, IPEndPoint).Address) > (MaximunRoutersPerIp - 1) Then Aceptado = False
+            End If
         End Sub
 
         Private Sub Proceso_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles Proceso.RunWorkerCompleted
+            'If Aceptado AndAlso Conexion IsNot Nothing Then
+            '    'Deniega si llega al Maximo de conexiones permitidas
+            '    If Interfaz.FromConcurrentConnections(CType(Conexion.RemoteEndPoint, IPEndPoint).Address.ToString) > (ConcurrentConnectionsIpClient - 1) Then Aceptado = False
+            'End If
+
             If Aceptado Then
                 Add(Conexion, ObtenerIPv4Principal, Puerto)
                 RaiseEvent ConexionAceptada(Me, Conexion)

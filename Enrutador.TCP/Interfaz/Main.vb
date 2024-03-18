@@ -13,9 +13,7 @@
                 e.Cancel = True
             End If
         End Sub
-        Private Sub FlowPanel_ControlChange(sender As Object, e As ControlEventArgs) Handles FlowPanel.ControlAdded, FlowPanel.ControlRemoved
-            lblConexiones.Text = FlowPanel.Controls.Count
-        End Sub
+
 
     End Class
 End Namespace
