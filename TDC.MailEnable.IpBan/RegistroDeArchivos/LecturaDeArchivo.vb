@@ -4,6 +4,8 @@ Imports TDC.MailEnable.Core
 Imports TDC.MailEnable.Core.GeoLocalizacion
 Imports TDC.MailEnable.IpBan.MailEnableLog
 Imports System.Text.RegularExpressions
+Imports System.Web.UI
+Imports TDC.MailEnable.IpBan.Interfaz
 
 'Esta clase Analiza Archivos Log en busqueda de Patrones configurables segun el Filtro aplicado
 Namespace RegistroDeArchivos
@@ -17,7 +19,9 @@ Namespace RegistroDeArchivos
         'Solicita la ip al Hilo principal donde estan agrupadas las diferentens funciones para realizarlo.
         Public Property ObtenerIp As Func(Of String, String)
         'Almacena las coincidencias por IP la lectura General del Archivo
-        Private Coincidentes As New Collections.Concurrent.ConcurrentDictionary(Of String, Integer)
+        'Private Coincidentes As New Collections.Concurrent.ConcurrentDictionary(Of String, Integer)
+        'Almacena los MailBox a los que accedio la IP
+        Private IpMailBoxLogins As New Collections.Concurrent.ConcurrentDictionary(Of String, String)
         'Evita la continuacion del codigo hasta haber procesado todas las lineas del archivo
         Private Bloqueo As New ManualResetEvent(False)
         'Almacena todas las Ip previstas para ser Baneadas
@@ -106,16 +110,20 @@ Namespace RegistroDeArchivos
                     Estado = EnumEstado.Analizando
                     If Not IsNothing(Filtros) Then
                         'Analizamos la linea con cada Filtro
+                        Dim Linea As String = FileMemory(Archivo).Lines(FileMemory(Archivo).Line)
+
                         For Each Filtro In Filtros
-                            'Valores Iniciales para establecer si el filtro se Aplica
-                            Dim Linea As String = FileMemory(Archivo).Lines(FileMemory(Archivo).Line)
+
+                            'Establece el Tipo de Comparacion Simulando a (Todo(.All), Cualquiera(.Any))
                             Dim TipoComparacion As Cls_Filtro.EnumTipoComparacion = Filtro.TrueSi
-                            Dim NumeroCoincidentes As Integer = Filtro.Repeteciones
-                            Dim ComprobarMailBox As Boolean = Filtro.VerificarMailBox
+
+                            'Recoge los Strings a Comparar
                             Dim Comparaciones As List(Of Cls_Coincidencia) = Filtro.Coincidencias
+
+                            'Establece si el Filtro Tiene Coincidencias
                             Dim Coincide As Boolean = False
 
-                            'Establecer Coincidencia
+                            'Establecer Coincidencia (Simula el .All o .Any)
                             Select Case TipoComparacion
                                 Case Cls_Filtro.EnumTipoComparacion.Todo
                                     Coincide = True
@@ -140,34 +148,58 @@ Namespace RegistroDeArchivos
                                     Next
                             End Select
 
-                            'Se aplica el Filtro
+                            'Si Coincide se examina la posibilidad de Baneo
                             If Coincide Then
                                 'Ip Remota del cliente
                                 Dim Ip As String = ObtenerIp(Linea)
                                 'Verifica que sea IPv4
                                 If VerificarIpV4(Ip) Then
-                                    'Datos necesarios para las condiciones
+                                    'Obtenemos el Pais Asociado a la IP
                                     Dim Geolocalizar As New IpInfo
                                     Dim Pais As String = Geolocalizar.Geolocalizar(Ip, Mod_Core.Geolocalizador)
-                                    Dim FullMailbox = ExtraerEmails(Linea)
 
-                                    'Bandera para saber si se debe Banear la IP
-                                    Dim Banear As Boolean = False
+                                    'Desecha los Paises Excentos al Baneo
+                                    If Not ExclusionPais.Any(Function(Excento) Excento = Pais) Then
 
-                                    'Almacena la Ip Remota o Suma en Contador de la Misma
-                                    If Not Coincidentes.ContainsKey(Ip) Then Coincidentes.TryAdd(Ip, 1) Else Coincidentes(Ip) += 1
+                                        'Almacena la Ip Remota o Suma en Contador de la Misma
+                                        If Not FileMemory(Archivo).Coincidentes.ContainsKey(Ip) Then FileMemory(Archivo).Coincidentes.TryAdd(Ip, 1) Else FileMemory(Archivo).Coincidentes(Ip) += 1
 
-                                    'Comprueba si es Aplicable el Filtro por exclusion de Pais
-                                    If Not ExclusionPais.Any(Function(Concide) Concide = Pais) Then
+                                        'Bandera para saber si se debe Banear la IP
+                                        Dim Banear As Boolean = False
+
+                                        'Bandera para Saber si Banear el MailBox
+                                        Dim BanearMailBox As Boolean = False
+
+                                        'Establece cuantas repeticiones maximas se permiten antes de Banear
+                                        Dim NumeroCoincidentes As Integer = Filtro.Repeteciones
 
                                         'Actualiza el numero de coincidencias maximo por pais (Defecto en su contra)
                                         If CoincidenciasPais.ContainsKey(Pais) AndAlso CoincidenciasPais(Pais).ContainsKey(Filtro.Key) Then NumeroCoincidentes = CoincidenciasPais(Pais)(Filtro.Key)
 
-                                        'Comprueba si la Ip Remota supera el Maximo de coincidencias para el Filtro
-                                        If Coincidentes(Ip) > NumeroCoincidentes Then Banear = True
+                                        'Establece si el Filtro debe contrastar la existencia del MailBox
+                                        Dim ComprobarMailBox As Boolean = Filtro.VerificarMailBox
 
-                                        'Si el Filtro solicita comprobar el MailBox y la Ip no requiere ser Baneada
-                                        If Filtro.VerificarMailBox AndAlso Not Banear Then
+                                        'Inicializa FullMailBox (Se utiliza en Comprobacion(ComprobarMailBox) y Baneo(BanearMailBox))
+                                        Dim FullMailbox As String = String.Empty
+
+
+                                        'Si el Filtro solicita comprobar el MailBox
+                                        If ComprobarMailBox Then
+
+                                            'Adquiere de forma Generica el MailBox de los Log especial para el SMTP
+                                            FullMailbox = ExtraerEmailGenerico(Linea)
+
+                                            'Corrige el Fallo de Regex
+                                            If FullMailbox.Contains("+") Then FullMailbox = FullMailbox.Replace(FullMailbox.Substring(0, FullMailbox.IndexOf("+") + 1), "")
+
+                                            'Adquiere el MailBox del Log IMAP
+                                            If String.IsNullOrEmpty(FullMailbox) Then FullMailbox = ExtraerEmailIMAP(Linea)
+                                            If FullMailbox.Contains("+") Then Stop
+
+                                            'Adquiere el MailBox del Log POP
+                                            If String.IsNullOrEmpty(FullMailbox) Then FullMailbox = ExtraerEmailPOP(Linea)
+                                            If FullMailbox.Contains("+") Then Stop
+
                                             If Not String.IsNullOrEmpty(FullMailbox) Then
                                                 'Si existe el MailBox en la linea
                                                 Dim PostOffice As String = FullMailbox.Split("@")(1)
@@ -180,70 +212,61 @@ Namespace RegistroDeArchivos
                                                     'No existe el MailBox
                                                     Banear = True
                                                 Else
+                                                    'Existe el MailBox
+
                                                     'Establece coincidencias por MailBox
                                                     If Not FileMemory(Archivo).MailBoxLogin.Exist(FullMailbox) Then FileMemory(Archivo).MailBoxLogin.Add(FullMailbox)
                                                     FileMemory(Archivo).MailBoxLogin.AddIp(FullMailbox, Ip)
-                                                    If FileMemory(Archivo).MailBoxLogin.Exist(FullMailbox) AndAlso FileMemory(Archivo).MailBoxLogin.Count(FullMailbox) >= NumeroCoincidentes Then
+
+                                                    'Comprobamos el Limite del Filtro (No del Pais), MailBox
+                                                    If FileMemory(Archivo).MailBoxLogin.Exist(FullMailbox) AndAlso FileMemory(Archivo).MailBoxLogin.Count(FullMailbox) >= Filtro.Repeteciones Then
                                                         'El MailBox supera el limite de Coincidencias del Filtro
                                                         Banear = True
+                                                        BanearMailBox = True
+                                                        'Comprobamos el Limite por Pais (No del Filtro), Ip
+                                                    ElseIf FileMemory(Archivo).Coincidentes(Ip) >= NumeroCoincidentes Then
+                                                        Banear = True
                                                     End If
+
                                                 End If
                                             Else
-                                                'Solicita verificar MailBox pero no existe en la linea
+                                                'Solicita verificar MailBox pero no existe en la linea o esta incompleto
                                                 Banear = True
                                             End If
+                                        Else
+                                            'No requiere Comprobar MailBox se comprueba el limite de Concidencias
+                                            If FileMemory(Archivo).Coincidentes(Ip) > NumeroCoincidentes Then Banear = True
                                         End If
 
+
                                         If Banear Then
-                                            If Not ComprobarMailBox Then
-                                                'Se requiere Banear sin Comprobar MailBox
-                                                If Not FiltroIp.Contains(Ip) Then FiltroIp.Add(Ip)
-                                                Console.WriteLine($"BAN({Filtro.Key.ToString}): {Ip},{FullMailbox},{Pais},IpCount:{Coincidentes(Ip)},MailCount:No")
-                                            Else
-                                                'Se solicita Banear comprobando el MailBox
+                                            Dim FiltroStringOut As String = "Filtro: {0,22} | {1,15} | {2,40} | {3,2} | IpCount:{4,2} | MailCount:{5,2} | Límite:{6,2} {7}"
+                                            If BanearMailBox Then
+                                                'Solicita Banear el MailBox
                                                 If FileMemory(Archivo).MailBoxLogin.Exist(FullMailbox) Then
-                                                    'Existe el MailBox se Banean todas las Ip Almacenadas que intentaron hacer login a la cuenta
+                                                    'Existe el MailBox Banea todas Las IP Que Intentaron Loguear
                                                     For Each IpBox In FileMemory(Archivo).MailBoxLogin.Get(FullMailbox)
                                                         If Not String.IsNullOrEmpty(IpBox) Then
-                                                            'Banear la IP (Evita Bloquear Ip[ES][ERR]) Comprueba la Bandera (GeolocalizarID, 0(Bloquea) o 1(No bloquea))
+                                                            'Obtiene los datos Necesario por IP {Coincidencias por Pais}
                                                             Dim IpGeolocalizar As New IpInfo
                                                             Dim IpPais As String = IpGeolocalizar.Geolocalizar(IpBox, Mod_Core.Geolocalizador)
-                                                            Dim IpCoincidencias As Integer = 0
+                                                            Dim IpCoincidencias As Integer = Filtro.Repeteciones
+
+                                                            'Establece las Coincidencias por Pais
                                                             If CoincidenciasPais.ContainsKey(IpPais) AndAlso CoincidenciasPais(IpPais).ContainsKey(Filtro.Key) Then IpCoincidencias = CoincidenciasPais(IpPais)(Filtro.Key)
-                                                            'Intenta Respetar el Limite Por Pais si Existe
-                                                            If Coincidentes.ContainsKey(IpBox) Then
-                                                                'Ya ha sido Contabilizada la Ip
-                                                                If Coincidentes(IpBox) > IpCoincidencias Then
-                                                                    If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
-                                                                    Console.WriteLine($"BAN({Filtro.Key.ToString}): {IpBox},{FullMailbox},{IpPais},IpCount:{Coincidentes(IpBox)},MailCount:{FileMemory(Archivo).MailBoxLogin.Count(FullMailbox)}")
-                                                                End If
-                                                            Else
-                                                                'No ha sido contabilizada la Ip, Excluiremos si tiene Reasignacion de Concurrentes por Pais
-                                                                If Not CoincidenciasPais.ContainsKey(IpPais) Then
-                                                                    'Baneamos la Ip
-                                                                    If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
-                                                                    Console.WriteLine($"BAN({Filtro.Key.ToString}): {IpBox},{FullMailbox},{IpPais},IpCount:0,MailCount:{FileMemory(Archivo).MailBoxLogin.Count(FullMailbox)}")
-                                                                Else
-                                                                    'No ha sido contabilizada la Ip  Pero Tiene Pais asociado a la Reasignacion
-                                                                    'Si tiene Reasignacion para este Filtro, Y está esta establecida en 0 o en 1
-                                                                    If CoincidenciasPais(IpPais).ContainsKey(Filtro.Key) AndAlso Not CoincidenciasPais(IpPais)(Filtro.Key) > 1 Then
-                                                                        'Baneamos la Ip
-                                                                        If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
-                                                                        Console.WriteLine($"BAN({Filtro.Key.ToString}): {IpBox},{FullMailbox},{IpPais},IpCount:0,MailCount:{FileMemory(Archivo).MailBoxLogin.Count(FullMailbox)}")
-                                                                    End If
-                                                                End If
+
+                                                            'Si el Numero de Logins del MailBox Supera o Iguala al Pais Baneamos
+                                                            If FileMemory(Archivo).MailBoxLogin.Count(FullMailbox) >= IpCoincidencias Then
+                                                                If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
+                                                                IpBanForm.Invoke(Sub() IpBanForm.SalidaConsola.AppendText(String.Format(FiltroStringOut, Filtro.Key.ToString, IpBox, FullMailbox, IpPais, FileMemory(Archivo).Coincidentes(IpBox), FileMemory(Archivo).MailBoxLogin.Count(FullMailbox), IpCoincidencias, vbNewLine)))
                                                             End If
                                                         End If
                                                     Next
-                                                Else
-                                                    'No existe el MailBox Banea la IP
-                                                    If Not FiltroIp.Contains(Ip) Then FiltroIp.Add(Ip)
-                                                    If Coincidentes.ContainsKey(Ip) Then
-                                                        Console.WriteLine($"BAN({Filtro.Key.ToString}): {Ip},{FullMailbox},{Pais},IpCount:{Coincidentes(Ip)},MailCount:0")
-                                                    Else
-                                                        Console.WriteLine($"BAN({Filtro.Key.ToString}): {Ip},{FullMailbox},{Pais},IpCount:0,MailCount:0")
-                                                    End If
                                                 End If
+                                            ElseIf Not BanearMailBox Then
+                                                'Solicita Banear IP
+                                                If Not FiltroIp.Contains(Ip) Then FiltroIp.Add(Ip)
+                                                IpBanForm.Invoke(Sub() IpBanForm.SalidaConsola.AppendText(String.Format(FiltroStringOut, Filtro.Key.ToString, Ip, FullMailbox, Pais, FileMemory(Archivo).Coincidentes(Ip), "0", NumeroCoincidentes, vbNewLine)))
                                             End If
                                         End If
                                     End If
@@ -256,7 +279,7 @@ Namespace RegistroDeArchivos
                 End If
 
             Catch ex As Exception
-                Stop
+                IpBanForm.Invoke(Sub() IpBanForm.SalidaConsola.AppendText($"Filtro(ERROR : {ex.Message})"))
             End Try
         End Sub
 
@@ -294,7 +317,7 @@ Namespace RegistroDeArchivos
                 Return False
             End If
         End Function
-        Private Function ExtraerEmails(texto As String) As String
+        Private Function ExtraerEmailGenerico(texto As String) As String
             Dim emails As New List(Of String)
             Dim regex As New Regex("\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 
@@ -307,6 +330,25 @@ Namespace RegistroDeArchivos
             If emails.Count > 0 Then Return emails.First Else Return ""
         End Function
 
+        Function ExtraerEmailIMAP(Texto As String) As String
+            Dim Cuenta As String = String.Empty
+            Dim Dominio As String = String.Empty
+            Dim Log() As String = Texto.Split(" ")
+            If Log(3) = "IMAP-IN" Then
+                If IsNumeric(Log(6).Replace(".", "")) Then
+                    Cuenta = Log(5)
+                    Dominio = Log(4)
+                End If
+            End If
+            If Not String.IsNullOrEmpty(Cuenta) AndAlso Not String.IsNullOrEmpty(Dominio) Then Return $"{Cuenta}@{Dominio}"
+            Return ""
+        End Function
+
+        Function ExtraerEmailPOP(Texto As String) As String
+            Dim Log() = Texto.Split(" ")
+            If Log.Last.Contains("@") Then Return Log.Last
+            Return ""
+        End Function
         Protected Overridable Sub Dispose(disposing As Boolean)
             If Not disposedValue Then
                 If disposing Then

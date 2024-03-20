@@ -50,6 +50,9 @@
             Me.Panel3 = New System.Windows.Forms.Panel()
             Me.Label4 = New System.Windows.Forms.Label()
             Me.lblConexiones = New System.Windows.Forms.Label()
+            Me.lblConexionesConcurrentes = New System.Windows.Forms.ToolStripStatusLabel()
+            Me.lblTemporizadorIcantividad = New System.Windows.Forms.ToolStripStatusLabel()
+            Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
             Me.StatusStrip1.SuspendLayout()
             Me.PanelBaneadas.SuspendLayout()
             Me.PanelEstadoBaneadas.SuspendLayout()
@@ -61,7 +64,7 @@
             '
             'StatusStrip1
             '
-            Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblIpBan, Me.ToolStripStatusLabel2, Me.lblImap, Me.lblImapSsl})
+            Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblIpBan, Me.ToolStripStatusLabel2, Me.lblConexionesConcurrentes, Me.lblTemporizadorIcantividad, Me.ToolStripStatusLabel1, Me.lblImap, Me.lblImapSsl})
             Me.StatusStrip1.Location = New System.Drawing.Point(0, 311)
             Me.StatusStrip1.Name = "StatusStrip1"
             Me.StatusStrip1.Size = New System.Drawing.Size(721, 24)
@@ -78,7 +81,7 @@
             '
             Me.ToolStripStatusLabel2.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left
             Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-            Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(519, 19)
+            Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(266, 19)
             Me.ToolStripStatusLabel2.Spring = True
             Me.ToolStripStatusLabel2.Text = " "
             '
@@ -301,6 +304,23 @@
             Me.lblConexiones.Text = "0"
             Me.lblConexiones.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
             '
+            'lblConexionesConcurrentes
+            '
+            Me.lblConexionesConcurrentes.Name = "lblConexionesConcurrentes"
+            Me.lblConexionesConcurrentes.Size = New System.Drawing.Size(107, 19)
+            Me.lblConexionesConcurrentes.Text = "Concurrentes (100)"
+            '
+            'lblTemporizadorIcantividad
+            '
+            Me.lblTemporizadorIcantividad.Name = "lblTemporizadorIcantividad"
+            Me.lblTemporizadorIcantividad.Size = New System.Drawing.Size(115, 19)
+            Me.lblTemporizadorIcantividad.Text = "Temporizador (3600)"
+            '
+            'ToolStripStatusLabel1
+            '
+            Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
+            Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(0, 19)
+            '
             'Main
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -352,5 +372,8 @@
         Friend WithEvents Panel3 As Panel
         Friend WithEvents Label4 As Label
         Friend WithEvents lblConexiones As Label
+        Friend WithEvents lblConexionesConcurrentes As ToolStripStatusLabel
+        Friend WithEvents lblTemporizadorIcantividad As ToolStripStatusLabel
+        Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel
     End Class
 End Namespace

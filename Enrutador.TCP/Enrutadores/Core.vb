@@ -10,7 +10,7 @@ Namespace Enrutadores
         Private SyncPuerto As New Object
         Private SyncObtener As New Object
 
-        Public Property InactiveTimeOut As Integer = 360
+        Public Property InactiveTimeOut As Integer = 300
         Public ReadOnly Property MaximunRoutersPerIp As Integer = 30
 
         Public Function Add(Conexion As Socket, ServerAddress As IPAddress, Port As Integer) As Boolean
@@ -37,11 +37,22 @@ Namespace Enrutadores
             RemoveHandler Enrutadores(Enrutador.Conexion.RemoteEndPoint.ToString).AlCerrarEnrutador, AddressOf EliminarENAT
             Enrutadores.TryRemove(Enrutador.Conexion.RemoteEndPoint.ToString, Nothing)
 
-            If Not Enrutador.ENATAddress.Address.ToString = IPAddress.Any.ToString Then
-                Dim ENATIP As IPAddress = Enrutador.ENATAddress.Address
-                If ENATS.ContainsKey(ENATIP) Then ENATS(ENATIP) -= 1
-                If ENATS.ContainsKey(ENATIP) Then If ENATS(ENATIP) < 1 Then If Not ENAT.Eliminar(ENATIP.ToString) Then Stop
-            End If
+            Select Case Enrutador.TipoEnrutamiento
+                Case Enrutador.EnumTipoRouting.ENAT
+                    If Not Enrutador.ENATAddress.Address.ToString = IPAddress.Any.ToString Then
+                        Dim ENATIP As IPAddress = Enrutador.ENATAddress.Address
+                        If ENATS.ContainsKey(ENATIP) Then ENATS(ENATIP) -= 1
+                        If ENATS.ContainsKey(ENATIP) Then If ENATS(ENATIP) < 1 Then If Not ENAT.Eliminar(ENATIP.ToString) Then Stop
+                    End If
+                Case Enrutador.EnumTipoRouting.NORMAL
+                    If Not Enrutador.ENATAddress.Address.ToString = IPAddress.Any.ToString Then
+                        Dim ENATIP As IPAddress = CType(Enrutador.Conexion.RemoteEndPoint, IPEndPoint).Address
+                        If ENATS.ContainsKey(ENATIP) Then ENATS(ENATIP) -= 1
+                        'No se crear Enrutador Clase C, No se Elimina
+                        'If ENATS.ContainsKey(ENATIP) Then If ENATS(ENATIP) < 1 Then If Not ENAT.Eliminar(ENATIP.ToString) Then Stop
+                    End If
+            End Select
+
         End Sub
 
         Public Function ConcurrentENATS(Ip As IPAddress) As Integer

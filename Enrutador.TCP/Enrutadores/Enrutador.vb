@@ -20,12 +20,12 @@ Namespace Enrutadores
         Public WithEvents Temporizador As Bucle.DoBucle
 
 
-        Private Enum EnumTipoRouting
+        Public Enum EnumTipoRouting
             ESTABLECIENDO
             ENAT
             NORMAL
         End Enum
-        Private TipoEnrutamiento As EnumTipoRouting = EnumTipoRouting.ESTABLECIENDO
+        Public Property TipoEnrutamiento As EnumTipoRouting = EnumTipoRouting.ESTABLECIENDO
 
         Public Event Actividad(Activo As Integer, Enrutador As Enrutador)
         Public Event AlCerrarEnrutador(Enrutador As Enrutador)
@@ -154,12 +154,18 @@ Namespace Enrutadores
         End Sub
 
         Private Sub Temporizador_Endground(Sender As Object, ByRef Detener As Boolean) Handles Temporizador.Endground
-            'Te termino la conexión 
+            'Se termino la conexión 
             RaiseEvent AlCerrarEnrutador(Me)
             Temporizador.Matar()
             Temporizador = Nothing
-            If Servidor IsNot Nothing AndAlso Servidor.Connected Then Servidor.Close()
-            If Conexion.Connected Then Conexion.Close()
+            If Servidor IsNot Nothing AndAlso Servidor.Connected Then
+                Servidor.Close()
+                Servidor.Dispose()
+            End If
+            If Conexion.Connected Then
+                Conexion.Close()
+                Conexion.Dispose()
+            End If
         End Sub
     End Class
 End Namespace

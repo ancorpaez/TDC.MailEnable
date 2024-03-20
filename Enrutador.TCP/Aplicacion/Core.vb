@@ -14,6 +14,9 @@ Namespace Aplicacion
             End If
         End Sub
         Public Sub Iniciar()
+            'Pruebas
+            'RouteTable.Test()
+
             'Establecer la tarjeta para el ENAT
             ENAT.Tarjeta = "ENRUTADOR"
             'Proteger IP de Eliminación
@@ -51,6 +54,10 @@ Namespace Aplicacion
                     End If
                 End With
             End If
+
+            MainForm.lblConexionesConcurrentes.Text = $"Límite Concurrentes( {Enrutadores.MaximunRoutersPerIp} )"
+            MainForm.lblTemporizadorIcantividad.Text = $"Cerrar ENAT ( {Enrutadores.InactiveTimeOut} )"
+
 
         End Sub
         Private Sub ConexionEntranteSsl()

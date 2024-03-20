@@ -23,7 +23,11 @@
             MailBoxesScan.Detener()
         End Sub
         Private Sub MailBoxesScan_Background(Sender As Object, ByRef Detener As Boolean) Handles MailBoxesScan.Background
-            MailBoxesDirectory.Refresh()
+            Try
+                MailBoxesDirectory.Refresh()
+            Catch ex As Exception
+                MailBoxesDirectory = New IO.DirectoryInfo(MailBoxesDirectory.FullName)
+            End Try
 
             If MailBoxesDirectory.Exists Then
                 'Añadir

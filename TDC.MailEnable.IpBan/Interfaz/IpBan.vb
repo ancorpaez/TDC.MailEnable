@@ -79,59 +79,15 @@ Namespace Interfaz
             lstIpBlancas.DisplayMember = "Item"
             AddHandler Mod_Core.IpBlancas.OnRefresData, AddressOf RefrescarDatosBlancas
 
-            'Enlazar co nel archivo ISS
-            'ISSServer = New Cls_ISS
-
-            'Enlazar con SMTP-DENY
-            'SMTP_DENY = New Cls_MailEnableDeny(Configuracion.SMTP_DENY)
-
-            'Enlazar POP-DENY
-            'POP_DENY = New Cls_MailEnableDeny(Configuracion.POP_DENY)
-
-            '::::::: PRUEBAS :::::::
-            'Añadir
-            'For i = 0 To 10
-            '    If Not POP_DENY.Contais(IpBaneadas.Data.Item(i)) Then
-            '        POP_DENY.Add(IpBaneadas.Data.Item(i))
-            '    End If
-            'Next
-            'POP_DENY.Guardar()
-
-            'Eliminar
-            'For i = 0 To 10
-            '    If POP_DENY.Contais(IpBaneadas.Data.Item(i)) Then
-            '        POP_DENY.Remove(IpBaneadas.Data.Item(i))
-            '    End If
-            'Next
-            'POP_DENY.Guardar()
-
-            'Añadir
-            'For i = 0 To 10
-            '    If Not ISSServer.Contains(IpBaneadas.Data.Item(i)) Then
-            '        ISSServer.Add(IpBaneadas.Data.Item(i))
-            '    End If
-            'Next
-            'ISSServer.Save()
-
-            'Eliminar
-            'For i = 0 To 10
-            '    If ISSServer.Contains(IpBaneadas.Data.Item(i)) Then
-            '        ISSServer.Remove(IpBaneadas.Data.Item(i))
-            '    End If
-            'Next
-            'ISSServer.Save()
-            ':::::::::::::::::::::::
-
-            'Empezar a Trabajar
 
             'POP(W3C)
             Registro_POPW3C.Filtro.Add(New Cls_Filtro With {
-                                       .Key = FilterKeys.FilterKey.PopLoginFail, .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 5, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                       .Key = FilterKeys.FilterKey.PopLoginFail, .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 3, .VerificarMailBox = True, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                        New Cls_Coincidencia With {.Filtro = "-ERR+Unable+to+log+on", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
 
             EstablecerConcidenciasPais(FilterKeys.FilterKey.PopLoginFail, "PT", 20)
             Trabajador_POPW3C.Intervalo = 100
-            Trabajador_POPW3C.Iniciar()
+            'Trabajador_POPW3C.Iniciar()
 
             'SMTP(W3C)
             Registro_SMTPW3C.Filtro.Add(New Cls_Filtro With {
@@ -155,11 +111,12 @@ Namespace Interfaz
 
             'IMAP (W3C)
             Registro_IMAPW3C.Filtro.Add(New Cls_Filtro With {
-                                        .Key = FilterKeys.FilterKey.IMAPLoginFail, .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 3, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                        .Key = FilterKeys.FilterKey.IMAPLoginFail, .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 3, .VerificarMailBox = True, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                         New Cls_Coincidencia With {.Filtro = "Invalid+username+or+password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             EstablecerConcidenciasPais(FilterKeys.FilterKey.IMAPLoginFail, "PT", 20)
+
             Trabajador_IMAPW3C.Intervalo = 100
-            Trabajador_IMAPW3C.Iniciar()
+            'Trabajador_IMAPW3C.Iniciar()
 
             'WEB
             Registro_WEB.Filtro.Add(New Cls_Filtro With {
@@ -190,14 +147,11 @@ Namespace Interfaz
                                     New Cls_Coincidencia With {.Filtro = " 404 ", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             EstablecerConcidenciasPais(FilterKeys.FilterKey.WEBHead404, "PT", 20)
             Trabajador_WEB.Intervalo = 100
-            Trabajador_WEB.Iniciar()
+            'Trabajador_WEB.Iniciar()
 
             'Interfaz
             UcPOPEx.Carpeta.Text = "POP (Ex)"
-            UcPOPAct.Carpeta.Text = "POP (Act)"
             UcSMTPEx.Carpeta.Text = "SMTP (Ex)"
-            UcSMTPAct.Carpeta.Text = "SMTP (Act)"
-            UcIMAPAct.Carpeta.Text = "IMAPP (Act)"
             UcIMAPEx.Carpeta.Text = "IMAPP (Ex)"
             UcWEB.Carpeta.Text = "WEB"
 
@@ -815,6 +769,9 @@ Namespace Interfaz
             'MiBucle = Nothing
         End Sub
 
-
+        Private Sub SalidaConsola_TextChanged(sender As Object, e As EventArgs) Handles SalidaConsola.TextChanged
+            SalidaConsola.SelectionStart = SalidaConsola.Text.Length
+            SalidaConsola.ScrollToCaret()
+        End Sub
     End Class
 End Namespace
