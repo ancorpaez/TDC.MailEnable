@@ -75,7 +75,7 @@ Namespace Bucle
                     InvokeForm.Invoke(Sub() If Not IsNothing(BtnDetenerBackground) Then BtnDetenerBackground.Dispose())
                     InvokeForm.Invoke(Sub() If Not IsNothing(BtnDetenerForeground) Then BtnDetenerForeground.Dispose())
                     InvokeForm.Invoke(Sub() If Not IsNothing(BtnDetenerEndground) Then BtnDetenerEndground.Dispose())
-                    InvokeForm.Invoke(Sub() InvokeForm.Dispose())
+                    If Not InvokeForm.IsDisposed OrElse Not InvokeForm.Disposing Then InvokeForm.Invoke(Sub() InvokeForm.Dispose())
                 End If
             Catch ex As Exception
             End Try

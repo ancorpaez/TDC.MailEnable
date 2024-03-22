@@ -7,6 +7,8 @@ Namespace RegistroDeArchivos
         Public Property Archivos As New Concurrent.ConcurrentBindingList(Of String)
         Public Filtro As New List(Of Cls_Filtro)
         Private File_Registro As String = ""
+        Private SyncGuardar As New Object()
+
         Public Sub New(Contenedor As String)
             File_Registro = Contenedor & ".xml"
             If Not IO.File.Exists(File_Registro) Then Guardar() Else Cargar()
@@ -19,10 +21,21 @@ Namespace RegistroDeArchivos
             End Using
         End Sub
         Public Sub Guardar()
-            Dim Crear As New XmlSerializer(GetType(Concurrent.ConcurrentBindingList(Of String)))
-            Using Guardar As New StreamWriter(File_Registro)
-                Crear.Serialize(Guardar, Archivos)
-            End Using
+            SyncLock SyncGuardar
+                Dim [Error] As Boolean = False
+                Dim Crear As XmlSerializer
+                Do
+                    Try
+                        Crear = New XmlSerializer(GetType(Concurrent.ConcurrentBindingList(Of String)))
+                        Using Guardar As New StreamWriter(IO.File.Open(File_Registro, IO.FileMode.OpenOrCreate, IO.FileAccess.Write, IO.FileShare.ReadWrite))
+                            Crear.Serialize(Guardar, Archivos)
+                        End Using
+                        [Error] = False
+                    Catch ex As Exception
+                        [Error] = True
+                    End Try
+                Loop While [Error]
+            End SyncLock
         End Sub
 
         Public Sub Add(Archivo As String)

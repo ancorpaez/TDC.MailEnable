@@ -77,6 +77,7 @@
     <Compile Include="GeoLocalizacion\IpInfo.vb" />
     <Compile Include="GeoLocalizacion\IpInfoPrivate.vb" />
     <Compile Include="GeoLocalizacion\MyNsLookUp.vb" />
+    <Compile Include="LOG\MemoryLOG.vb" />
     <Compile Include="Main.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -115,8 +116,6 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="LOG\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

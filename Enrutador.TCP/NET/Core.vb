@@ -1,6 +1,6 @@
 ﻿Namespace NET
     Module Core
-        Public Property EasyPortManager As New AsociadorPuertos With {.Listen = 143, .Route = 144}
-        Public Property EasyPortManagerSsl As New AsociadorPuertos With {.Listen = 993, .Route = 994}
+        Public Property EasyPortManager As New AsociadorPuertos With {.Listen = 144, .Route = 143}
+        Public Property EasyPortManagerSsl As New AsociadorPuertos With {.Listen = 994, .Route = 993}
     End Module
 End Namespace

@@ -53,9 +53,14 @@ Namespace Interfaz
             'Dim Tes2 = Test.EsLegitima("104.26.7.164")
             'Dim Tes0 = Test.EsLegitima("185.92.245.33")
             'Dim Tes1 = Test.EsLegitima("129.126.197.254")
-            MiBucle.Intervalo = 1
+            'MiBucle.Intervalo = 1
             'MiBucle.Iniciar()
             '*************
+
+            'Iniciar Log Temporal
+            LOG.Logs.TryAdd(LOG.MemoryLOG.EnumLogs.General, New LOG.LogConfig With {.Salida = SalidaConsola})
+            LOG.Logs.TryAdd(LOG.MemoryLOG.EnumLogs.CrossDomain, New LOG.LogConfig With {.Salida = SalidaCrossDomain})
+            LOG.Main()
 
             Mod_Core.IpBanForm = Me
             'Posicionar Ventana
@@ -87,23 +92,57 @@ Namespace Interfaz
 
             EstablecerConcidenciasPais(FilterKeys.FilterKey.PopLoginFail, "PT", 20)
             Trabajador_POPW3C.Intervalo = 100
-            'Trabajador_POPW3C.Iniciar()
+            Trabajador_POPW3C.Iniciar()
 
             'SMTP(W3C)
-            Registro_SMTPW3C.Filtro.Add(New Cls_Filtro With {
-                                        .Key = FilterKeys.FilterKey.SMTPLoginFailMailBox, .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 3, .VerificarMailBox = True, .Coincidencias = New List(Of Cls_Coincidencia) From {
-                                        New Cls_Coincidencia With {.Filtro = "Invalid+Username+or+Password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
-                                        New Cls_Coincidencia With {.Filtro = "@", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
+            Registro_SMTPW3C.Filtro.Add(
+                New Cls_Filtro With {
+                .Key = FilterKeys.FilterKey.SMTPLoginFailMailBox,
+                .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo,
+                .Repeteciones = 3,
+                .VerificarMailBox = True,
+                .Coincidencias = New List(Of Cls_Coincidencia) From {
+                New Cls_Coincidencia With {.Filtro = "Invalid+Username+or+Password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
+                New Cls_Coincidencia With {.Filtro = "@", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}
+                }})
             EstablecerConcidenciasPais(FilterKeys.FilterKey.SMTPLoginFailMailBox, "PT", 20)
-            Registro_SMTPW3C.Filtro.Add(New Cls_Filtro With {
-                                        .Key = FilterKeys.FilterKey.SMTPLoginFailNoMailBox, .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
-                                        New Cls_Coincidencia With {.Filtro = "Invalid+Username+or+Password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
-                                        New Cls_Coincidencia With {.Filtro = "@", .Condicion = Cls_Coincidencia.EnumCondicion.NoContiene}}})
+
+            Registro_SMTPW3C.Filtro.Add(
+                New Cls_Filtro With {
+                .Key = FilterKeys.FilterKey.SMTPLoginFailNoMailBox,
+                .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo,
+                .Repeteciones = 0,
+                .VerificarMailBox = False,
+                .Coincidencias = New List(Of Cls_Coincidencia) From {
+                New Cls_Coincidencia With {.Filtro = "Invalid+Username+or+Password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
+                New Cls_Coincidencia With {.Filtro = "@", .Condicion = Cls_Coincidencia.EnumCondicion.NoContiene}
+                }})
             EstablecerConcidenciasPais(FilterKeys.FilterKey.SMTPLoginFailNoMailBox, "PT", 20)
-            Registro_SMTPW3C.Filtro.Add(New Cls_Filtro With {
-                                        .Key = FilterKeys.FilterKey.SMTPOutNoLogin, .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 0, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
-                                        New Cls_Coincidencia With {.Filtro = "This+mail+server+requires+authentication+before+sending+mail", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
+
+            Registro_SMTPW3C.Filtro.Add(
+                New Cls_Filtro With {
+                .Key = FilterKeys.FilterKey.SMTPOutNoLogin,
+                .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera,
+                .Repeteciones = 0,
+                .VerificarMailBox = False,
+                .Coincidencias = New List(Of Cls_Coincidencia) From {
+                New Cls_Coincidencia With {.Filtro = "This+mail+server+requires+authentication+before+sending+mail",
+                .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}
+                }})
             EstablecerConcidenciasPais(FilterKeys.FilterKey.SMTPOutNoLogin, "PT", 20)
+
+            Registro_SMTPW3C.Filtro.Add(
+                New Cls_Filtro With {
+                .Key = FilterKeys.FilterKey.SMTPMultipleDomainLogin,
+                .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo,
+                .Repeteciones = 0,
+                .VerificarMailBox = False,
+                .DetectarCrossDomainLogin = True,
+                .Coincidencias = New List(Of Cls_Coincidencia) From {
+                New Cls_Coincidencia With {.Filtro = "235+Authenticated",
+                .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}
+                }})
+
             Trabajador_SMTPW3C.Intervalo = 100
             Trabajador_SMTPW3C.Iniciar()
 
@@ -114,13 +153,33 @@ Namespace Interfaz
                                         .Key = FilterKeys.FilterKey.IMAPLoginFail, .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 3, .VerificarMailBox = True, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                         New Cls_Coincidencia With {.Filtro = "Invalid+username+or+password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             EstablecerConcidenciasPais(FilterKeys.FilterKey.IMAPLoginFail, "PT", 20)
+            Registro_IMAPW3C.Filtro.Add(New Cls_Filtro With {
+                                        .Key = FilterKeys.FilterKey.IMAPMultipleDomainLogin,
+                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo,
+                                        .Repeteciones = 0,
+                                        .VerificarMailBox = False,
+                                        .DetectarCrossDomainLogin = True,
+                                        .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                        New Cls_Coincidencia With {.Filtro = "LOGIN LOGIN", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
+                                        New Cls_Coincidencia With {.Filtro = "completed", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
 
+            Registro_IMAPW3C.Filtro.Add(New Cls_Filtro With {
+                                        .Key = FilterKeys.FilterKey.IMAPMultipleDomainLogin,
+                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo,
+                                        .Repeteciones = 0,
+                                        .VerificarMailBox = False,
+                                        .DetectarCrossDomainLogin = True,
+                                        .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                        New Cls_Coincidencia With {.Filtro = "AUTHENTICATE AUTHENTICATE", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
+                                        New Cls_Coincidencia With {.Filtro = "completed", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
+                                        New Cls_Coincidencia With {.Filtro = "Unsupported+command", .Condicion = Cls_Coincidencia.EnumCondicion.NoContiene}}})
             Trabajador_IMAPW3C.Intervalo = 100
-            'Trabajador_IMAPW3C.Iniciar()
+            Trabajador_IMAPW3C.Iniciar()
 
             'WEB
             Registro_WEB.Filtro.Add(New Cls_Filtro With {
-                                    .Key = FilterKeys.FilterKey.WEBPostLogin, .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 3, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                    .Key = FilterKeys.FilterKey.WEBPostLogin,
+                                    .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo, .Repeteciones = 3, .VerificarMailBox = False, .Coincidencias = New List(Of Cls_Coincidencia) From {
                                     New Cls_Coincidencia With {.Filtro = "POST", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
                                     New Cls_Coincidencia With {.Filtro = "Cmd=LOGIN", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             EstablecerConcidenciasPais(FilterKeys.FilterKey.WEBPostLogin, "PT", 20)
@@ -146,8 +205,9 @@ Namespace Interfaz
                                     New Cls_Coincidencia With {.Filtro = "HEAD", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene},
                                     New Cls_Coincidencia With {.Filtro = " 404 ", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             EstablecerConcidenciasPais(FilterKeys.FilterKey.WEBHead404, "PT", 20)
+
             Trabajador_WEB.Intervalo = 100
-            'Trabajador_WEB.Iniciar()
+            Trabajador_WEB.Iniciar()
 
             'Interfaz
             UcPOPEx.Carpeta.Text = "POP (Ex)"
@@ -324,13 +384,6 @@ Namespace Interfaz
                     EscanearArchivo.Dispose()
                 End If
             Next
-
-            ''Relajamos en bucle de Busqueda de Archivos
-            'Trabajador.Intervalo = Configuracion.LECTURA_REPOSO
-
-            ''Propagamos la configuracion de Bloqueo de IP
-            'BtnPropagarIps_Click(Nothing, New EventArgs)
-
         End Sub
 
         Private Sub BtnAñadirIp_Click(sender As Object, e As EventArgs) Handles BtnAñadirIp.Click
@@ -770,8 +823,22 @@ Namespace Interfaz
         End Sub
 
         Private Sub SalidaConsola_TextChanged(sender As Object, e As EventArgs) Handles SalidaConsola.TextChanged
+            'If SalidaConsola.Lines.Count > 500 Then SalidaConsola.ResetText()
             SalidaConsola.SelectionStart = SalidaConsola.Text.Length
             SalidaConsola.ScrollToCaret()
+            lblGeneralLog.Text = $"General ({LOG.Logs(LOG.MemoryLOG.EnumLogs.General).Lineas.Count}) Left"
+        End Sub
+
+        Private Sub SalidaCrossDomain_TextChanged(sender As Object, e As EventArgs) Handles SalidaCrossDomain.TextChanged
+            'If SalidaCrossDomain.Lines.Count > 500 Then SalidaCrossDomain.ResetText()
+            SalidaCrossDomain.SelectionStart = SalidaCrossDomain.Text.Length
+            SalidaCrossDomain.ScrollToCaret()
+            lblCrossDomainLog.Text = $"CrossDomain ({LOG.Logs(LOG.MemoryLOG.EnumLogs.CrossDomain).Lineas.Count}) Left"
+            'IO.File.WriteAllText("CrossDomain.log", SalidaCrossDomain.Text)
+        End Sub
+
+        Private Sub SalidaCrossDomain_HandleCreated(sender As Object, e As EventArgs) Handles SalidaCrossDomain.HandleCreated
+            'If IO.File.Exists("CrossDomain.log") Then SalidaCrossDomain.Text = IO.File.ReadAllText("CrossDomain.log")
         End Sub
     End Class
 End Namespace

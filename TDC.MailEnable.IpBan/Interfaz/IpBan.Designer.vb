@@ -27,6 +27,9 @@
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(IpBan))
             Me.PanelIpBaneadas = New System.Windows.Forms.Panel()
             Me.PanelBuscadores = New System.Windows.Forms.Panel()
+            Me.PanelLogs = New System.Windows.Forms.Panel()
+            Me.SalidaConsola = New System.Windows.Forms.RichTextBox()
+            Me.SalidaCrossDomain = New System.Windows.Forms.RichTextBox()
             Me.PanelIps = New System.Windows.Forms.Panel()
             Me.PanelListaNegra = New System.Windows.Forms.Panel()
             Me.lstIpBaneadas = New System.Windows.Forms.ListBox()
@@ -54,7 +57,7 @@
             Me.Fondo = New System.Windows.Forms.Panel()
             Me.TabControl1 = New System.Windows.Forms.TabControl()
             Me.TabPIpBan = New System.Windows.Forms.TabPage()
-            Me.TabPage2 = New System.Windows.Forms.TabPage()
+            Me.TabSpamAssassin = New System.Windows.Forms.TabPage()
             Me.txtRichSpamAssassin = New System.Windows.Forms.RichTextBox()
             Me.Panel1 = New System.Windows.Forms.Panel()
             Me.Panel2 = New System.Windows.Forms.Panel()
@@ -104,14 +107,16 @@
             Me.iMenuTabla = New System.Windows.Forms.ImageList(Me.components)
             Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
-            Me.Panel4 = New System.Windows.Forms.Panel()
-            Me.SalidaConsola = New System.Windows.Forms.RichTextBox()
+            Me.SplitLog = New System.Windows.Forms.SplitContainer()
+            Me.lblGeneralLog = New System.Windows.Forms.Label()
+            Me.lblCrossDomainLog = New System.Windows.Forms.Label()
             Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.PanelIpBaneadas.SuspendLayout()
             Me.PanelBuscadores.SuspendLayout()
+            Me.PanelLogs.SuspendLayout()
             Me.PanelIps.SuspendLayout()
             Me.PanelListaNegra.SuspendLayout()
             Me.PanelBotonesListaNegra.SuspendLayout()
@@ -127,7 +132,7 @@
             Me.Fondo.SuspendLayout()
             Me.TabControl1.SuspendLayout()
             Me.TabPIpBan.SuspendLayout()
-            Me.TabPage2.SuspendLayout()
+            Me.TabSpamAssassin.SuspendLayout()
             Me.Panel1.SuspendLayout()
             Me.Panel2.SuspendLayout()
             Me.MenuSpamAssassin.SuspendLayout()
@@ -144,7 +149,10 @@
             Me.MenuPrincipal.SuspendLayout()
             Me.StatusStrip2.SuspendLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.Panel4.SuspendLayout()
+            CType(Me.SplitLog, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.SplitLog.Panel1.SuspendLayout()
+            Me.SplitLog.Panel2.SuspendLayout()
+            Me.SplitLog.SuspendLayout()
             Me.SuspendLayout()
             '
             'PanelIpBaneadas
@@ -155,13 +163,13 @@
             Me.PanelIpBaneadas.Location = New System.Drawing.Point(3, 3)
             Me.PanelIpBaneadas.Name = "PanelIpBaneadas"
             Me.PanelIpBaneadas.Padding = New System.Windows.Forms.Padding(3)
-            Me.PanelIpBaneadas.Size = New System.Drawing.Size(1434, 280)
+            Me.PanelIpBaneadas.Size = New System.Drawing.Size(1434, 415)
             Me.PanelIpBaneadas.TabIndex = 1
             '
             'PanelBuscadores
             '
             Me.PanelBuscadores.BackColor = System.Drawing.Color.Gainsboro
-            Me.PanelBuscadores.Controls.Add(Me.Panel4)
+            Me.PanelBuscadores.Controls.Add(Me.PanelLogs)
             Me.PanelBuscadores.Controls.Add(Me.UcWEB)
             Me.PanelBuscadores.Controls.Add(Me.UcIMAPEx)
             Me.PanelBuscadores.Controls.Add(Me.UcSMTPEx)
@@ -170,8 +178,38 @@
             Me.PanelBuscadores.Location = New System.Drawing.Point(337, 3)
             Me.PanelBuscadores.Name = "PanelBuscadores"
             Me.PanelBuscadores.Padding = New System.Windows.Forms.Padding(3)
-            Me.PanelBuscadores.Size = New System.Drawing.Size(1094, 274)
+            Me.PanelBuscadores.Size = New System.Drawing.Size(1094, 409)
             Me.PanelBuscadores.TabIndex = 3
+            '
+            'PanelLogs
+            '
+            Me.PanelLogs.Controls.Add(Me.SplitLog)
+            Me.PanelLogs.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.PanelLogs.Location = New System.Drawing.Point(3, 163)
+            Me.PanelLogs.Name = "PanelLogs"
+            Me.PanelLogs.Size = New System.Drawing.Size(1088, 243)
+            Me.PanelLogs.TabIndex = 1
+            '
+            'SalidaConsola
+            '
+            Me.SalidaConsola.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.SalidaConsola.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.SalidaConsola.Location = New System.Drawing.Point(0, 13)
+            Me.SalidaConsola.Name = "SalidaConsola"
+            Me.SalidaConsola.Size = New System.Drawing.Size(1088, 99)
+            Me.SalidaConsola.TabIndex = 0
+            Me.SalidaConsola.Text = ""
+            '
+            'SalidaCrossDomain
+            '
+            Me.SalidaCrossDomain.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.SalidaCrossDomain.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.SalidaCrossDomain.Location = New System.Drawing.Point(0, 13)
+            Me.SalidaCrossDomain.Name = "SalidaCrossDomain"
+            Me.SalidaCrossDomain.Size = New System.Drawing.Size(1088, 114)
+            Me.SalidaCrossDomain.TabIndex = 1
+            Me.SalidaCrossDomain.Text = ""
+            Me.SalidaCrossDomain.WordWrap = False
             '
             'PanelIps
             '
@@ -181,7 +219,7 @@
             Me.PanelIps.Dock = System.Windows.Forms.DockStyle.Left
             Me.PanelIps.Location = New System.Drawing.Point(3, 3)
             Me.PanelIps.Name = "PanelIps"
-            Me.PanelIps.Size = New System.Drawing.Size(334, 274)
+            Me.PanelIps.Size = New System.Drawing.Size(334, 409)
             Me.PanelIps.TabIndex = 1
             '
             'PanelListaNegra
@@ -193,7 +231,7 @@
             Me.PanelListaNegra.Location = New System.Drawing.Point(0, 0)
             Me.PanelListaNegra.Name = "PanelListaNegra"
             Me.PanelListaNegra.Padding = New System.Windows.Forms.Padding(3)
-            Me.PanelListaNegra.Size = New System.Drawing.Size(203, 174)
+            Me.PanelListaNegra.Size = New System.Drawing.Size(203, 309)
             Me.PanelListaNegra.TabIndex = 6
             '
             'lstIpBaneadas
@@ -203,7 +241,7 @@
             Me.lstIpBaneadas.IntegralHeight = False
             Me.lstIpBaneadas.Location = New System.Drawing.Point(3, 29)
             Me.lstIpBaneadas.Name = "lstIpBaneadas"
-            Me.lstIpBaneadas.Size = New System.Drawing.Size(197, 80)
+            Me.lstIpBaneadas.Size = New System.Drawing.Size(197, 215)
             Me.lstIpBaneadas.TabIndex = 2
             '
             'PanelBotonesListaNegra
@@ -214,7 +252,7 @@
             Me.PanelBotonesListaNegra.Controls.Add(Me.BtnPropagarIps)
             Me.PanelBotonesListaNegra.Controls.Add(Me.ChkDetenerPublicacion)
             Me.PanelBotonesListaNegra.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.PanelBotonesListaNegra.Location = New System.Drawing.Point(3, 109)
+            Me.PanelBotonesListaNegra.Location = New System.Drawing.Point(3, 244)
             Me.PanelBotonesListaNegra.Name = "PanelBotonesListaNegra"
             Me.PanelBotonesListaNegra.Padding = New System.Windows.Forms.Padding(1)
             Me.PanelBotonesListaNegra.Size = New System.Drawing.Size(197, 62)
@@ -315,7 +353,7 @@
             Me.PanelBusqueda.Controls.Add(Me.SplitContainer1)
             Me.PanelBusqueda.Controls.Add(Me.PanelTexto)
             Me.PanelBusqueda.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.PanelBusqueda.Location = New System.Drawing.Point(0, 174)
+            Me.PanelBusqueda.Location = New System.Drawing.Point(0, 309)
             Me.PanelBusqueda.Name = "PanelBusqueda"
             Me.PanelBusqueda.Size = New System.Drawing.Size(203, 100)
             Me.PanelBusqueda.TabIndex = 7
@@ -396,7 +434,7 @@
             Me.Panel15.Location = New System.Drawing.Point(203, 0)
             Me.Panel15.Name = "Panel15"
             Me.Panel15.Padding = New System.Windows.Forms.Padding(3)
-            Me.Panel15.Size = New System.Drawing.Size(131, 274)
+            Me.Panel15.Size = New System.Drawing.Size(131, 409)
             Me.Panel15.TabIndex = 5
             '
             'lstIpBlancas
@@ -406,7 +444,7 @@
             Me.lstIpBlancas.IntegralHeight = False
             Me.lstIpBlancas.Location = New System.Drawing.Point(3, 23)
             Me.lstIpBlancas.Name = "lstIpBlancas"
-            Me.lstIpBlancas.Size = New System.Drawing.Size(125, 206)
+            Me.lstIpBlancas.Size = New System.Drawing.Size(125, 341)
             Me.lstIpBlancas.TabIndex = 0
             '
             'PanelBotonesBlanca
@@ -414,7 +452,7 @@
             Me.PanelBotonesBlanca.Controls.Add(Me.BtnEliminarBlanca)
             Me.PanelBotonesBlanca.Controls.Add(Me.BtnAnadirBlanca)
             Me.PanelBotonesBlanca.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.PanelBotonesBlanca.Location = New System.Drawing.Point(3, 229)
+            Me.PanelBotonesBlanca.Location = New System.Drawing.Point(3, 364)
             Me.PanelBotonesBlanca.Name = "PanelBotonesBlanca"
             Me.PanelBotonesBlanca.Size = New System.Drawing.Size(125, 42)
             Me.PanelBotonesBlanca.TabIndex = 4
@@ -459,20 +497,20 @@
             Me.Fondo.Location = New System.Drawing.Point(0, 24)
             Me.Fondo.Name = "Fondo"
             Me.Fondo.Padding = New System.Windows.Forms.Padding(10)
-            Me.Fondo.Size = New System.Drawing.Size(1468, 349)
+            Me.Fondo.Size = New System.Drawing.Size(1468, 484)
             Me.Fondo.TabIndex = 1
             '
             'TabControl1
             '
             Me.TabControl1.Controls.Add(Me.TabPIpBan)
-            Me.TabControl1.Controls.Add(Me.TabPage2)
+            Me.TabControl1.Controls.Add(Me.TabSpamAssassin)
             Me.TabControl1.Controls.Add(Me.TabMailBackup)
             Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TabControl1.ImageList = Me.IconosTab
             Me.TabControl1.Location = New System.Drawing.Point(10, 10)
             Me.TabControl1.Name = "TabControl1"
             Me.TabControl1.SelectedIndex = 0
-            Me.TabControl1.Size = New System.Drawing.Size(1448, 329)
+            Me.TabControl1.Size = New System.Drawing.Size(1448, 464)
             Me.TabControl1.TabIndex = 3
             '
             'TabPIpBan
@@ -482,30 +520,30 @@
             Me.TabPIpBan.Location = New System.Drawing.Point(4, 39)
             Me.TabPIpBan.Name = "TabPIpBan"
             Me.TabPIpBan.Padding = New System.Windows.Forms.Padding(3)
-            Me.TabPIpBan.Size = New System.Drawing.Size(1440, 286)
+            Me.TabPIpBan.Size = New System.Drawing.Size(1440, 421)
             Me.TabPIpBan.TabIndex = 0
             Me.TabPIpBan.Text = "IpBan"
             Me.TabPIpBan.UseVisualStyleBackColor = True
             '
-            'TabPage2
+            'TabSpamAssassin
             '
-            Me.TabPage2.Controls.Add(Me.txtRichSpamAssassin)
-            Me.TabPage2.Controls.Add(Me.Panel1)
-            Me.TabPage2.ImageIndex = 0
-            Me.TabPage2.Location = New System.Drawing.Point(4, 39)
-            Me.TabPage2.Name = "TabPage2"
-            Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-            Me.TabPage2.Size = New System.Drawing.Size(1440, 286)
-            Me.TabPage2.TabIndex = 1
-            Me.TabPage2.Text = "SpamAssassin"
-            Me.TabPage2.UseVisualStyleBackColor = True
+            Me.TabSpamAssassin.Controls.Add(Me.txtRichSpamAssassin)
+            Me.TabSpamAssassin.Controls.Add(Me.Panel1)
+            Me.TabSpamAssassin.ImageIndex = 0
+            Me.TabSpamAssassin.Location = New System.Drawing.Point(4, 39)
+            Me.TabSpamAssassin.Name = "TabSpamAssassin"
+            Me.TabSpamAssassin.Padding = New System.Windows.Forms.Padding(3)
+            Me.TabSpamAssassin.Size = New System.Drawing.Size(1440, 421)
+            Me.TabSpamAssassin.TabIndex = 1
+            Me.TabSpamAssassin.Text = "SpamAssassin"
+            Me.TabSpamAssassin.UseVisualStyleBackColor = True
             '
             'txtRichSpamAssassin
             '
             Me.txtRichSpamAssassin.Dock = System.Windows.Forms.DockStyle.Fill
             Me.txtRichSpamAssassin.Location = New System.Drawing.Point(3, 43)
             Me.txtRichSpamAssassin.Name = "txtRichSpamAssassin"
-            Me.txtRichSpamAssassin.Size = New System.Drawing.Size(1434, 240)
+            Me.txtRichSpamAssassin.Size = New System.Drawing.Size(1434, 375)
             Me.txtRichSpamAssassin.TabIndex = 0
             Me.txtRichSpamAssassin.Text = ""
             '
@@ -595,7 +633,7 @@
             Me.TabMailBackup.ImageKey = "MB"
             Me.TabMailBackup.Location = New System.Drawing.Point(4, 39)
             Me.TabMailBackup.Name = "TabMailBackup"
-            Me.TabMailBackup.Size = New System.Drawing.Size(1440, 286)
+            Me.TabMailBackup.Size = New System.Drawing.Size(1440, 421)
             Me.TabMailBackup.TabIndex = 2
             Me.TabMailBackup.Text = "MAIL BACKUP"
             Me.TabMailBackup.UseVisualStyleBackColor = True
@@ -616,7 +654,7 @@
             Me.SplitContainer2.Panel2.Controls.Add(Me.TablaMailBackup)
             Me.SplitContainer2.Panel2.Controls.Add(Me.Panel3)
             Me.SplitContainer2.Panel2.Controls.Add(Me.StatusStrip1)
-            Me.SplitContainer2.Size = New System.Drawing.Size(1440, 286)
+            Me.SplitContainer2.Size = New System.Drawing.Size(1440, 421)
             Me.SplitContainer2.SplitterDistance = 478
             Me.SplitContainer2.TabIndex = 0
             '
@@ -626,7 +664,7 @@
             Me.TreePostOffices.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TreePostOffices.Location = New System.Drawing.Point(0, 0)
             Me.TreePostOffices.Name = "TreePostOffices"
-            Me.TreePostOffices.Size = New System.Drawing.Size(478, 253)
+            Me.TreePostOffices.Size = New System.Drawing.Size(478, 388)
             Me.TreePostOffices.TabIndex = 0
             '
             'MenuTablaBackup
@@ -695,7 +733,7 @@
             'BtnRecargarTreeNodePostOffices
             '
             Me.BtnRecargarTreeNodePostOffices.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.BtnRecargarTreeNodePostOffices.Location = New System.Drawing.Point(0, 253)
+            Me.BtnRecargarTreeNodePostOffices.Location = New System.Drawing.Point(0, 388)
             Me.BtnRecargarTreeNodePostOffices.Name = "BtnRecargarTreeNodePostOffices"
             Me.BtnRecargarTreeNodePostOffices.Size = New System.Drawing.Size(478, 33)
             Me.BtnRecargarTreeNodePostOffices.TabIndex = 1
@@ -718,7 +756,7 @@
             Me.TablaMailBackup.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
             Me.TablaMailBackup.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
             Me.TablaMailBackup.ShowEditingIcon = False
-            Me.TablaMailBackup.Size = New System.Drawing.Size(958, 214)
+            Me.TablaMailBackup.Size = New System.Drawing.Size(958, 349)
             Me.TablaMailBackup.TabIndex = 0
             '
             'Panel3
@@ -826,7 +864,7 @@
             '
             Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LabelCorreosEliminados, Me.ProgresoIndexacion, Me.LabelErroresDataTable})
             Me.StatusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
-            Me.StatusStrip1.Location = New System.Drawing.Point(0, 262)
+            Me.StatusStrip1.Location = New System.Drawing.Point(0, 397)
             Me.StatusStrip1.Name = "StatusStrip1"
             Me.StatusStrip1.Size = New System.Drawing.Size(958, 24)
             Me.StatusStrip1.SizingGrip = False
@@ -891,7 +929,7 @@
             'StatusStrip2
             '
             Me.StatusStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblPrueba, Me.ToolStripStatusLabel1})
-            Me.StatusStrip2.Location = New System.Drawing.Point(0, 373)
+            Me.StatusStrip2.Location = New System.Drawing.Point(0, 508)
             Me.StatusStrip2.Name = "StatusStrip2"
             Me.StatusStrip2.Size = New System.Drawing.Size(1468, 22)
             Me.StatusStrip2.TabIndex = 1
@@ -925,24 +963,45 @@
             Me.ImageList1.ImageSize = New System.Drawing.Size(16, 16)
             Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
             '
-            'Panel4
+            'SplitLog
             '
-            Me.Panel4.Controls.Add(Me.SalidaConsola)
-            Me.Panel4.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.Panel4.Location = New System.Drawing.Point(3, 163)
-            Me.Panel4.Name = "Panel4"
-            Me.Panel4.Size = New System.Drawing.Size(1088, 108)
-            Me.Panel4.TabIndex = 1
+            Me.SplitLog.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.SplitLog.Location = New System.Drawing.Point(0, 0)
+            Me.SplitLog.Name = "SplitLog"
+            Me.SplitLog.Orientation = System.Windows.Forms.Orientation.Horizontal
             '
-            'SalidaConsola
+            'SplitLog.Panel1
             '
-            Me.SalidaConsola.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.SalidaConsola.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.SalidaConsola.Location = New System.Drawing.Point(0, 0)
-            Me.SalidaConsola.Name = "SalidaConsola"
-            Me.SalidaConsola.Size = New System.Drawing.Size(1088, 108)
-            Me.SalidaConsola.TabIndex = 0
-            Me.SalidaConsola.Text = ""
+            Me.SplitLog.Panel1.Controls.Add(Me.SalidaConsola)
+            Me.SplitLog.Panel1.Controls.Add(Me.lblGeneralLog)
+            '
+            'SplitLog.Panel2
+            '
+            Me.SplitLog.Panel2.Controls.Add(Me.SalidaCrossDomain)
+            Me.SplitLog.Panel2.Controls.Add(Me.lblCrossDomainLog)
+            Me.SplitLog.Size = New System.Drawing.Size(1088, 243)
+            Me.SplitLog.SplitterDistance = 112
+            Me.SplitLog.TabIndex = 3
+            '
+            'lblGeneralLog
+            '
+            Me.lblGeneralLog.AutoSize = True
+            Me.lblGeneralLog.Dock = System.Windows.Forms.DockStyle.Top
+            Me.lblGeneralLog.Location = New System.Drawing.Point(0, 0)
+            Me.lblGeneralLog.Name = "lblGeneralLog"
+            Me.lblGeneralLog.Size = New System.Drawing.Size(59, 13)
+            Me.lblGeneralLog.TabIndex = 1
+            Me.lblGeneralLog.Text = "General (0)"
+            '
+            'lblCrossDomainLog
+            '
+            Me.lblCrossDomainLog.AutoSize = True
+            Me.lblCrossDomainLog.Dock = System.Windows.Forms.DockStyle.Top
+            Me.lblCrossDomainLog.Location = New System.Drawing.Point(0, 0)
+            Me.lblCrossDomainLog.Name = "lblCrossDomainLog"
+            Me.lblCrossDomainLog.Size = New System.Drawing.Size(84, 13)
+            Me.lblCrossDomainLog.TabIndex = 2
+            Me.lblCrossDomainLog.Text = "CrossDomain (0)"
             '
             'UcWEB
             '
@@ -980,7 +1039,7 @@
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(1468, 395)
+            Me.ClientSize = New System.Drawing.Size(1468, 530)
             Me.Controls.Add(Me.Fondo)
             Me.Controls.Add(Me.MenuPrincipal)
             Me.Controls.Add(Me.StatusStrip2)
@@ -991,6 +1050,7 @@
             Me.Text = "IpBan"
             Me.PanelIpBaneadas.ResumeLayout(False)
             Me.PanelBuscadores.ResumeLayout(False)
+            Me.PanelLogs.ResumeLayout(False)
             Me.PanelIps.ResumeLayout(False)
             Me.PanelListaNegra.ResumeLayout(False)
             Me.PanelBotonesListaNegra.ResumeLayout(False)
@@ -1008,7 +1068,7 @@
             Me.Fondo.ResumeLayout(False)
             Me.TabControl1.ResumeLayout(False)
             Me.TabPIpBan.ResumeLayout(False)
-            Me.TabPage2.ResumeLayout(False)
+            Me.TabSpamAssassin.ResumeLayout(False)
             Me.Panel1.ResumeLayout(False)
             Me.Panel2.ResumeLayout(False)
             Me.Panel2.PerformLayout()
@@ -1032,7 +1092,12 @@
             Me.StatusStrip2.ResumeLayout(False)
             Me.StatusStrip2.PerformLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.Panel4.ResumeLayout(False)
+            Me.SplitLog.Panel1.ResumeLayout(False)
+            Me.SplitLog.Panel1.PerformLayout()
+            Me.SplitLog.Panel2.ResumeLayout(False)
+            Me.SplitLog.Panel2.PerformLayout()
+            CType(Me.SplitLog, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.SplitLog.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -1071,12 +1136,10 @@
         Friend WithEvents Label6 As Label
         Friend WithEvents TabControl1 As TabControl
         Friend WithEvents TabPIpBan As TabPage
-        Friend WithEvents TabPage2 As TabPage
+        Friend WithEvents TabSpamAssassin As TabPage
         Friend WithEvents IconosTab As ImageList
         Friend WithEvents txtRichSpamAssassin As RichTextBox
-        Friend WithEvents Panel1 As Panel
         Friend WithEvents TimerIpBan As Timer
-        Friend WithEvents Panel2 As Panel
         Friend WithEvents lblEstadoSpamAssasin As Label
         Friend WithEvents Label3 As Label
         Friend WithEvents MenuSpamAssassin As MenuStrip
@@ -1120,7 +1183,13 @@
         Friend WithEvents BtnRecargarTreeNodePostOffices As Button
         Friend WithEvents lblPrueba As ToolStripStatusLabel
         Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel
-        Friend WithEvents Panel4 As Panel
+        Friend WithEvents PanelLogs As Panel
         Public WithEvents SalidaConsola As RichTextBox
+        Public WithEvents SalidaCrossDomain As RichTextBox
+        Friend WithEvents SplitLog As SplitContainer
+        Friend WithEvents Panel1 As Panel
+        Friend WithEvents Panel2 As Panel
+        Friend WithEvents lblGeneralLog As Label
+        Friend WithEvents lblCrossDomainLog As Label
     End Class
 End Namespace

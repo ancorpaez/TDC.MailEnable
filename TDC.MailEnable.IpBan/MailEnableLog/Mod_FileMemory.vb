@@ -11,5 +11,7 @@
         Public Coincidentes As New Concurrent.ConcurrentDictionary(Of String, Integer)
         'Almacena las lineas del Archivo
         Public Lines As New Concurrent.ConcurrentDictionary(Of Integer, String)
+        'Almacena los Login Correctos por IP (IP,DOMINIO,CUENTAS)
+        Public CrossLogin As New Concurrent.ConcurrentDictionary(Of String, Concurrent.ConcurrentDictionary(Of String, Concurrent.ConcurrentBag(Of String)))
     End Class
 End Namespace

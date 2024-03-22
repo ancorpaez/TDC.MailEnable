@@ -18,6 +18,7 @@
             SMTPLoginFailNoMailBox
             SMTPOutNoLogin
             IMAPLoginFail
+            SMTPMultipleDomainLogin
             IMAPMultipleDomainLogin
             WEBPostLogin
             WEBGetFail
