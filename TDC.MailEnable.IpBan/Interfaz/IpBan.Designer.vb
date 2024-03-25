@@ -28,8 +28,15 @@
             Me.PanelIpBaneadas = New System.Windows.Forms.Panel()
             Me.PanelBuscadores = New System.Windows.Forms.Panel()
             Me.PanelLogs = New System.Windows.Forms.Panel()
+            Me.SplitLog = New System.Windows.Forms.SplitContainer()
             Me.SalidaConsola = New System.Windows.Forms.RichTextBox()
+            Me.lblGeneralLog = New System.Windows.Forms.Label()
             Me.SalidaCrossDomain = New System.Windows.Forms.RichTextBox()
+            Me.lblCrossDomainLog = New System.Windows.Forms.Label()
+            Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.PanelIps = New System.Windows.Forms.Panel()
             Me.PanelListaNegra = New System.Windows.Forms.Panel()
             Me.lstIpBaneadas = New System.Windows.Forms.ListBox()
@@ -107,16 +114,17 @@
             Me.iMenuTabla = New System.Windows.Forms.ImageList(Me.components)
             Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
-            Me.SplitLog = New System.Windows.Forms.SplitContainer()
-            Me.lblGeneralLog = New System.Windows.Forms.Label()
-            Me.lblCrossDomainLog = New System.Windows.Forms.Label()
-            Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.lblLineasGeneral = New System.Windows.Forms.Label()
+            Me.Panel4 = New System.Windows.Forms.Panel()
+            Me.Panel5 = New System.Windows.Forms.Panel()
+            Me.lblLineasCrossDomain = New System.Windows.Forms.Label()
             Me.PanelIpBaneadas.SuspendLayout()
             Me.PanelBuscadores.SuspendLayout()
             Me.PanelLogs.SuspendLayout()
+            CType(Me.SplitLog, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.SplitLog.Panel1.SuspendLayout()
+            Me.SplitLog.Panel2.SuspendLayout()
+            Me.SplitLog.SuspendLayout()
             Me.PanelIps.SuspendLayout()
             Me.PanelListaNegra.SuspendLayout()
             Me.PanelBotonesListaNegra.SuspendLayout()
@@ -149,10 +157,8 @@
             Me.MenuPrincipal.SuspendLayout()
             Me.StatusStrip2.SuspendLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.SplitLog, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.SplitLog.Panel1.SuspendLayout()
-            Me.SplitLog.Panel2.SuspendLayout()
-            Me.SplitLog.SuspendLayout()
+            Me.Panel4.SuspendLayout()
+            Me.Panel5.SuspendLayout()
             Me.SuspendLayout()
             '
             'PanelIpBaneadas
@@ -190,26 +196,96 @@
             Me.PanelLogs.Size = New System.Drawing.Size(1088, 243)
             Me.PanelLogs.TabIndex = 1
             '
+            'SplitLog
+            '
+            Me.SplitLog.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.SplitLog.Location = New System.Drawing.Point(0, 0)
+            Me.SplitLog.Name = "SplitLog"
+            Me.SplitLog.Orientation = System.Windows.Forms.Orientation.Horizontal
+            '
+            'SplitLog.Panel1
+            '
+            Me.SplitLog.Panel1.Controls.Add(Me.SalidaConsola)
+            Me.SplitLog.Panel1.Controls.Add(Me.Panel4)
+            '
+            'SplitLog.Panel2
+            '
+            Me.SplitLog.Panel2.Controls.Add(Me.SalidaCrossDomain)
+            Me.SplitLog.Panel2.Controls.Add(Me.Panel5)
+            Me.SplitLog.Size = New System.Drawing.Size(1088, 243)
+            Me.SplitLog.SplitterDistance = 112
+            Me.SplitLog.TabIndex = 3
+            '
             'SalidaConsola
             '
             Me.SalidaConsola.Dock = System.Windows.Forms.DockStyle.Fill
             Me.SalidaConsola.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.SalidaConsola.Location = New System.Drawing.Point(0, 13)
+            Me.SalidaConsola.Location = New System.Drawing.Point(0, 18)
             Me.SalidaConsola.Name = "SalidaConsola"
-            Me.SalidaConsola.Size = New System.Drawing.Size(1088, 99)
+            Me.SalidaConsola.Size = New System.Drawing.Size(1088, 94)
             Me.SalidaConsola.TabIndex = 0
             Me.SalidaConsola.Text = ""
+            '
+            'lblGeneralLog
+            '
+            Me.lblGeneralLog.Dock = System.Windows.Forms.DockStyle.Left
+            Me.lblGeneralLog.Location = New System.Drawing.Point(0, 0)
+            Me.lblGeneralLog.Name = "lblGeneralLog"
+            Me.lblGeneralLog.Size = New System.Drawing.Size(200, 18)
+            Me.lblGeneralLog.TabIndex = 1
+            Me.lblGeneralLog.Text = "General (0)"
             '
             'SalidaCrossDomain
             '
             Me.SalidaCrossDomain.Dock = System.Windows.Forms.DockStyle.Fill
             Me.SalidaCrossDomain.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.SalidaCrossDomain.Location = New System.Drawing.Point(0, 13)
+            Me.SalidaCrossDomain.Location = New System.Drawing.Point(0, 51)
             Me.SalidaCrossDomain.Name = "SalidaCrossDomain"
-            Me.SalidaCrossDomain.Size = New System.Drawing.Size(1088, 114)
+            Me.SalidaCrossDomain.Size = New System.Drawing.Size(1088, 76)
             Me.SalidaCrossDomain.TabIndex = 1
             Me.SalidaCrossDomain.Text = ""
             Me.SalidaCrossDomain.WordWrap = False
+            '
+            'lblCrossDomainLog
+            '
+            Me.lblCrossDomainLog.Dock = System.Windows.Forms.DockStyle.Left
+            Me.lblCrossDomainLog.Location = New System.Drawing.Point(0, 0)
+            Me.lblCrossDomainLog.Name = "lblCrossDomainLog"
+            Me.lblCrossDomainLog.Size = New System.Drawing.Size(200, 51)
+            Me.lblCrossDomainLog.TabIndex = 2
+            Me.lblCrossDomainLog.Text = "CrossDomain (0)"
+            '
+            'UcWEB
+            '
+            Me.UcWEB.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcWEB.Location = New System.Drawing.Point(3, 123)
+            Me.UcWEB.Name = "UcWEB"
+            Me.UcWEB.Size = New System.Drawing.Size(1088, 40)
+            Me.UcWEB.TabIndex = 0
+            '
+            'UcIMAPEx
+            '
+            Me.UcIMAPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcIMAPEx.Location = New System.Drawing.Point(3, 83)
+            Me.UcIMAPEx.Name = "UcIMAPEx"
+            Me.UcIMAPEx.Size = New System.Drawing.Size(1088, 40)
+            Me.UcIMAPEx.TabIndex = 0
+            '
+            'UcSMTPEx
+            '
+            Me.UcSMTPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcSMTPEx.Location = New System.Drawing.Point(3, 43)
+            Me.UcSMTPEx.Name = "UcSMTPEx"
+            Me.UcSMTPEx.Size = New System.Drawing.Size(1088, 40)
+            Me.UcSMTPEx.TabIndex = 0
+            '
+            'UcPOPEx
+            '
+            Me.UcPOPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcPOPEx.Location = New System.Drawing.Point(3, 3)
+            Me.UcPOPEx.Name = "UcPOPEx"
+            Me.UcPOPEx.Size = New System.Drawing.Size(1088, 40)
+            Me.UcPOPEx.TabIndex = 0
             '
             'PanelIps
             '
@@ -963,77 +1039,45 @@
             Me.ImageList1.ImageSize = New System.Drawing.Size(16, 16)
             Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
             '
-            'SplitLog
+            'lblLineasGeneral
             '
-            Me.SplitLog.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.SplitLog.Location = New System.Drawing.Point(0, 0)
-            Me.SplitLog.Name = "SplitLog"
-            Me.SplitLog.Orientation = System.Windows.Forms.Orientation.Horizontal
+            Me.lblLineasGeneral.AutoSize = True
+            Me.lblLineasGeneral.Dock = System.Windows.Forms.DockStyle.Left
+            Me.lblLineasGeneral.Location = New System.Drawing.Point(200, 0)
+            Me.lblLineasGeneral.Name = "lblLineasGeneral"
+            Me.lblLineasGeneral.Size = New System.Drawing.Size(56, 13)
+            Me.lblLineasGeneral.TabIndex = 2
+            Me.lblLineasGeneral.Text = "Lineas: (0)"
             '
-            'SplitLog.Panel1
+            'Panel4
             '
-            Me.SplitLog.Panel1.Controls.Add(Me.SalidaConsola)
-            Me.SplitLog.Panel1.Controls.Add(Me.lblGeneralLog)
+            Me.Panel4.Controls.Add(Me.lblLineasGeneral)
+            Me.Panel4.Controls.Add(Me.lblGeneralLog)
+            Me.Panel4.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Panel4.Location = New System.Drawing.Point(0, 0)
+            Me.Panel4.Name = "Panel4"
+            Me.Panel4.Size = New System.Drawing.Size(1088, 18)
+            Me.Panel4.TabIndex = 3
             '
-            'SplitLog.Panel2
+            'Panel5
             '
-            Me.SplitLog.Panel2.Controls.Add(Me.SalidaCrossDomain)
-            Me.SplitLog.Panel2.Controls.Add(Me.lblCrossDomainLog)
-            Me.SplitLog.Size = New System.Drawing.Size(1088, 243)
-            Me.SplitLog.SplitterDistance = 112
-            Me.SplitLog.TabIndex = 3
+            Me.Panel5.Controls.Add(Me.lblLineasCrossDomain)
+            Me.Panel5.Controls.Add(Me.lblCrossDomainLog)
+            Me.Panel5.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Panel5.Location = New System.Drawing.Point(0, 0)
+            Me.Panel5.Name = "Panel5"
+            Me.Panel5.Size = New System.Drawing.Size(1088, 51)
+            Me.Panel5.TabIndex = 3
             '
-            'lblGeneralLog
+            'lblLineasCrossDomain
             '
-            Me.lblGeneralLog.AutoSize = True
-            Me.lblGeneralLog.Dock = System.Windows.Forms.DockStyle.Top
-            Me.lblGeneralLog.Location = New System.Drawing.Point(0, 0)
-            Me.lblGeneralLog.Name = "lblGeneralLog"
-            Me.lblGeneralLog.Size = New System.Drawing.Size(59, 13)
-            Me.lblGeneralLog.TabIndex = 1
-            Me.lblGeneralLog.Text = "General (0)"
-            '
-            'lblCrossDomainLog
-            '
-            Me.lblCrossDomainLog.AutoSize = True
-            Me.lblCrossDomainLog.Dock = System.Windows.Forms.DockStyle.Top
-            Me.lblCrossDomainLog.Location = New System.Drawing.Point(0, 0)
-            Me.lblCrossDomainLog.Name = "lblCrossDomainLog"
-            Me.lblCrossDomainLog.Size = New System.Drawing.Size(84, 13)
-            Me.lblCrossDomainLog.TabIndex = 2
-            Me.lblCrossDomainLog.Text = "CrossDomain (0)"
-            '
-            'UcWEB
-            '
-            Me.UcWEB.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcWEB.Location = New System.Drawing.Point(3, 123)
-            Me.UcWEB.Name = "UcWEB"
-            Me.UcWEB.Size = New System.Drawing.Size(1088, 40)
-            Me.UcWEB.TabIndex = 0
-            '
-            'UcIMAPEx
-            '
-            Me.UcIMAPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcIMAPEx.Location = New System.Drawing.Point(3, 83)
-            Me.UcIMAPEx.Name = "UcIMAPEx"
-            Me.UcIMAPEx.Size = New System.Drawing.Size(1088, 40)
-            Me.UcIMAPEx.TabIndex = 0
-            '
-            'UcSMTPEx
-            '
-            Me.UcSMTPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcSMTPEx.Location = New System.Drawing.Point(3, 43)
-            Me.UcSMTPEx.Name = "UcSMTPEx"
-            Me.UcSMTPEx.Size = New System.Drawing.Size(1088, 40)
-            Me.UcSMTPEx.TabIndex = 0
-            '
-            'UcPOPEx
-            '
-            Me.UcPOPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcPOPEx.Location = New System.Drawing.Point(3, 3)
-            Me.UcPOPEx.Name = "UcPOPEx"
-            Me.UcPOPEx.Size = New System.Drawing.Size(1088, 40)
-            Me.UcPOPEx.TabIndex = 0
+            Me.lblLineasCrossDomain.AutoSize = True
+            Me.lblLineasCrossDomain.Dock = System.Windows.Forms.DockStyle.Left
+            Me.lblLineasCrossDomain.Location = New System.Drawing.Point(200, 0)
+            Me.lblLineasCrossDomain.Name = "lblLineasCrossDomain"
+            Me.lblLineasCrossDomain.Size = New System.Drawing.Size(56, 13)
+            Me.lblLineasCrossDomain.TabIndex = 3
+            Me.lblLineasCrossDomain.Text = "Lineas: (0)"
             '
             'IpBan
             '
@@ -1048,9 +1092,14 @@
             Me.Name = "IpBan"
             Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
             Me.Text = "IpBan"
+            Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
             Me.PanelIpBaneadas.ResumeLayout(False)
             Me.PanelBuscadores.ResumeLayout(False)
             Me.PanelLogs.ResumeLayout(False)
+            Me.SplitLog.Panel1.ResumeLayout(False)
+            Me.SplitLog.Panel2.ResumeLayout(False)
+            CType(Me.SplitLog, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.SplitLog.ResumeLayout(False)
             Me.PanelIps.ResumeLayout(False)
             Me.PanelListaNegra.ResumeLayout(False)
             Me.PanelBotonesListaNegra.ResumeLayout(False)
@@ -1092,12 +1141,10 @@
             Me.StatusStrip2.ResumeLayout(False)
             Me.StatusStrip2.PerformLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.SplitLog.Panel1.ResumeLayout(False)
-            Me.SplitLog.Panel1.PerformLayout()
-            Me.SplitLog.Panel2.ResumeLayout(False)
-            Me.SplitLog.Panel2.PerformLayout()
-            CType(Me.SplitLog, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.SplitLog.ResumeLayout(False)
+            Me.Panel4.ResumeLayout(False)
+            Me.Panel4.PerformLayout()
+            Me.Panel5.ResumeLayout(False)
+            Me.Panel5.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -1191,5 +1238,9 @@
         Friend WithEvents Panel2 As Panel
         Friend WithEvents lblGeneralLog As Label
         Friend WithEvents lblCrossDomainLog As Label
+        Friend WithEvents lblLineasGeneral As Label
+        Friend WithEvents Panel4 As Panel
+        Friend WithEvents Panel5 As Panel
+        Friend WithEvents lblLineasCrossDomain As Label
     End Class
 End Namespace

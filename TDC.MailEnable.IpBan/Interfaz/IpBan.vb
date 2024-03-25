@@ -827,6 +827,7 @@ Namespace Interfaz
             SalidaConsola.SelectionStart = SalidaConsola.Text.Length
             SalidaConsola.ScrollToCaret()
             lblGeneralLog.Text = $"General ({LOG.Logs(LOG.MemoryLOG.EnumLogs.General).Lineas.Count}) Left"
+            lblLineasGeneral.Text = $"Lineas: ({SalidaConsola.Lines.Count})"
         End Sub
 
         Private Sub SalidaCrossDomain_TextChanged(sender As Object, e As EventArgs) Handles SalidaCrossDomain.TextChanged
@@ -834,7 +835,7 @@ Namespace Interfaz
             SalidaCrossDomain.SelectionStart = SalidaCrossDomain.Text.Length
             SalidaCrossDomain.ScrollToCaret()
             lblCrossDomainLog.Text = $"CrossDomain ({LOG.Logs(LOG.MemoryLOG.EnumLogs.CrossDomain).Lineas.Count}) Left"
-            'IO.File.WriteAllText("CrossDomain.log", SalidaCrossDomain.Text)
+            lblLineasCrossDomain.Text = $"Lineas: ({SalidaCrossDomain.Lines.Count})"
         End Sub
 
         Private Sub SalidaCrossDomain_HandleCreated(sender As Object, e As EventArgs) Handles SalidaCrossDomain.HandleCreated

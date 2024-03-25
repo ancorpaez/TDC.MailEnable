@@ -1,5 +1,6 @@
 ﻿Namespace MailEnableLog
     Public Class Cls_MailBoxLogin
+        'Construccion (MailBox)(Ip,Contraseña)
         Private MailBoxes As New Concurrent.ConcurrentDictionary(Of String, Concurrent.ConcurrentQueue(Of String))
 
         Public Function Exist(MailBox As String) As Boolean
