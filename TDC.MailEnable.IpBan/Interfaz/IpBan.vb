@@ -150,9 +150,15 @@ Namespace Interfaz
 
             'IMAP (W3C)
             Registro_IMAPW3C.Filtro.Add(New Cls_Filtro With {
-                                        .Key = FilterKeys.FilterKey.IMAPLoginFail, .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera, .Repeteciones = 3, .VerificarMailBox = True, .Coincidencias = New List(Of Cls_Coincidencia) From {
-                                        New Cls_Coincidencia With {.Filtro = "Invalid+username+or+password", .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
+                                        .Key = FilterKeys.FilterKey.IMAPLoginFail,
+                                        .TrueSi = Cls_Filtro.EnumTipoComparacion.Cualquiera,
+                                        .Repeteciones = 3,
+                                        .VerificarMailBox = True,
+                                        .Coincidencias = New List(Of Cls_Coincidencia) From {
+                                        New Cls_Coincidencia With {.Filtro = "Invalid+username+or+password",
+                                        .Condicion = Cls_Coincidencia.EnumCondicion.Contiene}}})
             EstablecerConcidenciasPais(FilterKeys.FilterKey.IMAPLoginFail, "PT", 20)
+
             Registro_IMAPW3C.Filtro.Add(New Cls_Filtro With {
                                         .Key = FilterKeys.FilterKey.IMAPMultipleDomainLogin,
                                         .TrueSi = Cls_Filtro.EnumTipoComparacion.Todo,
