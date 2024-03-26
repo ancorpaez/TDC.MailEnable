@@ -34,7 +34,8 @@ Namespace Enrutadores
             'End If
 
             If Aceptado Then
-                Add(Conexion, ObtenerIPv4Principal, Puerto)
+                'Add(Conexion, ObtenerIPv4Principal, Puerto)
+                Add(Conexion, IPAddress.Parse("91.126.176.84"), Puerto)
                 RaiseEvent ConexionAceptada(Me, Conexion)
             Else
                 If Conexion IsNot Nothing Then RaiseEvent ConexionRechadaza(Me, Conexion)

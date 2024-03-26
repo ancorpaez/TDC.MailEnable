@@ -91,7 +91,7 @@ Namespace Enrutadores
                         If Servidor Is Nothing Then
                             Servidor = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
                             ENATAddress = New IPEndPoint(FalloENATAddress, BuscarPuertoLibre)
-                            Servidor.Bind(ENATAddress)
+                            'Servidor.Bind(ENATAddress)
                         End If
                         If Servidor IsNot Nothing AndAlso Not Servidor.Connected Then
                             Me.Servidor.Connect(FalloENATAddress, PuertoServidor)

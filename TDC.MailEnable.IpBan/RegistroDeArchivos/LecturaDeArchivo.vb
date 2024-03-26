@@ -231,11 +231,19 @@ Namespace RegistroDeArchivos
                                                                             Stop
                                                                         End Try
                                                                     End If
+
                                                                 Case FilterKeys.FilterKey.IMAPLoginFail
                                                                     Dim PasswordRecord As String = String.Empty
                                                                     PasswordRecord = Linea.Split(" ")(10).Split("+").First
                                                                     If Not FileMemory(Archivo).IpLoginsRecords.ContainsKey(Ip) Then FileMemory(Archivo).IpLoginsRecords.TryAdd(Ip, New MailBoxPasswordsUsedRecords)
                                                                     FileMemory(Archivo).IpLoginsRecords(Ip).Add(New MailBoxPasswordsUsedRecord With {.MailBox = FullMailbox, .Password = PasswordRecord})
+
+                                                                Case FilterKeys.FilterKey.PopLoginFail
+                                                                    Dim PasswordRecord As String = String.Empty
+                                                                    PasswordRecord = Linea.Split(" ")(8).Split("+").Last
+                                                                    If Not FileMemory(Archivo).IpLoginsRecords.ContainsKey(Ip) Then FileMemory(Archivo).IpLoginsRecords.TryAdd(Ip, New MailBoxPasswordsUsedRecords)
+                                                                    FileMemory(Archivo).IpLoginsRecords(Ip).Add(New MailBoxPasswordsUsedRecord With {.MailBox = FullMailbox, .Password = PasswordRecord})
+
                                                                 Case Else
                                                                     Stop
                                                             End Select
