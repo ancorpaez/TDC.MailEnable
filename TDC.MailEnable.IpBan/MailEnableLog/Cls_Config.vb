@@ -15,5 +15,6 @@
         Public TIMER_PROPAGACION As String = ""
         Public LECTURA_REPOSO As String = "60000"
         Public CARPETA_BACKUP As String = ""
+        Public ANTIGUEDAD_EMAILS As String = (30 * 6)
     End Class
 End Namespace

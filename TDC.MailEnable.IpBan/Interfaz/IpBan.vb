@@ -219,7 +219,7 @@ Namespace Interfaz
             UcPOPEx.Carpeta.Text = "POP (Ex)"
             UcSMTPEx.Carpeta.Text = "SMTP (Ex)"
             UcIMAPEx.Carpeta.Text = "IMAPP (Ex)"
-            UcWEB.Carpeta.Text = "WEB"
+            UcWEB.Carpeta.Text = "WebMail"
 
             'ACTIVAR SPAM ASSASIN
             If Not IsNothing(Mod_Core.SpamAssassin) AndAlso Not IsNothing(SpamAssassin.Ejecutable) Then
@@ -675,7 +675,7 @@ Namespace Interfaz
             LabelCorreosEliminados.Text = $"{CType(TablaMailBackup.DataSource, DataView).Count} Encontrados."
         End Sub
 
-        Private Sub TablaMailBackup_Resize(sender As Object, e As EventArgs) Handles TablaMailBackup.Resize
+        Public Sub TablaMailBackup_Resize(sender As Object, e As EventArgs) Handles TablaMailBackup.Resize
             If Not IsNothing(TablaMailBackup.Columns) AndAlso TablaMailBackup.Columns.Contains("Asunto") Then TablaMailBackup.Columns("Asunto").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
         End Sub
 
@@ -688,18 +688,23 @@ Namespace Interfaz
 
         Private Sub ReindexarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReindexarEmail.Click
             If TablaMailBackup.SelectedRows.Count > 0 Then
-                'MsgBox(TablaMailBackup.SelectedRows(0).Cells(1).Value)
+                Dim mC As New List(Of Control) From {TablaMailBackup, TreePostOffices}
+                mC.ForEach(Sub(c) c.Enabled = False)
+                Dim Total As Integer = TablaMailBackup.SelectedRows.Count
+                LabelErroresDataTable.Text = $"Restantes: {Total}"
+                Me.Refresh()
                 For Each Fila In TablaMailBackup.SelectedRows
                     Dim Analizar As New Backup.Email(Fila.Cells(1).Value)
                     Dim IdMail = Backup.Indexacion.GetItemIndex("Archivo", Fila.Cells(1).Value)
                     If Not IsNothing(IdMail) Then
-                        TablaMailBackup.Enabled = False
                         Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Remitente), If(String.IsNullOrEmpty(Analizar.Remitente), "", Analizar.Remitente))
-                        Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Asunto), If(String.IsNullOrEmpty(Analizar.Remitente), "", Analizar.Asunto))
+                        Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Asunto), If(String.IsNullOrEmpty(Analizar.Asunto), "", Analizar.Asunto))
                         Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Destinatarios), If(IsNothing(Analizar.Destinatarios), "", String.Join(";", Analizar.Destinatarios)))
                         Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.ConCopia), If(IsNothing(Analizar.ConCopia), "", String.Join(";", Analizar.ConCopia)))
                         Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Fecha), Analizar.Fecha)
-                        Backup.Indexacion.Tabla.WriteXml("Indexacion.xml")
+                        Total -= 1
+                        LabelErroresDataTable.Text = $"Restantes: {Total}"
+                        Me.Refresh()
                     Else
                         Task.Run(Sub()
                                      Me.Invoke(Sub() LabelErroresDataTable.Text = "No se pudo indexar el mensaje, inténtelo más tarde.")
@@ -708,13 +713,27 @@ Namespace Interfaz
                                  End Sub)
                     End If
                 Next
-                TablaMailBackup.Enabled = True
+                Backup.Indexacion.Tabla.WriteXml("Indexacion.xml")
+                mC.ForEach(Sub(c) c.Enabled = True)
             End If
         End Sub
 
         Private Sub VisualizarEnNotepadToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VisualizarEnNotepadToolStripMenuItem.Click
             If TablaMailBackup.SelectedRows.Count > 0 Then
-                Process.Start("C:\Program Files\Notepad++\notepad++.exe", TablaMailBackup.SelectedRows(0).Cells(1).Value)
+                If IO.File.Exists(TablaMailBackup.SelectedRows(0).Cells(1).Value) Then
+                    Process.Start("C:\Program Files\Notepad++\notepad++.exe", $"""{TablaMailBackup.SelectedRows(0).Cells(1).Value}""")
+                Else
+                    MsgBox("No se encuentra el Archivo", MsgBoxStyle.Information, "Error")
+                End If
+            End If
+        End Sub
+        Private Sub VisualizarEnOutlookToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VisualizarEnOutlookToolStripMenuItem.Click
+            If TablaMailBackup.SelectedRows.Count > 0 Then
+                If IO.File.Exists(TablaMailBackup.SelectedRows(0).Cells(1).Value) Then
+                    Process.Start("C:\Program Files (x86)\Microsoft Office\Office14\OUTLOOK.EXE", $"/eml ""{TablaMailBackup.SelectedRows(0).Cells(1).Value}""")
+                Else
+                    MsgBox("No se encuentra el Archivo", MsgBoxStyle.Information, "Error")
+                End If
             End If
         End Sub
         Private Sub RestaurarEmailToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RestaurarEmail.Click
@@ -787,16 +806,11 @@ Namespace Interfaz
                 Dim Ruta As String = TreePostOffices.SelectedNode.FullPath
                 Dim Accion As Action = Async Sub() Await Backup.Indexar(Ruta)
                 Dim Lanzar As Task = Task.Run(Accion)
-                'TablaMailBackup.Enabled = True
             End If
         End Sub
 
-        Private Sub TablaMailBackup_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles TablaMailBackup.CellContentClick
-
-        End Sub
-
         Private Sub TablaMailBackup_CellContentDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles TablaMailBackup.CellContentDoubleClick
-            VisualizarEnNotepadToolStripMenuItem_Click(sender, e)
+            VisualizarEnOutlookToolStripMenuItem_Click(sender, e)
         End Sub
 
         Private Sub BtnRecargarTreeNodePostOffices_Click(sender As Object, e As EventArgs) Handles BtnRecargarTreeNodePostOffices.Click
@@ -846,6 +860,10 @@ Namespace Interfaz
 
         Private Sub SalidaCrossDomain_HandleCreated(sender As Object, e As EventArgs) Handles SalidaCrossDomain.HandleCreated
             'If IO.File.Exists("CrossDomain.log") Then SalidaCrossDomain.Text = IO.File.ReadAllText("CrossDomain.log")
+        End Sub
+
+        Private Sub TablaMailBackup_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles TablaMailBackup.CellContentClick
+
         End Sub
     End Class
 End Namespace

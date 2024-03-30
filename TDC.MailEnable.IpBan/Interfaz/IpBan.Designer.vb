@@ -30,13 +30,13 @@
             Me.PanelLogs = New System.Windows.Forms.Panel()
             Me.SplitLog = New System.Windows.Forms.SplitContainer()
             Me.SalidaConsola = New System.Windows.Forms.RichTextBox()
+            Me.Panel4 = New System.Windows.Forms.Panel()
+            Me.lblLineasGeneral = New System.Windows.Forms.Label()
             Me.lblGeneralLog = New System.Windows.Forms.Label()
             Me.SalidaCrossDomain = New System.Windows.Forms.RichTextBox()
+            Me.Panel5 = New System.Windows.Forms.Panel()
+            Me.lblLineasCrossDomain = New System.Windows.Forms.Label()
             Me.lblCrossDomainLog = New System.Windows.Forms.Label()
-            Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.PanelIps = New System.Windows.Forms.Panel()
             Me.PanelListaNegra = New System.Windows.Forms.Panel()
             Me.lstIpBaneadas = New System.Windows.Forms.ListBox()
@@ -103,6 +103,7 @@
             Me.LabelCorreosEliminados = New System.Windows.Forms.ToolStripStatusLabel()
             Me.ProgresoIndexacion = New System.Windows.Forms.ToolStripProgressBar()
             Me.LabelErroresDataTable = New System.Windows.Forms.ToolStripStatusLabel()
+            Me.lblLimpiadosBackup = New System.Windows.Forms.ToolStripStatusLabel()
             Me.IconosTab = New System.Windows.Forms.ImageList(Me.components)
             Me.MenuPrincipal = New System.Windows.Forms.MenuStrip()
             Me.ConfiguraciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -114,10 +115,13 @@
             Me.iMenuTabla = New System.Windows.Forms.ImageList(Me.components)
             Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
-            Me.lblLineasGeneral = New System.Windows.Forms.Label()
-            Me.Panel4 = New System.Windows.Forms.Panel()
-            Me.Panel5 = New System.Windows.Forms.Panel()
-            Me.lblLineasCrossDomain = New System.Windows.Forms.Label()
+            Me.VisualizarEnOutlookToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
+            Me.lblEmailsAnalizados = New System.Windows.Forms.ToolStripStatusLabel()
             Me.PanelIpBaneadas.SuspendLayout()
             Me.PanelBuscadores.SuspendLayout()
             Me.PanelLogs.SuspendLayout()
@@ -125,6 +129,8 @@
             Me.SplitLog.Panel1.SuspendLayout()
             Me.SplitLog.Panel2.SuspendLayout()
             Me.SplitLog.SuspendLayout()
+            Me.Panel4.SuspendLayout()
+            Me.Panel5.SuspendLayout()
             Me.PanelIps.SuspendLayout()
             Me.PanelListaNegra.SuspendLayout()
             Me.PanelBotonesListaNegra.SuspendLayout()
@@ -157,8 +163,6 @@
             Me.MenuPrincipal.SuspendLayout()
             Me.StatusStrip2.SuspendLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.Panel4.SuspendLayout()
-            Me.Panel5.SuspendLayout()
             Me.SuspendLayout()
             '
             'PanelIpBaneadas
@@ -226,6 +230,26 @@
             Me.SalidaConsola.TabIndex = 0
             Me.SalidaConsola.Text = ""
             '
+            'Panel4
+            '
+            Me.Panel4.Controls.Add(Me.lblLineasGeneral)
+            Me.Panel4.Controls.Add(Me.lblGeneralLog)
+            Me.Panel4.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Panel4.Location = New System.Drawing.Point(0, 0)
+            Me.Panel4.Name = "Panel4"
+            Me.Panel4.Size = New System.Drawing.Size(1088, 18)
+            Me.Panel4.TabIndex = 3
+            '
+            'lblLineasGeneral
+            '
+            Me.lblLineasGeneral.AutoSize = True
+            Me.lblLineasGeneral.Dock = System.Windows.Forms.DockStyle.Left
+            Me.lblLineasGeneral.Location = New System.Drawing.Point(200, 0)
+            Me.lblLineasGeneral.Name = "lblLineasGeneral"
+            Me.lblLineasGeneral.Size = New System.Drawing.Size(56, 13)
+            Me.lblLineasGeneral.TabIndex = 2
+            Me.lblLineasGeneral.Text = "Lineas: (0)"
+            '
             'lblGeneralLog
             '
             Me.lblGeneralLog.Dock = System.Windows.Forms.DockStyle.Left
@@ -246,6 +270,26 @@
             Me.SalidaCrossDomain.Text = ""
             Me.SalidaCrossDomain.WordWrap = False
             '
+            'Panel5
+            '
+            Me.Panel5.Controls.Add(Me.lblLineasCrossDomain)
+            Me.Panel5.Controls.Add(Me.lblCrossDomainLog)
+            Me.Panel5.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Panel5.Location = New System.Drawing.Point(0, 0)
+            Me.Panel5.Name = "Panel5"
+            Me.Panel5.Size = New System.Drawing.Size(1088, 51)
+            Me.Panel5.TabIndex = 3
+            '
+            'lblLineasCrossDomain
+            '
+            Me.lblLineasCrossDomain.AutoSize = True
+            Me.lblLineasCrossDomain.Dock = System.Windows.Forms.DockStyle.Left
+            Me.lblLineasCrossDomain.Location = New System.Drawing.Point(200, 0)
+            Me.lblLineasCrossDomain.Name = "lblLineasCrossDomain"
+            Me.lblLineasCrossDomain.Size = New System.Drawing.Size(56, 13)
+            Me.lblLineasCrossDomain.TabIndex = 3
+            Me.lblLineasCrossDomain.Text = "Lineas: (0)"
+            '
             'lblCrossDomainLog
             '
             Me.lblCrossDomainLog.Dock = System.Windows.Forms.DockStyle.Left
@@ -254,38 +298,6 @@
             Me.lblCrossDomainLog.Size = New System.Drawing.Size(200, 51)
             Me.lblCrossDomainLog.TabIndex = 2
             Me.lblCrossDomainLog.Text = "CrossDomain (0)"
-            '
-            'UcWEB
-            '
-            Me.UcWEB.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcWEB.Location = New System.Drawing.Point(3, 123)
-            Me.UcWEB.Name = "UcWEB"
-            Me.UcWEB.Size = New System.Drawing.Size(1088, 40)
-            Me.UcWEB.TabIndex = 0
-            '
-            'UcIMAPEx
-            '
-            Me.UcIMAPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcIMAPEx.Location = New System.Drawing.Point(3, 83)
-            Me.UcIMAPEx.Name = "UcIMAPEx"
-            Me.UcIMAPEx.Size = New System.Drawing.Size(1088, 40)
-            Me.UcIMAPEx.TabIndex = 0
-            '
-            'UcSMTPEx
-            '
-            Me.UcSMTPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcSMTPEx.Location = New System.Drawing.Point(3, 43)
-            Me.UcSMTPEx.Name = "UcSMTPEx"
-            Me.UcSMTPEx.Size = New System.Drawing.Size(1088, 40)
-            Me.UcSMTPEx.TabIndex = 0
-            '
-            'UcPOPEx
-            '
-            Me.UcPOPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcPOPEx.Location = New System.Drawing.Point(3, 3)
-            Me.UcPOPEx.Name = "UcPOPEx"
-            Me.UcPOPEx.Size = New System.Drawing.Size(1088, 40)
-            Me.UcPOPEx.TabIndex = 0
             '
             'PanelIps
             '
@@ -745,9 +757,9 @@
             '
             'MenuTablaBackup
             '
-            Me.MenuTablaBackup.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RestaurarEmail, Me.ToolStripMenuItem3, Me.ReindexarEmail, Me.ReindexarCarpeta, Me.ToolStripMenuItem1, Me.VisualizarEnNotepadToolStripMenuItem, Me.ToolStripMenuItem2, Me.ReindexarTodoToolStripMenuItem, Me.IndexarNuevosToolStripMenuItem})
+            Me.MenuTablaBackup.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RestaurarEmail, Me.ToolStripMenuItem3, Me.ReindexarEmail, Me.ReindexarCarpeta, Me.ToolStripMenuItem1, Me.VisualizarEnNotepadToolStripMenuItem, Me.VisualizarEnOutlookToolStripMenuItem, Me.ToolStripMenuItem2, Me.ReindexarTodoToolStripMenuItem, Me.IndexarNuevosToolStripMenuItem})
             Me.MenuTablaBackup.Name = "MenuTablaBackup"
-            Me.MenuTablaBackup.Size = New System.Drawing.Size(208, 154)
+            Me.MenuTablaBackup.Size = New System.Drawing.Size(208, 176)
             '
             'RestaurarEmail
             '
@@ -938,7 +950,7 @@
             '
             'StatusStrip1
             '
-            Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LabelCorreosEliminados, Me.ProgresoIndexacion, Me.LabelErroresDataTable})
+            Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LabelCorreosEliminados, Me.ProgresoIndexacion, Me.LabelErroresDataTable, Me.lblLimpiadosBackup, Me.ToolStripStatusLabel2, Me.lblEmailsAnalizados})
             Me.StatusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
             Me.StatusStrip1.Location = New System.Drawing.Point(0, 397)
             Me.StatusStrip1.Name = "StatusStrip1"
@@ -966,6 +978,12 @@
             Me.LabelErroresDataTable.Name = "LabelErroresDataTable"
             Me.LabelErroresDataTable.Size = New System.Drawing.Size(20, 19)
             Me.LabelErroresDataTable.Text = "..."
+            '
+            'lblLimpiadosBackup
+            '
+            Me.lblLimpiadosBackup.Name = "lblLimpiadosBackup"
+            Me.lblLimpiadosBackup.Size = New System.Drawing.Size(79, 19)
+            Me.lblLimpiadosBackup.Text = "Limpiados (0)"
             '
             'IconosTab
             '
@@ -1039,45 +1057,56 @@
             Me.ImageList1.ImageSize = New System.Drawing.Size(16, 16)
             Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
             '
-            'lblLineasGeneral
+            'VisualizarEnOutlookToolStripMenuItem
             '
-            Me.lblLineasGeneral.AutoSize = True
-            Me.lblLineasGeneral.Dock = System.Windows.Forms.DockStyle.Left
-            Me.lblLineasGeneral.Location = New System.Drawing.Point(200, 0)
-            Me.lblLineasGeneral.Name = "lblLineasGeneral"
-            Me.lblLineasGeneral.Size = New System.Drawing.Size(56, 13)
-            Me.lblLineasGeneral.TabIndex = 2
-            Me.lblLineasGeneral.Text = "Lineas: (0)"
+            Me.VisualizarEnOutlookToolStripMenuItem.Image = CType(resources.GetObject("VisualizarEnOutlookToolStripMenuItem.Image"), System.Drawing.Image)
+            Me.VisualizarEnOutlookToolStripMenuItem.Name = "VisualizarEnOutlookToolStripMenuItem"
+            Me.VisualizarEnOutlookToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
+            Me.VisualizarEnOutlookToolStripMenuItem.Text = "Visualizar en Outlook"
             '
-            'Panel4
+            'UcWEB
             '
-            Me.Panel4.Controls.Add(Me.lblLineasGeneral)
-            Me.Panel4.Controls.Add(Me.lblGeneralLog)
-            Me.Panel4.Dock = System.Windows.Forms.DockStyle.Top
-            Me.Panel4.Location = New System.Drawing.Point(0, 0)
-            Me.Panel4.Name = "Panel4"
-            Me.Panel4.Size = New System.Drawing.Size(1088, 18)
-            Me.Panel4.TabIndex = 3
+            Me.UcWEB.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcWEB.Location = New System.Drawing.Point(3, 123)
+            Me.UcWEB.Name = "UcWEB"
+            Me.UcWEB.Size = New System.Drawing.Size(1088, 40)
+            Me.UcWEB.TabIndex = 0
             '
-            'Panel5
+            'UcIMAPEx
             '
-            Me.Panel5.Controls.Add(Me.lblLineasCrossDomain)
-            Me.Panel5.Controls.Add(Me.lblCrossDomainLog)
-            Me.Panel5.Dock = System.Windows.Forms.DockStyle.Top
-            Me.Panel5.Location = New System.Drawing.Point(0, 0)
-            Me.Panel5.Name = "Panel5"
-            Me.Panel5.Size = New System.Drawing.Size(1088, 51)
-            Me.Panel5.TabIndex = 3
+            Me.UcIMAPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcIMAPEx.Location = New System.Drawing.Point(3, 83)
+            Me.UcIMAPEx.Name = "UcIMAPEx"
+            Me.UcIMAPEx.Size = New System.Drawing.Size(1088, 40)
+            Me.UcIMAPEx.TabIndex = 0
             '
-            'lblLineasCrossDomain
+            'UcSMTPEx
             '
-            Me.lblLineasCrossDomain.AutoSize = True
-            Me.lblLineasCrossDomain.Dock = System.Windows.Forms.DockStyle.Left
-            Me.lblLineasCrossDomain.Location = New System.Drawing.Point(200, 0)
-            Me.lblLineasCrossDomain.Name = "lblLineasCrossDomain"
-            Me.lblLineasCrossDomain.Size = New System.Drawing.Size(56, 13)
-            Me.lblLineasCrossDomain.TabIndex = 3
-            Me.lblLineasCrossDomain.Text = "Lineas: (0)"
+            Me.UcSMTPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcSMTPEx.Location = New System.Drawing.Point(3, 43)
+            Me.UcSMTPEx.Name = "UcSMTPEx"
+            Me.UcSMTPEx.Size = New System.Drawing.Size(1088, 40)
+            Me.UcSMTPEx.TabIndex = 0
+            '
+            'UcPOPEx
+            '
+            Me.UcPOPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcPOPEx.Location = New System.Drawing.Point(3, 3)
+            Me.UcPOPEx.Name = "UcPOPEx"
+            Me.UcPOPEx.Size = New System.Drawing.Size(1088, 40)
+            Me.UcPOPEx.TabIndex = 0
+            '
+            'ToolStripStatusLabel2
+            '
+            Me.ToolStripStatusLabel2.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left
+            Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
+            Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(4, 19)
+            '
+            'lblEmailsAnalizados
+            '
+            Me.lblEmailsAnalizados.Name = "lblEmailsAnalizados"
+            Me.lblEmailsAnalizados.Size = New System.Drawing.Size(83, 19)
+            Me.lblEmailsAnalizados.Text = "Analizando (0)"
             '
             'IpBan
             '
@@ -1100,6 +1129,10 @@
             Me.SplitLog.Panel2.ResumeLayout(False)
             CType(Me.SplitLog, System.ComponentModel.ISupportInitialize).EndInit()
             Me.SplitLog.ResumeLayout(False)
+            Me.Panel4.ResumeLayout(False)
+            Me.Panel4.PerformLayout()
+            Me.Panel5.ResumeLayout(False)
+            Me.Panel5.PerformLayout()
             Me.PanelIps.ResumeLayout(False)
             Me.PanelListaNegra.ResumeLayout(False)
             Me.PanelBotonesListaNegra.ResumeLayout(False)
@@ -1141,10 +1174,6 @@
             Me.StatusStrip2.ResumeLayout(False)
             Me.StatusStrip2.PerformLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.Panel4.ResumeLayout(False)
-            Me.Panel4.PerformLayout()
-            Me.Panel5.ResumeLayout(False)
-            Me.Panel5.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -1242,5 +1271,9 @@
         Friend WithEvents Panel4 As Panel
         Friend WithEvents Panel5 As Panel
         Friend WithEvents lblLineasCrossDomain As Label
+        Friend WithEvents lblLimpiadosBackup As ToolStripStatusLabel
+        Friend WithEvents VisualizarEnOutlookToolStripMenuItem As ToolStripMenuItem
+        Friend WithEvents ToolStripStatusLabel2 As ToolStripStatusLabel
+        Friend WithEvents lblEmailsAnalizados As ToolStripStatusLabel
     End Class
 End Namespace

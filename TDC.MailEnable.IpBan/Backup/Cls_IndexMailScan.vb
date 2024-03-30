@@ -21,7 +21,9 @@ Namespace Backup
 
                 ' Invocar evento para cada archivo encontrado
                 For Each Archivo As String In Archivos
-                    If Not IO.File.Exists(OriginalPath(Archivo)) AndAlso Not Indexacion.Contains(Core.BDD.MailBackupIndex.Columnas.Archivo.ToString, Archivo) Then RaiseEvent AnalizarArchivo(Archivo)
+                    'If Not IO.File.Exists(OriginalPath(Archivo)) AndAlso Not Indexacion.Contains(Core.BDD.MailBackupIndex.Columnas.Archivo.ToString, Archivo) Then RaiseEvent AnalizarArchivo(Archivo)
+
+                    If Not IO.File.Exists(OriginalPath(Archivo)) Then RaiseEvent AnalizarArchivo(Archivo)
                 Next
             Catch ex As Exception
                 ' Manejar excepciones si es necesario

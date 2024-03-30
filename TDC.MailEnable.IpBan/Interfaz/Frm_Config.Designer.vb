@@ -71,6 +71,9 @@
             Me.Label14 = New System.Windows.Forms.Label()
             Me.txtBackupEmail = New System.Windows.Forms.TextBox()
             Me.CmdCargarCarpetaBackupEmail = New System.Windows.Forms.Button()
+            Me.Label15 = New System.Windows.Forms.Label()
+            Me.txtAntiguedadEmails = New System.Windows.Forms.TextBox()
+            Me.Label16 = New System.Windows.Forms.Label()
             Me.Panel1.SuspendLayout()
             CType(Me.TrackLectura, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.TrackPropagacion, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -147,7 +150,7 @@
             Me.Panel1.Controls.Add(Me.BtnGuardarConfig)
             Me.Panel1.Controls.Add(Me.CtrlSeparadorPie)
             Me.Panel1.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.Panel1.Location = New System.Drawing.Point(0, 454)
+            Me.Panel1.Location = New System.Drawing.Point(0, 502)
             Me.Panel1.Name = "Panel1"
             Me.Panel1.Size = New System.Drawing.Size(780, 40)
             Me.Panel1.TabIndex = 3
@@ -481,11 +484,39 @@
             Me.CmdCargarCarpetaBackupEmail.Text = "Buscar"
             Me.CmdCargarCarpetaBackupEmail.UseVisualStyleBackColor = True
             '
+            'Label15
+            '
+            Me.Label15.AutoSize = True
+            Me.Label15.Location = New System.Drawing.Point(12, 465)
+            Me.Label15.Name = "Label15"
+            Me.Label15.Size = New System.Drawing.Size(210, 13)
+            Me.Label15.TabIndex = 14
+            Me.Label15.Text = "Mantener una ANTIGUEDAD de Emails de"
+            '
+            'txtAntiguedadEmails
+            '
+            Me.txtAntiguedadEmails.Location = New System.Drawing.Point(228, 462)
+            Me.txtAntiguedadEmails.Name = "txtAntiguedadEmails"
+            Me.txtAntiguedadEmails.Size = New System.Drawing.Size(100, 20)
+            Me.txtAntiguedadEmails.TabIndex = 15
+            '
+            'Label16
+            '
+            Me.Label16.AutoSize = True
+            Me.Label16.Location = New System.Drawing.Point(334, 465)
+            Me.Label16.Name = "Label16"
+            Me.Label16.Size = New System.Drawing.Size(28, 13)
+            Me.Label16.TabIndex = 16
+            Me.Label16.Text = "días"
+            '
             'Frm_Config
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(780, 494)
+            Me.ClientSize = New System.Drawing.Size(780, 542)
+            Me.Controls.Add(Me.Label16)
+            Me.Controls.Add(Me.txtAntiguedadEmails)
+            Me.Controls.Add(Me.Label15)
             Me.Controls.Add(Me.NumReposoLectura)
             Me.Controls.Add(Me.Label13)
             Me.Controls.Add(Me.txtPropagacionIP)
@@ -589,5 +620,8 @@
         Friend WithEvents Label14 As Label
         Friend WithEvents txtBackupEmail As TextBox
         Friend WithEvents CmdCargarCarpetaBackupEmail As Button
+        Friend WithEvents Label15 As Label
+        Friend WithEvents txtAntiguedadEmails As TextBox
+        Friend WithEvents Label16 As Label
     End Class
 End Namespace

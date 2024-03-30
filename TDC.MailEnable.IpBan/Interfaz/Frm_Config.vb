@@ -21,6 +21,7 @@ Namespace Interfaz
             txtPostOffices.Text = Mod_Core.Configuracion.POST_OFFICES
             NumReposoLectura.Value = CInt(Configuracion.LECTURA_REPOSO)
             txtBackupEmail.Text = Configuracion.CARPETA_BACKUP
+            txtAntiguedadEmails.Text = Configuracion.ANTIGUEDAD_EMAILS
 
             If IsNumeric(Mod_Core.Configuracion.TIMER_LECTURA) Then
                 TrackLectura.Value = CInt(Configuracion.TIMER_LECTURA)
@@ -78,6 +79,7 @@ Namespace Interfaz
             Mod_Core.Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
             Mod_Core.Configuracion.LECTURA_REPOSO = NumReposoLectura.Value
             Mod_Core.Configuracion.CARPETA_BACKUP = txtBackupEmail.Text
+            Configuracion.ANTIGUEDAD_EMAILS = txtAntiguedadEmails.Text
             Mod_Core.GuardarConfiguracion()
             Me.Close()
         End Sub
@@ -168,6 +170,10 @@ Namespace Interfaz
         Private Sub CmdCargarCarpetaBackupEmail_Click(sender As Object, e As EventArgs) Handles CmdCargarCarpetaBackupEmail.Click
             CargarCarpeta()
             txtBackupEmail.Text = CtrlBuscarCarpeta.SelectedPath
+        End Sub
+
+        Private Sub txtAntiguedadEmails_TextChanged(sender As Object, e As EventArgs) Handles txtAntiguedadEmails.TextChanged
+
         End Sub
     End Class
 End Namespace

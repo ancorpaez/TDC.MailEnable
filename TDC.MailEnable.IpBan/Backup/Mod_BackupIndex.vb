@@ -10,9 +10,8 @@ Namespace Backup
             If IO.File.Exists("Indexacion.xml") Then Indexacion.Tabla.ReadXml("Indexacion.xml")
             MailEnableLog.IpBanForm.Invoke(Sub() MailEnableLog.IpBanForm.TablaMailBackup.DataSource = Indexacion.Tabla)
             Await Indexar(MailEnableLog.Configuracion.CARPETA_BACKUP)
-
-
         End Function
+
         Public Async Function Indexar(Ruta As String) As Task
             If String.IsNullOrEmpty(Ruta) Then Exit Function
             Mod_Core.IpBanForm.Invoke(Sub() Interfaz.IpBan.LabelErroresDataTable.Text = "Indexando...")
@@ -20,6 +19,7 @@ Namespace Backup
 
             Dim MailScan As New Cls_IndexMailScan()
             AddHandler MailScan.AnalizarArchivo, AddressOf AnalizarArchivo
+            Analisis = 0
             Await MailScan.EscanerCarpeta(Ruta)
             Indexacion.Tabla.WriteXml("Indexacion.xml")
             Mod_Core.IpBanForm.Invoke(Sub()
@@ -27,25 +27,65 @@ Namespace Backup
                                           Mod_Core.IpBanForm.LabelErroresDataTable.Text = $"Indexado ({Indexacion.Tabla.Rows.Count})"
                                           Mod_Core.IpBanForm.ProgresoIndexacion.Style = ProgressBarStyle.Blocks
                                           Mod_Core.IpBanForm.TablaMailBackup.Refresh()
+                                          IpBanForm.TablaMailBackup_Resize(Nothing, New EventArgs)
                                       End Sub)
         End Function
+        Dim Analisis As Integer = 0
         Private Sub AnalizarArchivo(FullName As String)
             'Console.WriteLine($"Archivo encontrado: {FullName}")
             Try
-                Dim Analizar As New Email(FullName)
-                'Archivo Analizado No está Indexado
-                Indexacion.Add(New Core.BDD.MailBackupIndex.Rows With {
-                .Archivo = If(Analizar.Archivo = String.Empty, "", Analizar.Archivo),
-                .Asunto = If(Analizar.Asunto = String.Empty, "", Analizar.Asunto),
-                .Remitente = If(Analizar.Remitente = String.Empty, "", Analizar.Remitente),
-                .Destinatarios = If(IsNothing(Analizar.Destinatarios), "", String.Join(";", Analizar.Destinatarios)),
-                .Fecha = Analizar.Fecha,
-                .ConCopia = If(IsNothing(Analizar.ConCopia), "", String.Join(";", Analizar.ConCopia))})
-                Mod_Core.IpBanForm.Invoke(Sub() Interfaz.IpBan.LabelErroresDataTable.Text = $"Indexando ({Indexacion.Tabla.Rows.Count})")
-                'Analizar.ImprimirDebug()
-                'Stop
-            Catch ex As Exception
+                Analisis += 1
+                Mod_Core.IpBanForm.Invoke(Sub() IpBanForm.lblEmailsAnalizados.Text = $"Analizados ({Analisis})")
+                'Comprobar la Antiguedad
+                Dim Fecha As Date = IO.File.GetLastWriteTime(FullName)
+                Dim Antiguedad As Integer = DateDiff(DateInterval.Day, Fecha, Now)
 
+                'Banderas 
+                Dim Indexar As Boolean = False
+                Dim Eliminar As Boolean = False
+                Dim Limpiar As Boolean = False
+
+                'Si no supera la Antiguedad ni Esta Indexado (Indexar)
+                If Not Antiguedad > Configuracion.ANTIGUEDAD_EMAILS AndAlso Not Indexacion.Contains(Core.BDD.MailBackupIndex.Columnas.Archivo.ToString, FullName) Then Indexar = True
+
+                'Si no se Indexa y Supera la Antiguedad (Eliminar)
+                If Not Indexar AndAlso Antiguedad > Configuracion.ANTIGUEDAD_EMAILS Then Eliminar = True
+
+                'Si hay que eliminar y esta Indexado (Limpiar)
+                If Eliminar AndAlso Indexacion.Contains(Core.BDD.MailBackupIndex.Columnas.Archivo.ToString, FullName) Then Limpiar = True
+
+                'Limpiamos de la BDD
+                If Limpiar Then
+                    'Si hay que limpiar
+                    Dim Fila As DataRow = Indexacion.GetRow("Archivo", FullName)
+                    If Not IsNothing(Fila) Then Indexacion.Tabla.Rows.Remove(Fila)
+                End If
+
+                'Eliminamos el archivo del Backup
+                If Eliminar Then
+                    'Si hay que Eliminar
+                    IO.File.Delete(FullName)
+                    Dim Contar As Integer = CInt(IpBanForm.lblLimpiadosBackup.Text.Split(" ")(1).Replace("(", "").Replace(")", ""))
+                    Contar += 1
+                    Mod_Core.IpBanForm.Invoke(Sub() IpBanForm.lblLimpiadosBackup.Text = $"Limpiados ({Contar})")
+                End If
+
+                'Indexamos el Archivo
+                If Indexar Then
+                    'Si hay que indexar
+                    Dim Analizar As New Email(FullName)
+                    Indexacion.Add(New Core.BDD.MailBackupIndex.Rows With {
+                    .Archivo = If(Analizar.Archivo = String.Empty, "", Analizar.Archivo),
+                    .Asunto = If(Analizar.Asunto = String.Empty, "", Analizar.Asunto),
+                    .Remitente = If(Analizar.Remitente = String.Empty, "", Analizar.Remitente),
+                    .Destinatarios = If(IsNothing(Analizar.Destinatarios), "", String.Join(";", Analizar.Destinatarios)),
+                    .Fecha = Analizar.Fecha,
+                    .ConCopia = If(IsNothing(Analizar.ConCopia), "", String.Join(";", Analizar.ConCopia))})
+                    Mod_Core.IpBanForm.Invoke(Sub() IpBanForm.LabelErroresDataTable.Text = $"Indexando ({Indexacion.Tabla.Rows.Count})")
+                End If
+
+            Catch ex As Exception
+                Stop
             End Try
         End Sub
 

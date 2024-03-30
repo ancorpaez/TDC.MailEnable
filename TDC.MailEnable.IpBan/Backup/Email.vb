@@ -33,7 +33,7 @@ Namespace Backup
             'If Archivo.Contains("") Then Stop
 
             ' Leer el contenido del archivo .EML
-            Lineas = File.ReadAllLines(Archivo)
+            Lineas = File.ReadAllLines(Archivo, Encoding.Default)
 
             ' Utilizar expresiones regulares para extraer la información
             Remitente = Obtener("From:", "@")
@@ -42,6 +42,8 @@ Namespace Backup
             Dim PreliminarAsunto As List(Of String) = BuscarAsunto("Subject:")
             Asunto = If(IsNothing(PreliminarAsunto), "", String.Join("", PreliminarAsunto))
             Dim PreliminarFecha = Obtener("Date:", "")
+            If String.IsNullOrEmpty(PreliminarFecha) Then PreliminarFecha = Obtener("Sent:", "")
+            If String.IsNullOrEmpty(PreliminarFecha) Then PreliminarFecha = IO.File.GetLastWriteTimeUtc(Archivo).ToLongDateString
             Fecha = If(PreliminarFecha = String.Empty, New Date, Date.Parse(PreliminarFecha))
         End Sub
 
@@ -91,7 +93,18 @@ Namespace Backup
             If Busqueda3.Success Then Return Busqueda3.Groups(1).Value.Trim()
             Return Nothing
         End Function
+        Private Function DecodeHex(input As String) As String
+            ' Reemplazar "_" con " " y decodificar secuencias de escape
+            Dim Convertir As String = input
+            Convertir = Regex.Replace(Convertir, "=\r\n", "", RegexOptions.Multiline)
+            Convertir = Regex.Replace(Convertir, "_=", " ", RegexOptions.Multiline)
+            Convertir = Regex.Replace(Convertir, "=", "%")
 
+            ' Decodificar el texto
+            Dim Testear As String = System.Web.HttpUtility.UrlDecode(Convertir)
+            If Not Testear.Contains("�") Then Return Testear
+            Return input
+        End Function
         Private Function BuscarAsunto(Contiene As String) As List(Of String)
             Dim esAsunto As Boolean = False
             Dim esAnalizadoAsunto As Boolean = False
@@ -117,7 +130,10 @@ Namespace Backup
 
                 If esAsunto AndAlso Not String.IsNullOrEmpty(Unilinea) Then
                     'Estraer el asunto
-
+                    'Buscar Partes Hexadecimales
+                    'If Unilinea.Contains("?q?=") Then
+                    '    Unilinea = DecodeHex(Unilinea)
+                    'End If
                     'Comprobar si tiene partes codificadas
                     Dim esCodificada As Boolean = {"?Q?", "?T?", "?B?", "?U?", "?C?"}.Any(Function(Codificador) Unilinea.ToUpper.Contains(Codificador))
                     'Comprobar si combina partes no codificas con codificadas
@@ -137,7 +153,7 @@ Namespace Backup
                         Dim Partes As List(Of String) = SepararCodificacion(Unilinea)
                         For i = 0 To Partes.Count - 1
                             If {"?Q?", "?T?", "?B?", "?U?", "?C?"}.Any(Function(Codificador) Partes(i).ToUpper.Contains(Codificador)) Then
-                                Partes(i) = Decodificar(Partes(i))
+                                Partes(i) = Decodificar(Partes(i).Trim)
                             End If
                         Next
                         Extraer = String.Join("", Partes)
@@ -151,7 +167,11 @@ Namespace Backup
             Next
 
             'Devolver
-            If Asunto.Count > 0 Then Return Asunto Else Return Nothing
+            If Asunto.Count > 0 Then
+                Return Asunto
+            Else
+                Return Nothing
+            End If
         End Function
         Private Function VerificarMultilinea(Linea As String) As Boolean
             'Empieza sin Parte Codificada
@@ -190,29 +210,52 @@ Namespace Backup
             For Each Coincidencia As Match In Coincidencias
                 Dim CodificaString As String = Encoding.ASCII.ToString
 
-                Select Case Coincidencia.Groups(1).Value
-                    Case "UTF8"
+                Select Case Coincidencia.Groups(1).Value.ToLower
+                    Case "utf8"
                         CodificaString = "UTF-8"
-                    Case "Cp1252"
+                    Case "cp1252"
                         CodificaString = "Windows-1252"
+                    Case "iso8859-15"
+                        CodificaString = "ISO-8859-15"
                     Case Else
-                        CodificaString = Coincidencia.Groups(1).Value
+                        CodificaString = Coincidencia.Groups(1).Value.ToUpper
                 End Select
+                Dim Codificacion As Encoding
 
-                Dim Codificacion As Encoding = Encoding.GetEncoding(CodificaString)
+                Try
+                    Codificacion = Encoding.GetEncoding(CodificaString)
+                Catch ex As Exception
+                    Stop
+                End Try
+
                 Dim TipoCodificacion As String = Coincidencia.Groups(2).Value.ToUpper
                 Dim AsuntoCodificado As String = Coincidencia.Groups(3).Value
                 If AsuntoCodificado.EndsWith("===") Then AsuntoCodificado = AsuntoCodificado.Substring(0, AsuntoCodificado.Count - 1)
                 Select Case TipoCodificacion
                     Case "B"
                         'Base64
+                        Dim Limpiar As New List(Of Char)
+
+                        For Each Caracter In AsuntoCodificado
+                            If Not Char.IsLetterOrDigit(Caracter) AndAlso Not {"+", "/", "-", "_", "="}.Contains(Caracter) Then
+                                Limpiar.Add(Caracter)
+                            End If
+                        Next
+
+                        For Each Caracter In Limpiar
+                            AsuntoCodificado = AsuntoCodificado.Replace(Caracter, "")
+                        Next
+
                         Dim DecodificarBytes As Byte() = Convert.FromBase64String(AsuntoCodificado)
                         Devolver = Codificacion.GetString(DecodificarBytes)
                     Case "C"
                         Devolver = QuotedPrintableToString(AsuntoCodificado)
                     Case "Q"
                         Devolver = QuotedPrintableToString(Linea)
-                        If Devolver = Linea Then Devolver = DecodeQuotedPrintables(AsuntoCodificado, CodificaString)
+                        If Devolver = Linea Then
+                            'Devolver = DecodeHex(Devolver)
+                            Devolver = DecodeQuotedPrintables(AsuntoCodificado.Replace("_", " "), CodificaString)
+                        End If
                 End Select
 
             Next
@@ -249,6 +292,21 @@ Namespace Backup
             ' Agregar la parte restante de la cadena después de la última parte codificada
             If Not startIndex = input.Length Then parts.Add(input.Substring(startIndex))
 
+            Dim Repair As New List(Of String)
+            For i = 0 To parts.Count - 1
+                If {"=?windows-1252?q?=", "=?utf-8?q?="}.Any(Function(Codificacion) parts(i).ToLower = Codificacion) Then
+                    Repair.Add(parts(i) & parts(i + 1))
+                Else
+                    If i > 0 Then
+                        If Not {"=?windows-1252?q?=", "=?utf-8?q?="}.Any(Function(Codificacion) parts(i - 1).ToLower = Codificacion) Then
+                            Repair.Add(parts(i))
+                        End If
+                    Else
+                        Repair.Add(parts(i))
+                    End If
+                End If
+            Next
+            If Repair.Count > 0 Then Return Repair
             Return parts
         End Function
 
@@ -314,6 +372,12 @@ Namespace Backup
                     enc = Encoding.ASCII
                 End Try
             End If
+
+            'Decode HEX
+            'Dim sections As String() = input.Split("=")
+            input = DecodeHex(input)
+            ' Initialize the decoded subject
+            'Dim decodedSubject As String = ""
 
             ' Decode iso-8859-[0-9]
             Dim occurences As New Regex("=[0-9A-Z]{2}", RegexOptions.Multiline)
