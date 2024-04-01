@@ -153,7 +153,9 @@ Namespace Backup
                         Dim Partes As List(Of String) = SepararCodificacion(Unilinea)
                         For i = 0 To Partes.Count - 1
                             If {"?Q?", "?T?", "?B?", "?U?", "?C?"}.Any(Function(Codificador) Partes(i).ToUpper.Contains(Codificador)) Then
-                                Partes(i) = Decodificar(Partes(i).Trim)
+                                Dim Espacio As String = ""
+                                If Partes(i).EndsWith(" ") Then Espacio = " "
+                                Partes(i) = Decodificar(Partes(i).Trim) & Espacio
                             End If
                         Next
                         Extraer = String.Join("", Partes)

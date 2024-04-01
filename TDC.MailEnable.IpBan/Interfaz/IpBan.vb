@@ -742,13 +742,15 @@ Namespace Interfaz
             Next
         End Sub
         Private Sub ReindexarTodoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReindexarTodoToolStripMenuItem.Click
-            Backup.Indexacion.Tabla.Clear()
-            IO.File.Delete("Indexacion.xml")
-            TablaMailBackup.Refresh()
-            TablaMailBackup.Enabled = False
-            LabelErroresDataTable.Text = "Indexando..."
-            Dim Accion As Action = Async Sub() Await Backup.Indexar()
-            Dim Lanzar As Task = Task.Run(Accion)
+            If MsgBox("Esto eliminará la Indexación Actual." & vbNewLine & vbNewLine & "Desea continuar?", MsgBoxStyle.YesNo, "Reindexar TODO") = MsgBoxResult.Yes Then
+                Backup.Indexacion.Tabla.Clear()
+                IO.File.Delete("Indexacion.xml")
+                TablaMailBackup.Refresh()
+                TablaMailBackup.Enabled = False
+                LabelErroresDataTable.Text = "Indexando..."
+                Dim Accion As Action = Async Sub() Await Backup.Indexar()
+                Dim Lanzar As Task = Task.Run(Accion)
+            End If
         End Sub
         Private Sub IndexarNuevosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles IndexarNuevosToolStripMenuItem.Click
             Backup.Indexacion.Tabla.Clear()
