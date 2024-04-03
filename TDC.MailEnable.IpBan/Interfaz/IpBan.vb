@@ -45,7 +45,7 @@ Namespace Interfaz
         Private Shared SyncActualizarProgresoArchivo As New Object
 
         'Pruebas
-        Private WithEvents MiBucle As New Core.Bucle.DoBucle("MiBucle")
+        'Private WithEvents MiBucle As New Core.Bucle.DoBucle("MiBucle")
 
         Private Sub IpBan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             '**** TEST****
@@ -819,29 +819,11 @@ Namespace Interfaz
             Dim Desechar As Task = Task.Run(Sub() LoadFolders(Configuracion.CARPETA_BACKUP, TreePostOffices))
         End Sub
 
-        Dim Test1 As Integer = 0
+        ' Dim Test1 As Integer = 0
         Private Sub ToolStripStatusLabel1_Click(sender As Object, e As EventArgs) Handles ToolStripStatusLabel1.Click
-            Test1 += 1
-            MiBucle.Intervalo = 1
+            'Test1 += 1
+            'MiBucle.Intervalo = 1
             'MiBucle.Iniciar()
-        End Sub
-
-        Private Sub MiBucle_Background(Sender As Object, ByRef Detener As Boolean) Handles MiBucle.Background
-            'Thread.Sleep(1000)
-            Test1 += 1
-            If Test1 = 1000 Then MiBucle.Detener()
-        End Sub
-
-        Private Sub MiBucle_Foreground(Sender As Object, ByRef Detener As Boolean) Handles MiBucle.Foreground
-            'Thread.Sleep(1000)
-            lblPrueba.Text = Test1
-            'If Test1 = 1000 Then Detener = True
-        End Sub
-
-        Private Sub MiBucle_Endground(Sender As Object, ByRef Detener As Boolean) Handles MiBucle.Endground
-            lblPrueba.Text = $"End {Test1}"
-            'MiBucle.Matar()
-            'MiBucle = Nothing
         End Sub
 
         Private Sub SalidaConsola_TextChanged(sender As Object, e As EventArgs) Handles SalidaConsola.TextChanged
@@ -866,6 +848,88 @@ Namespace Interfaz
 
         Private Sub TablaMailBackup_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles TablaMailBackup.CellContentClick
 
+        End Sub
+        Private Sub TabApp_TabIndexChanged(sender As Object, e As EventArgs) Handles TabApp.TabIndexChanged
+
+        End Sub
+
+        Private Sub TabApp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TabApp.SelectedIndexChanged
+            If TabApp.SelectedTab.Name = TabApp.TabPages.Item("TabMigraciones").Name Then
+                Migracion.LabelService = lblEstadoServicioMigracion
+                Migracion.BtnService = BtnServicioMigracion
+                Migracion.lstDominiosConfigurados = lstDominiosMigracion
+                Migracion.lstCuentasEnMigracion = lstMailBoxMigracion
+                Migracion.lstListaDeEspera = lstListaDeEsperaMigracion
+                Migracion.lstErroneos = lstErroneosMigracion
+                Migracion.CargarMigraciones()
+            End If
+        End Sub
+
+        Private Sub lstDominiosMigracion_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstDominiosMigracion.SelectedIndexChanged
+            Dim Ctrl As New List(Of ToolStripButton) From {BtnActivarMigracionDominio, BtnDesactivarMigracionDominio, BtnEliminarDominioMigracion}
+            If lstDominiosMigracion.SelectedItems.Count > 0 Then
+                If CBool(lstDominiosMigracion.SelectedItems.Item(0).SubItems(1).Text) Then
+                    Ctrl.Item(0).Enabled = False
+                    Ctrl.Item(1).Enabled = True
+                Else
+                    Ctrl.Item(0).Enabled = True
+                    Ctrl.Item(1).Enabled = False
+                End If
+                Ctrl.Item(2).Enabled = True
+            Else
+                Ctrl.Item(0).Enabled = False
+                Ctrl.Item(1).Enabled = False
+                Ctrl.Item(2).Enabled = False
+                'Ctrl.ForEach(Function(C) C.Enabled = False)
+            End If
+        End Sub
+
+        Private Sub BtnMigrarCuenta_Click(sender As Object, e As EventArgs) Handles BtnMigrarCuenta.Click
+            Migracion.MigrarCuenta()
+        End Sub
+
+        Private Sub BtnLimpiarMigracionesCompletadas_Click(sender As Object, e As EventArgs) Handles BtnLimpiarMigracionesCompletadas.Click
+            If IsNothing(Migracion.CarpetaCompletados) Then Exit Sub
+            Try
+                For Each Cuenta In Migracion.MailBoxes
+                    If Cuenta.Value.Progress = 1 Then
+                        If IO.File.Exists(Migracion.CarpetaCompletados.FullName & $"\{Cuenta.Key}.xml") Then
+                            IO.File.Delete(Migracion.CarpetaCompletados.FullName & $"\{Cuenta.Key}.xml")
+                            lstMailBoxMigracion.Items.Find(Cuenta.Key, False).First.Remove()
+                            Migracion.MailBoxes.TryRemove(Cuenta.Key, Cuenta.Value)
+                        End If
+                    End If
+                Next
+            Catch ex As Exception
+                Stop
+            End Try
+        End Sub
+
+        Private Sub BtnLimpiarErroneosMigracion_Click(sender As Object, e As EventArgs) Handles BtnLimpiarErroneosMigracion.Click
+            Migracion.LimpiarErroneos()
+        End Sub
+
+        Private Sub BtnActivarMigracionDominio_Click_1(sender As Object, e As EventArgs) Handles BtnActivarMigracionDominio.Click
+            BtnActivarMigracionDominio.Enabled = False
+            Migracion.HabilitarDominio(lstDominiosMigracion.SelectedItems(0).Text)
+        End Sub
+
+        Private Sub BtnDesactivarMigracionDominio_Click_1(sender As Object, e As EventArgs) Handles BtnDesactivarMigracionDominio.Click
+            If lstDominiosMigracion.SelectedItems.Count > 0 Then
+                BtnDesactivarMigracionDominio.Enabled = False
+                Migracion.DesHabilitarDominio(lstDominiosMigracion.SelectedItems(0).Text)
+            End If
+        End Sub
+
+        Private Sub BtnCrearDominioMigracion_Click_1(sender As Object, e As EventArgs) Handles BtnCrearDominioMigracion.Click
+            Migracion.CrearDominio()
+        End Sub
+
+        Private Sub BtnEliminarDominioMigracion_Click(sender As Object, e As EventArgs) Handles BtnEliminarDominioMigracion.Click
+            BtnEliminarDominioMigracion.Enabled = False
+            If lstDominiosMigracion.SelectedItems.Count > 0 Then
+                Migracion.EliminarDominio(lstDominiosMigracion.SelectedItems(0).Text)
+            End If
         End Sub
     End Class
 End Namespace

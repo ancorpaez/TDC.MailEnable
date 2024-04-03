@@ -73,6 +73,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -135,6 +136,21 @@
     <Compile Include="MailEnableLog\Cls_ISS.vb" />
     <Compile Include="MailEnableLog\Cls_MailBoxLogin.vb" />
     <Compile Include="MailEnableLog\Mod_FileMemory.vb" />
+    <Compile Include="Migracion\Core.vb" />
+    <Compile Include="Migracion\Interfaz\FrmActivarDominio.Designer.vb">
+      <DependentUpon>FrmActivarDominio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migracion\Interfaz\FrmActivarDominio.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Migracion\Interfaz\FrmMigrarCuenta.Designer.vb">
+      <DependentUpon>FrmMigrarCuenta.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migracion\Interfaz\FrmMigrarCuenta.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Migracion\MailboxMigrationOperation.vb" />
+    <Compile Include="Migracion\MailboxMigrationStrategy.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -170,6 +186,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Interfaz\UcAnalizador.resx">
       <DependentUpon>UcAnalizador.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migracion\Interfaz\FrmActivarDominio.resx">
+      <DependentUpon>FrmActivarDominio.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migracion\Interfaz\FrmMigrarCuenta.resx">
+      <DependentUpon>FrmMigrarCuenta.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

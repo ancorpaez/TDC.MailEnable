@@ -62,7 +62,7 @@
             Me.BtnAnadirBlanca = New System.Windows.Forms.Button()
             Me.Label2 = New System.Windows.Forms.Label()
             Me.Fondo = New System.Windows.Forms.Panel()
-            Me.TabControl1 = New System.Windows.Forms.TabControl()
+            Me.TabApp = New System.Windows.Forms.TabControl()
             Me.TabPIpBan = New System.Windows.Forms.TabPage()
             Me.TabSpamAssassin = New System.Windows.Forms.TabPage()
             Me.txtRichSpamAssassin = New System.Windows.Forms.RichTextBox()
@@ -85,6 +85,7 @@
             Me.ReindexarCarpeta = New System.Windows.Forms.ToolStripMenuItem()
             Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
             Me.VisualizarEnNotepadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.VisualizarEnOutlookToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripSeparator()
             Me.ReindexarTodoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.IndexarNuevosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -104,6 +105,47 @@
             Me.ProgresoIndexacion = New System.Windows.Forms.ToolStripProgressBar()
             Me.LabelErroresDataTable = New System.Windows.Forms.ToolStripStatusLabel()
             Me.lblLimpiadosBackup = New System.Windows.Forms.ToolStripStatusLabel()
+            Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
+            Me.lblEmailsAnalizados = New System.Windows.Forms.ToolStripStatusLabel()
+            Me.TabMigraciones = New System.Windows.Forms.TabPage()
+            Me.SplitMigracion = New System.Windows.Forms.SplitContainer()
+            Me.lstDominiosMigracion = New System.Windows.Forms.ListView()
+            Me.lstDM_Dominio = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.lstDM_Estado = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.PanelOpcionesDominio = New System.Windows.Forms.Panel()
+            Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+            Me.BtnCrearDominioMigracion = New System.Windows.Forms.ToolStripButton()
+            Me.BtnEliminarDominioMigracion = New System.Windows.Forms.ToolStripButton()
+            Me.BtnActivarMigracionDominio = New System.Windows.Forms.ToolStripButton()
+            Me.BtnDesactivarMigracionDominio = New System.Windows.Forms.ToolStripButton()
+            Me.SplitProcesoMigracion = New System.Windows.Forms.SplitContainer()
+            Me.SplitContainer3 = New System.Windows.Forms.SplitContainer()
+            Me.PanelColaMigracion = New System.Windows.Forms.Panel()
+            Me.lstListaDeEsperaMigracion = New System.Windows.Forms.ListView()
+            Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.Label9 = New System.Windows.Forms.Label()
+            Me.PanelProgresoMigracion = New System.Windows.Forms.Panel()
+            Me.lstMailBoxMigracion = New System.Windows.Forms.ListView()
+            Me.lstMM_MailBox = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.lstMM_Trabajado = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.Label11 = New System.Windows.Forms.Label()
+            Me.lstErroneosMigracion = New System.Windows.Forms.ListView()
+            Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.Label10 = New System.Windows.Forms.Label()
+            Me.PanelOpcionesMigracion = New System.Windows.Forms.Panel()
+            Me.ToolMigraciones = New System.Windows.Forms.ToolStrip()
+            Me.BtnMigrarCuenta = New System.Windows.Forms.ToolStripButton()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.BtnLimpiarMigracionesCompletadas = New System.Windows.Forms.ToolStripButton()
+            Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+            Me.BtnLimpiarErroneosMigracion = New System.Windows.Forms.ToolStripButton()
+            Me.PanelServicioMigracion = New System.Windows.Forms.Panel()
+            Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+            Me.Label8 = New System.Windows.Forms.Label()
+            Me.BtnServicioMigracion = New System.Windows.Forms.Button()
+            Me.lblEstadoServicioMigracion = New System.Windows.Forms.Label()
             Me.IconosTab = New System.Windows.Forms.ImageList(Me.components)
             Me.MenuPrincipal = New System.Windows.Forms.MenuStrip()
             Me.ConfiguraciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -115,13 +157,11 @@
             Me.iMenuTabla = New System.Windows.Forms.ImageList(Me.components)
             Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
-            Me.VisualizarEnOutlookToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
             Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
-            Me.lblEmailsAnalizados = New System.Windows.Forms.ToolStripStatusLabel()
             Me.PanelIpBaneadas.SuspendLayout()
             Me.PanelBuscadores.SuspendLayout()
             Me.PanelLogs.SuspendLayout()
@@ -144,7 +184,7 @@
             Me.Panel15.SuspendLayout()
             Me.PanelBotonesBlanca.SuspendLayout()
             Me.Fondo.SuspendLayout()
-            Me.TabControl1.SuspendLayout()
+            Me.TabApp.SuspendLayout()
             Me.TabPIpBan.SuspendLayout()
             Me.TabSpamAssassin.SuspendLayout()
             Me.Panel1.SuspendLayout()
@@ -160,6 +200,27 @@
             Me.Panel3.SuspendLayout()
             Me.TableLayoutPanel2.SuspendLayout()
             Me.StatusStrip1.SuspendLayout()
+            Me.TabMigraciones.SuspendLayout()
+            CType(Me.SplitMigracion, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.SplitMigracion.Panel1.SuspendLayout()
+            Me.SplitMigracion.Panel2.SuspendLayout()
+            Me.SplitMigracion.SuspendLayout()
+            Me.PanelOpcionesDominio.SuspendLayout()
+            Me.ToolStrip1.SuspendLayout()
+            CType(Me.SplitProcesoMigracion, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.SplitProcesoMigracion.Panel1.SuspendLayout()
+            Me.SplitProcesoMigracion.Panel2.SuspendLayout()
+            Me.SplitProcesoMigracion.SuspendLayout()
+            CType(Me.SplitContainer3, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.SplitContainer3.Panel1.SuspendLayout()
+            Me.SplitContainer3.Panel2.SuspendLayout()
+            Me.SplitContainer3.SuspendLayout()
+            Me.PanelColaMigracion.SuspendLayout()
+            Me.PanelProgresoMigracion.SuspendLayout()
+            Me.PanelOpcionesMigracion.SuspendLayout()
+            Me.ToolMigraciones.SuspendLayout()
+            Me.PanelServicioMigracion.SuspendLayout()
+            Me.TableLayoutPanel3.SuspendLayout()
             Me.MenuPrincipal.SuspendLayout()
             Me.StatusStrip2.SuspendLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -580,7 +641,7 @@
             '
             'Fondo
             '
-            Me.Fondo.Controls.Add(Me.TabControl1)
+            Me.Fondo.Controls.Add(Me.TabApp)
             Me.Fondo.Dock = System.Windows.Forms.DockStyle.Fill
             Me.Fondo.Location = New System.Drawing.Point(0, 24)
             Me.Fondo.Name = "Fondo"
@@ -588,18 +649,19 @@
             Me.Fondo.Size = New System.Drawing.Size(1468, 484)
             Me.Fondo.TabIndex = 1
             '
-            'TabControl1
+            'TabApp
             '
-            Me.TabControl1.Controls.Add(Me.TabPIpBan)
-            Me.TabControl1.Controls.Add(Me.TabSpamAssassin)
-            Me.TabControl1.Controls.Add(Me.TabMailBackup)
-            Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.TabControl1.ImageList = Me.IconosTab
-            Me.TabControl1.Location = New System.Drawing.Point(10, 10)
-            Me.TabControl1.Name = "TabControl1"
-            Me.TabControl1.SelectedIndex = 0
-            Me.TabControl1.Size = New System.Drawing.Size(1448, 464)
-            Me.TabControl1.TabIndex = 3
+            Me.TabApp.Controls.Add(Me.TabPIpBan)
+            Me.TabApp.Controls.Add(Me.TabSpamAssassin)
+            Me.TabApp.Controls.Add(Me.TabMailBackup)
+            Me.TabApp.Controls.Add(Me.TabMigraciones)
+            Me.TabApp.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.TabApp.ImageList = Me.IconosTab
+            Me.TabApp.Location = New System.Drawing.Point(10, 10)
+            Me.TabApp.Name = "TabApp"
+            Me.TabApp.SelectedIndex = 0
+            Me.TabApp.Size = New System.Drawing.Size(1448, 464)
+            Me.TabApp.TabIndex = 3
             '
             'TabPIpBan
             '
@@ -799,6 +861,13 @@
             Me.VisualizarEnNotepadToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
             Me.VisualizarEnNotepadToolStripMenuItem.Text = "Visualizar en Notepad ++"
             '
+            'VisualizarEnOutlookToolStripMenuItem
+            '
+            Me.VisualizarEnOutlookToolStripMenuItem.Image = CType(resources.GetObject("VisualizarEnOutlookToolStripMenuItem.Image"), System.Drawing.Image)
+            Me.VisualizarEnOutlookToolStripMenuItem.Name = "VisualizarEnOutlookToolStripMenuItem"
+            Me.VisualizarEnOutlookToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
+            Me.VisualizarEnOutlookToolStripMenuItem.Text = "Visualizar en Outlook"
+            '
             'ToolStripMenuItem2
             '
             Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
@@ -985,6 +1054,393 @@
             Me.lblLimpiadosBackup.Size = New System.Drawing.Size(79, 19)
             Me.lblLimpiadosBackup.Text = "Limpiados (0)"
             '
+            'ToolStripStatusLabel2
+            '
+            Me.ToolStripStatusLabel2.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left
+            Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
+            Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(4, 19)
+            '
+            'lblEmailsAnalizados
+            '
+            Me.lblEmailsAnalizados.Name = "lblEmailsAnalizados"
+            Me.lblEmailsAnalizados.Size = New System.Drawing.Size(83, 19)
+            Me.lblEmailsAnalizados.Text = "Analizando (0)"
+            '
+            'TabMigraciones
+            '
+            Me.TabMigraciones.Controls.Add(Me.SplitMigracion)
+            Me.TabMigraciones.Controls.Add(Me.PanelOpcionesMigracion)
+            Me.TabMigraciones.ImageKey = "MM"
+            Me.TabMigraciones.Location = New System.Drawing.Point(4, 39)
+            Me.TabMigraciones.Name = "TabMigraciones"
+            Me.TabMigraciones.Padding = New System.Windows.Forms.Padding(3)
+            Me.TabMigraciones.Size = New System.Drawing.Size(1440, 421)
+            Me.TabMigraciones.TabIndex = 3
+            Me.TabMigraciones.Text = "Migraciones"
+            Me.TabMigraciones.UseVisualStyleBackColor = True
+            '
+            'SplitMigracion
+            '
+            Me.SplitMigracion.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.SplitMigracion.Location = New System.Drawing.Point(3, 31)
+            Me.SplitMigracion.Name = "SplitMigracion"
+            '
+            'SplitMigracion.Panel1
+            '
+            Me.SplitMigracion.Panel1.Controls.Add(Me.lstDominiosMigracion)
+            Me.SplitMigracion.Panel1.Controls.Add(Me.PanelOpcionesDominio)
+            '
+            'SplitMigracion.Panel2
+            '
+            Me.SplitMigracion.Panel2.Controls.Add(Me.SplitProcesoMigracion)
+            Me.SplitMigracion.Size = New System.Drawing.Size(1434, 387)
+            Me.SplitMigracion.SplitterDistance = 290
+            Me.SplitMigracion.TabIndex = 2
+            '
+            'lstDominiosMigracion
+            '
+            Me.lstDominiosMigracion.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.lstDM_Dominio, Me.lstDM_Estado})
+            Me.lstDominiosMigracion.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lstDominiosMigracion.FullRowSelect = True
+            Me.lstDominiosMigracion.GridLines = True
+            Me.lstDominiosMigracion.HideSelection = False
+            Me.lstDominiosMigracion.Location = New System.Drawing.Point(0, 25)
+            Me.lstDominiosMigracion.Name = "lstDominiosMigracion"
+            Me.lstDominiosMigracion.Size = New System.Drawing.Size(290, 362)
+            Me.lstDominiosMigracion.TabIndex = 0
+            Me.lstDominiosMigracion.UseCompatibleStateImageBehavior = False
+            Me.lstDominiosMigracion.View = System.Windows.Forms.View.Details
+            '
+            'lstDM_Dominio
+            '
+            Me.lstDM_Dominio.Text = "Dominio"
+            Me.lstDM_Dominio.Width = 147
+            '
+            'lstDM_Estado
+            '
+            Me.lstDM_Estado.Text = "Activo"
+            '
+            'PanelOpcionesDominio
+            '
+            Me.PanelOpcionesDominio.Controls.Add(Me.ToolStrip1)
+            Me.PanelOpcionesDominio.Dock = System.Windows.Forms.DockStyle.Top
+            Me.PanelOpcionesDominio.Location = New System.Drawing.Point(0, 0)
+            Me.PanelOpcionesDominio.Name = "PanelOpcionesDominio"
+            Me.PanelOpcionesDominio.Size = New System.Drawing.Size(290, 25)
+            Me.PanelOpcionesDominio.TabIndex = 3
+            '
+            'ToolStrip1
+            '
+            Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BtnCrearDominioMigracion, Me.BtnEliminarDominioMigracion, Me.BtnActivarMigracionDominio, Me.BtnDesactivarMigracionDominio})
+            Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
+            Me.ToolStrip1.Name = "ToolStrip1"
+            Me.ToolStrip1.Size = New System.Drawing.Size(290, 25)
+            Me.ToolStrip1.TabIndex = 4
+            Me.ToolStrip1.Text = "ToolStrip1"
+            '
+            'BtnCrearDominioMigracion
+            '
+            Me.BtnCrearDominioMigracion.Image = CType(resources.GetObject("BtnCrearDominioMigracion.Image"), System.Drawing.Image)
+            Me.BtnCrearDominioMigracion.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.BtnCrearDominioMigracion.Name = "BtnCrearDominioMigracion"
+            Me.BtnCrearDominioMigracion.Size = New System.Drawing.Size(62, 22)
+            Me.BtnCrearDominioMigracion.Text = "Añadir"
+            '
+            'BtnEliminarDominioMigracion
+            '
+            Me.BtnEliminarDominioMigracion.Enabled = False
+            Me.BtnEliminarDominioMigracion.Image = CType(resources.GetObject("BtnEliminarDominioMigracion.Image"), System.Drawing.Image)
+            Me.BtnEliminarDominioMigracion.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.BtnEliminarDominioMigracion.Name = "BtnEliminarDominioMigracion"
+            Me.BtnEliminarDominioMigracion.Size = New System.Drawing.Size(70, 22)
+            Me.BtnEliminarDominioMigracion.Text = "Eliminar"
+            '
+            'BtnActivarMigracionDominio
+            '
+            Me.BtnActivarMigracionDominio.Enabled = False
+            Me.BtnActivarMigracionDominio.Image = CType(resources.GetObject("BtnActivarMigracionDominio.Image"), System.Drawing.Image)
+            Me.BtnActivarMigracionDominio.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.BtnActivarMigracionDominio.Name = "BtnActivarMigracionDominio"
+            Me.BtnActivarMigracionDominio.Size = New System.Drawing.Size(64, 22)
+            Me.BtnActivarMigracionDominio.Text = "Activar"
+            '
+            'BtnDesactivarMigracionDominio
+            '
+            Me.BtnDesactivarMigracionDominio.Enabled = False
+            Me.BtnDesactivarMigracionDominio.Image = CType(resources.GetObject("BtnDesactivarMigracionDominio.Image"), System.Drawing.Image)
+            Me.BtnDesactivarMigracionDominio.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.BtnDesactivarMigracionDominio.Name = "BtnDesactivarMigracionDominio"
+            Me.BtnDesactivarMigracionDominio.Size = New System.Drawing.Size(81, 20)
+            Me.BtnDesactivarMigracionDominio.Text = "Desactivar"
+            '
+            'SplitProcesoMigracion
+            '
+            Me.SplitProcesoMigracion.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.SplitProcesoMigracion.Location = New System.Drawing.Point(0, 0)
+            Me.SplitProcesoMigracion.Name = "SplitProcesoMigracion"
+            '
+            'SplitProcesoMigracion.Panel1
+            '
+            Me.SplitProcesoMigracion.Panel1.Controls.Add(Me.SplitContainer3)
+            '
+            'SplitProcesoMigracion.Panel2
+            '
+            Me.SplitProcesoMigracion.Panel2.Controls.Add(Me.lstErroneosMigracion)
+            Me.SplitProcesoMigracion.Panel2.Controls.Add(Me.Label10)
+            Me.SplitProcesoMigracion.Size = New System.Drawing.Size(1140, 387)
+            Me.SplitProcesoMigracion.SplitterDistance = 255
+            Me.SplitProcesoMigracion.TabIndex = 2
+            '
+            'SplitContainer3
+            '
+            Me.SplitContainer3.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.SplitContainer3.FixedPanel = System.Windows.Forms.FixedPanel.Panel2
+            Me.SplitContainer3.Location = New System.Drawing.Point(0, 0)
+            Me.SplitContainer3.Name = "SplitContainer3"
+            Me.SplitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal
+            '
+            'SplitContainer3.Panel1
+            '
+            Me.SplitContainer3.Panel1.Controls.Add(Me.PanelColaMigracion)
+            '
+            'SplitContainer3.Panel2
+            '
+            Me.SplitContainer3.Panel2.Controls.Add(Me.PanelProgresoMigracion)
+            Me.SplitContainer3.Size = New System.Drawing.Size(255, 387)
+            Me.SplitContainer3.SplitterDistance = 272
+            Me.SplitContainer3.TabIndex = 6
+            '
+            'PanelColaMigracion
+            '
+            Me.PanelColaMigracion.Controls.Add(Me.lstListaDeEsperaMigracion)
+            Me.PanelColaMigracion.Controls.Add(Me.Label9)
+            Me.PanelColaMigracion.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.PanelColaMigracion.Location = New System.Drawing.Point(0, 0)
+            Me.PanelColaMigracion.Name = "PanelColaMigracion"
+            Me.PanelColaMigracion.Size = New System.Drawing.Size(255, 272)
+            Me.PanelColaMigracion.TabIndex = 4
+            '
+            'lstListaDeEsperaMigracion
+            '
+            Me.lstListaDeEsperaMigracion.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2})
+            Me.lstListaDeEsperaMigracion.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lstListaDeEsperaMigracion.HideSelection = False
+            Me.lstListaDeEsperaMigracion.Location = New System.Drawing.Point(0, 22)
+            Me.lstListaDeEsperaMigracion.Name = "lstListaDeEsperaMigracion"
+            Me.lstListaDeEsperaMigracion.Size = New System.Drawing.Size(255, 250)
+            Me.lstListaDeEsperaMigracion.TabIndex = 1
+            Me.lstListaDeEsperaMigracion.UseCompatibleStateImageBehavior = False
+            Me.lstListaDeEsperaMigracion.View = System.Windows.Forms.View.Details
+            '
+            'ColumnHeader1
+            '
+            Me.ColumnHeader1.Text = "Cuenta"
+            Me.ColumnHeader1.Width = 174
+            '
+            'ColumnHeader2
+            '
+            Me.ColumnHeader2.Text = "Estado"
+            '
+            'Label9
+            '
+            Me.Label9.BackColor = System.Drawing.Color.Black
+            Me.Label9.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Label9.ForeColor = System.Drawing.Color.White
+            Me.Label9.Location = New System.Drawing.Point(0, 0)
+            Me.Label9.Name = "Label9"
+            Me.Label9.Size = New System.Drawing.Size(255, 22)
+            Me.Label9.TabIndex = 2
+            Me.Label9.Text = "Cola"
+            Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'PanelProgresoMigracion
+            '
+            Me.PanelProgresoMigracion.Controls.Add(Me.lstMailBoxMigracion)
+            Me.PanelProgresoMigracion.Controls.Add(Me.Label11)
+            Me.PanelProgresoMigracion.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.PanelProgresoMigracion.Location = New System.Drawing.Point(0, 0)
+            Me.PanelProgresoMigracion.Name = "PanelProgresoMigracion"
+            Me.PanelProgresoMigracion.Size = New System.Drawing.Size(255, 111)
+            Me.PanelProgresoMigracion.TabIndex = 5
+            '
+            'lstMailBoxMigracion
+            '
+            Me.lstMailBoxMigracion.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.lstMM_MailBox, Me.lstMM_Trabajado})
+            Me.lstMailBoxMigracion.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lstMailBoxMigracion.HideSelection = False
+            Me.lstMailBoxMigracion.Location = New System.Drawing.Point(0, 22)
+            Me.lstMailBoxMigracion.Name = "lstMailBoxMigracion"
+            Me.lstMailBoxMigracion.Size = New System.Drawing.Size(255, 89)
+            Me.lstMailBoxMigracion.TabIndex = 0
+            Me.lstMailBoxMigracion.UseCompatibleStateImageBehavior = False
+            Me.lstMailBoxMigracion.View = System.Windows.Forms.View.Details
+            '
+            'lstMM_MailBox
+            '
+            Me.lstMM_MailBox.Text = "Cuenta"
+            Me.lstMM_MailBox.Width = 174
+            '
+            'lstMM_Trabajado
+            '
+            Me.lstMM_Trabajado.Text = "Estado"
+            '
+            'Label11
+            '
+            Me.Label11.BackColor = System.Drawing.Color.Black
+            Me.Label11.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Label11.ForeColor = System.Drawing.Color.White
+            Me.Label11.Location = New System.Drawing.Point(0, 0)
+            Me.Label11.Name = "Label11"
+            Me.Label11.Size = New System.Drawing.Size(255, 22)
+            Me.Label11.TabIndex = 3
+            Me.Label11.Text = "Migrando"
+            Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'lstErroneosMigracion
+            '
+            Me.lstErroneosMigracion.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader3, Me.ColumnHeader4})
+            Me.lstErroneosMigracion.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lstErroneosMigracion.HideSelection = False
+            Me.lstErroneosMigracion.Location = New System.Drawing.Point(0, 22)
+            Me.lstErroneosMigracion.Name = "lstErroneosMigracion"
+            Me.lstErroneosMigracion.Size = New System.Drawing.Size(881, 365)
+            Me.lstErroneosMigracion.TabIndex = 2
+            Me.lstErroneosMigracion.UseCompatibleStateImageBehavior = False
+            Me.lstErroneosMigracion.View = System.Windows.Forms.View.Details
+            '
+            'ColumnHeader3
+            '
+            Me.ColumnHeader3.Text = "Cuenta"
+            Me.ColumnHeader3.Width = 174
+            '
+            'ColumnHeader4
+            '
+            Me.ColumnHeader4.Text = "Estado"
+            Me.ColumnHeader4.Width = 600
+            '
+            'Label10
+            '
+            Me.Label10.BackColor = System.Drawing.Color.Black
+            Me.Label10.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Label10.ForeColor = System.Drawing.Color.White
+            Me.Label10.Location = New System.Drawing.Point(0, 0)
+            Me.Label10.Name = "Label10"
+            Me.Label10.Size = New System.Drawing.Size(881, 22)
+            Me.Label10.TabIndex = 3
+            Me.Label10.Text = "Erroneos"
+            Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'PanelOpcionesMigracion
+            '
+            Me.PanelOpcionesMigracion.Controls.Add(Me.ToolMigraciones)
+            Me.PanelOpcionesMigracion.Controls.Add(Me.PanelServicioMigracion)
+            Me.PanelOpcionesMigracion.Dock = System.Windows.Forms.DockStyle.Top
+            Me.PanelOpcionesMigracion.Location = New System.Drawing.Point(3, 3)
+            Me.PanelOpcionesMigracion.Name = "PanelOpcionesMigracion"
+            Me.PanelOpcionesMigracion.Size = New System.Drawing.Size(1434, 28)
+            Me.PanelOpcionesMigracion.TabIndex = 1
+            '
+            'ToolMigraciones
+            '
+            Me.ToolMigraciones.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.ToolMigraciones.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BtnMigrarCuenta, Me.ToolStripSeparator1, Me.BtnLimpiarMigracionesCompletadas, Me.ToolStripSeparator2, Me.BtnLimpiarErroneosMigracion})
+            Me.ToolMigraciones.Location = New System.Drawing.Point(201, 0)
+            Me.ToolMigraciones.Name = "ToolMigraciones"
+            Me.ToolMigraciones.Size = New System.Drawing.Size(1233, 25)
+            Me.ToolMigraciones.TabIndex = 0
+            Me.ToolMigraciones.Text = "Migraciones"
+            '
+            'BtnMigrarCuenta
+            '
+            Me.BtnMigrarCuenta.Image = CType(resources.GetObject("BtnMigrarCuenta.Image"), System.Drawing.Image)
+            Me.BtnMigrarCuenta.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.BtnMigrarCuenta.Name = "BtnMigrarCuenta"
+            Me.BtnMigrarCuenta.Size = New System.Drawing.Size(103, 22)
+            Me.BtnMigrarCuenta.Text = "Migrar Cuenta"
+            '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+            '
+            'BtnLimpiarMigracionesCompletadas
+            '
+            Me.BtnLimpiarMigracionesCompletadas.Image = CType(resources.GetObject("BtnLimpiarMigracionesCompletadas.Image"), System.Drawing.Image)
+            Me.BtnLimpiarMigracionesCompletadas.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.BtnLimpiarMigracionesCompletadas.Name = "BtnLimpiarMigracionesCompletadas"
+            Me.BtnLimpiarMigracionesCompletadas.Size = New System.Drawing.Size(139, 22)
+            Me.BtnLimpiarMigracionesCompletadas.Text = "Limpiar completados"
+            '
+            'ToolStripSeparator2
+            '
+            Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+            Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 25)
+            '
+            'BtnLimpiarErroneosMigracion
+            '
+            Me.BtnLimpiarErroneosMigracion.Image = CType(resources.GetObject("BtnLimpiarErroneosMigracion.Image"), System.Drawing.Image)
+            Me.BtnLimpiarErroneosMigracion.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.BtnLimpiarErroneosMigracion.Name = "BtnLimpiarErroneosMigracion"
+            Me.BtnLimpiarErroneosMigracion.Size = New System.Drawing.Size(116, 22)
+            Me.BtnLimpiarErroneosMigracion.Text = "Limpiar erroneos"
+            '
+            'PanelServicioMigracion
+            '
+            Me.PanelServicioMigracion.Controls.Add(Me.TableLayoutPanel3)
+            Me.PanelServicioMigracion.Dock = System.Windows.Forms.DockStyle.Left
+            Me.PanelServicioMigracion.Location = New System.Drawing.Point(0, 0)
+            Me.PanelServicioMigracion.Name = "PanelServicioMigracion"
+            Me.PanelServicioMigracion.Size = New System.Drawing.Size(201, 28)
+            Me.PanelServicioMigracion.TabIndex = 1
+            '
+            'TableLayoutPanel3
+            '
+            Me.TableLayoutPanel3.ColumnCount = 3
+            Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 62.92135!))
+            Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 37.07865!))
+            Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 112.0!))
+            Me.TableLayoutPanel3.Controls.Add(Me.Label8, 0, 0)
+            Me.TableLayoutPanel3.Controls.Add(Me.BtnServicioMigracion, 2, 0)
+            Me.TableLayoutPanel3.Controls.Add(Me.lblEstadoServicioMigracion, 1, 0)
+            Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.TableLayoutPanel3.Location = New System.Drawing.Point(0, 0)
+            Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
+            Me.TableLayoutPanel3.RowCount = 1
+            Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.TableLayoutPanel3.Size = New System.Drawing.Size(201, 28)
+            Me.TableLayoutPanel3.TabIndex = 3
+            '
+            'Label8
+            '
+            Me.Label8.Anchor = System.Windows.Forms.AnchorStyles.None
+            Me.Label8.AutoSize = True
+            Me.Label8.Location = New System.Drawing.Point(4, 7)
+            Me.Label8.Name = "Label8"
+            Me.Label8.Size = New System.Drawing.Size(48, 13)
+            Me.Label8.TabIndex = 0
+            Me.Label8.Text = "Servicio:"
+            '
+            'BtnServicioMigracion
+            '
+            Me.BtnServicioMigracion.Anchor = System.Windows.Forms.AnchorStyles.None
+            Me.BtnServicioMigracion.Enabled = False
+            Me.BtnServicioMigracion.Location = New System.Drawing.Point(95, 3)
+            Me.BtnServicioMigracion.Name = "BtnServicioMigracion"
+            Me.BtnServicioMigracion.Size = New System.Drawing.Size(99, 22)
+            Me.BtnServicioMigracion.TabIndex = 2
+            Me.BtnServicioMigracion.Text = "Iniciando..."
+            Me.BtnServicioMigracion.UseVisualStyleBackColor = True
+            '
+            'lblEstadoServicioMigracion
+            '
+            Me.lblEstadoServicioMigracion.Anchor = System.Windows.Forms.AnchorStyles.None
+            Me.lblEstadoServicioMigracion.BackColor = System.Drawing.Color.White
+            Me.lblEstadoServicioMigracion.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.lblEstadoServicioMigracion.Location = New System.Drawing.Point(62, 4)
+            Me.lblEstadoServicioMigracion.Name = "lblEstadoServicioMigracion"
+            Me.lblEstadoServicioMigracion.Size = New System.Drawing.Size(21, 20)
+            Me.lblEstadoServicioMigracion.TabIndex = 1
+            '
             'IconosTab
             '
             Me.IconosTab.ImageStream = CType(resources.GetObject("IconosTab.ImageStream"), System.Windows.Forms.ImageListStreamer)
@@ -994,6 +1450,7 @@
             Me.IconosTab.Images.SetKeyName(2, "play")
             Me.IconosTab.Images.SetKeyName(3, "stop")
             Me.IconosTab.Images.SetKeyName(4, "MB")
+            Me.IconosTab.Images.SetKeyName(5, "MM")
             '
             'MenuPrincipal
             '
@@ -1057,12 +1514,11 @@
             Me.ImageList1.ImageSize = New System.Drawing.Size(16, 16)
             Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
             '
-            'VisualizarEnOutlookToolStripMenuItem
+            'ImageList2
             '
-            Me.VisualizarEnOutlookToolStripMenuItem.Image = CType(resources.GetObject("VisualizarEnOutlookToolStripMenuItem.Image"), System.Drawing.Image)
-            Me.VisualizarEnOutlookToolStripMenuItem.Name = "VisualizarEnOutlookToolStripMenuItem"
-            Me.VisualizarEnOutlookToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
-            Me.VisualizarEnOutlookToolStripMenuItem.Text = "Visualizar en Outlook"
+            Me.ImageList2.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
+            Me.ImageList2.ImageSize = New System.Drawing.Size(16, 16)
+            Me.ImageList2.TransparentColor = System.Drawing.Color.Transparent
             '
             'UcWEB
             '
@@ -1095,18 +1551,6 @@
             Me.UcPOPEx.Name = "UcPOPEx"
             Me.UcPOPEx.Size = New System.Drawing.Size(1088, 40)
             Me.UcPOPEx.TabIndex = 0
-            '
-            'ToolStripStatusLabel2
-            '
-            Me.ToolStripStatusLabel2.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left
-            Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-            Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(4, 19)
-            '
-            'lblEmailsAnalizados
-            '
-            Me.lblEmailsAnalizados.Name = "lblEmailsAnalizados"
-            Me.lblEmailsAnalizados.Size = New System.Drawing.Size(83, 19)
-            Me.lblEmailsAnalizados.Text = "Analizando (0)"
             '
             'IpBan
             '
@@ -1148,7 +1592,7 @@
             Me.Panel15.ResumeLayout(False)
             Me.PanelBotonesBlanca.ResumeLayout(False)
             Me.Fondo.ResumeLayout(False)
-            Me.TabControl1.ResumeLayout(False)
+            Me.TabApp.ResumeLayout(False)
             Me.TabPIpBan.ResumeLayout(False)
             Me.TabSpamAssassin.ResumeLayout(False)
             Me.Panel1.ResumeLayout(False)
@@ -1169,6 +1613,32 @@
             Me.TableLayoutPanel2.PerformLayout()
             Me.StatusStrip1.ResumeLayout(False)
             Me.StatusStrip1.PerformLayout()
+            Me.TabMigraciones.ResumeLayout(False)
+            Me.SplitMigracion.Panel1.ResumeLayout(False)
+            Me.SplitMigracion.Panel2.ResumeLayout(False)
+            CType(Me.SplitMigracion, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.SplitMigracion.ResumeLayout(False)
+            Me.PanelOpcionesDominio.ResumeLayout(False)
+            Me.PanelOpcionesDominio.PerformLayout()
+            Me.ToolStrip1.ResumeLayout(False)
+            Me.ToolStrip1.PerformLayout()
+            Me.SplitProcesoMigracion.Panel1.ResumeLayout(False)
+            Me.SplitProcesoMigracion.Panel2.ResumeLayout(False)
+            CType(Me.SplitProcesoMigracion, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.SplitProcesoMigracion.ResumeLayout(False)
+            Me.SplitContainer3.Panel1.ResumeLayout(False)
+            Me.SplitContainer3.Panel2.ResumeLayout(False)
+            CType(Me.SplitContainer3, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.SplitContainer3.ResumeLayout(False)
+            Me.PanelColaMigracion.ResumeLayout(False)
+            Me.PanelProgresoMigracion.ResumeLayout(False)
+            Me.PanelOpcionesMigracion.ResumeLayout(False)
+            Me.PanelOpcionesMigracion.PerformLayout()
+            Me.ToolMigraciones.ResumeLayout(False)
+            Me.ToolMigraciones.PerformLayout()
+            Me.PanelServicioMigracion.ResumeLayout(False)
+            Me.TableLayoutPanel3.ResumeLayout(False)
+            Me.TableLayoutPanel3.PerformLayout()
             Me.MenuPrincipal.ResumeLayout(False)
             Me.MenuPrincipal.PerformLayout()
             Me.StatusStrip2.ResumeLayout(False)
@@ -1210,7 +1680,7 @@
         Friend WithEvents PanelBotonesBlanca As Panel
         Friend WithEvents ChkDetenerPublicacion As CheckBox
         Friend WithEvents Label6 As Label
-        Friend WithEvents TabControl1 As TabControl
+        Friend WithEvents TabApp As TabControl
         Friend WithEvents TabPIpBan As TabPage
         Friend WithEvents TabSpamAssassin As TabPage
         Friend WithEvents IconosTab As ImageList
@@ -1275,5 +1745,45 @@
         Friend WithEvents VisualizarEnOutlookToolStripMenuItem As ToolStripMenuItem
         Friend WithEvents ToolStripStatusLabel2 As ToolStripStatusLabel
         Friend WithEvents lblEmailsAnalizados As ToolStripStatusLabel
+        Friend WithEvents TabMigraciones As TabPage
+        Friend WithEvents ToolMigraciones As ToolStrip
+        Friend WithEvents PanelOpcionesMigracion As Panel
+        Friend WithEvents PanelServicioMigracion As Panel
+        Friend WithEvents lblEstadoServicioMigracion As Label
+        Friend WithEvents Label8 As Label
+        Friend WithEvents BtnServicioMigracion As Button
+        Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
+        Friend WithEvents SplitMigracion As SplitContainer
+        Friend WithEvents lstMailBoxMigracion As ListView
+        Friend WithEvents lstMM_MailBox As ColumnHeader
+        Friend WithEvents lstMM_Trabajado As ColumnHeader
+        Friend WithEvents lstDominiosMigracion As ListView
+        Friend WithEvents lstDM_Dominio As ColumnHeader
+        Friend WithEvents lstDM_Estado As ColumnHeader
+        Friend WithEvents BtnMigrarCuenta As ToolStripButton
+        Friend WithEvents lstListaDeEsperaMigracion As ListView
+        Friend WithEvents ColumnHeader1 As ColumnHeader
+        Friend WithEvents ColumnHeader2 As ColumnHeader
+        Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
+        Friend WithEvents BtnLimpiarMigracionesCompletadas As ToolStripButton
+        Friend WithEvents SplitProcesoMigracion As SplitContainer
+        Friend WithEvents lstErroneosMigracion As ListView
+        Friend WithEvents ColumnHeader3 As ColumnHeader
+        Friend WithEvents ColumnHeader4 As ColumnHeader
+        Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
+        Friend WithEvents BtnLimpiarErroneosMigracion As ToolStripButton
+        Friend WithEvents Label9 As Label
+        Friend WithEvents PanelProgresoMigracion As Panel
+        Friend WithEvents Label11 As Label
+        Friend WithEvents PanelColaMigracion As Panel
+        Friend WithEvents Label10 As Label
+        Friend WithEvents SplitContainer3 As SplitContainer
+        Friend WithEvents ImageList2 As ImageList
+        Friend WithEvents PanelOpcionesDominio As Panel
+        Friend WithEvents ToolStrip1 As ToolStrip
+        Friend WithEvents BtnCrearDominioMigracion As ToolStripButton
+        Friend WithEvents BtnEliminarDominioMigracion As ToolStripButton
+        Friend WithEvents BtnActivarMigracionDominio As ToolStripButton
+        Friend WithEvents BtnDesactivarMigracionDominio As ToolStripButton
     End Class
 End Namespace
