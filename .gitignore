@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /TDC.MailEnable.Core/GeoLocalizacion/IpInfoPrivate.vb
+/TDC.MailEnable.IpBan/Certificados/Privado.vb
