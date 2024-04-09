@@ -27,14 +27,14 @@
             Me.lstDominios = New System.Windows.Forms.ListView()
             Me.cDominios = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.Panel2 = New System.Windows.Forms.Panel()
+            Me.chkSSL = New System.Windows.Forms.CheckBox()
+            Me.Label3 = New System.Windows.Forms.Label()
             Me.txtPuerto = New System.Windows.Forms.TextBox()
             Me.Label2 = New System.Windows.Forms.Label()
             Me.Label1 = New System.Windows.Forms.Label()
             Me.txtServidorRemoto = New System.Windows.Forms.TextBox()
             Me.btnAceptar = New System.Windows.Forms.Button()
             Me.BtnCancelar = New System.Windows.Forms.Button()
-            Me.Label3 = New System.Windows.Forms.Label()
-            Me.chkSSL = New System.Windows.Forms.CheckBox()
             Me.Panel1.SuspendLayout()
             Me.Panel2.SuspendLayout()
             Me.SuspendLayout()
@@ -79,6 +79,24 @@
             Me.Panel2.Name = "Panel2"
             Me.Panel2.Size = New System.Drawing.Size(348, 57)
             Me.Panel2.TabIndex = 2
+            '
+            'chkSSL
+            '
+            Me.chkSSL.AutoSize = True
+            Me.chkSSL.Location = New System.Drawing.Point(321, 22)
+            Me.chkSSL.Name = "chkSSL"
+            Me.chkSSL.Size = New System.Drawing.Size(15, 14)
+            Me.chkSSL.TabIndex = 5
+            Me.chkSSL.UseVisualStyleBackColor = True
+            '
+            'Label3
+            '
+            Me.Label3.AutoSize = True
+            Me.Label3.Location = New System.Drawing.Point(318, 3)
+            Me.Label3.Name = "Label3"
+            Me.Label3.Size = New System.Drawing.Size(27, 13)
+            Me.Label3.TabIndex = 4
+            Me.Label3.Text = "SSL"
             '
             'txtPuerto
             '
@@ -130,24 +148,6 @@
             Me.BtnCancelar.TabIndex = 4
             Me.BtnCancelar.Text = "Cancelar"
             Me.BtnCancelar.UseVisualStyleBackColor = True
-            '
-            'Label3
-            '
-            Me.Label3.AutoSize = True
-            Me.Label3.Location = New System.Drawing.Point(318, 3)
-            Me.Label3.Name = "Label3"
-            Me.Label3.Size = New System.Drawing.Size(27, 13)
-            Me.Label3.TabIndex = 4
-            Me.Label3.Text = "SSL"
-            '
-            'chkSSL
-            '
-            Me.chkSSL.AutoSize = True
-            Me.chkSSL.Location = New System.Drawing.Point(321, 22)
-            Me.chkSSL.Name = "chkSSL"
-            Me.chkSSL.Size = New System.Drawing.Size(15, 14)
-            Me.chkSSL.TabIndex = 5
-            Me.chkSSL.UseVisualStyleBackColor = True
             '
             'FrmActivarDominio
             '

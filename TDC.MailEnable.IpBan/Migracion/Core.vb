@@ -93,6 +93,7 @@ Namespace Migracion
             Try
                 If Servicio.Status = ServiceControllerStatus.Stopped Then Servicio.Start()
             Catch ex As Exception
+                Servicio.Refresh()
                 Return False
             End Try
             Return True
@@ -206,7 +207,11 @@ Namespace Migracion
                             If Dominios(Cuenta.Value.Postoffice).Enabled Then
                                 IO.File.Move($"{CarpetaLocalMigraciones.FullName}\{Cuenta.Key}.xml", $"{CarpetaQuened.FullName}\{Cuenta.Key}.xml")
                                 ListaDeEspera.TryRemove(Cuenta.Key, Nothing)
-                                Servicio.Stop()
+                                Try
+                                    Servicio.Stop()
+                                Catch ex As Exception
+                                    MatarServicio()
+                                End Try
                                 Servicio.WaitForStatus(ServiceControllerStatus.Stopped)
                                 Servicio.Start()
                                 Exit For
@@ -229,6 +234,12 @@ Namespace Migracion
                     MailBoxes.TryRemove(MailBoxes.First.Key, Traspaso)
                     Erroneos.TryAdd(Traspaso.Username, Traspaso)
                 End If
+            ElseIf Servicio.Status = ServiceControllerStatus.Running Then
+                Try
+                    Servicio.Stop()
+                Catch ex As Exception
+                    MatarServicio()
+                End Try
             End If
 
         End Sub

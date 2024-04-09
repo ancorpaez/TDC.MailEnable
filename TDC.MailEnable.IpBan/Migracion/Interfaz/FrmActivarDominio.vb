@@ -1,4 +1,6 @@
-﻿Namespace Migracion.Interfaz
+﻿Imports System.Xml.Serialization
+
+Namespace Migracion.Interfaz
     Public Class FrmActivarDominio
         Public Dominios As Concurrent.ConcurrentDictionary(Of String, MailboxMigrationStrategy)
         Public CarpetaMigracion As IO.DirectoryInfo = Nothing
@@ -44,6 +46,28 @@
 
         Private Sub chkSSL_CheckedChanged(sender As Object, e As EventArgs) Handles chkSSL.CheckedChanged
             If chkSSL.Checked Then txtPuerto.Text = 993 Else txtPuerto.Text = 143
+        End Sub
+
+        Private Sub lstDominios_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstDominios.SelectedIndexChanged
+            txtServidorRemoto.Text = String.Empty
+            chkSSL.Checked = False
+            txtPuerto.Text = String.Empty
+            If Not IsNothing(CarpetaMigracion) AndAlso lstDominios.SelectedItems.Count > 0 Then
+                Dim f As String = $"{CarpetaMigracion.FullName}\{lstDominios.SelectedItems.Item(0).Text}.xml"
+                If IO.File.Exists(f) Then
+                    Using Leer As New IO.StreamReader(f)
+                        Dim CargarXml As New XmlSerializer(GetType(MailboxMigrationStrategy))
+                        Dim DomXml As MailboxMigrationStrategy = CType(CargarXml.Deserialize(Leer), MailboxMigrationStrategy)
+                        txtPuerto.Text = DomXml.MigrationStrategy.Port
+                        txtServidorRemoto.Text = DomXml.MigrationStrategy.RemoteServerAddress
+                        If String.IsNullOrEmpty(DomXml.MigrationStrategy.UseSSL) Then
+                            chkSSL.Checked = False
+                        Else
+                            chkSSL.Checked = CBool(DomXml.MigrationStrategy.UseSSL)
+                        End If
+                    End Using
+                End If
+            End If
         End Sub
     End Class
 End Namespace

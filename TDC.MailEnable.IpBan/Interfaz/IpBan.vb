@@ -244,6 +244,9 @@ Namespace Interfaz
                 'Cargar PostOffices del Backup
                 Dim Desechar As Task = Task.Run(Sub() LoadFolders(Configuracion.CARPETA_BACKUP, TreePostOffices))
             End If
+
+            'Certificados
+            Certificados.Main(MailEnableLog.IpBanForm.TabNavegadores, lstCertificados)
         End Sub
 
 
@@ -912,12 +915,14 @@ Namespace Interfaz
         Private Sub BtnActivarMigracionDominio_Click_1(sender As Object, e As EventArgs) Handles BtnActivarMigracionDominio.Click
             BtnActivarMigracionDominio.Enabled = False
             Migracion.HabilitarDominio(lstDominiosMigracion.SelectedItems(0).Text)
+            BtnDesactivarMigracionDominio.Enabled = True
         End Sub
 
         Private Sub BtnDesactivarMigracionDominio_Click_1(sender As Object, e As EventArgs) Handles BtnDesactivarMigracionDominio.Click
             If lstDominiosMigracion.SelectedItems.Count > 0 Then
                 BtnDesactivarMigracionDominio.Enabled = False
                 Migracion.DesHabilitarDominio(lstDominiosMigracion.SelectedItems(0).Text)
+                BtnActivarMigracionDominio.Enabled = True
             End If
         End Sub
 
@@ -930,6 +935,15 @@ Namespace Interfaz
             If lstDominiosMigracion.SelectedItems.Count > 0 Then
                 Migracion.EliminarDominio(lstDominiosMigracion.SelectedItems(0).Text)
             End If
+        End Sub
+
+        Private Sub BtnCopiarErroneos_Click(sender As Object, e As EventArgs) Handles BtnCopiarErroneos.Click
+            Dim toClipBoard As String = String.Empty
+            For Each Item As ListViewItem In lstErroneosMigracion.Items
+                toClipBoard &= $"{Item.Text}, {Item.SubItems(1).Text}{vbNewLine}"
+            Next
+            toClipBoard = toClipBoard.Substring(0, toClipBoard.Length - 2)
+            Clipboard.SetText(toClipBoard)
         End Sub
     End Class
 End Namespace

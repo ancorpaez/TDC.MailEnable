@@ -30,16 +30,19 @@
             Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.lstCuentas = New System.Windows.Forms.ListView()
             Me.cCuentas = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-            Me.Panel2 = New System.Windows.Forms.Panel()
             Me.Panel1 = New System.Windows.Forms.Panel()
-            Me.chkTodasLasCuentas = New System.Windows.Forms.CheckBox()
             Me.Label1 = New System.Windows.Forms.Label()
+            Me.chkTodasLasCuentas = New System.Windows.Forms.CheckBox()
+            Me.TabTestCheck = New System.Windows.Forms.TabControl()
+            Me.TabTodasLasCuentas = New System.Windows.Forms.TabPage()
+            Me.Panel2 = New System.Windows.Forms.Panel()
             CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
-            Me.Panel2.SuspendLayout()
             Me.Panel1.SuspendLayout()
+            Me.TabTestCheck.SuspendLayout()
+            Me.Panel2.SuspendLayout()
             Me.SuspendLayout()
             '
             'BtnCancelar
@@ -110,6 +113,7 @@
             Me.lstCuentas.Location = New System.Drawing.Point(22, 0)
             Me.lstCuentas.Name = "lstCuentas"
             Me.lstCuentas.Size = New System.Drawing.Size(473, 223)
+            Me.lstCuentas.Sorting = System.Windows.Forms.SortOrder.Ascending
             Me.lstCuentas.TabIndex = 2
             Me.lstCuentas.UseCompatibleStateImageBehavior = False
             Me.lstCuentas.View = System.Windows.Forms.View.Details
@@ -118,6 +122,60 @@
             '
             Me.cCuentas.Text = "Cuentas"
             Me.cCuentas.Width = 480
+            '
+            'Panel1
+            '
+            Me.Panel1.BackColor = System.Drawing.SystemColors.ButtonFace
+            Me.Panel1.Controls.Add(Me.Label1)
+            Me.Panel1.Controls.Add(Me.chkTodasLasCuentas)
+            Me.Panel1.Controls.Add(Me.TabTestCheck)
+            Me.Panel1.Dock = System.Windows.Forms.DockStyle.Left
+            Me.Panel1.Location = New System.Drawing.Point(0, 0)
+            Me.Panel1.Name = "Panel1"
+            Me.Panel1.Size = New System.Drawing.Size(22, 223)
+            Me.Panel1.TabIndex = 3
+            '
+            'Label1
+            '
+            Me.Label1.BackColor = System.Drawing.Color.Black
+            Me.Label1.Dock = System.Windows.Forms.DockStyle.Left
+            Me.Label1.Location = New System.Drawing.Point(0, 0)
+            Me.Label1.Name = "Label1"
+            Me.Label1.Size = New System.Drawing.Size(1, 223)
+            Me.Label1.TabIndex = 1
+            '
+            'chkTodasLasCuentas
+            '
+            Me.chkTodasLasCuentas.AutoSize = True
+            Me.chkTodasLasCuentas.Enabled = False
+            Me.chkTodasLasCuentas.Location = New System.Drawing.Point(4, 7)
+            Me.chkTodasLasCuentas.Name = "chkTodasLasCuentas"
+            Me.chkTodasLasCuentas.Size = New System.Drawing.Size(15, 14)
+            Me.chkTodasLasCuentas.TabIndex = 0
+            Me.chkTodasLasCuentas.UseVisualStyleBackColor = True
+            '
+            'TabTestCheck
+            '
+            Me.TabTestCheck.Alignment = System.Windows.Forms.TabAlignment.Left
+            Me.TabTestCheck.Controls.Add(Me.TabTodasLasCuentas)
+            Me.TabTestCheck.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.TabTestCheck.Location = New System.Drawing.Point(-1, 22)
+            Me.TabTestCheck.Multiline = True
+            Me.TabTestCheck.Name = "TabTestCheck"
+            Me.TabTestCheck.SelectedIndex = 0
+            Me.TabTestCheck.Size = New System.Drawing.Size(200, 118)
+            Me.TabTestCheck.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight
+            Me.TabTestCheck.TabIndex = 2
+            '
+            'TabTodasLasCuentas
+            '
+            Me.TabTodasLasCuentas.BackColor = System.Drawing.Color.White
+            Me.TabTodasLasCuentas.Location = New System.Drawing.Point(25, 4)
+            Me.TabTodasLasCuentas.Name = "TabTodasLasCuentas"
+            Me.TabTodasLasCuentas.Padding = New System.Windows.Forms.Padding(3)
+            Me.TabTodasLasCuentas.Size = New System.Drawing.Size(171, 110)
+            Me.TabTodasLasCuentas.TabIndex = 0
+            Me.TabTodasLasCuentas.Text = "Todas las cuentas"
             '
             'Panel2
             '
@@ -128,37 +186,6 @@
             Me.Panel2.Name = "Panel2"
             Me.Panel2.Size = New System.Drawing.Size(746, 41)
             Me.Panel2.TabIndex = 6
-            '
-            'Panel1
-            '
-            Me.Panel1.BackColor = System.Drawing.Color.White
-            Me.Panel1.Controls.Add(Me.Label1)
-            Me.Panel1.Controls.Add(Me.chkTodasLasCuentas)
-            Me.Panel1.Dock = System.Windows.Forms.DockStyle.Left
-            Me.Panel1.Location = New System.Drawing.Point(0, 0)
-            Me.Panel1.Name = "Panel1"
-            Me.Panel1.Size = New System.Drawing.Size(22, 223)
-            Me.Panel1.TabIndex = 3
-            '
-            'chkTodasLasCuentas
-            '
-            Me.chkTodasLasCuentas.AutoSize = True
-            Me.chkTodasLasCuentas.Enabled = False
-            Me.chkTodasLasCuentas.Location = New System.Drawing.Point(4, 7)
-            Me.chkTodasLasCuentas.Name = "chkTodasLasCuentas"
-            Me.chkTodasLasCuentas.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-            Me.chkTodasLasCuentas.Size = New System.Drawing.Size(15, 14)
-            Me.chkTodasLasCuentas.TabIndex = 0
-            Me.chkTodasLasCuentas.UseVisualStyleBackColor = True
-            '
-            'Label1
-            '
-            Me.Label1.BackColor = System.Drawing.Color.Black
-            Me.Label1.Dock = System.Windows.Forms.DockStyle.Left
-            Me.Label1.Location = New System.Drawing.Point(0, 0)
-            Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(1, 223)
-            Me.Label1.TabIndex = 1
             '
             'FrmMigrarCuenta
             '
@@ -174,9 +201,10 @@
             Me.SplitContainer1.Panel2.ResumeLayout(False)
             CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
             Me.SplitContainer1.ResumeLayout(False)
-            Me.Panel2.ResumeLayout(False)
             Me.Panel1.ResumeLayout(False)
             Me.Panel1.PerformLayout()
+            Me.TabTestCheck.ResumeLayout(False)
+            Me.Panel2.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -191,5 +219,7 @@
         Friend WithEvents Panel1 As Panel
         Friend WithEvents chkTodasLasCuentas As CheckBox
         Friend WithEvents Label1 As Label
+        Friend WithEvents TabTestCheck As TabControl
+        Friend WithEvents TabTodasLasCuentas As TabPage
     End Class
 End Namespace

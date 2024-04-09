@@ -17,6 +17,7 @@
         Private Sub lstDominios_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstDominios.SelectedIndexChanged
             lstCuentas.Items.Clear()
             chkTodasLasCuentas.Enabled = False
+            chkTodasLasCuentas.Checked = False
             BtnAceptar.Enabled = False
             If lstDominios.SelectedItems.Count > 0 Then
                 For Each Cuenta In MailBoxes
@@ -55,6 +56,12 @@
             For Each Item As ListViewItem In lstCuentas.Items
                 Item.Checked = chkTodasLasCuentas.Checked
             Next
+        End Sub
+
+        Private Sub TabTestCheck_Click(sender As Object, e As EventArgs) Handles TabTestCheck.Click
+            If chkTodasLasCuentas.Enabled Then
+                chkTodasLasCuentas.Checked = Not chkTodasLasCuentas.Checked
+            End If
         End Sub
     End Class
 End Namespace

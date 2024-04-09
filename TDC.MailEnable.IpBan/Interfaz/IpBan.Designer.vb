@@ -141,11 +141,18 @@
             Me.BtnLimpiarMigracionesCompletadas = New System.Windows.Forms.ToolStripButton()
             Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
             Me.BtnLimpiarErroneosMigracion = New System.Windows.Forms.ToolStripButton()
+            Me.BtnCopiarErroneos = New System.Windows.Forms.ToolStripButton()
             Me.PanelServicioMigracion = New System.Windows.Forms.Panel()
             Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
             Me.Label8 = New System.Windows.Forms.Label()
             Me.BtnServicioMigracion = New System.Windows.Forms.Button()
             Me.lblEstadoServicioMigracion = New System.Windows.Forms.Label()
+            Me.TabCertificados = New System.Windows.Forms.TabPage()
+            Me.SplitCertificados = New System.Windows.Forms.SplitContainer()
+            Me.lstCertificados = New System.Windows.Forms.ListView()
+            Me.cCertificado = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.cCaducaCertificado = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.TabNavegadores = New System.Windows.Forms.TabControl()
             Me.IconosTab = New System.Windows.Forms.ImageList(Me.components)
             Me.MenuPrincipal = New System.Windows.Forms.MenuStrip()
             Me.ConfiguraciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -221,6 +228,11 @@
             Me.ToolMigraciones.SuspendLayout()
             Me.PanelServicioMigracion.SuspendLayout()
             Me.TableLayoutPanel3.SuspendLayout()
+            Me.TabCertificados.SuspendLayout()
+            CType(Me.SplitCertificados, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.SplitCertificados.Panel1.SuspendLayout()
+            Me.SplitCertificados.Panel2.SuspendLayout()
+            Me.SplitCertificados.SuspendLayout()
             Me.MenuPrincipal.SuspendLayout()
             Me.StatusStrip2.SuspendLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -234,7 +246,7 @@
             Me.PanelIpBaneadas.Location = New System.Drawing.Point(3, 3)
             Me.PanelIpBaneadas.Name = "PanelIpBaneadas"
             Me.PanelIpBaneadas.Padding = New System.Windows.Forms.Padding(3)
-            Me.PanelIpBaneadas.Size = New System.Drawing.Size(1434, 415)
+            Me.PanelIpBaneadas.Size = New System.Drawing.Size(1434, 421)
             Me.PanelIpBaneadas.TabIndex = 1
             '
             'PanelBuscadores
@@ -249,7 +261,7 @@
             Me.PanelBuscadores.Location = New System.Drawing.Point(337, 3)
             Me.PanelBuscadores.Name = "PanelBuscadores"
             Me.PanelBuscadores.Padding = New System.Windows.Forms.Padding(3)
-            Me.PanelBuscadores.Size = New System.Drawing.Size(1094, 409)
+            Me.PanelBuscadores.Size = New System.Drawing.Size(1094, 415)
             Me.PanelBuscadores.TabIndex = 3
             '
             'PanelLogs
@@ -258,7 +270,7 @@
             Me.PanelLogs.Dock = System.Windows.Forms.DockStyle.Fill
             Me.PanelLogs.Location = New System.Drawing.Point(3, 163)
             Me.PanelLogs.Name = "PanelLogs"
-            Me.PanelLogs.Size = New System.Drawing.Size(1088, 243)
+            Me.PanelLogs.Size = New System.Drawing.Size(1088, 249)
             Me.PanelLogs.TabIndex = 1
             '
             'SplitLog
@@ -277,8 +289,8 @@
             '
             Me.SplitLog.Panel2.Controls.Add(Me.SalidaCrossDomain)
             Me.SplitLog.Panel2.Controls.Add(Me.Panel5)
-            Me.SplitLog.Size = New System.Drawing.Size(1088, 243)
-            Me.SplitLog.SplitterDistance = 112
+            Me.SplitLog.Size = New System.Drawing.Size(1088, 249)
+            Me.SplitLog.SplitterDistance = 114
             Me.SplitLog.TabIndex = 3
             '
             'SalidaConsola
@@ -287,7 +299,7 @@
             Me.SalidaConsola.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.SalidaConsola.Location = New System.Drawing.Point(0, 18)
             Me.SalidaConsola.Name = "SalidaConsola"
-            Me.SalidaConsola.Size = New System.Drawing.Size(1088, 94)
+            Me.SalidaConsola.Size = New System.Drawing.Size(1088, 96)
             Me.SalidaConsola.TabIndex = 0
             Me.SalidaConsola.Text = ""
             '
@@ -326,7 +338,7 @@
             Me.SalidaCrossDomain.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.SalidaCrossDomain.Location = New System.Drawing.Point(0, 51)
             Me.SalidaCrossDomain.Name = "SalidaCrossDomain"
-            Me.SalidaCrossDomain.Size = New System.Drawing.Size(1088, 76)
+            Me.SalidaCrossDomain.Size = New System.Drawing.Size(1088, 80)
             Me.SalidaCrossDomain.TabIndex = 1
             Me.SalidaCrossDomain.Text = ""
             Me.SalidaCrossDomain.WordWrap = False
@@ -368,7 +380,7 @@
             Me.PanelIps.Dock = System.Windows.Forms.DockStyle.Left
             Me.PanelIps.Location = New System.Drawing.Point(3, 3)
             Me.PanelIps.Name = "PanelIps"
-            Me.PanelIps.Size = New System.Drawing.Size(334, 409)
+            Me.PanelIps.Size = New System.Drawing.Size(334, 415)
             Me.PanelIps.TabIndex = 1
             '
             'PanelListaNegra
@@ -380,7 +392,7 @@
             Me.PanelListaNegra.Location = New System.Drawing.Point(0, 0)
             Me.PanelListaNegra.Name = "PanelListaNegra"
             Me.PanelListaNegra.Padding = New System.Windows.Forms.Padding(3)
-            Me.PanelListaNegra.Size = New System.Drawing.Size(203, 309)
+            Me.PanelListaNegra.Size = New System.Drawing.Size(203, 315)
             Me.PanelListaNegra.TabIndex = 6
             '
             'lstIpBaneadas
@@ -390,7 +402,7 @@
             Me.lstIpBaneadas.IntegralHeight = False
             Me.lstIpBaneadas.Location = New System.Drawing.Point(3, 29)
             Me.lstIpBaneadas.Name = "lstIpBaneadas"
-            Me.lstIpBaneadas.Size = New System.Drawing.Size(197, 215)
+            Me.lstIpBaneadas.Size = New System.Drawing.Size(197, 221)
             Me.lstIpBaneadas.TabIndex = 2
             '
             'PanelBotonesListaNegra
@@ -401,7 +413,7 @@
             Me.PanelBotonesListaNegra.Controls.Add(Me.BtnPropagarIps)
             Me.PanelBotonesListaNegra.Controls.Add(Me.ChkDetenerPublicacion)
             Me.PanelBotonesListaNegra.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.PanelBotonesListaNegra.Location = New System.Drawing.Point(3, 244)
+            Me.PanelBotonesListaNegra.Location = New System.Drawing.Point(3, 250)
             Me.PanelBotonesListaNegra.Name = "PanelBotonesListaNegra"
             Me.PanelBotonesListaNegra.Padding = New System.Windows.Forms.Padding(1)
             Me.PanelBotonesListaNegra.Size = New System.Drawing.Size(197, 62)
@@ -502,7 +514,7 @@
             Me.PanelBusqueda.Controls.Add(Me.SplitContainer1)
             Me.PanelBusqueda.Controls.Add(Me.PanelTexto)
             Me.PanelBusqueda.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.PanelBusqueda.Location = New System.Drawing.Point(0, 309)
+            Me.PanelBusqueda.Location = New System.Drawing.Point(0, 315)
             Me.PanelBusqueda.Name = "PanelBusqueda"
             Me.PanelBusqueda.Size = New System.Drawing.Size(203, 100)
             Me.PanelBusqueda.TabIndex = 7
@@ -583,7 +595,7 @@
             Me.Panel15.Location = New System.Drawing.Point(203, 0)
             Me.Panel15.Name = "Panel15"
             Me.Panel15.Padding = New System.Windows.Forms.Padding(3)
-            Me.Panel15.Size = New System.Drawing.Size(131, 409)
+            Me.Panel15.Size = New System.Drawing.Size(131, 415)
             Me.Panel15.TabIndex = 5
             '
             'lstIpBlancas
@@ -593,7 +605,7 @@
             Me.lstIpBlancas.IntegralHeight = False
             Me.lstIpBlancas.Location = New System.Drawing.Point(3, 23)
             Me.lstIpBlancas.Name = "lstIpBlancas"
-            Me.lstIpBlancas.Size = New System.Drawing.Size(125, 341)
+            Me.lstIpBlancas.Size = New System.Drawing.Size(125, 347)
             Me.lstIpBlancas.TabIndex = 0
             '
             'PanelBotonesBlanca
@@ -601,7 +613,7 @@
             Me.PanelBotonesBlanca.Controls.Add(Me.BtnEliminarBlanca)
             Me.PanelBotonesBlanca.Controls.Add(Me.BtnAnadirBlanca)
             Me.PanelBotonesBlanca.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.PanelBotonesBlanca.Location = New System.Drawing.Point(3, 364)
+            Me.PanelBotonesBlanca.Location = New System.Drawing.Point(3, 370)
             Me.PanelBotonesBlanca.Name = "PanelBotonesBlanca"
             Me.PanelBotonesBlanca.Size = New System.Drawing.Size(125, 42)
             Me.PanelBotonesBlanca.TabIndex = 4
@@ -646,7 +658,7 @@
             Me.Fondo.Location = New System.Drawing.Point(0, 24)
             Me.Fondo.Name = "Fondo"
             Me.Fondo.Padding = New System.Windows.Forms.Padding(10)
-            Me.Fondo.Size = New System.Drawing.Size(1468, 484)
+            Me.Fondo.Size = New System.Drawing.Size(1468, 490)
             Me.Fondo.TabIndex = 1
             '
             'TabApp
@@ -655,12 +667,13 @@
             Me.TabApp.Controls.Add(Me.TabSpamAssassin)
             Me.TabApp.Controls.Add(Me.TabMailBackup)
             Me.TabApp.Controls.Add(Me.TabMigraciones)
+            Me.TabApp.Controls.Add(Me.TabCertificados)
             Me.TabApp.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TabApp.ImageList = Me.IconosTab
             Me.TabApp.Location = New System.Drawing.Point(10, 10)
             Me.TabApp.Name = "TabApp"
             Me.TabApp.SelectedIndex = 0
-            Me.TabApp.Size = New System.Drawing.Size(1448, 464)
+            Me.TabApp.Size = New System.Drawing.Size(1448, 470)
             Me.TabApp.TabIndex = 3
             '
             'TabPIpBan
@@ -670,7 +683,7 @@
             Me.TabPIpBan.Location = New System.Drawing.Point(4, 39)
             Me.TabPIpBan.Name = "TabPIpBan"
             Me.TabPIpBan.Padding = New System.Windows.Forms.Padding(3)
-            Me.TabPIpBan.Size = New System.Drawing.Size(1440, 421)
+            Me.TabPIpBan.Size = New System.Drawing.Size(1440, 427)
             Me.TabPIpBan.TabIndex = 0
             Me.TabPIpBan.Text = "IpBan"
             Me.TabPIpBan.UseVisualStyleBackColor = True
@@ -683,7 +696,7 @@
             Me.TabSpamAssassin.Location = New System.Drawing.Point(4, 39)
             Me.TabSpamAssassin.Name = "TabSpamAssassin"
             Me.TabSpamAssassin.Padding = New System.Windows.Forms.Padding(3)
-            Me.TabSpamAssassin.Size = New System.Drawing.Size(1440, 421)
+            Me.TabSpamAssassin.Size = New System.Drawing.Size(1440, 427)
             Me.TabSpamAssassin.TabIndex = 1
             Me.TabSpamAssassin.Text = "SpamAssassin"
             Me.TabSpamAssassin.UseVisualStyleBackColor = True
@@ -693,7 +706,7 @@
             Me.txtRichSpamAssassin.Dock = System.Windows.Forms.DockStyle.Fill
             Me.txtRichSpamAssassin.Location = New System.Drawing.Point(3, 43)
             Me.txtRichSpamAssassin.Name = "txtRichSpamAssassin"
-            Me.txtRichSpamAssassin.Size = New System.Drawing.Size(1434, 375)
+            Me.txtRichSpamAssassin.Size = New System.Drawing.Size(1434, 381)
             Me.txtRichSpamAssassin.TabIndex = 0
             Me.txtRichSpamAssassin.Text = ""
             '
@@ -783,7 +796,7 @@
             Me.TabMailBackup.ImageKey = "MB"
             Me.TabMailBackup.Location = New System.Drawing.Point(4, 39)
             Me.TabMailBackup.Name = "TabMailBackup"
-            Me.TabMailBackup.Size = New System.Drawing.Size(1440, 421)
+            Me.TabMailBackup.Size = New System.Drawing.Size(1440, 427)
             Me.TabMailBackup.TabIndex = 2
             Me.TabMailBackup.Text = "MAIL BACKUP"
             Me.TabMailBackup.UseVisualStyleBackColor = True
@@ -804,7 +817,7 @@
             Me.SplitContainer2.Panel2.Controls.Add(Me.TablaMailBackup)
             Me.SplitContainer2.Panel2.Controls.Add(Me.Panel3)
             Me.SplitContainer2.Panel2.Controls.Add(Me.StatusStrip1)
-            Me.SplitContainer2.Size = New System.Drawing.Size(1440, 421)
+            Me.SplitContainer2.Size = New System.Drawing.Size(1440, 427)
             Me.SplitContainer2.SplitterDistance = 478
             Me.SplitContainer2.TabIndex = 0
             '
@@ -814,7 +827,7 @@
             Me.TreePostOffices.Dock = System.Windows.Forms.DockStyle.Fill
             Me.TreePostOffices.Location = New System.Drawing.Point(0, 0)
             Me.TreePostOffices.Name = "TreePostOffices"
-            Me.TreePostOffices.Size = New System.Drawing.Size(478, 388)
+            Me.TreePostOffices.Size = New System.Drawing.Size(478, 394)
             Me.TreePostOffices.TabIndex = 0
             '
             'MenuTablaBackup
@@ -890,7 +903,7 @@
             'BtnRecargarTreeNodePostOffices
             '
             Me.BtnRecargarTreeNodePostOffices.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.BtnRecargarTreeNodePostOffices.Location = New System.Drawing.Point(0, 388)
+            Me.BtnRecargarTreeNodePostOffices.Location = New System.Drawing.Point(0, 394)
             Me.BtnRecargarTreeNodePostOffices.Name = "BtnRecargarTreeNodePostOffices"
             Me.BtnRecargarTreeNodePostOffices.Size = New System.Drawing.Size(478, 33)
             Me.BtnRecargarTreeNodePostOffices.TabIndex = 1
@@ -913,7 +926,7 @@
             Me.TablaMailBackup.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
             Me.TablaMailBackup.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
             Me.TablaMailBackup.ShowEditingIcon = False
-            Me.TablaMailBackup.Size = New System.Drawing.Size(958, 349)
+            Me.TablaMailBackup.Size = New System.Drawing.Size(958, 355)
             Me.TablaMailBackup.TabIndex = 0
             '
             'Panel3
@@ -1021,7 +1034,7 @@
             '
             Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LabelCorreosEliminados, Me.ProgresoIndexacion, Me.LabelErroresDataTable, Me.lblLimpiadosBackup, Me.ToolStripStatusLabel2, Me.lblEmailsAnalizados})
             Me.StatusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
-            Me.StatusStrip1.Location = New System.Drawing.Point(0, 397)
+            Me.StatusStrip1.Location = New System.Drawing.Point(0, 403)
             Me.StatusStrip1.Name = "StatusStrip1"
             Me.StatusStrip1.Size = New System.Drawing.Size(958, 24)
             Me.StatusStrip1.SizingGrip = False
@@ -1074,7 +1087,7 @@
             Me.TabMigraciones.Location = New System.Drawing.Point(4, 39)
             Me.TabMigraciones.Name = "TabMigraciones"
             Me.TabMigraciones.Padding = New System.Windows.Forms.Padding(3)
-            Me.TabMigraciones.Size = New System.Drawing.Size(1440, 421)
+            Me.TabMigraciones.Size = New System.Drawing.Size(1440, 427)
             Me.TabMigraciones.TabIndex = 3
             Me.TabMigraciones.Text = "Migraciones"
             Me.TabMigraciones.UseVisualStyleBackColor = True
@@ -1093,8 +1106,8 @@
             'SplitMigracion.Panel2
             '
             Me.SplitMigracion.Panel2.Controls.Add(Me.SplitProcesoMigracion)
-            Me.SplitMigracion.Size = New System.Drawing.Size(1434, 387)
-            Me.SplitMigracion.SplitterDistance = 290
+            Me.SplitMigracion.Size = New System.Drawing.Size(1434, 393)
+            Me.SplitMigracion.SplitterDistance = 287
             Me.SplitMigracion.TabIndex = 2
             '
             'lstDominiosMigracion
@@ -1106,7 +1119,7 @@
             Me.lstDominiosMigracion.HideSelection = False
             Me.lstDominiosMigracion.Location = New System.Drawing.Point(0, 25)
             Me.lstDominiosMigracion.Name = "lstDominiosMigracion"
-            Me.lstDominiosMigracion.Size = New System.Drawing.Size(290, 362)
+            Me.lstDominiosMigracion.Size = New System.Drawing.Size(287, 368)
             Me.lstDominiosMigracion.TabIndex = 0
             Me.lstDominiosMigracion.UseCompatibleStateImageBehavior = False
             Me.lstDominiosMigracion.View = System.Windows.Forms.View.Details
@@ -1114,7 +1127,7 @@
             'lstDM_Dominio
             '
             Me.lstDM_Dominio.Text = "Dominio"
-            Me.lstDM_Dominio.Width = 147
+            Me.lstDM_Dominio.Width = 218
             '
             'lstDM_Estado
             '
@@ -1126,15 +1139,16 @@
             Me.PanelOpcionesDominio.Dock = System.Windows.Forms.DockStyle.Top
             Me.PanelOpcionesDominio.Location = New System.Drawing.Point(0, 0)
             Me.PanelOpcionesDominio.Name = "PanelOpcionesDominio"
-            Me.PanelOpcionesDominio.Size = New System.Drawing.Size(290, 25)
+            Me.PanelOpcionesDominio.Size = New System.Drawing.Size(287, 25)
             Me.PanelOpcionesDominio.TabIndex = 3
             '
             'ToolStrip1
             '
+            Me.ToolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BtnCrearDominioMigracion, Me.BtnEliminarDominioMigracion, Me.BtnActivarMigracionDominio, Me.BtnDesactivarMigracionDominio})
             Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
             Me.ToolStrip1.Name = "ToolStrip1"
-            Me.ToolStrip1.Size = New System.Drawing.Size(290, 25)
+            Me.ToolStrip1.Size = New System.Drawing.Size(287, 25)
             Me.ToolStrip1.TabIndex = 4
             Me.ToolStrip1.Text = "ToolStrip1"
             '
@@ -1170,7 +1184,7 @@
             Me.BtnDesactivarMigracionDominio.Image = CType(resources.GetObject("BtnDesactivarMigracionDominio.Image"), System.Drawing.Image)
             Me.BtnDesactivarMigracionDominio.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.BtnDesactivarMigracionDominio.Name = "BtnDesactivarMigracionDominio"
-            Me.BtnDesactivarMigracionDominio.Size = New System.Drawing.Size(81, 20)
+            Me.BtnDesactivarMigracionDominio.Size = New System.Drawing.Size(81, 22)
             Me.BtnDesactivarMigracionDominio.Text = "Desactivar"
             '
             'SplitProcesoMigracion
@@ -1187,8 +1201,8 @@
             '
             Me.SplitProcesoMigracion.Panel2.Controls.Add(Me.lstErroneosMigracion)
             Me.SplitProcesoMigracion.Panel2.Controls.Add(Me.Label10)
-            Me.SplitProcesoMigracion.Size = New System.Drawing.Size(1140, 387)
-            Me.SplitProcesoMigracion.SplitterDistance = 255
+            Me.SplitProcesoMigracion.Size = New System.Drawing.Size(1143, 393)
+            Me.SplitProcesoMigracion.SplitterDistance = 246
             Me.SplitProcesoMigracion.TabIndex = 2
             '
             'SplitContainer3
@@ -1206,8 +1220,8 @@
             'SplitContainer3.Panel2
             '
             Me.SplitContainer3.Panel2.Controls.Add(Me.PanelProgresoMigracion)
-            Me.SplitContainer3.Size = New System.Drawing.Size(255, 387)
-            Me.SplitContainer3.SplitterDistance = 272
+            Me.SplitContainer3.Size = New System.Drawing.Size(246, 393)
+            Me.SplitContainer3.SplitterDistance = 278
             Me.SplitContainer3.TabIndex = 6
             '
             'PanelColaMigracion
@@ -1217,7 +1231,7 @@
             Me.PanelColaMigracion.Dock = System.Windows.Forms.DockStyle.Fill
             Me.PanelColaMigracion.Location = New System.Drawing.Point(0, 0)
             Me.PanelColaMigracion.Name = "PanelColaMigracion"
-            Me.PanelColaMigracion.Size = New System.Drawing.Size(255, 272)
+            Me.PanelColaMigracion.Size = New System.Drawing.Size(246, 278)
             Me.PanelColaMigracion.TabIndex = 4
             '
             'lstListaDeEsperaMigracion
@@ -1227,7 +1241,7 @@
             Me.lstListaDeEsperaMigracion.HideSelection = False
             Me.lstListaDeEsperaMigracion.Location = New System.Drawing.Point(0, 22)
             Me.lstListaDeEsperaMigracion.Name = "lstListaDeEsperaMigracion"
-            Me.lstListaDeEsperaMigracion.Size = New System.Drawing.Size(255, 250)
+            Me.lstListaDeEsperaMigracion.Size = New System.Drawing.Size(246, 256)
             Me.lstListaDeEsperaMigracion.TabIndex = 1
             Me.lstListaDeEsperaMigracion.UseCompatibleStateImageBehavior = False
             Me.lstListaDeEsperaMigracion.View = System.Windows.Forms.View.Details
@@ -1248,7 +1262,7 @@
             Me.Label9.ForeColor = System.Drawing.Color.White
             Me.Label9.Location = New System.Drawing.Point(0, 0)
             Me.Label9.Name = "Label9"
-            Me.Label9.Size = New System.Drawing.Size(255, 22)
+            Me.Label9.Size = New System.Drawing.Size(246, 22)
             Me.Label9.TabIndex = 2
             Me.Label9.Text = "Cola"
             Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1260,7 +1274,7 @@
             Me.PanelProgresoMigracion.Dock = System.Windows.Forms.DockStyle.Fill
             Me.PanelProgresoMigracion.Location = New System.Drawing.Point(0, 0)
             Me.PanelProgresoMigracion.Name = "PanelProgresoMigracion"
-            Me.PanelProgresoMigracion.Size = New System.Drawing.Size(255, 111)
+            Me.PanelProgresoMigracion.Size = New System.Drawing.Size(246, 111)
             Me.PanelProgresoMigracion.TabIndex = 5
             '
             'lstMailBoxMigracion
@@ -1270,7 +1284,7 @@
             Me.lstMailBoxMigracion.HideSelection = False
             Me.lstMailBoxMigracion.Location = New System.Drawing.Point(0, 22)
             Me.lstMailBoxMigracion.Name = "lstMailBoxMigracion"
-            Me.lstMailBoxMigracion.Size = New System.Drawing.Size(255, 89)
+            Me.lstMailBoxMigracion.Size = New System.Drawing.Size(246, 89)
             Me.lstMailBoxMigracion.TabIndex = 0
             Me.lstMailBoxMigracion.UseCompatibleStateImageBehavior = False
             Me.lstMailBoxMigracion.View = System.Windows.Forms.View.Details
@@ -1291,7 +1305,7 @@
             Me.Label11.ForeColor = System.Drawing.Color.White
             Me.Label11.Location = New System.Drawing.Point(0, 0)
             Me.Label11.Name = "Label11"
-            Me.Label11.Size = New System.Drawing.Size(255, 22)
+            Me.Label11.Size = New System.Drawing.Size(246, 22)
             Me.Label11.TabIndex = 3
             Me.Label11.Text = "Migrando"
             Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1300,10 +1314,13 @@
             '
             Me.lstErroneosMigracion.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader3, Me.ColumnHeader4})
             Me.lstErroneosMigracion.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lstErroneosMigracion.FullRowSelect = True
+            Me.lstErroneosMigracion.GridLines = True
             Me.lstErroneosMigracion.HideSelection = False
             Me.lstErroneosMigracion.Location = New System.Drawing.Point(0, 22)
             Me.lstErroneosMigracion.Name = "lstErroneosMigracion"
-            Me.lstErroneosMigracion.Size = New System.Drawing.Size(881, 365)
+            Me.lstErroneosMigracion.Size = New System.Drawing.Size(893, 371)
+            Me.lstErroneosMigracion.Sorting = System.Windows.Forms.SortOrder.Ascending
             Me.lstErroneosMigracion.TabIndex = 2
             Me.lstErroneosMigracion.UseCompatibleStateImageBehavior = False
             Me.lstErroneosMigracion.View = System.Windows.Forms.View.Details
@@ -1316,7 +1333,7 @@
             'ColumnHeader4
             '
             Me.ColumnHeader4.Text = "Estado"
-            Me.ColumnHeader4.Width = 600
+            Me.ColumnHeader4.Width = 686
             '
             'Label10
             '
@@ -1325,7 +1342,7 @@
             Me.Label10.ForeColor = System.Drawing.Color.White
             Me.Label10.Location = New System.Drawing.Point(0, 0)
             Me.Label10.Name = "Label10"
-            Me.Label10.Size = New System.Drawing.Size(881, 22)
+            Me.Label10.Size = New System.Drawing.Size(893, 22)
             Me.Label10.TabIndex = 3
             Me.Label10.Text = "Erroneos"
             Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1343,10 +1360,10 @@
             'ToolMigraciones
             '
             Me.ToolMigraciones.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.ToolMigraciones.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BtnMigrarCuenta, Me.ToolStripSeparator1, Me.BtnLimpiarMigracionesCompletadas, Me.ToolStripSeparator2, Me.BtnLimpiarErroneosMigracion})
-            Me.ToolMigraciones.Location = New System.Drawing.Point(201, 0)
+            Me.ToolMigraciones.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BtnMigrarCuenta, Me.ToolStripSeparator1, Me.BtnLimpiarMigracionesCompletadas, Me.ToolStripSeparator2, Me.BtnLimpiarErroneosMigracion, Me.BtnCopiarErroneos})
+            Me.ToolMigraciones.Location = New System.Drawing.Point(290, 0)
             Me.ToolMigraciones.Name = "ToolMigraciones"
-            Me.ToolMigraciones.Size = New System.Drawing.Size(1233, 25)
+            Me.ToolMigraciones.Size = New System.Drawing.Size(1144, 25)
             Me.ToolMigraciones.TabIndex = 0
             Me.ToolMigraciones.Text = "Migraciones"
             '
@@ -1384,13 +1401,21 @@
             Me.BtnLimpiarErroneosMigracion.Size = New System.Drawing.Size(116, 22)
             Me.BtnLimpiarErroneosMigracion.Text = "Limpiar erroneos"
             '
+            'BtnCopiarErroneos
+            '
+            Me.BtnCopiarErroneos.Image = CType(resources.GetObject("BtnCopiarErroneos.Image"), System.Drawing.Image)
+            Me.BtnCopiarErroneos.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.BtnCopiarErroneos.Name = "BtnCopiarErroneos"
+            Me.BtnCopiarErroneos.Size = New System.Drawing.Size(111, 22)
+            Me.BtnCopiarErroneos.Text = "Copiar erroneos"
+            '
             'PanelServicioMigracion
             '
             Me.PanelServicioMigracion.Controls.Add(Me.TableLayoutPanel3)
             Me.PanelServicioMigracion.Dock = System.Windows.Forms.DockStyle.Left
             Me.PanelServicioMigracion.Location = New System.Drawing.Point(0, 0)
             Me.PanelServicioMigracion.Name = "PanelServicioMigracion"
-            Me.PanelServicioMigracion.Size = New System.Drawing.Size(201, 28)
+            Me.PanelServicioMigracion.Size = New System.Drawing.Size(290, 28)
             Me.PanelServicioMigracion.TabIndex = 1
             '
             'TableLayoutPanel3
@@ -1398,7 +1423,7 @@
             Me.TableLayoutPanel3.ColumnCount = 3
             Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 62.92135!))
             Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 37.07865!))
-            Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 112.0!))
+            Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 201.0!))
             Me.TableLayoutPanel3.Controls.Add(Me.Label8, 0, 0)
             Me.TableLayoutPanel3.Controls.Add(Me.BtnServicioMigracion, 2, 0)
             Me.TableLayoutPanel3.Controls.Add(Me.lblEstadoServicioMigracion, 1, 0)
@@ -1407,7 +1432,7 @@
             Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
             Me.TableLayoutPanel3.RowCount = 1
             Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.TableLayoutPanel3.Size = New System.Drawing.Size(201, 28)
+            Me.TableLayoutPanel3.Size = New System.Drawing.Size(290, 28)
             Me.TableLayoutPanel3.TabIndex = 3
             '
             'Label8
@@ -1422,9 +1447,9 @@
             '
             'BtnServicioMigracion
             '
-            Me.BtnServicioMigracion.Anchor = System.Windows.Forms.AnchorStyles.None
+            Me.BtnServicioMigracion.Dock = System.Windows.Forms.DockStyle.Left
             Me.BtnServicioMigracion.Enabled = False
-            Me.BtnServicioMigracion.Location = New System.Drawing.Point(95, 3)
+            Me.BtnServicioMigracion.Location = New System.Drawing.Point(92, 3)
             Me.BtnServicioMigracion.Name = "BtnServicioMigracion"
             Me.BtnServicioMigracion.Size = New System.Drawing.Size(99, 22)
             Me.BtnServicioMigracion.TabIndex = 2
@@ -1441,6 +1466,67 @@
             Me.lblEstadoServicioMigracion.Size = New System.Drawing.Size(21, 20)
             Me.lblEstadoServicioMigracion.TabIndex = 1
             '
+            'TabCertificados
+            '
+            Me.TabCertificados.Controls.Add(Me.SplitCertificados)
+            Me.TabCertificados.ImageKey = "CE"
+            Me.TabCertificados.Location = New System.Drawing.Point(4, 39)
+            Me.TabCertificados.Name = "TabCertificados"
+            Me.TabCertificados.Padding = New System.Windows.Forms.Padding(3)
+            Me.TabCertificados.Size = New System.Drawing.Size(1440, 427)
+            Me.TabCertificados.TabIndex = 4
+            Me.TabCertificados.Text = "Certificados"
+            Me.TabCertificados.UseVisualStyleBackColor = True
+            '
+            'SplitCertificados
+            '
+            Me.SplitCertificados.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.SplitCertificados.Location = New System.Drawing.Point(3, 3)
+            Me.SplitCertificados.Name = "SplitCertificados"
+            '
+            'SplitCertificados.Panel1
+            '
+            Me.SplitCertificados.Panel1.Controls.Add(Me.lstCertificados)
+            '
+            'SplitCertificados.Panel2
+            '
+            Me.SplitCertificados.Panel2.Controls.Add(Me.TabNavegadores)
+            Me.SplitCertificados.Size = New System.Drawing.Size(1434, 421)
+            Me.SplitCertificados.SplitterDistance = 478
+            Me.SplitCertificados.TabIndex = 0
+            '
+            'lstCertificados
+            '
+            Me.lstCertificados.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.cCertificado, Me.cCaducaCertificado})
+            Me.lstCertificados.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lstCertificados.HideSelection = False
+            Me.lstCertificados.Location = New System.Drawing.Point(0, 0)
+            Me.lstCertificados.Name = "lstCertificados"
+            Me.lstCertificados.Size = New System.Drawing.Size(478, 421)
+            Me.lstCertificados.TabIndex = 0
+            Me.lstCertificados.UseCompatibleStateImageBehavior = False
+            Me.lstCertificados.View = System.Windows.Forms.View.Details
+            '
+            'cCertificado
+            '
+            Me.cCertificado.Text = "Certificado"
+            Me.cCertificado.Width = 360
+            '
+            'cCaducaCertificado
+            '
+            Me.cCaducaCertificado.Text = "Caduca"
+            Me.cCaducaCertificado.Width = 96
+            '
+            'TabNavegadores
+            '
+            Me.TabNavegadores.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.TabNavegadores.ItemSize = New System.Drawing.Size(62, 25)
+            Me.TabNavegadores.Location = New System.Drawing.Point(0, 0)
+            Me.TabNavegadores.Name = "TabNavegadores"
+            Me.TabNavegadores.SelectedIndex = 0
+            Me.TabNavegadores.Size = New System.Drawing.Size(952, 421)
+            Me.TabNavegadores.TabIndex = 0
+            '
             'IconosTab
             '
             Me.IconosTab.ImageStream = CType(resources.GetObject("IconosTab.ImageStream"), System.Windows.Forms.ImageListStreamer)
@@ -1451,6 +1537,7 @@
             Me.IconosTab.Images.SetKeyName(3, "stop")
             Me.IconosTab.Images.SetKeyName(4, "MB")
             Me.IconosTab.Images.SetKeyName(5, "MM")
+            Me.IconosTab.Images.SetKeyName(6, "CE")
             '
             'MenuPrincipal
             '
@@ -1480,7 +1567,7 @@
             'StatusStrip2
             '
             Me.StatusStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblPrueba, Me.ToolStripStatusLabel1})
-            Me.StatusStrip2.Location = New System.Drawing.Point(0, 508)
+            Me.StatusStrip2.Location = New System.Drawing.Point(0, 514)
             Me.StatusStrip2.Name = "StatusStrip2"
             Me.StatusStrip2.Size = New System.Drawing.Size(1468, 22)
             Me.StatusStrip2.TabIndex = 1
@@ -1556,7 +1643,7 @@
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(1468, 530)
+            Me.ClientSize = New System.Drawing.Size(1468, 536)
             Me.Controls.Add(Me.Fondo)
             Me.Controls.Add(Me.MenuPrincipal)
             Me.Controls.Add(Me.StatusStrip2)
@@ -1639,6 +1726,11 @@
             Me.PanelServicioMigracion.ResumeLayout(False)
             Me.TableLayoutPanel3.ResumeLayout(False)
             Me.TableLayoutPanel3.PerformLayout()
+            Me.TabCertificados.ResumeLayout(False)
+            Me.SplitCertificados.Panel1.ResumeLayout(False)
+            Me.SplitCertificados.Panel2.ResumeLayout(False)
+            CType(Me.SplitCertificados, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.SplitCertificados.ResumeLayout(False)
             Me.MenuPrincipal.ResumeLayout(False)
             Me.MenuPrincipal.PerformLayout()
             Me.StatusStrip2.ResumeLayout(False)
@@ -1785,5 +1877,12 @@
         Friend WithEvents BtnEliminarDominioMigracion As ToolStripButton
         Friend WithEvents BtnActivarMigracionDominio As ToolStripButton
         Friend WithEvents BtnDesactivarMigracionDominio As ToolStripButton
+        Friend WithEvents BtnCopiarErroneos As ToolStripButton
+        Friend WithEvents TabCertificados As TabPage
+        Friend WithEvents SplitCertificados As SplitContainer
+        Friend WithEvents TabNavegadores As TabControl
+        Friend WithEvents lstCertificados As ListView
+        Friend WithEvents cCertificado As ColumnHeader
+        Friend WithEvents cCaducaCertificado As ColumnHeader
     End Class
 End Namespace
