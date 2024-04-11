@@ -16,6 +16,9 @@
             Viewer = New Interfaz.Navegador(Me) With {.TopLevel = False, .FormBorderStyle = FormBorderStyle.None, .Name = Me.Key, .Text = Me.Key}
             Viewer.Show()
         End Sub
-
+        Public Sub LogOut()
+            Dim LogOutUrl As New Uri($"{Url.AbsoluteUri}logout.php")
+            Viewer.WB.Source = LogOutUrl
+        End Sub
     End Class
 End Namespace

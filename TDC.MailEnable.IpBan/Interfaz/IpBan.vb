@@ -246,7 +246,7 @@ Namespace Interfaz
             End If
 
             'Certificados
-            Certificados.Main(MailEnableLog.IpBanForm.TabNavegadores, lstCertificados)
+            Certificados.Main(MailEnableLog.IpBanForm.TabNavegadores, lstCertificados, lstLogDescargaCertificado)
         End Sub
 
 

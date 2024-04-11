@@ -7,9 +7,10 @@ Namespace Certificados.Interfaz
         Private WithEvents DownloadOperation As CoreWebView2DownloadOperation = Nothing
         Private WithEvents DownloadStarting As CoreWebView2DownloadStartingEventArgs = Nothing
         Public Event FileDownloaded(sender As Object, File As FileDownloadedEvent)
+        Public Event EndProcess(sender As Object)
 
         Private isHandler As Boolean = False
-
+        Public esDescargado As Boolean = False
         Public Sub New(Domain As Domain)
 
             ' Esta llamada es exigida por el diseñador.
@@ -25,19 +26,33 @@ Namespace Certificados.Interfaz
                 AddHandler WB.CoreWebView2.DownloadStarting, AddressOf InicioDescarga
             End If
 
-            For Each Script In Domain.Scripts
-                If WB.Source.AbsoluteUri.Contains(Script.Key) Then
-                    WB.ExecuteScriptAsync(Script.Value)
-                End If
-            Next
+            If Not esDescargado Then
+                For Each Script In Domain.Scripts
+                    If WB.Source.AbsoluteUri.Contains(Script.Key) Then
+                        WB.ExecuteScriptAsync(Script.Value)
+                        'EjecutarScript(Script.Value).ConfigureAwait(False)
+                    End If
+                Next
 
-            For Each Nav In Domain.Navigation
-                If WB.Source.AbsoluteUri.Contains(Nav.Key) Then
-                    WB.Source = Nav.Value
-                End If
-            Next
+                For Each Nav In Domain.Navigation
+                    If WB.Source.AbsoluteUri.Contains(Nav.Key) Then
+                        WB.Source = Nav.Value
+                    End If
+                Next
+            Else
+                WB.CoreWebView2.CloseDefaultDownloadDialog()
+                RaiseEvent EndProcess(Me)
+            End If
+
         End Sub
 
+        Async Function EjecutarScript(Script As String) As Task(Of Boolean)
+            Dim resultadoScript = Await WB.ExecuteScriptAsync("alert('Script ejecutado correctamente');")
+            If Not IsNothing(resultadoScript) Then
+                Return True
+            End If
+            Return False
+        End Function
         Private Sub InicioDescarga(sender As Object, e As CoreWebView2DownloadStartingEventArgs)
             DownloadStarting = e
             DownloadOperation = e.DownloadOperation
@@ -51,10 +66,9 @@ Namespace Certificados.Interfaz
         End Sub
 
         Private Sub Cer1_StateChanged(sender As Object, e As Object) Handles DownloadOperation.StateChanged
-            Console.WriteLine(DownloadStarting.ResultFilePath)
-            Console.WriteLine(DownloadOperation.State)
-            Console.WriteLine(DownloadOperation.Uri)
+
             If DownloadOperation.State = CoreWebView2DownloadState.Completed Then
+                esDescargado = True
                 RaiseEvent FileDownloaded(Me, New FileDownloadedEvent With {.Path = DownloadStarting.ResultFilePath})
             End If
         End Sub

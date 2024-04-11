@@ -35,8 +35,9 @@ Namespace Certificados
                 With .StartInfo
                     .FileName = Command
                     .Arguments = Arguments
-                    .CreateNoWindow = False
-                    .UseShellExecute = True
+                    .CreateNoWindow = True
+                    .UseShellExecute = False
+                    .WindowStyle = ProcessWindowStyle.Hidden
                 End With
                 .Start()
                 .WaitForExit()

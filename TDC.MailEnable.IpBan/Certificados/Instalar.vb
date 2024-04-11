@@ -19,15 +19,16 @@ Namespace Certificados
             Almacen.Open(OpenFlags.ReadWrite)
 
             'Elimina el antiguo
-            Almacen.Remove(Antiguo)
+            If Not IsNothing(Antiguo) Then Almacen.Remove(Antiguo)
 
             ' Importar el Nuevo
             Dim CertProcess As New Process
             With CertProcess
                 With .StartInfo
                     .FileName = "certutil"
-                    .Arguments = $"-p """" -importpfx {rutaCertificado} NoExport"
-                    .CreateNoWindow = False
+                    .Arguments = $"-p """" -importpfx ""{rutaCertificado}"" NoExport"
+                    .CreateNoWindow = True
+                    .WindowStyle = ProcessWindowStyle.Hidden
                 End With
                 .Start()
                 .WaitForExit()

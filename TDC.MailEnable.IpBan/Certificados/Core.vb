@@ -3,57 +3,93 @@ Imports System.Security.Cryptography.X509Certificates
 
 Namespace Certificados
     Module Core
-        Public Domains As New Concurrent.ConcurrentQueue(Of Domain)
+        Public dQuene As New Concurrent.ConcurrentQueue(Of Domain)
+        Public dProcess As New Concurrent.ConcurrentQueue(Of Domain)
+        Public dProcessed As New Concurrent.ConcurrentQueue(Of Domain)
+
         Public CertificateFolder As New IO.DirectoryInfo(Application.StartupPath & "\Certificados")
         Private FaceTabControl As TabControl
         Private WithEvents Exportador As PemToPfx
         Private FaceListControl As ListView
+        Private FaceListLogDownload As ListView
 
         Private WithEvents Actualizador As New TDC.MailEnable.Core.Bucle.DoBucle("ActualizadorSsl")
-        Public Sub Main(TabControl As TabControl, ListControl As ListView)
+        Public Sub Main(TabControl As TabControl, ListControl As ListView, ListDownload As ListView)
             If Not CertificateFolder.Exists Then CertificateFolder.Create()
 
             FaceListControl = ListControl
             FaceTabControl = TabControl
-
+            FaceListLogDownload = ListDownload
             Actualizador.Iniciar()
         End Sub
 
         Public Sub DownloadedFile(sender As Object, File As Interfaz.FileDownloadedEvent)
-            Console.WriteLine(File.Path)
+            CType(sender, Interfaz.Navegador).Domain.LogOut()
             Dim Convertir As New PemToPfx
             AddHandler Convertir.AlConvertirPem, AddressOf Exportador_AlConvertirPem
             Convertir.Convert(File.Path)
+            TryGetCertificate()
         End Sub
-
+        Public Sub EndProcessGetCertificate(sender As Object)
+            CType(sender, Interfaz.Navegador).esDescargado = False
+        End Sub
         Private Sub Exportador_AlConvertirPem(sender As Object, File As PemToPfx.PemExportEvent)
             RemoveHandler CType(sender, PemToPfx).AlConvertirPem, AddressOf Exportador_AlConvertirPem
+            Dim cItem As New ListViewItem With {.Text = IO.Path.GetFileName(File.Path)}
+            Dim cItemNow As New ListViewItem.ListViewSubItem With {.Text = $"{Now.ToShortDateString} {Now.ToShortTimeString}"}
+            Dim cItemResult As ListViewItem.ListViewSubItem = Nothing
+            cItem.SubItems.Add(cItemNow)
             If RequiereInstalar(File.Path) Then
                 Dim InstalarPxf As New Instalar With {.rutaCertificado = File.Path}
                 Dim CertNuevo As X509Certificate2 = New X509Certificate2(File.Path, "")
                 Dim CertAntiguo As X509Certificate2 = CertificadoSistema(CertNuevo)
                 InstalarPxf.Instalar(CertAntiguo)
+                cItemResult = New ListViewItem.ListViewSubItem With {.Text = "True"}
+            Else
+                cItemResult = New ListViewItem.ListViewSubItem With {.Text = "False"}
             End If
+            cItem.SubItems.Add(cItemResult)
+            If Not IsNothing(FaceListLogDownload) Then FaceListLogDownload.Items.Add(cItem)
         End Sub
 
-        Private Sub Actualizador_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Actualizador.Foreground
-            Domain1()
-            Domain2()
-            Do While Domains.Count > 0
-                Dim eDomain As Domain
-                If Domains.TryDequeue(eDomain) Then
+        Private Sub TryGetCertificate()
+            If dQuene.Count > 0 Then
+                Dim eDomain As Domain = Nothing
+                If dQuene.TryDequeue(eDomain) Then
                     If Not FaceTabControl.TabPages.ContainsKey(eDomain.Key) Then
                         Dim cTab As New TabPage With {.Name = eDomain.Key, .Text = eDomain.Key}
                         FaceTabControl.TabPages.Add(cTab)
                         eDomain.Download()
                         cTab.Controls.Add(eDomain.Viewer)
+                        FaceTabControl.SelectTab(FaceTabControl.TabPages(eDomain.Key).TabIndex)
                         eDomain.Viewer.Dock = DockStyle.Fill
                         AddHandler eDomain.Viewer.FileDownloaded, AddressOf DownloadedFile
+                        AddHandler eDomain.Viewer.EndProcess, AddressOf EndProcessGetCertificate
                     Else
-                        CType(FaceTabControl.TabPages(eDomain.Key).Controls(eDomain.Key), Interfaz.Navegador).WB.Source = eDomain.Url
+                        FaceTabControl.SelectTab(FaceTabControl.TabPages(eDomain.Key).TabIndex)
+                        eDomain.Viewer.esDescargado = False
+                        eDomain.Viewer.WB.Reload()
                     End If
+                    dProcess.Enqueue(eDomain)
                 End If
-            Loop
+            End If
+        End Sub
+
+        Private Sub Actualizador_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Actualizador.Foreground
+            If dQuene.Count = 0 AndAlso dProcess.Count = 0 Then
+                Domain1()
+                Domain2()
+                Domain3()
+                TryGetCertificate()
+            ElseIf dQuene.Count = 0 AndAlso dProcess.Count > 0 Then
+                Do While dProcess.Count > 0
+                    Dim Dominio As Domain = Nothing
+                    If dProcess.TryDequeue(Dominio) Then
+                        dQuene.Enqueue(Dominio)
+                    End If
+                Loop
+                TryGetCertificate()
+            End If
 
             For Each CertificadoPfx In CertificateFolder.GetFiles("*.pfx")
                 Dim aPfx As X509Certificate2 = New X509Certificate2(CertificadoPfx.FullName, "")
@@ -92,7 +128,7 @@ Namespace Certificados
         Private Function CertificadoSistema(Pfx As X509Certificate2) As X509Certificate2
             Dim store As X509Store = New X509Store(StoreName.My, StoreLocation.LocalMachine)
             store.Open(OpenFlags.ReadOnly)
-            Dim certCollection As X509Certificate2Collection = store.Certificates.Find(X509FindType.FindByThumbprint, Pfx.Thumbprint, False)
+            Dim certCollection As X509Certificate2Collection = store.Certificates.Find(X509FindType.FindBySubjectDistinguishedName, Pfx.GetName, False)
             store.Close()
             'devuelve el primer certificado encontrado
             If certCollection.Count > 0 Then Return certCollection.Item(0)

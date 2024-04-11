@@ -165,6 +165,13 @@
             Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
             Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
+            Me.SplitContainer4 = New System.Windows.Forms.SplitContainer()
+            Me.lstLogDescargaCertificado = New System.Windows.Forms.ListView()
+            Me.cLogCertificado = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.cLogCIntento = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.cLogcResultado = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.Label12 = New System.Windows.Forms.Label()
+            Me.Label13 = New System.Windows.Forms.Label()
             Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
@@ -236,6 +243,10 @@
             Me.MenuPrincipal.SuspendLayout()
             Me.StatusStrip2.SuspendLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.SplitContainer4, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.SplitContainer4.Panel1.SuspendLayout()
+            Me.SplitContainer4.Panel2.SuspendLayout()
+            Me.SplitContainer4.SuspendLayout()
             Me.SuspendLayout()
             '
             'PanelIpBaneadas
@@ -1486,7 +1497,7 @@
             '
             'SplitCertificados.Panel1
             '
-            Me.SplitCertificados.Panel1.Controls.Add(Me.lstCertificados)
+            Me.SplitCertificados.Panel1.Controls.Add(Me.SplitContainer4)
             '
             'SplitCertificados.Panel2
             '
@@ -1500,9 +1511,9 @@
             Me.lstCertificados.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.cCertificado, Me.cCaducaCertificado})
             Me.lstCertificados.Dock = System.Windows.Forms.DockStyle.Fill
             Me.lstCertificados.HideSelection = False
-            Me.lstCertificados.Location = New System.Drawing.Point(0, 0)
+            Me.lstCertificados.Location = New System.Drawing.Point(0, 25)
             Me.lstCertificados.Name = "lstCertificados"
-            Me.lstCertificados.Size = New System.Drawing.Size(478, 421)
+            Me.lstCertificados.Size = New System.Drawing.Size(478, 134)
             Me.lstCertificados.TabIndex = 0
             Me.lstCertificados.UseCompatibleStateImageBehavior = False
             Me.lstCertificados.View = System.Windows.Forms.View.Details
@@ -1606,6 +1617,75 @@
             Me.ImageList2.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
             Me.ImageList2.ImageSize = New System.Drawing.Size(16, 16)
             Me.ImageList2.TransparentColor = System.Drawing.Color.Transparent
+            '
+            'SplitContainer4
+            '
+            Me.SplitContainer4.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.SplitContainer4.Location = New System.Drawing.Point(0, 0)
+            Me.SplitContainer4.Name = "SplitContainer4"
+            Me.SplitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal
+            '
+            'SplitContainer4.Panel1
+            '
+            Me.SplitContainer4.Panel1.Controls.Add(Me.lstCertificados)
+            Me.SplitContainer4.Panel1.Controls.Add(Me.Label12)
+            '
+            'SplitContainer4.Panel2
+            '
+            Me.SplitContainer4.Panel2.Controls.Add(Me.lstLogDescargaCertificado)
+            Me.SplitContainer4.Panel2.Controls.Add(Me.Label13)
+            Me.SplitContainer4.Size = New System.Drawing.Size(478, 421)
+            Me.SplitContainer4.SplitterDistance = 159
+            Me.SplitContainer4.TabIndex = 1
+            '
+            'lstLogDescargaCertificado
+            '
+            Me.lstLogDescargaCertificado.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.cLogCertificado, Me.cLogCIntento, Me.cLogcResultado})
+            Me.lstLogDescargaCertificado.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lstLogDescargaCertificado.HideSelection = False
+            Me.lstLogDescargaCertificado.Location = New System.Drawing.Point(0, 25)
+            Me.lstLogDescargaCertificado.Name = "lstLogDescargaCertificado"
+            Me.lstLogDescargaCertificado.Size = New System.Drawing.Size(478, 233)
+            Me.lstLogDescargaCertificado.TabIndex = 0
+            Me.lstLogDescargaCertificado.UseCompatibleStateImageBehavior = False
+            Me.lstLogDescargaCertificado.View = System.Windows.Forms.View.Details
+            '
+            'cLogCertificado
+            '
+            Me.cLogCertificado.Text = "Certificado"
+            Me.cLogCertificado.Width = 193
+            '
+            'cLogCIntento
+            '
+            Me.cLogCIntento.Text = "Intento"
+            Me.cLogCIntento.Width = 192
+            '
+            'cLogcResultado
+            '
+            Me.cLogcResultado.Text = "Resultado"
+            Me.cLogcResultado.Width = 78
+            '
+            'Label12
+            '
+            Me.Label12.BackColor = System.Drawing.Color.LightGray
+            Me.Label12.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Label12.Location = New System.Drawing.Point(0, 0)
+            Me.Label12.Name = "Label12"
+            Me.Label12.Size = New System.Drawing.Size(478, 25)
+            Me.Label12.TabIndex = 1
+            Me.Label12.Text = "Certificados"
+            Me.Label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'Label13
+            '
+            Me.Label13.BackColor = System.Drawing.Color.LightGray
+            Me.Label13.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Label13.Location = New System.Drawing.Point(0, 0)
+            Me.Label13.Name = "Label13"
+            Me.Label13.Size = New System.Drawing.Size(478, 25)
+            Me.Label13.TabIndex = 1
+            Me.Label13.Text = "Descargas"
+            Me.Label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'UcWEB
             '
@@ -1736,6 +1816,10 @@
             Me.StatusStrip2.ResumeLayout(False)
             Me.StatusStrip2.PerformLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.SplitContainer4.Panel1.ResumeLayout(False)
+            Me.SplitContainer4.Panel2.ResumeLayout(False)
+            CType(Me.SplitContainer4, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.SplitContainer4.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -1884,5 +1968,12 @@
         Friend WithEvents lstCertificados As ListView
         Friend WithEvents cCertificado As ColumnHeader
         Friend WithEvents cCaducaCertificado As ColumnHeader
+        Friend WithEvents SplitContainer4 As SplitContainer
+        Friend WithEvents lstLogDescargaCertificado As ListView
+        Friend WithEvents cLogCertificado As ColumnHeader
+        Friend WithEvents cLogCIntento As ColumnHeader
+        Friend WithEvents cLogcResultado As ColumnHeader
+        Friend WithEvents Label12 As Label
+        Friend WithEvents Label13 As Label
     End Class
 End Namespace
