@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="BDD\Columnas.vb" />
     <Compile Include="BDD\Core.vb" />
+    <Compile Include="BDD\MailBackupCleaner.vb" />
     <Compile Include="BDD\MailBackupIndex.vb" />
     <Compile Include="BDD\IMAPBaneadas.vb" />
     <Compile Include="BDD\IMAPCorrectas.vb" />
