@@ -94,7 +94,7 @@ Namespace RegistroDeArchivos
             If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
         End Sub
 
-        Private Sub Lector_Background(Sender As Object, ByRef Detener As Boolean)
+        Private Sub Lector_Background(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs)
             Try
                 'Establecer el punto más rapido en caso de falla de configuración
                 If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
@@ -399,7 +399,7 @@ Namespace RegistroDeArchivos
             End Try
         End Sub
 
-        Private Sub Lector_Foreground(Sender As Object, ByRef Detener As Boolean)
+        Private Sub Lector_Foreground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs)
             If Estado = EnumEstado.Analizando Then
                 'Avanza en el conteo de lineas procesadas
                 FileMemory(Archivo).Line += 1
@@ -407,10 +407,10 @@ Namespace RegistroDeArchivos
                 'Informa en el avance de lectura
                 Index = FileMemory(Archivo).Line
             Else
-                Detener = True
+                Detener.Detener = True
             End If
         End Sub
-        Private Sub Lector_Endground(Sender As Object, ByRef Detener As Boolean)
+        Private Sub Lector_Endground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs)
             'Quitamos el Bloque de Analisis
             Bloqueo.Set()
         End Sub

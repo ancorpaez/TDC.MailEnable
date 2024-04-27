@@ -44,7 +44,7 @@ Namespace Backup
             Dim PreliminarFecha = Obtener("Date:", "")
             If String.IsNullOrEmpty(PreliminarFecha) Then PreliminarFecha = Obtener("Sent:", "")
             If String.IsNullOrEmpty(PreliminarFecha) Then PreliminarFecha = IO.File.GetLastWriteTimeUtc(Archivo).ToLongDateString
-            Fecha = If(PreliminarFecha = String.Empty, New Date, Date.Parse(PreliminarFecha))
+            Fecha = If(Not IsDate(PreliminarFecha), New Date, Date.Parse(PreliminarFecha))
         End Sub
 
         Private Function Obtener(Empieza As String, Contiene As String)

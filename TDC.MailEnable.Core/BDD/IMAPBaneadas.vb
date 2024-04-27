@@ -1,6 +1,6 @@
 ﻿Namespace BDD
     Public Class IMAPBaneadas
-        Inherits Core
+        Inherits Mod_Backup
 
         Public Sub New()
             MyBase.New("IMAPBaneadas")

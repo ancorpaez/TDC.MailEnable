@@ -118,7 +118,7 @@ Namespace Migracion
             Return True
         End Function
 
-        Private Sub Refresh_Migraciones_Background(Sender As Object, ByRef Detener As Boolean) Handles Refresh_Migraciones.Background
+        Private Sub Refresh_Migraciones_Background(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Refresh_Migraciones.Background
             If String.IsNullOrEmpty(MailEnableLog.Configuracion.MAIL_APP) Then Throw New Exception("No está configurada la carpeta MailEnable App")
             If Not IO.Directory.Exists(MailEnableLog.Configuracion.MAIL_APP) Then Throw New Exception($"La carpeta configuarada {MailEnableLog.Configuracion.MAIL_APP} no existe o no hay acceso.")
 
@@ -243,7 +243,7 @@ Namespace Migracion
             End If
 
         End Sub
-        Private Sub Refresh_Migraciones_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Refresh_Migraciones.Foreground
+        Private Sub Refresh_Migraciones_Foreground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Refresh_Migraciones.Foreground
             If IsNothing(Servicio) Then
                 LabelService.BackColor = Color.Black
                 If Not IsNothing(BtnService) Then BtnService.Text = "No Instalado"

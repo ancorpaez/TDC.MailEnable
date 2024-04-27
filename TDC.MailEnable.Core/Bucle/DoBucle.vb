@@ -15,16 +15,23 @@ Namespace Bucle
         Public Property Cancelar As Boolean = False
         Public Property Name As String = String.Empty
         Public Property Intervalo As Integer = 100
-        Public Event Background(Sender As Object, ByRef Detener As Boolean)
-        Public Event Foreground(Sender As Object, ByRef Detener As Boolean)
-        Public Event Endground(Sender As Object, ByRef Detener As Boolean)
+        Public Event BackGround(Sender As Object, e As BackgroundEventArgs)
+        Public Event ForeGround(Sender As Object, e As BackgroundEventArgs)
+        Public Event EndGround(Sender As Object, e As BackgroundEventArgs)
+        Public Event ErrorGround(Sender As Object, e As BackgroundEventArgs)
+
+        Public Enum EnumEstado
+            Detenido
+            Corriendo
+        End Enum
+        Public Property Estado As EnumEstado = EnumEstado.Detenido
 
         Public Sub New(Name As String, Optional Visible As Boolean = False)
             'If Not {"MailBoxesScan", "PostOfficeSearch", "MiBucle"}.Any(Function(BucleDo) Name = BucleDo) Then Exit Sub
             Me.Name = Name
             LabelCount = New Label With {.Text = 0, .Dock = DockStyle.Top}
             If Not Visible Then
-                InvokeForm = New Form With {.Text = Name, .Name = Name, .ShowInTaskbar = False, .Opacity = 0}
+                InvokeForm = New Form With {.Text = Name, .Name = Name, .ShowInTaskbar = False, .Opacity = 0, .WindowState = FormWindowState.Minimized}
             Else
                 InvokeForm = New Form With {.Text = Name, .Name = Name, .Height = 140}
             End If
@@ -62,6 +69,7 @@ Namespace Bucle
         Public Sub Iniciar()
             Cancelar = False
             If Not IsNothing(_Trabajador) AndAlso Not _Trabajador.IsBusy Then _Trabajador.RunWorkerAsync()
+            Estado = EnumEstado.Corriendo
         End Sub
         Public Sub Detener()
             Cancelar = True
@@ -95,25 +103,28 @@ Namespace Bucle
                 'Lanzamos el Bucle Background
                 Try
                     If FlagBtnDetenerBackground Then Stop
-                    Dim CancelBackground As Boolean = False
-                    RaiseEvent Background(Me, CancelBackground)
-                    If CancelBackground OrElse Cancelar Then
+                    Dim CancelBackground As New BackgroundEventArgs() With {.Detener = False}
+                    RaiseEvent BackGround(Me, CancelBackground)
+                    If CancelBackground.Detener OrElse Cancelar Then
                         e.Cancel = True
                         Cancelar = True
                         Exit Do
                     End If
                 Catch ex As Exception
-                    Cancelar = True
-                    e.Cancel = True
-                    Exit Do
+                    Dim CancelErrorGround As New BackgroundEventArgs With {.Detener = False, .Excepcion = ex}
+                    If CancelErrorGround.Detener Then
+                        Cancelar = True
+                        e.Cancel = True
+                        Exit Do
+                    End If
                 End Try
 
                 'Lanzamos el Bucle Foreground
                 Try
                     If FlagBtnDetenerForeground Then Stop
-                    Dim CancelForeground As Boolean = False
-                    If Not IsNothing(InvokeForm) AndAlso InvokeForm.Created Then InvokeForm.Invoke(Sub() RaiseEvent Foreground(Me, CancelForeground))
-                    If CancelForeground OrElse Cancelar Then
+                    Dim CancelForeground As New BackgroundEventArgs() With {.Detener = False}
+                    If Not IsNothing(InvokeForm) AndAlso InvokeForm.Created Then InvokeForm.Invoke(Sub() RaiseEvent ForeGround(Me, CancelForeground))
+                    If CancelForeground.Detener OrElse Cancelar Then
                         e.Cancel = True
                         Cancelar = True
                         Exit Do
@@ -123,23 +134,39 @@ Namespace Bucle
                     If InvokeForm.Visible AndAlso InvokeForm.Created Then InvokeForm.Invoke(Sub() LabelCount.Text = CInt(LabelCount.Text) + 1)
 
                 Catch ex As Exception
-                    Cancelar = True
-                    e.Cancel = True
-                    Exit Do
+                    Dim CancelErrorGround As New BackgroundEventArgs With {.Detener = False, .Excepcion = ex}
+                    If CancelErrorGround.Detener Then
+                        Cancelar = True
+                        e.Cancel = True
+                        Exit Do
+                    End If
                 End Try
             Loop
         End Sub
         Private Sub _Trabajador_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles _Trabajador.RunWorkerCompleted
+            Try
+                Dim CancelarEndground As New BackgroundEventArgs() With {.Detener = False}
+                RaiseEvent EndGround(Me, CancelarEndground)
+                If Not CancelarEndground.Detener AndAlso Not Cancelar Then
+                    If Not _Trabajador.IsBusy Then _Trabajador.RunWorkerAsync()
+                Else
+                    Cancelar = True
+                    _Trabajador.CancelAsync()
+                    Estado = EnumEstado.Detenido
+                End If
+            Catch ex As Exception
+                Dim CancelErrorGround As New BackgroundEventArgs With {.Detener = False, .Excepcion = ex}
+                If CancelErrorGround.Detener Then
+                    Cancelar = True
+                End If
+            End Try
             If FlagBtnDetenerEndground Then Stop
-            Dim CancelarEndground As Boolean = False
-            RaiseEvent Endground(Me, CancelarEndground)
-            If Not CancelarEndground AndAlso Not Cancelar Then
-                _Trabajador.RunWorkerAsync()
-            Else
-                Cancelar = True
-                _Trabajador.CancelAsync()
-            End If
         End Sub
 
+    End Class
+    Public Class BackgroundEventArgs
+        Inherits EventArgs
+        Public Property Detener As Boolean
+        Public Property Excepcion As Exception
     End Class
 End Namespace

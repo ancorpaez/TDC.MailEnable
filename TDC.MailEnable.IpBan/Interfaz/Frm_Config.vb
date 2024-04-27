@@ -23,6 +23,9 @@ Namespace Interfaz
             txtBackupEmail.Text = Configuracion.CARPETA_BACKUP
             txtAntiguedadEmails.Text = Configuracion.ANTIGUEDAD_EMAILS
             txtMailEnableApp.Text = Configuracion.MAIL_APP
+            txtAnalizadoresEmail.Text = Configuracion.ANALIZADORES_BACKUP
+            TrackAnalizadoresMailTimer.Value = Configuracion.ANALIZADORES_BACKUP_TIMER
+            txtTimerAnalizadoresEmail.Text = Configuracion.ANALIZADORES_BACKUP_TIMER
 
             If IsNumeric(Mod_Core.Configuracion.TIMER_LECTURA) Then
                 TrackLectura.Value = CInt(Configuracion.TIMER_LECTURA)
@@ -38,6 +41,27 @@ Namespace Interfaz
                 Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
                 txtPropagacionIP.Text = TrackPropagacion.Value
             End If
+        End Sub
+        Private Sub BtnGuardarConfig_Click(sender As Object, e As EventArgs) Handles BtnGuardarConfig.Click
+            Mod_Core.Configuracion.IMAP = txtIMAP.Text
+            Mod_Core.Configuracion.SMTP = txtSMTP.Text
+            Mod_Core.Configuracion.POP = txtPOP.Text
+            Mod_Core.Configuracion.WEB = txtWEB.Text
+            Mod_Core.Configuracion.SMTP_DENY = txtASMTP.Text
+            Mod_Core.Configuracion.POP_DENY = txtAPOP.Text
+            Mod_Core.Configuracion.WEB_DENY = txtAWEB.Text
+            Mod_Core.Configuracion.IMAP_SOCKET_APP = txtImapApp.Text
+            Mod_Core.Configuracion.SPAM_SPAMASSASSIN = txtSpamAssassin.Text
+            Mod_Core.Configuracion.POST_OFFICES = txtPostOffices.Text
+            Mod_Core.Configuracion.TIMER_LECTURA = TrackLectura.Value
+            Mod_Core.Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
+            Mod_Core.Configuracion.LECTURA_REPOSO = NumReposoLectura.Value
+            Mod_Core.Configuracion.CARPETA_BACKUP = txtBackupEmail.Text
+            Configuracion.ANTIGUEDAD_EMAILS = txtAntiguedadEmails.Text
+            Configuracion.MAIL_APP = txtMailEnableApp.Text
+            Configuracion.ANALIZADORES_BACKUP = CInt(txtAnalizadoresEmail.Text)
+            Mod_Core.GuardarConfiguracion()
+            Me.Close()
         End Sub
 
         Private Function CargarCarpeta() As String
@@ -62,27 +86,6 @@ Namespace Interfaz
         End Sub
 
         Private Sub BtnCancelar_Click(sender As Object, e As EventArgs) Handles BtnCancelar.Click
-            Me.Close()
-        End Sub
-
-        Private Sub BtnGuardarConfig_Click(sender As Object, e As EventArgs) Handles BtnGuardarConfig.Click
-            Mod_Core.Configuracion.IMAP = txtIMAP.Text
-            Mod_Core.Configuracion.SMTP = txtSMTP.Text
-            Mod_Core.Configuracion.POP = txtPOP.Text
-            Mod_Core.Configuracion.WEB = txtWEB.Text
-            Mod_Core.Configuracion.SMTP_DENY = txtASMTP.Text
-            Mod_Core.Configuracion.POP_DENY = txtAPOP.Text
-            Mod_Core.Configuracion.WEB_DENY = txtAWEB.Text
-            Mod_Core.Configuracion.IMAP_SOCKET_APP = txtImapApp.Text
-            Mod_Core.Configuracion.SPAM_SPAMASSASSIN = txtSpamAssassin.Text
-            Mod_Core.Configuracion.POST_OFFICES = txtPostOffices.Text
-            Mod_Core.Configuracion.TIMER_LECTURA = TrackLectura.Value
-            Mod_Core.Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
-            Mod_Core.Configuracion.LECTURA_REPOSO = NumReposoLectura.Value
-            Mod_Core.Configuracion.CARPETA_BACKUP = txtBackupEmail.Text
-            Configuracion.ANTIGUEDAD_EMAILS = txtAntiguedadEmails.Text
-            Configuracion.MAIL_APP = txtMailEnableApp.Text
-            Mod_Core.GuardarConfiguracion()
             Me.Close()
         End Sub
 
@@ -139,12 +142,12 @@ Namespace Interfaz
 
         Private Sub TrackLectura_Scroll(sender As Object, e As EventArgs) Handles TrackLectura.Scroll
             Configuracion.TIMER_LECTURA = TrackLectura.Value
-            txtLecturaArchivos.Text = TrackLectura.Value
+            If CInt(txtLecturaArchivos.Text) <> TrackLectura.Value Then txtLecturaArchivos.Text = TrackLectura.Value
         End Sub
 
         Private Sub TrackPropagacion_Scroll(sender As Object, e As EventArgs) Handles TrackPropagacion.Scroll
             Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
-            txtPropagacionIP.Text = TrackPropagacion.Value
+            If CInt(txtPropagacionIP.Text) <> TrackPropagacion.Value Then txtPropagacionIP.Text = TrackPropagacion.Value
         End Sub
 
         Private Sub txtxLecturaArchivos_TextChanged(sender As Object, e As EventArgs) Handles txtLecturaArchivos.TextChanged
@@ -183,6 +186,34 @@ Namespace Interfaz
         Private Sub CmdBuscarMailEnableApp_Click(sender As Object, e As EventArgs) Handles CmdBuscarMailEnableApp.Click
             CargarCarpeta()
             txtMailEnableApp.Text = CtrlBuscarCarpeta.SelectedPath
+        End Sub
+
+        Private Sub txtAnalizadoresEmail_TextChanged(sender As Object, e As EventArgs) Handles txtAnalizadoresEmail.TextChanged
+            If IsNumeric(txtAnalizadoresEmail.Text) Then
+                If CInt(txtAnalizadoresEmail.Text) <= TrackAnalizadoresEmail.Maximum Then
+                    TrackAnalizadoresEmail.Value = CInt(txtAnalizadoresEmail.Text)
+                Else
+                    TrackAnalizadoresEmail.Value = TrackAnalizadoresEmail.Maximum
+                    txtAnalizadoresEmail.Text = TrackAnalizadoresEmail.Maximum
+                End If
+            End If
+        End Sub
+
+        Private Sub TrackAnalizadoresEmail_Scroll(sender As Object, e As EventArgs) Handles TrackAnalizadoresEmail.Scroll
+            If CInt(txtAnalizadoresEmail.Text) <> TrackAnalizadoresEmail.Value Then txtAnalizadoresEmail.Text = TrackAnalizadoresEmail.Value
+            Configuracion.ANALIZADORES_BACKUP = TrackAnalizadoresEmail.Value
+        End Sub
+
+        Private Sub TrackAnalizadoresMailTimer_Scroll(sender As Object, e As EventArgs) Handles TrackAnalizadoresMailTimer.Scroll
+            Configuracion.ANALIZADORES_BACKUP_TIMER = TrackAnalizadoresMailTimer.Value
+            If CInt(txtTimerAnalizadoresEmail.Text) <> TrackAnalizadoresMailTimer.Value Then txtTimerAnalizadoresEmail.Text = TrackAnalizadoresMailTimer.Value
+        End Sub
+
+        Private Sub txtTimerAnalizadoresEmail_TextChanged(sender As Object, e As EventArgs) Handles txtTimerAnalizadoresEmail.TextChanged
+            If IsNumeric(txtTimerAnalizadoresEmail.Text) Then
+                TrackAnalizadoresMailTimer.Value = txtTimerAnalizadoresEmail.Text
+                Configuracion.ANALIZADORES_BACKUP_TIMER = txtTimerAnalizadoresEmail.Text
+            End If
         End Sub
     End Class
 End Namespace

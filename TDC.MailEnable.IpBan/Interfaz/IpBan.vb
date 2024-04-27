@@ -235,8 +235,9 @@ Namespace Interfaz
             End If
 
             'Indexar los Emails del Backup
-            Dim Accion As Action = Async Sub() Await Backup.Indexar()
-            Dim Lanzar As Task = Task.Run(Accion)
+            Backup.Main()
+            'Dim Accion As Action = Async Sub() Await Backup.Indexar()
+            'Dim Lanzar As Task = Task.Run(Accion)
 
 
             'Comprobar si las Rutas de Backup son Accesibles
@@ -274,7 +275,7 @@ Namespace Interfaz
 
             For Each subFolder In IO.Directory.GetDirectories(folderPath, "*", IO.SearchOption.TopDirectoryOnly)
                 ' Agrega cada subcarpeta como un nodo hijo
-                If Not {"indexroot", "pubroot", "fileroot", "calendar", "contacts", "notes", "tasks"}.Any(Function(Carpeta) subFolder.ToLower.Contains(Carpeta)) Then
+                If Not {"indexroot", "pubroot", "chatroot"}.Any(Function(Carpeta) subFolder.ToLower.Contains(Carpeta)) Then
                     Try
                         Dim subFolderNode As TreeNode
                         If Not parentNode.Nodes.ContainsKey(subFolder) Then
@@ -413,68 +414,68 @@ Namespace Interfaz
             End If
         End Sub
 
-        Private Sub Trabajador_POPW3C_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_POPW3C.Background
+        Private Sub Trabajador_POPW3C_Background(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Trabajador_POPW3C.BackGround
             'Trabajo en BackGround
             EscanearCarpeta(UcPOPEx, Function(Linea) RecuperarIpSplit(Linea, 2), Trabajador_POPW3C, Mod_Core.Configuracion.POP, Registro_POPW3C, "ex*.log")
 
             'Propagamos la configuracion de Bloqueo de IP
             BtnPropagarIps_Click(Nothing, New EventArgs)
         End Sub
-        Private Sub Trabajador_POPW3C_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_POPW3C.Foreground
+        Private Sub Trabajador_POPW3C_Foreground(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Trabajador_POPW3C.ForeGround
             'Detenemos el procesamiento
             Trabajador_POPW3C.Detener()
         End Sub
-        Private Sub Trabajador_POPW3C_Endground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_POPW3C.Endground
+        Private Sub Trabajador_POPW3C_Endground(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Trabajador_POPW3C.EndGround
             'Relajamos en bucle de Busqueda de Archivos
             Trabajador_POPW3C.Cancelar = False
             Trabajador_POPW3C.Intervalo = Configuracion.LECTURA_REPOSO
         End Sub
-        Private Sub Trabajador_SMTPW3C_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_SMTPW3C.Background
+        Private Sub Trabajador_SMTPW3C_Background(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Trabajador_SMTPW3C.BackGround
             'Trabajo en BackGround
             EscanearCarpeta(UcSMTPEx, Function(Linea) RecuperarIpSplit(Linea, 2), Trabajador_SMTPW3C, Mod_Core.Configuracion.SMTP, Registro_SMTPW3C, "ex*.log")
 
             'Propagamos la configuracion de Bloqueo de IP
             BtnPropagarIps_Click(Nothing, New EventArgs)
         End Sub
-        Private Sub Trabajador_SMTPW3C_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_SMTPW3C.Foreground
+        Private Sub Trabajador_SMTPW3C_Foreground(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Trabajador_SMTPW3C.ForeGround
             'Detenemos el procesamiento
             Trabajador_SMTPW3C.Detener()
         End Sub
 
-        Private Sub Trabajador_SMTPW3C_Endground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_SMTPW3C.Endground
+        Private Sub Trabajador_SMTPW3C_Endground(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Trabajador_SMTPW3C.EndGround
             'Relajamos en bucle de Busqueda de Archivos
             Trabajador_SMTPW3C.Cancelar = False
             Trabajador_SMTPW3C.Intervalo = Configuracion.LECTURA_REPOSO
         End Sub
-        Private Sub Trabajador_IMAPW3C_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_IMAPW3C.Background
+        Private Sub Trabajador_IMAPW3C_Background(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Trabajador_IMAPW3C.BackGround
             'Trabajo en BackGround
             EscanearCarpeta(UcIMAPEx, Function(Linea) RecuperarIpSplit(Linea, 2), Trabajador_IMAPW3C, Mod_Core.Configuracion.IMAP, Registro_IMAPW3C, "ex*.log")
 
             'Propagamos la configuracion de Bloqueo de IP
             BtnPropagarIps_Click(Nothing, New EventArgs)
         End Sub
-        Private Sub Trabajador_IMAPW3C_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_IMAPW3C.Foreground
+        Private Sub Trabajador_IMAPW3C_Foreground(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Trabajador_IMAPW3C.ForeGround
             'Detenemos el procesamiento
             Trabajador_IMAPW3C.Detener()
         End Sub
 
-        Private Sub Trabajador_IMAPW3C_Endground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_IMAPW3C.Endground
+        Private Sub Trabajador_IMAPW3C_Endground(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Trabajador_IMAPW3C.EndGround
             'Relajamos en bucle de Busqueda de Archivos
             Trabajador_IMAPW3C.Cancelar = False
             Trabajador_IMAPW3C.Intervalo = Configuracion.LECTURA_REPOSO
         End Sub
-        Private Sub Trabajador_WEB_Background(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_WEB.Background
+        Private Sub Trabajador_WEB_Background(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Trabajador_WEB.BackGround
             'Trabajo en BackGround
             EscanearCarpeta(UcWEB, Function(Linea) RecuperarIpSplit(Linea, 8), Trabajador_WEB, Mod_Core.Configuracion.WEB, Registro_WEB, "u_ex*.log")
 
             'Propagamos la configuracion de Bloqueo de IP
             BtnPropagarIps_Click(Nothing, New EventArgs)
         End Sub
-        Private Sub Trabajador_WEB_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_WEB.Foreground
+        Private Sub Trabajador_WEB_Foreground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Trabajador_WEB.ForeGround
             'Detenemos el procesamiento
             Trabajador_WEB.Detener()
         End Sub
-        Private Sub Trabajador_WEB_Endground(Sender As Object, ByRef Detener As Boolean) Handles Trabajador_WEB.Endground
+        Private Sub Trabajador_WEB_Endground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Trabajador_WEB.EndGround
             'Relajamos en bucle de Busqueda de Archivos
             Trabajador_WEB.Cancelar = False
             Trabajador_WEB.Intervalo = Configuracion.LECTURA_REPOSO
@@ -634,16 +635,16 @@ Namespace Interfaz
             Try
                 TreePostOffices.Enabled = False
 
-                Dim Filtro() As DataRow = Backup.Indexacion.Tabla.Select("Archivo LIKE '%" & e.Node.FullPath & "%'")
-                Dim Datos As DataTable = Backup.Indexacion.Tabla.Clone
+                Dim Filtro() As DataRow = Backup.MAI.Tabla.Select("Archivo LIKE '%" & e.Node.FullPath & "%'")
+                Dim Datos As DataTable = Backup.MAI.Tabla.Clone
                 For Each Linea In Filtro
                     Datos.ImportRow(Linea)
                 Next
                 TablaMailBackup.DataSource = Datos
                 TreePostOffices.Enabled = True
-                LabelErroresDataTable.Text = ""
+                lblMensajesBackup.Text = ""
             Catch ex As Exception
-                LabelErroresDataTable.Text = ex.Message
+                lblMensajesBackup.Text = ex.Message
                 TreePostOffices.Enabled = True
             End Try
 
@@ -652,7 +653,7 @@ Namespace Interfaz
         Private Sub TablaMailBackup_DataSourceChanged(sender As Object, e As EventArgs) Handles TablaMailBackup.DataSourceChanged
             Try
                 If TablaMailBackup.DataSource.GetType = GetType(DataTable) Then
-                    LabelCorreosEliminados.Text = $"{CType(TablaMailBackup.DataSource, DataTable).Rows.Count} Correos eliminados."
+                    LabelCorreosEliminados.Text = $"{CType(TablaMailBackup.DataSource, DataTable).Rows.Count} Encontrados."
                 Else
                     LabelCorreosEliminados.Text = $"{CType(TablaMailBackup.DataSource, DataView).Count} Encontrados."
                 End If
@@ -694,29 +695,34 @@ Namespace Interfaz
                 Dim mC As New List(Of Control) From {TablaMailBackup, TreePostOffices}
                 mC.ForEach(Sub(c) c.Enabled = False)
                 Dim Total As Integer = TablaMailBackup.SelectedRows.Count
-                LabelErroresDataTable.Text = $"Restantes: {Total}"
+                lblMensajesBackup.Text = $"Restantes: {Total}"
                 Me.Refresh()
                 For Each Fila In TablaMailBackup.SelectedRows
-                    Dim Analizar As New Backup.Email(Fila.Cells(1).Value)
-                    Dim IdMail = Backup.Indexacion.GetItemIndex("Archivo", Fila.Cells(1).Value)
+                    Dim Analizar As New Backup.Email1(Fila.Cells(1).Value)
+                    Dim IdMail = Backup.MAI.GetItemIndex("Archivo", Fila.Cells(1).Value)
                     If Not IsNothing(IdMail) Then
-                        Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Remitente), If(String.IsNullOrEmpty(Analizar.Remitente), "", Analizar.Remitente))
-                        Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Asunto), If(String.IsNullOrEmpty(Analizar.Asunto), "", Analizar.Asunto))
-                        Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Destinatarios), If(IsNothing(Analizar.Destinatarios), "", String.Join(";", Analizar.Destinatarios)))
-                        Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.ConCopia), If(IsNothing(Analizar.ConCopia), "", String.Join(";", Analizar.ConCopia)))
-                        Backup.Indexacion.Update(IdMail, Backup.Indexacion.GetColString(BDD.MailBackupIndex.Columnas.Fecha), Analizar.Fecha)
+                        Backup.MAI.Update(IdMail, Backup.MAI.GetColString(BDD.MailBackup_MAI.Columnas.Remitente), If(String.IsNullOrEmpty(Analizar.Remitente), "", Analizar.Remitente))
+                        Backup.MAI.Update(IdMail, Backup.MAI.GetColString(BDD.MailBackup_MAI.Columnas.Asunto), If(String.IsNullOrEmpty(Analizar.Asunto), "", Analizar.Asunto))
+                        Backup.MAI.Update(IdMail, Backup.MAI.GetColString(BDD.MailBackup_MAI.Columnas.Destinatarios), If(IsNothing(Analizar.Destinatarios), "", String.Join(";", Analizar.Destinatarios)))
+                        Backup.MAI.Update(IdMail, Backup.MAI.GetColString(BDD.MailBackup_MAI.Columnas.ConCopia), If(IsNothing(Analizar.ConCopia), "", String.Join(";", Analizar.ConCopia)))
+                        Backup.MAI.Update(IdMail, Backup.MAI.GetColString(BDD.MailBackup_MAI.Columnas.Fecha), Analizar.Fecha)
+                        Fila.Cells(2).Value = Analizar.Remitente
+                        Fila.Cells(3).Value = Analizar.Destinatarios
+                        Fila.Cells(4).Value = Analizar.ConCopia
+                        Fila.Cells(5).Value = Analizar.Asunto
+                        Fila.Cells(6).Value = Analizar.Fecha
                         Total -= 1
-                        LabelErroresDataTable.Text = $"Restantes: {Total}"
+                        lblMensajesBackup.Text = $"Restantes: {Total}"
                         Me.Refresh()
                     Else
                         Task.Run(Sub()
-                                     Me.Invoke(Sub() LabelErroresDataTable.Text = "No se pudo indexar el mensaje, inténtelo más tarde.")
+                                     Me.Invoke(Sub() lblMensajesBackup.Text = "No se pudo indexar el mensaje, inténtelo más tarde.")
                                      Thread.Sleep(3000)
-                                     Me.Invoke(Sub() LabelErroresDataTable.Text = "")
+                                     Me.Invoke(Sub() lblMensajesBackup.Text = "")
                                  End Sub)
                     End If
                 Next
-                Backup.Indexacion.Tabla.WriteXml("Indexacion.xml")
+                Backup.MAI.Guardar(Backup.BddMAIFullPath)
                 mC.ForEach(Sub(c) c.Enabled = True)
             End If
         End Sub
@@ -741,26 +747,28 @@ Namespace Interfaz
         End Sub
         Private Sub RestaurarEmailToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RestaurarEmail.Click
             For Each Fila As DataGridViewRow In TablaMailBackup.SelectedRows
-                Backup.Restaurar(Fila.Cells(1).Value)
+                'Backup.Restaurar(Fila.Cells(1).Value)
             Next
         End Sub
         Private Sub ReindexarTodoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReindexarTodoToolStripMenuItem.Click
             If MsgBox("Esto eliminará la Indexación Actual." & vbNewLine & vbNewLine & "Desea continuar?", MsgBoxStyle.YesNo, "Reindexar TODO") = MsgBoxResult.Yes Then
-                Backup.Indexacion.Tabla.Clear()
-                IO.File.Delete("Indexacion.xml")
+                Backup.MAI.Tabla.Clear()
+                IO.File.Delete(Backup.BddMAIFullPath)
                 TablaMailBackup.Refresh()
                 TablaMailBackup.Enabled = False
-                LabelErroresDataTable.Text = "Indexando..."
-                Dim Accion As Action = Async Sub() Await Backup.Indexar()
-                Dim Lanzar As Task = Task.Run(Accion)
+                lblMensajesBackup.Text = "Indexando..."
+                Backup.BuscadorCarpetas.Buscar(Configuracion.CARPETA_BACKUP)
+                'Dim Accion As Action = Async Sub() Await Backup.Indexar()
+                'Dim Lanzar As Task = Task.Run(Accion)
             End If
         End Sub
         Private Sub IndexarNuevosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles IndexarNuevosToolStripMenuItem.Click
-            Backup.Indexacion.Tabla.Clear()
+            Backup.MAI.Tabla.Clear()
             TablaMailBackup.Enabled = False
-            LabelErroresDataTable.Text = "Indexando..."
-            Dim Accion As Action = Async Sub() Await Backup.Indexar()
-            Dim Lanzar As Task = Task.Run(Accion)
+            lblMensajesBackup.Text = "Indexando..."
+            Backup.BuscadorCarpetas.Buscar(Configuracion.CARPETA_BACKUP)
+            'Dim Accion As Action = Async Sub() Await Backup.Indexar()
+            'Dim Lanzar As Task = Task.Run(Accion)
         End Sub
         Private Sub TablaMailBackup_EnabledChanged(sender As Object, e As EventArgs) Handles TablaMailBackup.EnabledChanged
             TablaMailBackup.ForeColor = If(TablaMailBackup.Enabled, Color.Black, Color.LightGray)
@@ -769,7 +777,7 @@ Namespace Interfaz
 
         Private Sub TablaMailBackup_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles TablaMailBackup.RowEnter
             If TablaMailBackup.SelectedRows.Count > 0 Then
-                LabelErroresDataTable.Text = TablaMailBackup.SelectedRows(0).Cells(1).Value
+                lblMensajesBackup.Text = TablaMailBackup.SelectedRows(0).Cells(1).Value
             End If
         End Sub
 
@@ -809,8 +817,9 @@ Namespace Interfaz
             If Not IsNothing(TreePostOffices.SelectedNode) Then
                 TablaMailBackup.Enabled = False
                 Dim Ruta As String = TreePostOffices.SelectedNode.FullPath
-                Dim Accion As Action = Async Sub() Await Backup.Indexar(Ruta)
-                Dim Lanzar As Task = Task.Run(Accion)
+                Backup.BuscadorCarpetas.Buscar(Ruta)
+                'Dim Accion As Action = Async Sub() Await Backup.Indexar(Ruta)
+                'Dim Lanzar As Task = Task.Run(Accion)
             End If
         End Sub
 

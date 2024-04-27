@@ -75,12 +75,15 @@ Namespace Certificados
             End If
         End Sub
 
-        Private Sub Actualizador_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Actualizador.Foreground
+        Private Sub Actualizador_Foreground(Sender As Object, Detener As MailEnable.Core.Bucle.BackgroundEventArgs) Handles Actualizador.ForeGround
             If dQuene.Count = 0 AndAlso dProcess.Count = 0 Then
                 Domain1()
                 Domain2()
                 Domain3()
                 Domain4()
+                Domain5()
+                Domain6()
+                Domain7()
                 TryGetCertificate()
             ElseIf dQuene.Count = 0 AndAlso dProcess.Count > 0 Then
                 Do While dProcess.Count > 0

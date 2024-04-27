@@ -92,7 +92,7 @@
         End Sub
 
 
-        Private Sub Lectura_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles Lectura.Background
+        Private Sub Lectura_IBucle_Bucle(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Lectura.Background
             If IsNothing(LogFile) Then LogFile = New IO.FileInfo(Ejecutable.FullName.Replace("exe", "log"))
             If Not LogFile.Exists Then
                 LogFile.Refresh()

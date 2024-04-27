@@ -14,7 +14,7 @@ Namespace Pipe
             BucleDatos.Iniciar()
         End Sub
 
-        Private Sub BucleDatos_IBucle_Bucle(Sender As Object, ByRef Detener As Boolean) Handles BucleDatos.Background
+        Private Sub BucleDatos_IBucle_Bucle(Sender As Object,Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles BucleDatos.Background
             Using Server = New NamedPipeServerStream(PipeServerName)
                 With Server
 

@@ -22,25 +22,27 @@
         Public Sub Detener()
             MailBoxesScan.Detener()
         End Sub
-        Private Sub MailBoxesScan_Background(Sender As Object, ByRef Detener As Boolean) Handles MailBoxesScan.Background
-            Try
-                MailBoxesDirectory.Refresh()
-            Catch ex As Exception
-                MailBoxesDirectory = New IO.DirectoryInfo(MailBoxesDirectory.FullName)
-            End Try
+        Private Sub MailBoxesScan_Background(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles MailBoxesScan.Background
+            If Not IsNothing(MailBoxesDirectory) Then
+                Try
+                    MailBoxesDirectory.Refresh()
+                Catch ex As Exception
+                    MailBoxesDirectory = New IO.DirectoryInfo(MailBoxesDirectory.FullName)
+                End Try
 
-            If MailBoxesDirectory.Exists Then
-                'Añadir
-                For Each MailBox In MailBoxesDirectory.GetDirectories
-                    If Not MailBoxes.ContainsKey(MailBox.Name) Then MailBoxes.TryAdd(MailBox.Name, MailBox.Name)
-                Next
+                If MailBoxesDirectory.Exists Then
+                    'Añadir
+                    For Each MailBox In MailBoxesDirectory.GetDirectories
+                        If Not MailBoxes.ContainsKey(MailBox.Name) Then MailBoxes.TryAdd(MailBox.Name, MailBox.Name)
+                    Next
 
-                'Eliminar
-                For Each MailBox In MailBoxes.Keys
-                    If MailBoxesDirectory.GetDirectories(MailBox).Count = 0 Then
-                        MailBoxes.TryRemove(MailBox, Nothing)
-                    End If
-                Next
+                    'Eliminar
+                    For Each MailBox In MailBoxes.Keys
+                        If MailBoxesDirectory.GetDirectories(MailBox).Count = 0 Then
+                            MailBoxes.TryRemove(MailBox, Nothing)
+                        End If
+                    Next
+                End If
             End If
         End Sub
     End Class

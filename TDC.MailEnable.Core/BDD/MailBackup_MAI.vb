@@ -1,6 +1,6 @@
 ﻿Namespace BDD
-    Public Class MailBackupIndex
-        Inherits Core
+    Public Class MailBackup_MAI
+        Inherits Mod_Backup
 
         Public Sub New()
             MyBase.New("BackupIndex")

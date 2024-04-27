@@ -17,11 +17,11 @@ Namespace Escuchadores
             Aceptador = New Bucle.DoBucle("Avisador " & Puerto, False)
         End Sub
 
-        Private Sub Aceptador_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Aceptador.Foreground
+        Private Sub Aceptador_Foreground(Sender As Object,Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Aceptador.Foreground
             RaiseEvent ConexionEntrante()
         End Sub
 
-        Private Sub Aceptador_Background(Sender As Object, ByRef Detener As Boolean) Handles Aceptador.Background
+        Private Sub Aceptador_Background(Sender As Object,Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Aceptador.Background
             Aceptadas.Enqueue(Escucha.AcceptSocket)
         End Sub
 

@@ -1,18 +1,22 @@
 ﻿Namespace BDD
-    Public MustInherit Class Core
+    Public MustInherit Class Mod_Backup
         Public Property Tabla As DataTable
         Protected Friend Fila As DataRow
         Public Columnas As Columnas
         Protected Friend MustOverride Function Inicializar() As Columnas
         Public MustOverride Function GetColString(Columnas As Columnas.Columnas)
         Public MustOverride Function GetColIndex(Columnas As Columnas.Columnas)
+        Public Enum EnumGuardado
+            Guardando
+            Guardado
+        End Enum
+
+        'Bandera de Guardado de Archivo
+        Private GuardarEstado As EnumGuardado = EnumGuardado.Guardado
+
 
         'Operaciones Asincronas
-        Private Shared SyncLockAdd As New Object()
-        Private Shared SyncLockUpdate As New Object()
-        Private Shared SyncLockGet As New Object()
-        Private Shared SyncLockContains As New Object()
-        Private Shared SyncLockGetItemIndex As New Object()
+        Private Shared SyncLockAction As New Object()
 
         Public Sub New(Name As String)
             Tabla = New DataTable(Name)
@@ -37,8 +41,16 @@
                 End If
             Next
         End Sub
+
+        Public Sub Guardar(Name)
+            If GuardarEstado = EnumGuardado.Guardado Then
+                GuardarEstado = EnumGuardado.Guardando
+                Tabla.WriteXml(Name)
+                GuardarEstado = EnumGuardado.Guardado
+            End If
+        End Sub
         Public Function Add(Valor As Columnas) As Integer
-            SyncLock SyncLockAdd
+            SyncLock SyncLockAction
                 Fila = Tabla.NewRow
                 Try
                     For Each Propiedad In Valor.GetType.GetProperties
@@ -56,7 +68,7 @@
         End Sub
 
         Public Function Contains(Columna As String, Valor As String) As Boolean
-            SyncLock SyncLockContains
+            SyncLock SyncLockAction
                 Try
                     Dim Objeto As DataRow() = Tabla.Select(String.Format(Columna & "='{0}'", Valor))
                     If Objeto.Count > 0 Then Return True Else Return False
@@ -67,7 +79,7 @@
         End Function
 
         Public Sub Update(Id As Int32, Columna As String, Valor As String)
-            SyncLock SyncLockUpdate
+            SyncLock SyncLockAction
                 Try
                     Dim Actualizar As DataRow() = Tabla.Select("ID='" & Id & "'")
                     If Actualizar.Count > 0 Then
@@ -78,7 +90,7 @@
             End SyncLock
         End Sub
         Public Function [Get](Id As Int32, Columna As String) As Object
-            SyncLock SyncLockGet
+            SyncLock SyncLockAction
                 Try
                     Dim Devolver As DataRow() = Tabla.Select("ID='" & Id & "'")
                     If Devolver.Count > 0 Then
@@ -91,7 +103,7 @@
             End SyncLock
         End Function
         Public Function GetItemIndex(Columna As String, Valor As Object) As Integer?
-            SyncLock SyncLockGetItemIndex
+            SyncLock SyncLockAction
                 Try
                     Dim Devolucion As DataRow() = Tabla.Select(String.Format(Columna & "='{0}'", Valor))
                     If Not IsNothing(Devolucion) Then

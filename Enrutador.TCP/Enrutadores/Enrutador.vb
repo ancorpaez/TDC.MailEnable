@@ -50,7 +50,7 @@ Namespace Enrutadores
             End If
         End Function
 
-        Private Sub Dispadaror_Background(Sender As Object, ByRef Detener As Boolean) Handles Dispadaror.Background
+        Private Sub Dispadaror_Background(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Dispadaror.BackGround
             Try
                 'Establecer la ip a Simular
                 If IPENAT.Port = 0 Then
@@ -106,7 +106,7 @@ Namespace Enrutadores
                 'Temporizador.Detener()
             End Try
         End Sub
-        Private Sub Dispadaror_Endground(Sender As Object, ByRef Detener As Boolean) Handles Dispadaror.Endground
+        Private Sub Dispadaror_Endground(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Dispadaror.EndGround
             Dispadaror.Matar()
             Temporizador.Intervalo = 1000
             Temporizador.Iniciar()
@@ -142,18 +142,18 @@ Namespace Enrutadores
             End Try
         End Sub
 
-        Private Sub Temporizador_Background(Sender As Object, ByRef Detener As Boolean) Handles Temporizador.Background
+        Private Sub Temporizador_Background(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Temporizador.BackGround
             If DateDiff(DateInterval.Second, Activo, Now) > InactiveTimeOut OrElse IpBanPipe.Contains(CType(Conexion.RemoteEndPoint, IPEndPoint).Address.ToString) Then
-                Detener = True
+                Detener.Detener = True
             End If
         End Sub
 
-        Private Sub Temporizador_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Temporizador.Foreground
+        Private Sub Temporizador_Foreground(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Temporizador.ForeGround
             RaiseEvent Actividad(InactiveTimeOut - DateDiff(DateInterval.Second, Activo, Now), Me)
             'Console.WriteLine(TimeOut - DateDiff(DateInterval.Second, Activo, Now), Me)
         End Sub
 
-        Private Sub Temporizador_Endground(Sender As Object, ByRef Detener As Boolean) Handles Temporizador.Endground
+        Private Sub Temporizador_Endground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Temporizador.EndGround
             'Se termino la conexión 
             RaiseEvent AlCerrarEnrutador(Me)
             Temporizador.Matar()

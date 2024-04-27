@@ -39,7 +39,7 @@ Namespace Interfaz
                 Progreso.Maximum = Lista.Count - 1
             End If
         End Sub
-        Private Sub Publicador_Background(Sender As Object, ByRef Detener As Boolean) Handles Publicador.Background
+        Private Sub Publicador_Background(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Publicador.Background
             If IsNumeric(Configuracion.TIMER_PROPAGACION) Then Publicador.Intervalo = Configuracion.TIMER_PROPAGACION Else Publicador.Intervalo = 1
             'Proteger
             If Lista.Count = 0 Then Exit Sub
@@ -68,7 +68,7 @@ Namespace Interfaz
             End If
         End Sub
 
-        Private Sub Publicador_Foreground(Sender As Object, ByRef Detener As Boolean) Handles Publicador.Foreground
+        Private Sub Publicador_Foreground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Publicador.Foreground
             If IndexIp < Lista.Count Then
                 Progreso.Value = IndexIp
                 lblIp.Text = Lista(IndexIp)
@@ -76,7 +76,7 @@ Namespace Interfaz
                 lblCount.Text = Lista.Count
             Else
                 'Detener la publicacion
-                Detener = True
+                Detener.Detener = True
                 Publicador.Detener()
             End If
         End Sub
@@ -85,7 +85,7 @@ Namespace Interfaz
             'Me.Close()
         End Sub
 
-        Private Sub Publicador_Endground(Sender As Object, ByRef Detener As Boolean) Handles Publicador.Endground
+        Private Sub Publicador_Endground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Publicador.Endground
             ListaSMTP.Dispose()
             ListaPOP.Dispose()
             Me.Close()

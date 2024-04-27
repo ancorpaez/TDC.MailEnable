@@ -77,10 +77,19 @@
             Me.Label17 = New System.Windows.Forms.Label()
             Me.txtMailEnableApp = New System.Windows.Forms.TextBox()
             Me.CmdBuscarMailEnableApp = New System.Windows.Forms.Button()
+            Me.txtAnalizadoresEmail = New System.Windows.Forms.TextBox()
+            Me.Label18 = New System.Windows.Forms.Label()
+            Me.TrackAnalizadoresEmail = New System.Windows.Forms.TrackBar()
+            Me.Label19 = New System.Windows.Forms.Label()
+            Me.TrackAnalizadoresMailTimer = New System.Windows.Forms.TrackBar()
+            Me.lblTrackMailTimer = New System.Windows.Forms.Label()
+            Me.txtTimerAnalizadoresEmail = New System.Windows.Forms.TextBox()
             Me.Panel1.SuspendLayout()
             CType(Me.TrackLectura, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.TrackPropagacion, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.NumReposoLectura, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.TrackAnalizadoresEmail, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.TrackAnalizadoresMailTimer, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'Label1
@@ -153,7 +162,7 @@
             Me.Panel1.Controls.Add(Me.BtnGuardarConfig)
             Me.Panel1.Controls.Add(Me.CtrlSeparadorPie)
             Me.Panel1.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.Panel1.Location = New System.Drawing.Point(0, 537)
+            Me.Panel1.Location = New System.Drawing.Point(0, 577)
             Me.Panel1.Name = "Panel1"
             Me.Panel1.Size = New System.Drawing.Size(780, 40)
             Me.Panel1.TabIndex = 3
@@ -329,7 +338,7 @@
             'chkArranqueWindows
             '
             Me.chkArranqueWindows.AutoSize = True
-            Me.chkArranqueWindows.Location = New System.Drawing.Point(12, 460)
+            Me.chkArranqueWindows.Location = New System.Drawing.Point(12, 499)
             Me.chkArranqueWindows.Name = "chkArranqueWindows"
             Me.chkArranqueWindows.Size = New System.Drawing.Size(134, 17)
             Me.chkArranqueWindows.TabIndex = 5
@@ -490,7 +499,7 @@
             'Label15
             '
             Me.Label15.AutoSize = True
-            Me.Label15.Location = New System.Drawing.Point(12, 494)
+            Me.Label15.Location = New System.Drawing.Point(12, 533)
             Me.Label15.Name = "Label15"
             Me.Label15.Size = New System.Drawing.Size(210, 13)
             Me.Label15.TabIndex = 14
@@ -498,7 +507,7 @@
             '
             'txtAntiguedadEmails
             '
-            Me.txtAntiguedadEmails.Location = New System.Drawing.Point(228, 491)
+            Me.txtAntiguedadEmails.Location = New System.Drawing.Point(228, 530)
             Me.txtAntiguedadEmails.Name = "txtAntiguedadEmails"
             Me.txtAntiguedadEmails.Size = New System.Drawing.Size(100, 20)
             Me.txtAntiguedadEmails.TabIndex = 15
@@ -506,7 +515,7 @@
             'Label16
             '
             Me.Label16.AutoSize = True
-            Me.Label16.Location = New System.Drawing.Point(334, 494)
+            Me.Label16.Location = New System.Drawing.Point(334, 533)
             Me.Label16.Name = "Label16"
             Me.Label16.Size = New System.Drawing.Size(28, 13)
             Me.Label16.TabIndex = 16
@@ -537,11 +546,84 @@
             Me.CmdBuscarMailEnableApp.Text = "Buscar"
             Me.CmdBuscarMailEnableApp.UseVisualStyleBackColor = True
             '
+            'txtAnalizadoresEmail
+            '
+            Me.txtAnalizadoresEmail.Location = New System.Drawing.Point(369, 453)
+            Me.txtAnalizadoresEmail.Name = "txtAnalizadoresEmail"
+            Me.txtAnalizadoresEmail.Size = New System.Drawing.Size(33, 20)
+            Me.txtAnalizadoresEmail.TabIndex = 22
+            '
+            'Label18
+            '
+            Me.Label18.AutoSize = True
+            Me.Label18.Location = New System.Drawing.Point(14, 460)
+            Me.Label18.Name = "Label18"
+            Me.Label18.Size = New System.Drawing.Size(95, 13)
+            Me.Label18.TabIndex = 21
+            Me.Label18.Text = "Analizadores Email"
+            '
+            'TrackAnalizadoresEmail
+            '
+            Me.TrackAnalizadoresEmail.LargeChange = 100
+            Me.TrackAnalizadoresEmail.Location = New System.Drawing.Point(117, 451)
+            Me.TrackAnalizadoresEmail.Maximum = 100
+            Me.TrackAnalizadoresEmail.Minimum = 1
+            Me.TrackAnalizadoresEmail.Name = "TrackAnalizadoresEmail"
+            Me.TrackAnalizadoresEmail.Size = New System.Drawing.Size(258, 45)
+            Me.TrackAnalizadoresEmail.SmallChange = 5
+            Me.TrackAnalizadoresEmail.TabIndex = 20
+            Me.TrackAnalizadoresEmail.TickFrequency = 10
+            Me.TrackAnalizadoresEmail.Value = 5
+            '
+            'Label19
+            '
+            Me.Label19.AutoSize = True
+            Me.Label19.Location = New System.Drawing.Point(408, 460)
+            Me.Label19.Name = "Label19"
+            Me.Label19.Size = New System.Drawing.Size(54, 13)
+            Me.Label19.TabIndex = 23
+            Me.Label19.Text = "Velocidad"
+            '
+            'TrackAnalizadoresMailTimer
+            '
+            Me.TrackAnalizadoresMailTimer.LargeChange = 100
+            Me.TrackAnalizadoresMailTimer.Location = New System.Drawing.Point(464, 453)
+            Me.TrackAnalizadoresMailTimer.Maximum = 1000
+            Me.TrackAnalizadoresMailTimer.Name = "TrackAnalizadoresMailTimer"
+            Me.TrackAnalizadoresMailTimer.Size = New System.Drawing.Size(276, 45)
+            Me.TrackAnalizadoresMailTimer.SmallChange = 5
+            Me.TrackAnalizadoresMailTimer.TabIndex = 24
+            Me.TrackAnalizadoresMailTimer.TickFrequency = 10
+            Me.TrackAnalizadoresMailTimer.Value = 5
+            '
+            'lblTrackMailTimer
+            '
+            Me.lblTrackMailTimer.AutoSize = True
+            Me.lblTrackMailTimer.Location = New System.Drawing.Point(611, 518)
+            Me.lblTrackMailTimer.Name = "lblTrackMailTimer"
+            Me.lblTrackMailTimer.Size = New System.Drawing.Size(44, 13)
+            Me.lblTrackMailTimer.TabIndex = 25
+            Me.lblTrackMailTimer.Text = "Backup"
+            '
+            'txtTimerAnalizadoresEmail
+            '
+            Me.txtTimerAnalizadoresEmail.Location = New System.Drawing.Point(735, 460)
+            Me.txtTimerAnalizadoresEmail.Name = "txtTimerAnalizadoresEmail"
+            Me.txtTimerAnalizadoresEmail.Size = New System.Drawing.Size(33, 20)
+            Me.txtTimerAnalizadoresEmail.TabIndex = 26
+            '
             'Frm_Config
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(780, 577)
+            Me.ClientSize = New System.Drawing.Size(780, 617)
+            Me.Controls.Add(Me.txtTimerAnalizadoresEmail)
+            Me.Controls.Add(Me.lblTrackMailTimer)
+            Me.Controls.Add(Me.TrackAnalizadoresMailTimer)
+            Me.Controls.Add(Me.Label19)
+            Me.Controls.Add(Me.txtAnalizadoresEmail)
+            Me.Controls.Add(Me.Label18)
+            Me.Controls.Add(Me.TrackAnalizadoresEmail)
             Me.Controls.Add(Me.CmdBuscarMailEnableApp)
             Me.Controls.Add(Me.txtMailEnableApp)
             Me.Controls.Add(Me.Label17)
@@ -598,6 +680,8 @@
             CType(Me.TrackLectura, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.TrackPropagacion, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.NumReposoLectura, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.TrackAnalizadoresEmail, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.TrackAnalizadoresMailTimer, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -657,5 +741,12 @@
         Friend WithEvents Label17 As Label
         Friend WithEvents txtMailEnableApp As TextBox
         Friend WithEvents CmdBuscarMailEnableApp As Button
+        Friend WithEvents txtAnalizadoresEmail As TextBox
+        Friend WithEvents Label18 As Label
+        Friend WithEvents TrackAnalizadoresEmail As TrackBar
+        Friend WithEvents Label19 As Label
+        Friend WithEvents TrackAnalizadoresMailTimer As TrackBar
+        Friend WithEvents lblTrackMailTimer As Label
+        Friend WithEvents txtTimerAnalizadoresEmail As TextBox
     End Class
 End Namespace

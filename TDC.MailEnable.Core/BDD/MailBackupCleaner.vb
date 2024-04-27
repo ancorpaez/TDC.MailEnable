@@ -1,9 +1,9 @@
 ﻿Namespace BDD
     Public Class MailBackupCleaner
-        Inherits Core
+        Inherits Mod_Backup
 
         Public Sub New()
-            MyBase.New("BackupIndex")
+            MyBase.New("MailBackupCleaner")
         End Sub
 
 

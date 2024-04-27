@@ -18,7 +18,7 @@ Namespace Pipe
             BucleDatos.Iniciar()
         End Sub
 
-        Private Sub BucleDatos_Background(Sender As Object, ByRef Detener As Boolean) Handles BucleDatos.Background
+        Private Sub BucleDatos_Background(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles BucleDatos.BackGround
 
             'Pasar el Bucle a 10 Minutos de Interaccion
             If BucleDatos.Intervalo = 100 Then BucleDatos.Intervalo = 6000
@@ -44,7 +44,7 @@ Namespace Pipe
             End Using
         End Sub
 
-        Private Sub BucleDatos_Foreground(Sender As Object, ByRef Detener As Boolean) Handles BucleDatos.Foreground
+        Private Sub BucleDatos_Foreground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles BucleDatos.ForeGround
             'Enviar la lista al proceso principal
             RaiseEvent AlObtenerLaLista(Lista)
         End Sub

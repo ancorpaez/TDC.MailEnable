@@ -16,7 +16,7 @@
             End If
         End Sub
 
-        Private Sub PostOfficeSearch_Background(Sender As Object, ByRef Detener As Boolean) Handles PostOfficeSearch.Background
+        Private Sub PostOfficeSearch_Background(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles PostOfficeSearch.Background
             PostOfficeSearch.Intervalo = 10000
             'Añadir
             For Each iPostOffice In PostOfficesDirectory.GetDirectories("*.*", IO.SearchOption.TopDirectoryOnly)

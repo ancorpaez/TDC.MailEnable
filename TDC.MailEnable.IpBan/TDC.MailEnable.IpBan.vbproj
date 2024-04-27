@@ -145,8 +145,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
-    <Compile Include="Backup\Email.vb" />
-    <Compile Include="Backup\Mod_BackupIndex.vb" />
+    <Compile Include="Backup\Cls_BuscadorDeArchivos.vb" />
+    <Compile Include="Backup\Cls_AnalizadorDeArchivos.vb" />
+    <Compile Include="Backup\Cls_BuscadorDeDirectorios.vb" />
+    <Compile Include="Backup\Email1.vb" />
+    <Compile Include="Backup\Mod_Backup.vb" />
     <Compile Include="Backup\Cls_IndexMailScan.vb" />
     <Compile Include="Certificados\Core.vb" />
     <Compile Include="Certificados\Instalar.vb" />
