@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /TDC.MailEnable.Core/GeoLocalizacion/IpInfoPrivate.vb
 /TDC.MailEnable.IpBan/Certificados/Privado.vb
+/TDC.MailEnable.IpBan/Backup/Email.vb
