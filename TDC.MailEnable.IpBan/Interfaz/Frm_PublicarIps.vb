@@ -1,10 +1,12 @@
 ﻿Imports System.Net.NetworkInformation
 Imports TDC.MailEnable.IpBan.MailEnableLog
 Imports TDC.MailEnable.Core
+Imports System.ComponentModel
+Imports TDC.MailEnable.Core.Bucle
 
 Namespace Interfaz
     Public Class Frm_PublicarIps
-        Private WithEvents Publicador As Bucle.DoBucle
+        Private Publicador As Bucle.DoBucle
         Private IndexIp As Integer = 0
         Private ListaSMTP As Cls_MailEnableDeny
         Private ListaPOP As Cls_MailEnableDeny
@@ -19,7 +21,17 @@ Namespace Interfaz
             ListaSMTP = New Cls_MailEnableDeny(Mod_Core.Configuracion.SMTP_DENY)
             ListaPOP = New Cls_MailEnableDeny(Mod_Core.Configuracion.POP_DENY)
             ListaWEB = New Cls_ISS()
-            Me.Invoke(Sub() Publicador = New Bucle.DoBucle(Me.Name))
+            Publicador = Core.Bucle.GetOrCreate("PublicadorIpNegra")
+            AddHandler Publicador.BackGround, AddressOf Publicador_Background
+            AddHandler Publicador.ForeGround, AddressOf Publicador_Foreground
+            AddHandler Publicador.EndGround, AddressOf Publicador_Endground
+            AddHandler Publicador.ErrorGround, AddressOf Publicador_ErrorGround
+        End Sub
+        Private Sub Frm_PublicarIps_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+            RemoveHandler Publicador.BackGround, AddressOf Publicador_Background
+            RemoveHandler Publicador.ForeGround, AddressOf Publicador_Foreground
+            RemoveHandler Publicador.EndGround, AddressOf Publicador_Endground
+            RemoveHandler Publicador.ErrorGround, AddressOf Publicador_ErrorGround
         End Sub
         Private Sub Frm_PublicarIps_Activated(sender As Object, e As EventArgs) Handles Me.Activated
             If Estado = EnumEstado.Cargando Then
@@ -39,7 +51,7 @@ Namespace Interfaz
                 Progreso.Maximum = Lista.Count - 1
             End If
         End Sub
-        Private Sub Publicador_Background(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Publicador.Background
+        Private Sub Publicador_Background(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs)
             If IsNumeric(Configuracion.TIMER_PROPAGACION) Then Publicador.Intervalo = Configuracion.TIMER_PROPAGACION Else Publicador.Intervalo = 1
             'Proteger
             If Lista.Count = 0 Then Exit Sub
@@ -68,7 +80,7 @@ Namespace Interfaz
             End If
         End Sub
 
-        Private Sub Publicador_Foreground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Publicador.Foreground
+        Private Sub Publicador_Foreground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs)
             If IndexIp < Lista.Count Then
                 Progreso.Value = IndexIp
                 lblIp.Text = Lista(IndexIp)
@@ -80,15 +92,22 @@ Namespace Interfaz
                 Publicador.Detener()
             End If
         End Sub
+
+
+
+        Private Sub Publicador_Endground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs)
+            ListaSMTP.Dispose()
+            ListaPOP.Dispose()
+            Me.Close()
+        End Sub
+        Private Sub Publicador_ErrorGround(Sender As Object, e As BackgroundEventArgs)
+
+        End Sub
         Private Sub BtnCancelar_Click(sender As Object, e As EventArgs) Handles BtnCancelar.Click
             Publicador.Detener()
             'Me.Close()
         End Sub
 
-        Private Sub Publicador_Endground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Publicador.Endground
-            ListaSMTP.Dispose()
-            ListaPOP.Dispose()
-            Me.Close()
-        End Sub
+
     End Class
 End Namespace

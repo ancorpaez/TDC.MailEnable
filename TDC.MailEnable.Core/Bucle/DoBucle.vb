@@ -20,6 +20,8 @@ Namespace Bucle
         Public Event EndGround(Sender As Object, e As BackgroundEventArgs)
         Public Event ErrorGround(Sender As Object, e As BackgroundEventArgs)
 
+        Public Contador As Integer = 0
+
         Public Enum EnumEstado
             Detenido
             Corriendo
@@ -29,6 +31,10 @@ Namespace Bucle
         Public Sub New(Name As String, Optional Visible As Boolean = False)
             'If Not {"MailBoxesScan", "PostOfficeSearch", "MiBucle"}.Any(Function(BucleDo) Name = BucleDo) Then Exit Sub
             Me.Name = Name
+
+            'Registrar el Bucle en el General
+            Add(Me)
+
             LabelCount = New Label With {.Text = 0, .Dock = DockStyle.Top}
             If Not Visible Then
                 InvokeForm = New Form With {.Text = Name, .Name = Name, .ShowInTaskbar = False, .Opacity = 0, .WindowState = FormWindowState.Minimized}
@@ -132,7 +138,7 @@ Namespace Bucle
 
                     'Visualizar el Contador del Bucle
                     If InvokeForm.Visible AndAlso InvokeForm.Created Then InvokeForm.Invoke(Sub() LabelCount.Text = CInt(LabelCount.Text) + 1)
-
+                    Contador += 1
                 Catch ex As Exception
                     Dim CancelErrorGround As New BackgroundEventArgs With {.Detener = False, .Excepcion = ex}
                     If CancelErrorGround.Detener Then

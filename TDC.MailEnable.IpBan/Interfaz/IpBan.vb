@@ -248,6 +248,9 @@ Namespace Interfaz
 
             'Certificados
             Certificados.Main(MailEnableLog.IpBanForm.TabNavegadores, lstCertificados, lstLogDescargaCertificado)
+
+            'Reparador AutoResponder
+            AutoResponder.Main()
         End Sub
 
 
@@ -352,7 +355,7 @@ Namespace Interfaz
                             Select Archivo
 
             'Actualizar el Interface
-            Me.Invoke(Sub() UcCarpeta.ProgresoCarpeta.Maximum = Ordenados.Count)
+            If Not Me.IsDisposed OrElse Me.Disposing Then Me.Invoke(Sub() UcCarpeta.ProgresoCarpeta.Maximum = Ordenados.Count)
 
             'Analizar cada archvivo
             For Each Archivo In Ordenados
@@ -653,9 +656,9 @@ Namespace Interfaz
         Private Sub TablaMailBackup_DataSourceChanged(sender As Object, e As EventArgs) Handles TablaMailBackup.DataSourceChanged
             Try
                 If TablaMailBackup.DataSource.GetType = GetType(DataTable) Then
-                    LabelCorreosEliminados.Text = $"{CType(TablaMailBackup.DataSource, DataTable).Rows.Count} Encontrados."
+                    lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackup.DataSource, DataTable).Rows.Count} Encontrados."
                 Else
-                    LabelCorreosEliminados.Text = $"{CType(TablaMailBackup.DataSource, DataView).Count} Encontrados."
+                    lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackup.DataSource, DataView).Count} Encontrados."
                 End If
                 TablaMailBackup.Columns("ID").Visible = False
                 TablaMailBackup.Columns("Archivo").Visible = False
@@ -676,7 +679,7 @@ Namespace Interfaz
             Filtro.RowFilter = $"Asunto LIKE '%{txtFAsunto.Text}%' 
                                 AND Remitente LIKE '%{txtFRemitente.Text}%'
                                 AND Destinatarios LIKE '%{txtFDestinatarios.Text}%'"
-            LabelCorreosEliminados.Text = $"{CType(TablaMailBackup.DataSource, DataView).Count} Encontrados."
+            lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackup.DataSource, DataView).Count} Encontrados."
         End Sub
 
         Public Sub TablaMailBackup_Resize(sender As Object, e As EventArgs) Handles TablaMailBackup.Resize
@@ -953,6 +956,10 @@ Namespace Interfaz
             Next
             toClipBoard = toClipBoard.Substring(0, toClipBoard.Length - 2)
             Clipboard.SetText(toClipBoard)
+        End Sub
+
+        Private Sub BuclesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BuclesToolStripMenuItem.Click
+            TDC.MailEnable.Core.Bucle.Mod_GlobalDoBucle.View()
         End Sub
     End Class
 End Namespace

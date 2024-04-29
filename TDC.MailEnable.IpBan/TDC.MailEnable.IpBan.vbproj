@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="AutoResponder\Core.vb" />
     <Compile Include="Backup\Cls_BuscadorDeArchivos.vb" />
     <Compile Include="Backup\Cls_AnalizadorDeArchivos.vb" />
     <Compile Include="Backup\Cls_BuscadorDeDirectorios.vb" />

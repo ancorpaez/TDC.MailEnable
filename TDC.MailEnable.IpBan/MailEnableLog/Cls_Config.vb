@@ -19,5 +19,6 @@
         Public ANTIGUEDAD_EMAILS As String = (30 * 6)
         Public ANALIZADORES_BACKUP As Integer = 10
         Public ANALIZADORES_BACKUP_TIMER As Integer = 1000
+        Public AUTORESPONDER As String = ""
     End Class
 End Namespace

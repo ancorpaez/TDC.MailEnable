@@ -46,6 +46,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -73,6 +74,12 @@
     <Compile Include="BDD\IMAPCorrectas.vb" />
     <Compile Include="Bucle\DoBucle.vb" />
     <Compile Include="Bucle\Mod_GlobalDoBucle.vb" />
+    <Compile Include="Bucle\View.Designer.vb">
+      <DependentUpon>View.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Bucle\View.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Concurrent\ConcurrentBindingList.vb" />
     <Compile Include="GeoLocalizacion\Cls_Geolocalizacion.vb" />
     <Compile Include="GeoLocalizacion\IpInfo.vb" />
@@ -99,6 +106,9 @@
     <Compile Include="Pipe\ServerPipe.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Bucle\View.resx">
+      <DependentUpon>View.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>

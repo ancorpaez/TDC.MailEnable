@@ -26,6 +26,7 @@ Namespace Interfaz
             txtAnalizadoresEmail.Text = Configuracion.ANALIZADORES_BACKUP
             TrackAnalizadoresMailTimer.Value = Configuracion.ANALIZADORES_BACKUP_TIMER
             txtTimerAnalizadoresEmail.Text = Configuracion.ANALIZADORES_BACKUP_TIMER
+            txtAutoResponder.Text = Configuracion.AUTORESPONDER
 
             If IsNumeric(Mod_Core.Configuracion.TIMER_LECTURA) Then
                 TrackLectura.Value = CInt(Configuracion.TIMER_LECTURA)
@@ -57,6 +58,8 @@ Namespace Interfaz
             Mod_Core.Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
             Mod_Core.Configuracion.LECTURA_REPOSO = NumReposoLectura.Value
             Mod_Core.Configuracion.CARPETA_BACKUP = txtBackupEmail.Text
+            Mod_Core.Configuracion.AUTORESPONDER = txtAutoResponder.Text
+
             Configuracion.ANTIGUEDAD_EMAILS = txtAntiguedadEmails.Text
             Configuracion.MAIL_APP = txtMailEnableApp.Text
             Configuracion.ANALIZADORES_BACKUP = CInt(txtAnalizadoresEmail.Text)
@@ -190,8 +193,8 @@ Namespace Interfaz
 
         Private Sub txtAnalizadoresEmail_TextChanged(sender As Object, e As EventArgs) Handles txtAnalizadoresEmail.TextChanged
             If IsNumeric(txtAnalizadoresEmail.Text) Then
-                If CInt(txtAnalizadoresEmail.Text) <= TrackAnalizadoresEmail.Maximum Then
-                    TrackAnalizadoresEmail.Value = CInt(txtAnalizadoresEmail.Text)
+                If CInt(txtAnalizadoresEmail.Text) <= TrackAnalizadoresEmail.Maximum AndAlso CInt(txtAnalizadoresEmail.Text) > 0 Then
+                    TrackAnalizadoresEmail.Value = Convert.ToInt32(Math.Round(CInt(txtAnalizadoresEmail.Text)))
                 Else
                     TrackAnalizadoresEmail.Value = TrackAnalizadoresEmail.Maximum
                     txtAnalizadoresEmail.Text = TrackAnalizadoresEmail.Maximum
@@ -215,5 +218,11 @@ Namespace Interfaz
                 Configuracion.ANALIZADORES_BACKUP_TIMER = txtTimerAnalizadoresEmail.Text
             End If
         End Sub
+
+        Private Sub CmdBuscarAutoResponder_Click(sender As Object, e As EventArgs) Handles CmdBuscarAutoResponder.Click
+            CargarCarpeta()
+            txtAutoResponder.Text = CtrlBuscarCarpeta.SelectedPath
+        End Sub
+
     End Class
 End Namespace

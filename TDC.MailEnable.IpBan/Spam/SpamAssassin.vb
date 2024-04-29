@@ -78,7 +78,8 @@
             ShowWindow(_Proceso.MainWindowHandle, SW_SHOW)
         End Sub
         Public Sub Read()
-            Lectura = New Core.Bucle.DoBucle("Lectura") With {.Intervalo = 1000}
+            'Visualiza el Log Generado por SpamAssasin
+            Lectura = New Core.Bucle.DoBucle("SpamAssasinLogViewer") With {.Intervalo = 30000}
             Lectura.Iniciar()
         End Sub
         Public Sub Kill()

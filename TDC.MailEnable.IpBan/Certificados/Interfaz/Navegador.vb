@@ -56,6 +56,7 @@ Namespace Certificados.Interfaz
         Private Sub InicioDescarga(sender As Object, e As CoreWebView2DownloadStartingEventArgs)
             DownloadStarting = e
             DownloadOperation = e.DownloadOperation
+            e.Handled = True
         End Sub
 
         Private Sub TiempoDescarga(sender As Object, e As Object)
@@ -78,4 +79,5 @@ Namespace Certificados.Interfaz
         Inherits EventArgs
         Public Path As String
     End Class
+
 End Namespace
