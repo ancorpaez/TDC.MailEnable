@@ -146,12 +146,14 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="AutoResponder\Core.vb" />
-    <Compile Include="Backup\Cls_BuscadorDeArchivos.vb" />
-    <Compile Include="Backup\Cls_AnalizadorDeArchivos.vb" />
-    <Compile Include="Backup\Cls_BuscadorDeDirectorios.vb" />
-    <Compile Include="Backup\Email1.vb" />
-    <Compile Include="Backup\Mod_Backup.vb" />
-    <Compile Include="Backup\Cls_IndexMailScan.vb" />
+    <Compile Include="Backup\QueneArchivos.vb" />
+    <Compile Include="Backup\Task.vb" />
+    <Compile Include="Backup\Indexador.vb" />
+    <Compile Include="Backup\QueneDirectorios.vb" />
+    <Compile Include="Backup\Calendar.vb" />
+    <Compile Include="Backup\Contact.vb" />
+    <Compile Include="Backup\Email.vb" />
+    <Compile Include="Backup\Core.vb" />
     <Compile Include="Certificados\Core.vb" />
     <Compile Include="Certificados\Instalar.vb" />
     <Compile Include="Certificados\Domain.vb" />

@@ -1,8 +1,13 @@
 ﻿Imports System.ComponentModel
+Imports System.Windows.Forms
+Imports System.Drawing
 
 Namespace Bucle
     Public Class View
         Private Visualizador As Bucle.DoBucle
+        Private ItemForeColor As Color = Color.Black
+        Private ItemTrueColor As Color = Color.DarkGreen
+        Private ItemFalseColor As Color = Color.DarkRed
 
         Private Sub View_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 

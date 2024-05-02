@@ -139,7 +139,7 @@ Namespace Backup
                         If Indexar Then
                             'Si hay que indexar
                             If IO.File.Exists(Archivo) Then
-                                Dim Analizar As New Email1(Archivo)
+                                Dim Analizar As New Email(Archivo)
                                 MAI.Add(New MailEnable.Core.BDD.MailBackup_MAI.Rows With {
                                      .Archivo = If(Analizar.Archivo = String.Empty, "", Analizar.Archivo),
                                      .Asunto = If(Analizar.Asunto = String.Empty, "", Analizar.Asunto),

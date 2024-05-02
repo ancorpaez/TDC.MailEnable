@@ -8,7 +8,7 @@ Namespace Backup
         'Tablas
         Public ReadOnly Property MAI As New MailEnable.Core.BDD.MailBackup_MAI  'Emails
         Public ReadOnly Property VCF As New MailEnable.Core.BDD.MailBackup_VCF  'Contactos
-        Public ReadOnly Property TSK As New MailEnable.Core.BDD.MailBackup_MAI  'Tareas
+        Public ReadOnly Property TSK As New MailEnable.Core.BDD.MailBackup_TSK  'Tareas
         Public ReadOnly Property CAL As New MailEnable.Core.BDD.MailBackup_CAL  'Calendario
         Public ReadOnly Property Cleaner As New MailEnable.Core.BDD.MailBackupCleaner 'Limpieza
 
@@ -20,9 +20,9 @@ Namespace Backup
 
         Public ExtesionesArchivos As New List(Of String) From {NameOf(MAI), NameOf(VCF), NameOf(TSK), NameOf(CAL)}
         'Public Colas As New Concurrent.ConcurrentDictionary(Of String, Concurrent.ConcurrentQueue(Of String))
-        Public WithEvents BuscadorCarpetas As New Cls_BuscadorDeDirectorios
-        Public WithEvents BuscadorArchivos As New Cls_BuscadorDeArchivos
-        Public WithEvents IndexadorArchivos As New Cls_AnalizadorDeArchivos
+        Public WithEvents BuscadorCarpetas As New QueneDirectorios
+        Public WithEvents BuscadorArchivos As New QueneArchivos
+        Public WithEvents IndexadorArchivos As New Indexador
         Private WithEvents iFaceNotificador As New MailEnable.Core.Bucle.DoBucle("iFaceNotificadorBackup")
         Private WithEvents AutoIndex As New MailEnable.Core.Bucle.DoBucle("AutoIndexMailBackup") With {.Intervalo = DateDiff(DateInterval.Second, Now, Now.AddHours(1)) * 1000}
         Public ControlesProtegidos As New List(Of Control) From {IpBanForm.TreePostOffices, IpBanForm.TabVCF, IpBanForm.MenuTablaBackup}
@@ -56,19 +56,19 @@ Namespace Backup
             BuscadorArchivos.Buscar(BuscadorCarpetas.Directorios)
         End Sub
         Private Sub BuscardorCarpetas_AlFinalizarBusqueda(sender As Object) Handles BuscadorCarpetas.AlFinalizarBusquedaCarpetas
-            If BuscadorArchivos.Estado = Cls_BuscadorDeArchivos.EnumEstado.Analizado Then BuscadorArchivos.Continuar()
+            If BuscadorArchivos.Estado = QueneArchivos.EnumEstado.Analizado Then BuscadorArchivos.Continuar()
         End Sub
 
         Private Sub BuscadorArchivos_AlIniciarBusquedaDeArchivos(sender As Object) Handles BuscadorArchivos.AlIniciarBusquedaDeArchivos
             IndexadorArchivos.Analizar(BuscadorArchivos.Archivos)
         End Sub
         Private Sub BuscadorArchivos_AlFinalizarBusquedaArchivos(sender As Object) Handles BuscadorArchivos.AlFinalizarBusquedaArchivos
-            If BuscadorCarpetas.Estado = Cls_BuscadorDeDirectorios.EnumEstado.Analizando Then BuscadorArchivos.Continuar()
+            If BuscadorCarpetas.Estado = QueneDirectorios.EnumEstado.Analizando Then BuscadorArchivos.Continuar()
         End Sub
         Private Sub IndexadorArchivos_AlFinalizarIndexacionDeArchivos(sender As Object) Handles IndexadorArchivos.AlFinalizarIndexacionDeArchivos
-            If BuscadorCarpetas.Estado = Cls_BuscadorDeDirectorios.EnumEstado.Analizado AndAlso
-                BuscadorArchivos.Estado = Cls_BuscadorDeArchivos.EnumEstado.Analizado AndAlso
-                IndexadorArchivos.Estado = Cls_AnalizadorDeArchivos.EnumEstado.Analizado Then
+            If BuscadorCarpetas.Estado = QueneDirectorios.EnumEstado.Analizado AndAlso
+                BuscadorArchivos.Estado = QueneArchivos.EnumEstado.Analizado AndAlso
+                IndexadorArchivos.Estado = Indexador.EnumEstado.Analizado Then
                 'Denetener los Buscadores
                 For i = 0 To Configuracion.ANALIZADORES_BACKUP - 1
                     Dim Buscador As MailEnable.Core.Bucle.DoBucle = MailEnable.Core.Bucle.GetOrCreate($"MailBackup{i}")
@@ -98,9 +98,9 @@ Namespace Backup
             $"Escaneo: {BuscadorCarpetas.Escaneo.Count} - " &
             $"Temporizador: {Configuracion.ANALIZADORES_BACKUP_TIMER})"
 
-            If BuscadorCarpetas.Estado = Cls_BuscadorDeDirectorios.EnumEstado.Analizando OrElse
-               BuscadorArchivos.Estado = Cls_BuscadorDeArchivos.EnumEstado.Analizando OrElse
-               IndexadorArchivos.Estado = Cls_AnalizadorDeArchivos.EnumEstado.Analizando Then
+            If BuscadorCarpetas.Estado = QueneDirectorios.EnumEstado.Analizando OrElse
+               BuscadorArchivos.Estado = QueneArchivos.EnumEstado.Analizando OrElse
+               IndexadorArchivos.Estado = Indexador.EnumEstado.Analizando Then
                 For Each ControlProtegido In ControlesProtegidos
                     If ControlProtegido.Enabled Then ControlProtegido.Enabled = Not ControlProtegido.Enabled
                 Next
@@ -111,9 +111,9 @@ Namespace Backup
             If Not IsNothing(IpBanForm.TablaMailBackupTSK.Columns) AndAlso IpBanForm.TablaMailBackupTSK.Columns.Contains("Asunto") AndAlso IpBanForm.TablaMailBackupTSK.Columns("Asunto").AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet Then IpBanForm.TablaMailBackupTSK.Columns("Asunto").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
 
             'Desactivar el Notificador al terminar la Indexacion
-            If BuscadorCarpetas.Estado = Cls_BuscadorDeDirectorios.EnumEstado.Analizado AndAlso
-                    BuscadorArchivos.Estado = Cls_BuscadorDeArchivos.EnumEstado.Analizado AndAlso
-                    IndexadorArchivos.Estado = Cls_AnalizadorDeArchivos.EnumEstado.Analizado Then
+            If BuscadorCarpetas.Estado = QueneDirectorios.EnumEstado.Analizado AndAlso
+                    BuscadorArchivos.Estado = QueneArchivos.EnumEstado.Analizado AndAlso
+                    IndexadorArchivos.Estado = Indexador.EnumEstado.Analizado Then
                 If iFaceNotificador.Intervalo <> 1000 Then
                     iFaceNotificador.Intervalo = 1000
                     iFaceNotificador_EndGround(Sender, Detener)
@@ -129,7 +129,7 @@ Namespace Backup
 
 
         Private Sub AutoIndex_Background(Sender As Object, Detener As MailEnable.Core.Bucle.BackgroundEventArgs) Handles AutoIndex.BackGround
-            If BuscadorCarpetas.Estado = Cls_BuscadorDeDirectorios.EnumEstado.Analizado Then BuscadorCarpetas.Buscar(Configuracion.CARPETA_BACKUP)
+            If BuscadorCarpetas.Estado = QueneDirectorios.EnumEstado.Analizado Then BuscadorCarpetas.Buscar(Configuracion.CARPETA_BACKUP)
         End Sub
 
         Private Sub AutoIndex_ForeGround(Sender As Object, e As BackgroundEventArgs) Handles AutoIndex.ForeGround

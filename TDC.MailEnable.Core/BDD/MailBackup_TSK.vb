@@ -1,9 +1,9 @@
 ﻿Namespace BDD
-    Public Class MailBackup_MAI
+    Public Class MailBackup_TSK
         Inherits Mod_Backup
 
         Public Sub New()
-            MyBase.New("MailBackup_MAI")
+            MyBase.New("MailBackup_TSK")
         End Sub
 
 
@@ -22,21 +22,15 @@
         Public Class Rows
             Inherits BDD.Columnas
             Public Property Archivo As String = UniqueState.Unique.ToString
-            Public Property Remitente As String = String.Empty
-            Public Property Destinatarios As String = String.Empty
-            Public Property ConCopia As String = String.Empty
             Public Property Asunto As String = String.Empty
-            Public Property Fecha As DateTime = New Date
+            Public Property Notas As String = String.Empty
 
         End Class
 
         Public Shadows Enum Columnas
             Archivo = 1
-            Remitente = 2
-            Destinatarios = 3
-            ConCopia = 4
-            Asunto = 5
-            Fecha = 6
+            Asunto = 2
+            Notas = 3
         End Enum
     End Class
 End Namespace

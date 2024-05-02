@@ -37,6 +37,10 @@
             Me.Panel5 = New System.Windows.Forms.Panel()
             Me.lblLineasCrossDomain = New System.Windows.Forms.Label()
             Me.lblCrossDomainLog = New System.Windows.Forms.Label()
+            Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.PanelIps = New System.Windows.Forms.Panel()
             Me.PanelListaNegra = New System.Windows.Forms.Panel()
             Me.lstIpBaneadas = New System.Windows.Forms.ListBox()
@@ -90,10 +94,14 @@
             Me.ReindexarTodoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.IndexarNuevosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.BtnRecargarTreeNodePostOffices = New System.Windows.Forms.Button()
-            Me.TabFilesBackup = New System.Windows.Forms.TabControl()
+            Me.PanelAutoIndex = New System.Windows.Forms.Panel()
+            Me.lstAutoIndex = New System.Windows.Forms.ListView()
+            Me.cAutoIndexTimeInit = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.Label14 = New System.Windows.Forms.Label()
+            Me.TabVCF = New System.Windows.Forms.TabControl()
             Me.TabpMAI = New System.Windows.Forms.TabPage()
-            Me.TablaMailBackup = New System.Windows.Forms.DataGridView()
-            Me.PanelFiltroMAI = New System.Windows.Forms.Panel()
+            Me.TablaMailBackupMAI = New System.Windows.Forms.DataGridView()
+            Me.PanelFiltroMAIBackup = New System.Windows.Forms.Panel()
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
             Me.txtFAsunto = New System.Windows.Forms.TextBox()
             Me.txtFRemitente = New System.Windows.Forms.TextBox()
@@ -103,8 +111,34 @@
             Me.Label7 = New System.Windows.Forms.Label()
             Me.BtnLimpiarFiltro = New System.Windows.Forms.Button()
             Me.TabPCAL = New System.Windows.Forms.TabPage()
+            Me.TablaMailBackupCAL = New System.Windows.Forms.DataGridView()
+            Me.PanelFiltroCALBackup = New System.Windows.Forms.Panel()
+            Me.TableLayoutPanel5 = New System.Windows.Forms.TableLayoutPanel()
+            Me.Label21 = New System.Windows.Forms.Label()
+            Me.Label22 = New System.Windows.Forms.Label()
+            Me.Label23 = New System.Windows.Forms.Label()
+            Me.Label24 = New System.Windows.Forms.Label()
+            Me.TextBox7 = New System.Windows.Forms.TextBox()
+            Me.TextBox8 = New System.Windows.Forms.TextBox()
+            Me.TextBox9 = New System.Windows.Forms.TextBox()
+            Me.TextBox10 = New System.Windows.Forms.TextBox()
             Me.TabPTSK = New System.Windows.Forms.TabPage()
             Me.TabPVCF = New System.Windows.Forms.TabPage()
+            Me.TablaMailBackupVCF = New System.Windows.Forms.DataGridView()
+            Me.PanelFiltroVCFBackup = New System.Windows.Forms.Panel()
+            Me.TableLayoutPanel4 = New System.Windows.Forms.TableLayoutPanel()
+            Me.Label15 = New System.Windows.Forms.Label()
+            Me.Label16 = New System.Windows.Forms.Label()
+            Me.Label17 = New System.Windows.Forms.Label()
+            Me.Label18 = New System.Windows.Forms.Label()
+            Me.Label19 = New System.Windows.Forms.Label()
+            Me.Label20 = New System.Windows.Forms.Label()
+            Me.TextBox1 = New System.Windows.Forms.TextBox()
+            Me.TextBox2 = New System.Windows.Forms.TextBox()
+            Me.TextBox3 = New System.Windows.Forms.TextBox()
+            Me.TextBox4 = New System.Windows.Forms.TextBox()
+            Me.TextBox5 = New System.Windows.Forms.TextBox()
+            Me.TextBox6 = New System.Windows.Forms.TextBox()
             Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
             Me.lblMailBackupSeleccionados = New System.Windows.Forms.ToolStripStatusLabel()
             Me.ProgresoIndexacion = New System.Windows.Forms.ToolStripProgressBar()
@@ -170,6 +204,7 @@
             Me.IconosTab = New System.Windows.Forms.ImageList(Me.components)
             Me.MenuPrincipal = New System.Windows.Forms.MenuStrip()
             Me.ConfiguraciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.BuclesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.TimerIpBan = New System.Windows.Forms.Timer(Me.components)
             Me.TimerGuiAnalizador = New System.Windows.Forms.Timer(Me.components)
             Me.StatusStrip2 = New System.Windows.Forms.StatusStrip()
@@ -179,15 +214,8 @@
             Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
             Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
-            Me.PanelAutoIndex = New System.Windows.Forms.Panel()
-            Me.lstAutoIndex = New System.Windows.Forms.ListView()
-            Me.cAutoIndexTimeInit = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-            Me.Label14 = New System.Windows.Forms.Label()
-            Me.BuclesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-            Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.Panel3 = New System.Windows.Forms.Panel()
+            Me.TablaMailBackupTSK = New System.Windows.Forms.DataGridView()
             Me.PanelIpBaneadas.SuspendLayout()
             Me.PanelBuscadores.SuspendLayout()
             Me.PanelLogs.SuspendLayout()
@@ -222,11 +250,21 @@
             Me.SplitContainer2.Panel2.SuspendLayout()
             Me.SplitContainer2.SuspendLayout()
             Me.MenuTablaBackup.SuspendLayout()
-            Me.TabFilesBackup.SuspendLayout()
+            Me.PanelAutoIndex.SuspendLayout()
+            Me.TabVCF.SuspendLayout()
             Me.TabpMAI.SuspendLayout()
-            CType(Me.TablaMailBackup, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.PanelFiltroMAI.SuspendLayout()
+            CType(Me.TablaMailBackupMAI, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.PanelFiltroMAIBackup.SuspendLayout()
             Me.TableLayoutPanel2.SuspendLayout()
+            Me.TabPCAL.SuspendLayout()
+            CType(Me.TablaMailBackupCAL, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.PanelFiltroCALBackup.SuspendLayout()
+            Me.TableLayoutPanel5.SuspendLayout()
+            Me.TabPTSK.SuspendLayout()
+            Me.TabPVCF.SuspendLayout()
+            CType(Me.TablaMailBackupVCF, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.PanelFiltroVCFBackup.SuspendLayout()
+            Me.TableLayoutPanel4.SuspendLayout()
             Me.StatusStrip1.SuspendLayout()
             Me.TabMigraciones.SuspendLayout()
             CType(Me.SplitMigracion, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -261,7 +299,7 @@
             Me.MenuPrincipal.SuspendLayout()
             Me.StatusStrip2.SuspendLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.PanelAutoIndex.SuspendLayout()
+            CType(Me.TablaMailBackupTSK, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'PanelIpBaneadas
@@ -397,6 +435,38 @@
             Me.lblCrossDomainLog.Size = New System.Drawing.Size(200, 51)
             Me.lblCrossDomainLog.TabIndex = 2
             Me.lblCrossDomainLog.Text = "CrossDomain (0)"
+            '
+            'UcWEB
+            '
+            Me.UcWEB.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcWEB.Location = New System.Drawing.Point(3, 123)
+            Me.UcWEB.Name = "UcWEB"
+            Me.UcWEB.Size = New System.Drawing.Size(1088, 40)
+            Me.UcWEB.TabIndex = 0
+            '
+            'UcIMAPEx
+            '
+            Me.UcIMAPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcIMAPEx.Location = New System.Drawing.Point(3, 83)
+            Me.UcIMAPEx.Name = "UcIMAPEx"
+            Me.UcIMAPEx.Size = New System.Drawing.Size(1088, 40)
+            Me.UcIMAPEx.TabIndex = 0
+            '
+            'UcSMTPEx
+            '
+            Me.UcSMTPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcSMTPEx.Location = New System.Drawing.Point(3, 43)
+            Me.UcSMTPEx.Name = "UcSMTPEx"
+            Me.UcSMTPEx.Size = New System.Drawing.Size(1088, 40)
+            Me.UcSMTPEx.TabIndex = 0
+            '
+            'UcPOPEx
+            '
+            Me.UcPOPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcPOPEx.Location = New System.Drawing.Point(3, 3)
+            Me.UcPOPEx.Name = "UcPOPEx"
+            Me.UcPOPEx.Size = New System.Drawing.Size(1088, 40)
+            Me.UcPOPEx.TabIndex = 0
             '
             'PanelIps
             '
@@ -841,7 +911,7 @@
             '
             'SplitContainer2.Panel2
             '
-            Me.SplitContainer2.Panel2.Controls.Add(Me.TabFilesBackup)
+            Me.SplitContainer2.Panel2.Controls.Add(Me.TabVCF)
             Me.SplitContainer2.Panel2.Controls.Add(Me.StatusStrip1)
             Me.SplitContainer2.Panel2.Padding = New System.Windows.Forms.Padding(5)
             Me.SplitContainer2.Size = New System.Drawing.Size(1440, 427)
@@ -938,59 +1008,98 @@
             Me.BtnRecargarTreeNodePostOffices.UseVisualStyleBackColor = True
             Me.BtnRecargarTreeNodePostOffices.Visible = False
             '
-            'TabFilesBackup
+            'PanelAutoIndex
             '
-            Me.TabFilesBackup.Controls.Add(Me.TabpMAI)
-            Me.TabFilesBackup.Controls.Add(Me.TabPCAL)
-            Me.TabFilesBackup.Controls.Add(Me.TabPTSK)
-            Me.TabFilesBackup.Controls.Add(Me.TabPVCF)
-            Me.TabFilesBackup.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.TabFilesBackup.Location = New System.Drawing.Point(5, 5)
-            Me.TabFilesBackup.Name = "TabFilesBackup"
-            Me.TabFilesBackup.SelectedIndex = 0
-            Me.TabFilesBackup.Size = New System.Drawing.Size(948, 393)
-            Me.TabFilesBackup.TabIndex = 3
+            Me.PanelAutoIndex.Controls.Add(Me.lstAutoIndex)
+            Me.PanelAutoIndex.Controls.Add(Me.Label14)
+            Me.PanelAutoIndex.Dock = System.Windows.Forms.DockStyle.Bottom
+            Me.PanelAutoIndex.Location = New System.Drawing.Point(0, 261)
+            Me.PanelAutoIndex.Name = "PanelAutoIndex"
+            Me.PanelAutoIndex.Size = New System.Drawing.Size(478, 166)
+            Me.PanelAutoIndex.TabIndex = 2
+            '
+            'lstAutoIndex
+            '
+            Me.lstAutoIndex.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.cAutoIndexTimeInit})
+            Me.lstAutoIndex.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lstAutoIndex.HideSelection = False
+            Me.lstAutoIndex.Location = New System.Drawing.Point(0, 23)
+            Me.lstAutoIndex.Name = "lstAutoIndex"
+            Me.lstAutoIndex.Size = New System.Drawing.Size(478, 143)
+            Me.lstAutoIndex.TabIndex = 0
+            Me.lstAutoIndex.UseCompatibleStateImageBehavior = False
+            Me.lstAutoIndex.View = System.Windows.Forms.View.Details
+            '
+            'cAutoIndexTimeInit
+            '
+            Me.cAutoIndexTimeInit.Text = "Iniciado"
+            Me.cAutoIndexTimeInit.Width = 464
+            '
+            'Label14
+            '
+            Me.Label14.BackColor = System.Drawing.Color.Black
+            Me.Label14.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Label14.ForeColor = System.Drawing.Color.White
+            Me.Label14.Location = New System.Drawing.Point(0, 0)
+            Me.Label14.Name = "Label14"
+            Me.Label14.Size = New System.Drawing.Size(478, 23)
+            Me.Label14.TabIndex = 1
+            Me.Label14.Text = "Auto indexación"
+            Me.Label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'TabVCF
+            '
+            Me.TabVCF.Controls.Add(Me.TabpMAI)
+            Me.TabVCF.Controls.Add(Me.TabPCAL)
+            Me.TabVCF.Controls.Add(Me.TabPTSK)
+            Me.TabVCF.Controls.Add(Me.TabPVCF)
+            Me.TabVCF.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.TabVCF.Location = New System.Drawing.Point(5, 5)
+            Me.TabVCF.Name = "TabVCF"
+            Me.TabVCF.SelectedIndex = 0
+            Me.TabVCF.Size = New System.Drawing.Size(948, 393)
+            Me.TabVCF.TabIndex = 3
             '
             'TabpMAI
             '
-            Me.TabpMAI.Controls.Add(Me.TablaMailBackup)
-            Me.TabpMAI.Controls.Add(Me.PanelFiltroMAI)
+            Me.TabpMAI.Controls.Add(Me.TablaMailBackupMAI)
+            Me.TabpMAI.Controls.Add(Me.PanelFiltroMAIBackup)
             Me.TabpMAI.Location = New System.Drawing.Point(4, 22)
             Me.TabpMAI.Name = "TabpMAI"
             Me.TabpMAI.Padding = New System.Windows.Forms.Padding(3)
             Me.TabpMAI.Size = New System.Drawing.Size(940, 367)
             Me.TabpMAI.TabIndex = 0
-            Me.TabpMAI.Text = "Emails (*.MAI)"
+            Me.TabpMAI.Text = "Emails, Notas (*.MAI)"
             Me.TabpMAI.UseVisualStyleBackColor = True
             '
-            'TablaMailBackup
+            'TablaMailBackupMAI
             '
-            Me.TablaMailBackup.AllowUserToAddRows = False
-            Me.TablaMailBackup.AllowUserToDeleteRows = False
-            Me.TablaMailBackup.AllowUserToResizeRows = False
-            Me.TablaMailBackup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-            Me.TablaMailBackup.ContextMenuStrip = Me.MenuTablaBackup
-            Me.TablaMailBackup.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.TablaMailBackup.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-            Me.TablaMailBackup.Enabled = False
-            Me.TablaMailBackup.Location = New System.Drawing.Point(3, 51)
-            Me.TablaMailBackup.Name = "TablaMailBackup"
-            Me.TablaMailBackup.ReadOnly = True
-            Me.TablaMailBackup.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-            Me.TablaMailBackup.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-            Me.TablaMailBackup.ShowEditingIcon = False
-            Me.TablaMailBackup.Size = New System.Drawing.Size(934, 313)
-            Me.TablaMailBackup.TabIndex = 0
+            Me.TablaMailBackupMAI.AllowUserToAddRows = False
+            Me.TablaMailBackupMAI.AllowUserToDeleteRows = False
+            Me.TablaMailBackupMAI.AllowUserToResizeRows = False
+            Me.TablaMailBackupMAI.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+            Me.TablaMailBackupMAI.ContextMenuStrip = Me.MenuTablaBackup
+            Me.TablaMailBackupMAI.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.TablaMailBackupMAI.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
+            Me.TablaMailBackupMAI.Enabled = False
+            Me.TablaMailBackupMAI.Location = New System.Drawing.Point(3, 51)
+            Me.TablaMailBackupMAI.Name = "TablaMailBackupMAI"
+            Me.TablaMailBackupMAI.ReadOnly = True
+            Me.TablaMailBackupMAI.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+            Me.TablaMailBackupMAI.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+            Me.TablaMailBackupMAI.ShowEditingIcon = False
+            Me.TablaMailBackupMAI.Size = New System.Drawing.Size(934, 313)
+            Me.TablaMailBackupMAI.TabIndex = 0
             '
-            'PanelFiltroMAI
+            'PanelFiltroMAIBackup
             '
-            Me.PanelFiltroMAI.Controls.Add(Me.TableLayoutPanel2)
-            Me.PanelFiltroMAI.Dock = System.Windows.Forms.DockStyle.Top
-            Me.PanelFiltroMAI.Location = New System.Drawing.Point(3, 3)
-            Me.PanelFiltroMAI.Name = "PanelFiltroMAI"
-            Me.PanelFiltroMAI.Padding = New System.Windows.Forms.Padding(0, 0, 3, 3)
-            Me.PanelFiltroMAI.Size = New System.Drawing.Size(934, 48)
-            Me.PanelFiltroMAI.TabIndex = 2
+            Me.PanelFiltroMAIBackup.Controls.Add(Me.TableLayoutPanel2)
+            Me.PanelFiltroMAIBackup.Dock = System.Windows.Forms.DockStyle.Top
+            Me.PanelFiltroMAIBackup.Location = New System.Drawing.Point(3, 3)
+            Me.PanelFiltroMAIBackup.Name = "PanelFiltroMAIBackup"
+            Me.PanelFiltroMAIBackup.Padding = New System.Windows.Forms.Padding(0, 0, 3, 3)
+            Me.PanelFiltroMAIBackup.Size = New System.Drawing.Size(934, 48)
+            Me.PanelFiltroMAIBackup.TabIndex = 2
             '
             'TableLayoutPanel2
             '
@@ -1085,6 +1194,8 @@
             '
             'TabPCAL
             '
+            Me.TabPCAL.Controls.Add(Me.TablaMailBackupCAL)
+            Me.TabPCAL.Controls.Add(Me.PanelFiltroCALBackup)
             Me.TabPCAL.Location = New System.Drawing.Point(4, 22)
             Me.TabPCAL.Name = "TabPCAL"
             Me.TabPCAL.Padding = New System.Windows.Forms.Padding(3)
@@ -1093,8 +1204,121 @@
             Me.TabPCAL.Text = "Calendario (*.CAL)"
             Me.TabPCAL.UseVisualStyleBackColor = True
             '
+            'TablaMailBackupCAL
+            '
+            Me.TablaMailBackupCAL.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+            Me.TablaMailBackupCAL.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.TablaMailBackupCAL.Location = New System.Drawing.Point(3, 44)
+            Me.TablaMailBackupCAL.Name = "TablaMailBackupCAL"
+            Me.TablaMailBackupCAL.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+            Me.TablaMailBackupCAL.Size = New System.Drawing.Size(934, 320)
+            Me.TablaMailBackupCAL.TabIndex = 1
+            '
+            'PanelFiltroCALBackup
+            '
+            Me.PanelFiltroCALBackup.Controls.Add(Me.TableLayoutPanel5)
+            Me.PanelFiltroCALBackup.Dock = System.Windows.Forms.DockStyle.Top
+            Me.PanelFiltroCALBackup.Location = New System.Drawing.Point(3, 3)
+            Me.PanelFiltroCALBackup.Name = "PanelFiltroCALBackup"
+            Me.PanelFiltroCALBackup.Size = New System.Drawing.Size(934, 41)
+            Me.PanelFiltroCALBackup.TabIndex = 0
+            '
+            'TableLayoutPanel5
+            '
+            Me.TableLayoutPanel5.ColumnCount = 4
+            Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
+            Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
+            Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+            Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+            Me.TableLayoutPanel5.Controls.Add(Me.Label21, 0, 0)
+            Me.TableLayoutPanel5.Controls.Add(Me.Label22, 1, 0)
+            Me.TableLayoutPanel5.Controls.Add(Me.Label23, 2, 0)
+            Me.TableLayoutPanel5.Controls.Add(Me.Label24, 3, 0)
+            Me.TableLayoutPanel5.Controls.Add(Me.TextBox7, 0, 1)
+            Me.TableLayoutPanel5.Controls.Add(Me.TextBox8, 1, 1)
+            Me.TableLayoutPanel5.Controls.Add(Me.TextBox9, 2, 1)
+            Me.TableLayoutPanel5.Controls.Add(Me.TextBox10, 3, 1)
+            Me.TableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.TableLayoutPanel5.Location = New System.Drawing.Point(0, 0)
+            Me.TableLayoutPanel5.Name = "TableLayoutPanel5"
+            Me.TableLayoutPanel5.RowCount = 2
+            Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.TableLayoutPanel5.Size = New System.Drawing.Size(934, 41)
+            Me.TableLayoutPanel5.TabIndex = 0
+            '
+            'Label21
+            '
+            Me.Label21.AutoSize = True
+            Me.Label21.Location = New System.Drawing.Point(3, 0)
+            Me.Label21.Name = "Label21"
+            Me.Label21.Size = New System.Drawing.Size(63, 13)
+            Me.Label21.TabIndex = 0
+            Me.Label21.Text = "Descipción:"
+            '
+            'Label22
+            '
+            Me.Label22.AutoSize = True
+            Me.Label22.Location = New System.Drawing.Point(283, 0)
+            Me.Label22.Name = "Label22"
+            Me.Label22.Size = New System.Drawing.Size(64, 13)
+            Me.Label22.TabIndex = 1
+            Me.Label22.Text = "Hubicación:"
+            '
+            'Label23
+            '
+            Me.Label23.AutoSize = True
+            Me.Label23.Location = New System.Drawing.Point(563, 0)
+            Me.Label23.Name = "Label23"
+            Me.Label23.Size = New System.Drawing.Size(35, 13)
+            Me.Label23.TabIndex = 2
+            Me.Label23.Text = "Inicio:"
+            '
+            'Label24
+            '
+            Me.Label24.AutoSize = True
+            Me.Label24.Location = New System.Drawing.Point(749, 0)
+            Me.Label24.Name = "Label24"
+            Me.Label24.Size = New System.Drawing.Size(24, 13)
+            Me.Label24.TabIndex = 3
+            Me.Label24.Text = "Fin:"
+            '
+            'TextBox7
+            '
+            Me.TextBox7.Dock = System.Windows.Forms.DockStyle.Top
+            Me.TextBox7.Location = New System.Drawing.Point(3, 16)
+            Me.TextBox7.Name = "TextBox7"
+            Me.TextBox7.Size = New System.Drawing.Size(274, 20)
+            Me.TextBox7.TabIndex = 4
+            '
+            'TextBox8
+            '
+            Me.TextBox8.Dock = System.Windows.Forms.DockStyle.Top
+            Me.TextBox8.Location = New System.Drawing.Point(283, 16)
+            Me.TextBox8.Name = "TextBox8"
+            Me.TextBox8.Size = New System.Drawing.Size(274, 20)
+            Me.TextBox8.TabIndex = 5
+            '
+            'TextBox9
+            '
+            Me.TextBox9.Dock = System.Windows.Forms.DockStyle.Top
+            Me.TextBox9.Location = New System.Drawing.Point(563, 16)
+            Me.TextBox9.Name = "TextBox9"
+            Me.TextBox9.Size = New System.Drawing.Size(180, 20)
+            Me.TextBox9.TabIndex = 6
+            '
+            'TextBox10
+            '
+            Me.TextBox10.Dock = System.Windows.Forms.DockStyle.Top
+            Me.TextBox10.Location = New System.Drawing.Point(749, 16)
+            Me.TextBox10.Name = "TextBox10"
+            Me.TextBox10.Size = New System.Drawing.Size(182, 20)
+            Me.TextBox10.TabIndex = 7
+            '
             'TabPTSK
             '
+            Me.TabPTSK.Controls.Add(Me.TablaMailBackupTSK)
+            Me.TabPTSK.Controls.Add(Me.Panel3)
             Me.TabPTSK.Location = New System.Drawing.Point(4, 22)
             Me.TabPTSK.Name = "TabPTSK"
             Me.TabPTSK.Size = New System.Drawing.Size(940, 367)
@@ -1104,12 +1328,165 @@
             '
             'TabPVCF
             '
+            Me.TabPVCF.Controls.Add(Me.TablaMailBackupVCF)
+            Me.TabPVCF.Controls.Add(Me.PanelFiltroVCFBackup)
             Me.TabPVCF.Location = New System.Drawing.Point(4, 22)
             Me.TabPVCF.Name = "TabPVCF"
             Me.TabPVCF.Size = New System.Drawing.Size(940, 367)
             Me.TabPVCF.TabIndex = 3
             Me.TabPVCF.Text = "Contactos (*.VCF)"
             Me.TabPVCF.UseVisualStyleBackColor = True
+            '
+            'TablaMailBackupVCF
+            '
+            Me.TablaMailBackupVCF.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+            Me.TablaMailBackupVCF.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.TablaMailBackupVCF.Location = New System.Drawing.Point(0, 46)
+            Me.TablaMailBackupVCF.Name = "TablaMailBackupVCF"
+            Me.TablaMailBackupVCF.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+            Me.TablaMailBackupVCF.Size = New System.Drawing.Size(940, 321)
+            Me.TablaMailBackupVCF.TabIndex = 1
+            '
+            'PanelFiltroVCFBackup
+            '
+            Me.PanelFiltroVCFBackup.Controls.Add(Me.TableLayoutPanel4)
+            Me.PanelFiltroVCFBackup.Dock = System.Windows.Forms.DockStyle.Top
+            Me.PanelFiltroVCFBackup.Location = New System.Drawing.Point(0, 0)
+            Me.PanelFiltroVCFBackup.Name = "PanelFiltroVCFBackup"
+            Me.PanelFiltroVCFBackup.Size = New System.Drawing.Size(940, 46)
+            Me.PanelFiltroVCFBackup.TabIndex = 0
+            '
+            'TableLayoutPanel4
+            '
+            Me.TableLayoutPanel4.ColumnCount = 6
+            Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+            Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.0!))
+            Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+            Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+            Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+            Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+            Me.TableLayoutPanel4.Controls.Add(Me.Label15, 0, 0)
+            Me.TableLayoutPanel4.Controls.Add(Me.Label16, 1, 0)
+            Me.TableLayoutPanel4.Controls.Add(Me.Label17, 2, 0)
+            Me.TableLayoutPanel4.Controls.Add(Me.Label18, 3, 0)
+            Me.TableLayoutPanel4.Controls.Add(Me.Label19, 4, 0)
+            Me.TableLayoutPanel4.Controls.Add(Me.Label20, 5, 0)
+            Me.TableLayoutPanel4.Controls.Add(Me.TextBox1, 0, 1)
+            Me.TableLayoutPanel4.Controls.Add(Me.TextBox2, 1, 1)
+            Me.TableLayoutPanel4.Controls.Add(Me.TextBox3, 2, 1)
+            Me.TableLayoutPanel4.Controls.Add(Me.TextBox4, 3, 1)
+            Me.TableLayoutPanel4.Controls.Add(Me.TextBox5, 4, 1)
+            Me.TableLayoutPanel4.Controls.Add(Me.TextBox6, 5, 1)
+            Me.TableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.TableLayoutPanel4.Location = New System.Drawing.Point(0, 0)
+            Me.TableLayoutPanel4.Name = "TableLayoutPanel4"
+            Me.TableLayoutPanel4.RowCount = 2
+            Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.TableLayoutPanel4.Size = New System.Drawing.Size(940, 46)
+            Me.TableLayoutPanel4.TabIndex = 0
+            '
+            'Label15
+            '
+            Me.Label15.AutoSize = True
+            Me.Label15.Location = New System.Drawing.Point(3, 0)
+            Me.Label15.Name = "Label15"
+            Me.Label15.Size = New System.Drawing.Size(47, 13)
+            Me.Label15.TabIndex = 0
+            Me.Label15.Text = "Nombre:"
+            '
+            'Label16
+            '
+            Me.Label16.AutoSize = True
+            Me.Label16.Location = New System.Drawing.Point(191, 0)
+            Me.Label16.Name = "Label16"
+            Me.Label16.Size = New System.Drawing.Size(54, 13)
+            Me.Label16.TabIndex = 1
+            Me.Label16.Text = "Completo:"
+            '
+            'Label17
+            '
+            Me.Label17.AutoSize = True
+            Me.Label17.Location = New System.Drawing.Point(567, 0)
+            Me.Label17.Name = "Label17"
+            Me.Label17.Size = New System.Drawing.Size(35, 13)
+            Me.Label17.TabIndex = 2
+            Me.Label17.Text = "Email:"
+            '
+            'Label18
+            '
+            Me.Label18.AutoSize = True
+            Me.Label18.Location = New System.Drawing.Point(661, 0)
+            Me.Label18.Name = "Label18"
+            Me.Label18.Size = New System.Drawing.Size(51, 13)
+            Me.Label18.TabIndex = 3
+            Me.Label18.Text = "Personal:"
+            '
+            'Label19
+            '
+            Me.Label19.AutoSize = True
+            Me.Label19.Location = New System.Drawing.Point(755, 0)
+            Me.Label19.Name = "Label19"
+            Me.Label19.Size = New System.Drawing.Size(46, 13)
+            Me.Label19.TabIndex = 4
+            Me.Label19.Text = "Trabajo:"
+            '
+            'Label20
+            '
+            Me.Label20.AutoSize = True
+            Me.Label20.Location = New System.Drawing.Point(849, 0)
+            Me.Label20.Name = "Label20"
+            Me.Label20.Size = New System.Drawing.Size(32, 13)
+            Me.Label20.TabIndex = 5
+            Me.Label20.Text = "Nick:"
+            '
+            'TextBox1
+            '
+            Me.TextBox1.Dock = System.Windows.Forms.DockStyle.Top
+            Me.TextBox1.Location = New System.Drawing.Point(3, 16)
+            Me.TextBox1.Name = "TextBox1"
+            Me.TextBox1.Size = New System.Drawing.Size(182, 20)
+            Me.TextBox1.TabIndex = 6
+            '
+            'TextBox2
+            '
+            Me.TextBox2.Dock = System.Windows.Forms.DockStyle.Top
+            Me.TextBox2.Location = New System.Drawing.Point(191, 16)
+            Me.TextBox2.Name = "TextBox2"
+            Me.TextBox2.Size = New System.Drawing.Size(370, 20)
+            Me.TextBox2.TabIndex = 7
+            '
+            'TextBox3
+            '
+            Me.TextBox3.Dock = System.Windows.Forms.DockStyle.Top
+            Me.TextBox3.Location = New System.Drawing.Point(567, 16)
+            Me.TextBox3.Name = "TextBox3"
+            Me.TextBox3.Size = New System.Drawing.Size(88, 20)
+            Me.TextBox3.TabIndex = 8
+            '
+            'TextBox4
+            '
+            Me.TextBox4.Dock = System.Windows.Forms.DockStyle.Top
+            Me.TextBox4.Location = New System.Drawing.Point(661, 16)
+            Me.TextBox4.Name = "TextBox4"
+            Me.TextBox4.Size = New System.Drawing.Size(88, 20)
+            Me.TextBox4.TabIndex = 9
+            '
+            'TextBox5
+            '
+            Me.TextBox5.Dock = System.Windows.Forms.DockStyle.Top
+            Me.TextBox5.Location = New System.Drawing.Point(755, 16)
+            Me.TextBox5.Name = "TextBox5"
+            Me.TextBox5.Size = New System.Drawing.Size(88, 20)
+            Me.TextBox5.TabIndex = 10
+            '
+            'TextBox6
+            '
+            Me.TextBox6.Dock = System.Windows.Forms.DockStyle.Top
+            Me.TextBox6.Location = New System.Drawing.Point(849, 16)
+            Me.TextBox6.Name = "TextBox6"
+            Me.TextBox6.Size = New System.Drawing.Size(88, 20)
+            Me.TextBox6.TabIndex = 11
             '
             'StatusStrip1
             '
@@ -1719,6 +2096,12 @@
             Me.ConfiguraciónToolStripMenuItem.Size = New System.Drawing.Size(95, 20)
             Me.ConfiguraciónToolStripMenuItem.Text = "Configuración"
             '
+            'BuclesToolStripMenuItem
+            '
+            Me.BuclesToolStripMenuItem.Name = "BuclesToolStripMenuItem"
+            Me.BuclesToolStripMenuItem.Size = New System.Drawing.Size(69, 20)
+            Me.BuclesToolStripMenuItem.Text = "Bucles BE"
+            '
             'TimerIpBan
             '
             Me.TimerIpBan.Enabled = True
@@ -1772,82 +2155,23 @@
             Me.ImageList2.ImageSize = New System.Drawing.Size(16, 16)
             Me.ImageList2.TransparentColor = System.Drawing.Color.Transparent
             '
-            'PanelAutoIndex
+            'Panel3
             '
-            Me.PanelAutoIndex.Controls.Add(Me.lstAutoIndex)
-            Me.PanelAutoIndex.Controls.Add(Me.Label14)
-            Me.PanelAutoIndex.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.PanelAutoIndex.Location = New System.Drawing.Point(0, 261)
-            Me.PanelAutoIndex.Name = "PanelAutoIndex"
-            Me.PanelAutoIndex.Size = New System.Drawing.Size(478, 166)
-            Me.PanelAutoIndex.TabIndex = 2
+            Me.Panel3.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Panel3.Location = New System.Drawing.Point(0, 0)
+            Me.Panel3.Name = "Panel3"
+            Me.Panel3.Size = New System.Drawing.Size(940, 38)
+            Me.Panel3.TabIndex = 0
             '
-            'lstAutoIndex
+            'TablaMailBackupTSK
             '
-            Me.lstAutoIndex.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.cAutoIndexTimeInit})
-            Me.lstAutoIndex.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.lstAutoIndex.HideSelection = False
-            Me.lstAutoIndex.Location = New System.Drawing.Point(0, 23)
-            Me.lstAutoIndex.Name = "lstAutoIndex"
-            Me.lstAutoIndex.Size = New System.Drawing.Size(478, 143)
-            Me.lstAutoIndex.TabIndex = 0
-            Me.lstAutoIndex.UseCompatibleStateImageBehavior = False
-            Me.lstAutoIndex.View = System.Windows.Forms.View.Details
-            '
-            'cAutoIndexTimeInit
-            '
-            Me.cAutoIndexTimeInit.Text = "Iniciado"
-            Me.cAutoIndexTimeInit.Width = 464
-            '
-            'Label14
-            '
-            Me.Label14.BackColor = System.Drawing.Color.Black
-            Me.Label14.Dock = System.Windows.Forms.DockStyle.Top
-            Me.Label14.ForeColor = System.Drawing.Color.White
-            Me.Label14.Location = New System.Drawing.Point(0, 0)
-            Me.Label14.Name = "Label14"
-            Me.Label14.Size = New System.Drawing.Size(478, 23)
-            Me.Label14.TabIndex = 1
-            Me.Label14.Text = "Auto indexación"
-            Me.Label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
-            'BuclesToolStripMenuItem
-            '
-            Me.BuclesToolStripMenuItem.Name = "BuclesToolStripMenuItem"
-            Me.BuclesToolStripMenuItem.Size = New System.Drawing.Size(53, 20)
-            Me.BuclesToolStripMenuItem.Text = "Bucles"
-            '
-            'UcWEB
-            '
-            Me.UcWEB.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcWEB.Location = New System.Drawing.Point(3, 123)
-            Me.UcWEB.Name = "UcWEB"
-            Me.UcWEB.Size = New System.Drawing.Size(1088, 40)
-            Me.UcWEB.TabIndex = 0
-            '
-            'UcIMAPEx
-            '
-            Me.UcIMAPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcIMAPEx.Location = New System.Drawing.Point(3, 83)
-            Me.UcIMAPEx.Name = "UcIMAPEx"
-            Me.UcIMAPEx.Size = New System.Drawing.Size(1088, 40)
-            Me.UcIMAPEx.TabIndex = 0
-            '
-            'UcSMTPEx
-            '
-            Me.UcSMTPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcSMTPEx.Location = New System.Drawing.Point(3, 43)
-            Me.UcSMTPEx.Name = "UcSMTPEx"
-            Me.UcSMTPEx.Size = New System.Drawing.Size(1088, 40)
-            Me.UcSMTPEx.TabIndex = 0
-            '
-            'UcPOPEx
-            '
-            Me.UcPOPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcPOPEx.Location = New System.Drawing.Point(3, 3)
-            Me.UcPOPEx.Name = "UcPOPEx"
-            Me.UcPOPEx.Size = New System.Drawing.Size(1088, 40)
-            Me.UcPOPEx.TabIndex = 0
+            Me.TablaMailBackupTSK.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+            Me.TablaMailBackupTSK.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.TablaMailBackupTSK.Location = New System.Drawing.Point(0, 38)
+            Me.TablaMailBackupTSK.Name = "TablaMailBackupTSK"
+            Me.TablaMailBackupTSK.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+            Me.TablaMailBackupTSK.Size = New System.Drawing.Size(940, 329)
+            Me.TablaMailBackupTSK.TabIndex = 1
             '
             'IpBan
             '
@@ -1904,12 +2228,24 @@
             CType(Me.SplitContainer2, System.ComponentModel.ISupportInitialize).EndInit()
             Me.SplitContainer2.ResumeLayout(False)
             Me.MenuTablaBackup.ResumeLayout(False)
-            Me.TabFilesBackup.ResumeLayout(False)
+            Me.PanelAutoIndex.ResumeLayout(False)
+            Me.TabVCF.ResumeLayout(False)
             Me.TabpMAI.ResumeLayout(False)
-            CType(Me.TablaMailBackup, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.PanelFiltroMAI.ResumeLayout(False)
+            CType(Me.TablaMailBackupMAI, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.PanelFiltroMAIBackup.ResumeLayout(False)
             Me.TableLayoutPanel2.ResumeLayout(False)
             Me.TableLayoutPanel2.PerformLayout()
+            Me.TabPCAL.ResumeLayout(False)
+            CType(Me.TablaMailBackupCAL, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.PanelFiltroCALBackup.ResumeLayout(False)
+            Me.TableLayoutPanel5.ResumeLayout(False)
+            Me.TableLayoutPanel5.PerformLayout()
+            Me.TabPTSK.ResumeLayout(False)
+            Me.TabPVCF.ResumeLayout(False)
+            CType(Me.TablaMailBackupVCF, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.PanelFiltroVCFBackup.ResumeLayout(False)
+            Me.TableLayoutPanel4.ResumeLayout(False)
+            Me.TableLayoutPanel4.PerformLayout()
             Me.StatusStrip1.ResumeLayout(False)
             Me.StatusStrip1.PerformLayout()
             Me.TabMigraciones.ResumeLayout(False)
@@ -1952,7 +2288,7 @@
             Me.StatusStrip2.ResumeLayout(False)
             Me.StatusStrip2.PerformLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.PanelAutoIndex.ResumeLayout(False)
+            CType(Me.TablaMailBackupTSK, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -2006,13 +2342,13 @@
         Friend WithEvents TimerGuiAnalizador As Timer
         Friend WithEvents TabMailBackup As TabPage
         Friend WithEvents SplitContainer2 As SplitContainer
-        Friend WithEvents TablaMailBackup As DataGridView
+        Friend WithEvents TablaMailBackupMAI As DataGridView
         Friend WithEvents TreePostOffices As TreeView
         Friend WithEvents StatusStrip1 As StatusStrip
         Friend WithEvents lblMailBackupSeleccionados As ToolStripStatusLabel
         Friend WithEvents lblMensajesBackup As ToolStripStatusLabel
         Friend WithEvents FiltrosMailBox As BindingSource
-        Friend WithEvents PanelFiltroMAI As Panel
+        Friend WithEvents PanelFiltroMAIBackup As Panel
         Friend WithEvents txtFAsunto As TextBox
         Friend WithEvents txtFRemitente As TextBox
         Friend WithEvents txtFDestinatarios As TextBox
@@ -2108,7 +2444,7 @@
         Friend WithEvents cLogcResultado As ColumnHeader
         Friend WithEvents Label12 As Label
         Friend WithEvents Label13 As Label
-        Friend WithEvents TabFilesBackup As TabControl
+        Friend WithEvents TabVCF As TabControl
         Friend WithEvents TabpMAI As TabPage
         Friend WithEvents TabPCAL As TabPage
         Friend WithEvents TabPTSK As TabPage
@@ -2120,5 +2456,33 @@
         Friend WithEvents cAutoIndexTimeInit As ColumnHeader
         Friend WithEvents Label14 As Label
         Friend WithEvents BuclesToolStripMenuItem As ToolStripMenuItem
+        Friend WithEvents PanelFiltroVCFBackup As Panel
+        Friend WithEvents TableLayoutPanel4 As TableLayoutPanel
+        Friend WithEvents Label15 As Label
+        Friend WithEvents Label16 As Label
+        Friend WithEvents Label17 As Label
+        Friend WithEvents Label18 As Label
+        Friend WithEvents Label19 As Label
+        Friend WithEvents Label20 As Label
+        Friend WithEvents TextBox1 As TextBox
+        Friend WithEvents TextBox2 As TextBox
+        Friend WithEvents TextBox3 As TextBox
+        Friend WithEvents TextBox4 As TextBox
+        Friend WithEvents TextBox5 As TextBox
+        Friend WithEvents TextBox6 As TextBox
+        Friend WithEvents TablaMailBackupVCF As DataGridView
+        Friend WithEvents PanelFiltroCALBackup As Panel
+        Friend WithEvents TableLayoutPanel5 As TableLayoutPanel
+        Friend WithEvents Label21 As Label
+        Friend WithEvents Label22 As Label
+        Friend WithEvents Label23 As Label
+        Friend WithEvents Label24 As Label
+        Friend WithEvents TablaMailBackupCAL As DataGridView
+        Friend WithEvents TextBox7 As TextBox
+        Friend WithEvents TextBox8 As TextBox
+        Friend WithEvents TextBox9 As TextBox
+        Friend WithEvents TextBox10 As TextBox
+        Friend WithEvents TablaMailBackupTSK As DataGridView
+        Friend WithEvents Panel3 As Panel
     End Class
 End Namespace

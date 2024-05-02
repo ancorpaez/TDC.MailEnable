@@ -31,16 +31,45 @@ Namespace Backup
                         Tarea(Key) = Linea.Replace($"{Key}:", "").Trim
                     Case "SUMMARY;ENCODING=QUOTED-PRINTABLE", "DESCRIPTION;ENCODING=QUOTED-PRINTABLE"
                         If Linea.StartsWith("SUMMARY") Then
-                            Tarea("SUMMARY") = ExtraerYDecodificarNombre(Linea)
+                            Tarea("SUMMARY") = DecodeQuotedPrintable(Linea)
                         End If
                         If Linea.StartsWith("DESCRIPTION") Then
-                            Tarea("DESCRIPTION") = ExtraerYDecodificarNombre(Linea)
+                            Tarea("DESCRIPTION") = DecodeQuotedPrintable(Linea)
                         End If
                 End Select
             Next
             Asunto = Tarea("SUMMARY")
             Notas = Tarea("DESCRIPTION")
         End Sub
+
+        Public Function DecodeQuotedPrintable(input As String) As String
+            ' Extraer la parte codificada después de "SUMMARY ENCODING=QUOTED-PRINTABLE:"
+            Dim encodedPart As String = input.Substring(input.IndexOf(":") + 1).Trim()
+
+            Dim bytes As New List(Of Byte)()
+            Dim i As Integer = 0
+
+            While i < encodedPart.Length
+                If encodedPart(i) = "=" Then
+                    ' Verificar si es un soft line break
+                    If i + 1 < encodedPart.Length AndAlso encodedPart(i + 1) = vbCrLf Then
+                        i += 2 ' Saltar el soft line break
+                    ElseIf i + 2 < encodedPart.Length Then
+                        ' Convertir el código hexadecimal a byte
+                        Dim hexCode As String = encodedPart.Substring(i + 1, 2)
+                        bytes.Add(Convert.ToByte(hexCode, 16))
+                        i += 3 ' Avanzar más allá de los caracteres hexadecimales
+                    End If
+                Else
+                    ' Agregar el carácter actual al resultado si no es parte de una secuencia codificada
+                    bytes.Add(Convert.ToByte(encodedPart(i)))
+                    i += 1
+                End If
+            End While
+
+            ' Convertir la lista de bytes a string usando UTF-8
+            Return Encoding.UTF8.GetString(bytes.ToArray())
+        End Function
 
         Private Function ExtraerNombreQuotedPrintable(texto As String) As String
             ' Buscar el inicio de la cadena de nombre, asumiendo que siempre comienza después de "UTF-8:"

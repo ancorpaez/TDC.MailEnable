@@ -89,7 +89,7 @@
             'tlblSeparador1
             '
             Me.tlblSeparador1.Name = "tlblSeparador1"
-            Me.tlblSeparador1.Size = New System.Drawing.Size(167, 17)
+            Me.tlblSeparador1.Size = New System.Drawing.Size(198, 17)
             Me.tlblSeparador1.Spring = True
             Me.tlblSeparador1.Text = "|"
             '
@@ -132,7 +132,7 @@
             Me.Controls.Add(Me.StatusStrip1)
             Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
             Me.Name = "View"
-            Me.Text = "View"
+            Me.Text = "Bucle View"
             Me.StatusStrip1.ResumeLayout(False)
             Me.StatusStrip1.PerformLayout()
             CType(Me.TrakVisualizador, System.ComponentModel.ISupportInitialize).EndInit()

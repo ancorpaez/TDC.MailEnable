@@ -43,11 +43,13 @@
         End Sub
 
         Public Sub Guardar(Name)
-            If GuardarEstado = EnumGuardado.Guardado Then
-                GuardarEstado = EnumGuardado.Guardando
-                Tabla.WriteXml(Name)
-                GuardarEstado = EnumGuardado.Guardado
-            End If
+            SyncLock SyncLockAction
+                If GuardarEstado = EnumGuardado.Guardado Then
+                    GuardarEstado = EnumGuardado.Guardando
+                    Tabla.WriteXml(Name)
+                    GuardarEstado = EnumGuardado.Guardado
+                End If
+            End SyncLock
         End Sub
         Public Function Add(Valor As Columnas) As Integer
             SyncLock SyncLockAction

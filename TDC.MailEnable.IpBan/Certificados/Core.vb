@@ -84,6 +84,7 @@ Namespace Certificados
                 Domain5()
                 Domain6()
                 Domain7()
+                Domain8()
                 TryGetCertificate()
             ElseIf dQuene.Count = 0 AndAlso dProcess.Count > 0 Then
                 Do While dProcess.Count > 0

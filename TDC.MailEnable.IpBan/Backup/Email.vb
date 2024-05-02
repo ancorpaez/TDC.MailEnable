@@ -3,7 +3,7 @@ Imports System.Text.RegularExpressions
 Imports System.Net.Mail
 
 Namespace Backup
-    Public Class Email1
+    Public Class Email
         Public Archivo As String
         Public Lineas() As String
         Public Remitente As String = " "

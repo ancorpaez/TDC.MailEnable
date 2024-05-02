@@ -4,25 +4,23 @@ Imports System.Text.RegularExpressions
 
 Namespace Backup
     Public Class Calendar
-        Private Contacto As New Concurrent.ConcurrentDictionary(Of String, String)
+        Private Calendario As New Concurrent.ConcurrentDictionary(Of String, String)
         Private Keys As New List(Of String) From {
-            "Subject:",
-            "X-Location:",
-            "X-StartTime:",
-            "X-FinishTime:"}
+            "Subject",
+            "X-Location",
+            "X-StartTime",
+            "X-FinishTime"}
         Private Lineas() As String
 
         Public Archivo As String = String.Empty
-        Public Nombre As String = " "
-        Public NombreCompleto As String = " "
-        Public Email As String = " "
-        Public EmailTrabajo As String = " "
-        Public EmailPersonal As String = " "
-        Public Nick As String = " "
+        Public Descricion As String = " "
+        Public Hubicacion As String = " "
+        Public Inicio As String = " "
+        Public Fin As String = " "
         Public Sub New(FileFullName As String)
             Archivo = FileFullName
             For Each key In Keys
-                Contacto.TryAdd(key, " ")
+                Calendario.TryAdd(key, " ")
             Next
             If IO.File.Exists(FileFullName) Then Lineas = IO.File.ReadAllLines(FileFullName)
         End Sub
@@ -30,28 +28,23 @@ Namespace Backup
         Public Sub Analizar()
             For Each Linea In Lineas
                 Dim Key As String = Linea.Split(":")(0)
-                Dim EncodingKey As String = Linea.Split("=")(0)
-                Dim Value As String = Linea.Split(":")(1)
-                If Contacto.ContainsKey(Key) Then Contacto(Key) = String.Join(" ", Value.Split(";")).Trim
-                If Contacto.ContainsKey(EncodingKey) Then
-                    Select Case EncodingKey
-                        Case "FN;ENCODING", "N;ENCODING"
-                            If Key.StartsWith("N") Then
-                                Contacto("N") = String.Join(" ", DecodeHex(ExtraerNombreQuotedPrintable(Linea)).Split(";")).Trim
-                            ElseIf Key.StartsWith("FN") Then
-                                Contacto("FN") = DecodeHex(ExtraerNombreQuotedPrintable(Linea))
+                If Calendario.ContainsKey(Key) Then
+                    Select Case Key
+                        Case "Subject", "X-Location"
+                            If Linea.Contains("=?UTF-8?Q?") Then
+                                Calendario(Key) = ExtraerYDecodificarNombre(Linea)
+                            Else
+                                Calendario(Key) = Linea.Replace($"{Key}:", "").Trim
                             End If
-                        Case "N:"
-                            Contacto("N") = ExtraerYDecodificarNombre(Linea)
+                        Case "X-StartTime", "X-FinishTime"
+                            Calendario(Key) = $"{Date.Parse(Linea.Replace($"{Key}:", "").Trim).ToLongDateString} {Date.Parse(Linea.Replace($"{Key}:", "").Trim).ToLongTimeString}"
                     End Select
                 End If
             Next
-            Nombre = Contacto("N")
-            NombreCompleto = Contacto("FN")
-            Email = Contacto("EMAIL;PREF;INTERNET")
-            EmailTrabajo = Contacto("EMAIL;WORK;INTERNET")
-            EmailPersonal = Contacto("EMAIL;OTHER;INTERNET")
-            Nick = Contacto("NICKNAME")
+            Descricion = Calendario("Subject")
+            Hubicacion = Calendario("X-Location")
+            Inicio = Calendario("X-StartTime")
+            Fin = Calendario("X-FinishTime")
         End Sub
 
         Private Function ExtraerNombreQuotedPrintable(texto As String) As String
