@@ -7,6 +7,7 @@ Namespace Backup
         Private WithEvents BuscadoresEvents As MailEnable.Core.Bucle.DoBucle
         Public ReadOnly Buscadores As New Concurrent.ConcurrentDictionary(Of String, MailEnable.Core.Bucle.DoBucle)
         Private WithEvents Controlador As MailEnable.Core.Bucle.DoBucle
+        Private BackGrounds As New Concurrent.ConcurrentDictionary(Of String, Action(Of Object, MailEnable.Core.Bucle.BackgroundEventArgs))
 
         Dim disposedValue As Boolean
         Public Event AlFinalizarIndexacionDeArchivos(sender As Object)
@@ -21,14 +22,16 @@ Namespace Backup
 
         Public Sub New()
             For i = 0 To Configuracion.ANALIZADORES_BACKUP - 1
+                Dim TempI = i
                 IpBanForm.Invoke(Sub()
-                                     Dim Buscador As KeyValuePair(Of String, MailEnable.Core.Bucle.DoBucle) = CrearBuscador(i)
+                                     Dim Buscador As KeyValuePair(Of String, MailEnable.Core.Bucle.DoBucle) = CrearBuscador(TempI)
                                      If Not IsNothing(Buscador) Then
                                          Buscadores.TryAdd(Buscador.Key, Buscador.Value)
                                      Else
                                          Stop
                                      End If
                                  End Sub)
+
             Next
             Controlador = MailEnable.Core.Bucle.GetOrCreate("Global100")
             Controlador.Iniciar()
@@ -38,16 +41,81 @@ Namespace Backup
             Select Case Index
                 Case -1
                     For i = 0 To Configuracion.ANALIZADORES_BACKUP - 1
-                        If Not Buscadores.ContainsKey($"MailBackup{i}") Then
-                            Dim Buscador As MailEnable.Core.Bucle.DoBucle = MailEnable.Core.Bucle.GetOrCreate($"MailBackup{i}")
+                        'Crear Acciones
+                        Dim TempI = i
+                        Dim cAction As New Action(Of Object, MailEnable.Core.Bucle.BackgroundEventArgs)(Sub(sender As Object, e As MailEnable.Core.Bucle.BackgroundEventArgs)
+                                                                                                            If Not IsNothing(Archivos) Then
+                                                                                                                If Not Archivos.IsEmpty Then
+                                                                                                                    Dim Archivo As String = String.Empty
+                                                                                                                    If Archivos.TryDequeue(Archivo) Then
+                                                                                                                        If IO.File.Exists(Archivo) Then AnalizarArchivo(Archivo)
+                                                                                                                    End If
+                                                                                                                Else
+                                                                                                                    'Detener = True
+                                                                                                                    If BuscadorArchivos.Estado = QueneArchivos.EnumEstado.Analizado Then
+                                                                                                                        If Buscadores.ContainsKey(CType(sender, MailEnable.Core.Bucle.DoBucle).Name) Then
+                                                                                                                            If Buscadores.TryRemove(CType(sender, MailEnable.Core.Bucle.DoBucle).Name, Nothing) Then
+                                                                                                                                RemoveHandler CType(sender, MailEnable.Core.Bucle.DoBucle).BackGround, AddressOf BuscadoresEvents_Background
+                                                                                                                                RemoveHandler CType(sender, MailEnable.Core.Bucle.DoBucle).ForeGround, AddressOf BuscadoresEvents_Foreground
+                                                                                                                                RemoveHandler CType(sender, MailEnable.Core.Bucle.DoBucle).EndGround, AddressOf BuscadoresEvents_Endground
+                                                                                                                            Else
+                                                                                                                                Stop
+                                                                                                                            End If
+                                                                                                                        Else
+                                                                                                                            RemoveHandler CType(sender, MailEnable.Core.Bucle.DoBucle).BackGround, AddressOf BuscadoresEvents_Background
+                                                                                                                            RemoveHandler CType(sender, MailEnable.Core.Bucle.DoBucle).ForeGround, AddressOf BuscadoresEvents_Foreground
+                                                                                                                            RemoveHandler CType(sender, MailEnable.Core.Bucle.DoBucle).EndGround, AddressOf BuscadoresEvents_Endground
+                                                                                                                        End If
+                                                                                                                    End If
+                                                                                                                End If
+                                                                                                            End If
+                                                                                                        End Sub)
+                        BackGrounds.TryAdd($"MailBackup{TempI}", cAction)
+
+                        'Crear Bucles
+                        If Not Buscadores.ContainsKey($"MailBackup{TempI}") Then
+                            Dim Buscador As MailEnable.Core.Bucle.DoBucle = MailEnable.Core.Bucle.GetOrCreate($"MailBackup{TempI}")
                             Buscador.Intervalo = Configuracion.ANALIZADORES_BACKUP_TIMER
                             AddHandler Buscador.BackGround, AddressOf BuscadoresEvents_Background
                             AddHandler Buscador.ForeGround, AddressOf BuscadoresEvents_Foreground
                             AddHandler Buscador.EndGround, AddressOf BuscadoresEvents_Endground
-                                                                Return New KeyValuePair(Of String, MailEnable.Core.Bucle.DoBucle)(Buscador.Name, Buscador)
+                            Return New KeyValuePair(Of String, MailEnable.Core.Bucle.DoBucle)(Buscador.Name, Buscador)
                         End If
                     Next
                 Case Else
+                    'Crear su Accion
+                    If Not BackGrounds.ContainsKey($"MailBackup{Index}") Then
+                        Dim cAction As New Action(Of Object, MailEnable.Core.Bucle.BackgroundEventArgs)(Sub(sender As Object, e As MailEnable.Core.Bucle.BackgroundEventArgs)
+                                                                                                            If Not IsNothing(Archivos) Then
+                                                                                                                If Not Archivos.IsEmpty Then
+                                                                                                                    Dim Archivo As String = String.Empty
+                                                                                                                    If Archivos.TryDequeue(Archivo) Then
+                                                                                                                        If IO.File.Exists(Archivo) Then AnalizarArchivo(Archivo)
+                                                                                                                    End If
+                                                                                                                Else
+                                                                                                                    'Detener = True
+                                                                                                                    If BuscadorArchivos.Estado = QueneArchivos.EnumEstado.Analizado Then
+                                                                                                                        If Buscadores.ContainsKey(CType(sender, MailEnable.Core.Bucle.DoBucle).Name) Then
+                                                                                                                            If Buscadores.TryRemove(CType(sender, MailEnable.Core.Bucle.DoBucle).Name, Nothing) Then
+                                                                                                                                RemoveHandler CType(sender, MailEnable.Core.Bucle.DoBucle).BackGround, AddressOf BuscadoresEvents_Background
+                                                                                                                                RemoveHandler CType(sender, MailEnable.Core.Bucle.DoBucle).ForeGround, AddressOf BuscadoresEvents_Foreground
+                                                                                                                                RemoveHandler CType(sender, MailEnable.Core.Bucle.DoBucle).EndGround, AddressOf BuscadoresEvents_Endground
+                                                                                                                            Else
+                                                                                                                                Stop
+                                                                                                                            End If
+                                                                                                                        Else
+                                                                                                                            RemoveHandler CType(sender, MailEnable.Core.Bucle.DoBucle).BackGround, AddressOf BuscadoresEvents_Background
+                                                                                                                            RemoveHandler CType(sender, MailEnable.Core.Bucle.DoBucle).ForeGround, AddressOf BuscadoresEvents_Foreground
+                                                                                                                            RemoveHandler CType(sender, MailEnable.Core.Bucle.DoBucle).EndGround, AddressOf BuscadoresEvents_Endground
+                                                                                                                        End If
+                                                                                                                    End If
+                                                                                                                End If
+                                                                                                            End If
+                                                                                                        End Sub)
+                        BackGrounds.TryAdd($"MailBackup{Index}", cAction)
+                    End If
+
+                    'Crear el bucle
                     If Not Buscadores.ContainsKey($"MailBackup{Index}") Then
                         Dim Buscador As MailEnable.Core.Bucle.DoBucle = MailEnable.Core.Bucle.GetOrCreate($"MailBackup{Index}")
                         Buscador.Intervalo = Configuracion.ANALIZADORES_BACKUP_TIMER
@@ -382,32 +450,35 @@ Namespace Backup
             Return Archivo.Replace(MailEnableLog.Configuracion.CARPETA_BACKUP, MailEnableLog.Configuracion.POST_OFFICES)
         End Function
 
-        Private Sub BuscadoresEvents_Background(Sender As Object, Detener As MailEnable.Core.Bucle.BackgroundEventArgs) Handles BuscadoresEvents.BackGround
-            If Not IsNothing(Archivos) Then
-                If Not Archivos.IsEmpty Then
-                    Dim Archivo As String = String.Empty
-                    If Archivos.TryDequeue(Archivo) Then
-                        If IO.File.Exists(Archivo) Then AnalizarArchivo(Archivo)
-                    End If
-            Else
-            'Detener = True
-            If BuscadorArchivos.Estado = QueneArchivos.EnumEstado.Analizado Then
-                If Buscadores.ContainsKey(CType(Sender, MailEnable.Core.Bucle.DoBucle).Name) Then
-                    If Buscadores.TryRemove(CType(Sender, MailEnable.Core.Bucle.DoBucle).Name, Nothing) Then
-                        RemoveHandler CType(Sender, MailEnable.Core.Bucle.DoBucle).BackGround, AddressOf BuscadoresEvents_Background
-                                RemoveHandler CType(Sender, MailEnable.Core.Bucle.DoBucle).ForeGround, AddressOf BuscadoresEvents_Foreground
-                                RemoveHandler CType(Sender, MailEnable.Core.Bucle.DoBucle).EndGround, AddressOf BuscadoresEvents_Endground
-                            Else
-                        Stop
-                    End If
-                Else
-                    RemoveHandler CType(Sender, MailEnable.Core.Bucle.DoBucle).BackGround, AddressOf BuscadoresEvents_Background
-                            RemoveHandler CType(Sender, MailEnable.Core.Bucle.DoBucle).ForeGround, AddressOf BuscadoresEvents_Foreground
-                            RemoveHandler CType(Sender, MailEnable.Core.Bucle.DoBucle).EndGround, AddressOf BuscadoresEvents_Endground
-                        End If
-            End If
-            End If
-            End If
+        Private Sub BuscadoresEvents_Background(Sender As Object, e As MailEnable.Core.Bucle.BackgroundEventArgs) Handles BuscadoresEvents.BackGround
+            BackGrounds(CType(Sender, MailEnable.Core.Bucle.DoBucle).Name).Invoke(Sender, e)
+
+            'Exit Sub
+            'If Not IsNothing(Archivos) Then
+            '    If Not Archivos.IsEmpty Then
+            '        Dim Archivo As String = String.Empty
+            '        If Archivos.TryDequeue(Archivo) Then
+            '            If IO.File.Exists(Archivo) Then AnalizarArchivo(Archivo)
+            '        End If
+            '    Else
+            '        'Detener = True
+            '        If BuscadorArchivos.Estado = QueneArchivos.EnumEstado.Analizado Then
+            '            If Buscadores.ContainsKey(CType(Sender, MailEnable.Core.Bucle.DoBucle).Name) Then
+            '                If Buscadores.TryRemove(CType(Sender, MailEnable.Core.Bucle.DoBucle).Name, Nothing) Then
+            '                    RemoveHandler CType(Sender, MailEnable.Core.Bucle.DoBucle).BackGround, AddressOf BuscadoresEvents_Background
+            '                    RemoveHandler CType(Sender, MailEnable.Core.Bucle.DoBucle).ForeGround, AddressOf BuscadoresEvents_Foreground
+            '                    RemoveHandler CType(Sender, MailEnable.Core.Bucle.DoBucle).EndGround, AddressOf BuscadoresEvents_Endground
+            '                Else
+            '                    Stop
+            '                End If
+            '            Else
+            '                RemoveHandler CType(Sender, MailEnable.Core.Bucle.DoBucle).BackGround, AddressOf BuscadoresEvents_Background
+            '                RemoveHandler CType(Sender, MailEnable.Core.Bucle.DoBucle).ForeGround, AddressOf BuscadoresEvents_Foreground
+            '                RemoveHandler CType(Sender, MailEnable.Core.Bucle.DoBucle).EndGround, AddressOf BuscadoresEvents_Endground
+            '            End If
+            '        End If
+            '    End If
+            'End If
         End Sub
 
         Private Sub BuscadoresEvents_Foreground(Sender As Object, Detener As MailEnable.Core.Bucle.BackgroundEventArgs) Handles BuscadoresEvents.ForeGround
@@ -433,7 +504,7 @@ Namespace Backup
                 RemoveHandler CType(Sender, MailEnable.Core.Bucle.DoBucle).ForeGround, AddressOf BuscadoresEvents_Foreground
                 RemoveHandler CType(Sender, MailEnable.Core.Bucle.DoBucle).EndGround, AddressOf BuscadoresEvents_Endground
                 RemoveHandler CType(Sender, MailEnable.Core.Bucle.DoBucle).BackGround, AddressOf BuscadoresEvents_Background
-                'CType(Sender, Core.Bucle.DoBucle).Matar()
+                If CType(Sender, MailEnable.Core.Bucle.DoBucle).Estado = MailEnable.Core.Bucle.DoBucle.EnumEstado.Corriendo Then CType(Sender, MailEnable.Core.Bucle.DoBucle).Detener()
             Else
                 'Comprobar Intervalo General
                 If CType(Sender, MailEnable.Core.Bucle.DoBucle).Intervalo <> Configuracion.ANALIZADORES_BACKUP_TIMER Then CType(Sender, MailEnable.Core.Bucle.DoBucle).Intervalo = Configuracion.ANALIZADORES_BACKUP_TIMER

@@ -44,6 +44,13 @@ Namespace Interfaz
         Private iFaceControlIndex As New System.Collections.Concurrent.ConcurrentDictionary(Of UcAnalizador, LecturaDeArchivo)
         Private Shared SyncActualizarProgresoArchivo As New Object
 
+        'RElacion Tabs Tablas
+        Private CalRelation As KeyValuePair(Of TabPage, DataGridView)
+        Private MaiRelation As KeyValuePair(Of TabPage, DataGridView)
+        Private VcfRelation As KeyValuePair(Of TabPage, DataGridView)
+        Private TskRelation As KeyValuePair(Of TabPage, DataGridView)
+        Private Relation As New Collections.Concurrent.ConcurrentDictionary(Of String, KeyValuePair(Of TabPage, DataGridView))
+
         'Pruebas
         'Private WithEvents MiBucle As New Core.Bucle.DoBucle("MiBucle")
 
@@ -233,6 +240,17 @@ Namespace Interfaz
                 Mod_Core.SpamAssassin.Salida = txtRichSpamAssassin
                 SpamAssassin.Read()
             End If
+
+            'Relacionar Tabs con Tablas
+            CalRelation = New KeyValuePair(Of TabPage, DataGridView)(TabPCAL, TablaMailBackupCAL)
+            MaiRelation = New KeyValuePair(Of TabPage, DataGridView)(TabPMAI, TablaMailBackupMAI)
+            VcfRelation = New KeyValuePair(Of TabPage, DataGridView)(TabPVCF, TablaMailBackupVCF)
+            TskRelation = New KeyValuePair(Of TabPage, DataGridView)(TabPTSK, TablaMailBackupTSK)
+
+            Relation.TryAdd(CalRelation.Key.Name, CalRelation)
+            Relation.TryAdd(MaiRelation.Key.Name, MaiRelation)
+            Relation.TryAdd(VcfRelation.Key.Name, VcfRelation)
+            Relation.TryAdd(TskRelation.Key.Name, TskRelation)
 
             'Indexar los Emails del Backup
             Backup.Main()
@@ -630,12 +648,29 @@ Namespace Interfaz
 
 
 
-#Region "Tablas DataSource"
+#Region "Tablas Backup"
         Private Sub TreePostOffices_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles TreePostOffices.AfterSelect
-            txtFAsunto.Text = String.Empty
-            txtFRemitente.Text = String.Empty
-            txtFDestinatarios.Text = String.Empty
 
+            'Limpiar Filtros
+            Dim Filtradores As New List(Of TextBox) From {
+                txtMaiAsunto,
+                txtMaiDestinatarios,
+                txtMaiRemitente,
+                txtCalDescripcion,
+                txtCalHubicacion,
+                txtTskAsunto,
+                txtTskNotas,
+                txtVcfCompleto,
+                txtVcfEmail,
+                txtVcfNick,
+                txtVcfNombre,
+                txtVcfPersonal,
+                txtVcfTrabajo}
+            For Each Filtrador In Filtradores
+                Filtrador.Text = String.Empty
+            Next
+
+            'Filtrar por Carpeta
             Try
                 TreePostOffices.Enabled = False
 
@@ -663,6 +698,14 @@ Namespace Interfaz
                 Next
                 TablaMailBackupCAL.DataSource = DatosCAL
 
+                'TSK
+                Dim FiltroTSK() As DataRow = Backup.TSK.Tabla.Select("Archivo LIKE '%" & e.Node.FullPath & "%'")
+                Dim DatosTSK As DataTable = Backup.TSK.Tabla.Clone
+                For Each Linea In FiltroTSK
+                    DatosTSK.ImportRow(Linea)
+                Next
+                TablaMailBackupTSK.DataSource = DatosTSK
+
                 TreePostOffices.Enabled = True
                 lblMensajesBackup.Text = ""
             Catch ex As Exception
@@ -672,49 +715,39 @@ Namespace Interfaz
 
         End Sub
 
-        Private Sub TablaMailBackupCAL_DataSourceChanged(sender As Object, e As EventArgs) Handles TablaMailBackupCAL.DataSourceChanged
+        Private Sub TablaMailBackupMAI_CellContentDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles TablaMailBackupMAI.CellContentDoubleClick
+            VisualizarEnOutlookToolStripMenuItem_Click(sender, e)
+        End Sub
+        Private Sub Tablas_EnabledChanged(sender As Object, e As EventArgs) Handles TablaMailBackupMAI.EnabledChanged, TablaMailBackupVCF.EnabledChanged, TablaMailBackupTSK.EnabledChanged, TablaMailBackupCAL.EnabledChanged
+            CType(sender, DataGridView).ForeColor = If(CType(sender, DataGridView).Enabled, Color.Black, Color.LightGray)
+        End Sub
+        Private Sub TabBackup_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TabBackup.SelectedIndexChanged
+            Tablas_DataSourceChanged(Relation(TabBackup.SelectedTab.Name).Value, e)
+        End Sub
+        Private Sub Tablas_DataSourceChanged(sender As Object, e As EventArgs) Handles TablaMailBackupMAI.DataSourceChanged, TablaMailBackupCAL.DataSourceChanged, TablaMailBackupTSK.DataSourceChanged, TablaMailBackupVCF.DataSourceChanged
             Try
-                If TablaMailBackupCAL.DataSource.GetType = GetType(DataTable) Then
-                    lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupCAL.DataSource, DataTable).Rows.Count} Encontrados."
-                Else
-                    lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupCAL.DataSource, DataView).Count} Encontrados."
+                If CType(sender, DataGridView).Name = Relation(TabBackup.SelectedTab.Name).Value.Name Then
+                    Dim Tabla As DataGridView = sender
+                    If Not IsNothing(Tabla.DataSource) Then
+                        If Tabla.DataSource.GetType = GetType(DataTable) Then
+                            lblMailBackupSeleccionados.Text = $"{CType(Tabla.DataSource, DataTable).Rows.Count} Encontrados."
+                        Else
+                            lblMailBackupSeleccionados.Text = $"{CType(Tabla.DataSource, DataView).Count} Encontrados."
+                        End If
+                        Tabla.Columns("ID").Visible = False
+                        Tabla.Columns("Archivo").Visible = False
+                    End If
                 End If
-                TablaMailBackupCAL.Columns("ID").Visible = False
-                TablaMailBackupCAL.Columns("Archivo").Visible = False
-                'TablaMailBackup.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.Fill)
             Catch ex As Exception
 
             End Try
         End Sub
-        Private Sub TablaMailBackup_DataSourceChanged(sender As Object, e As EventArgs) Handles TablaMailBackupMAI.DataSourceChanged
-            Try
-                If TablaMailBackupMAI.DataSource.GetType = GetType(DataTable) Then
-                    lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupMAI.DataSource, DataTable).Rows.Count} Encontrados."
-                Else
-                    lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupMAI.DataSource, DataView).Count} Encontrados."
-                End If
-                TablaMailBackupMAI.Columns("ID").Visible = False
-                TablaMailBackupMAI.Columns("Archivo").Visible = False
-                'TablaMailBackup.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.Fill)
-            Catch ex As Exception
-
-            End Try
+        Private Sub Tablas_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles TablaMailBackupMAI.RowEnter, TablaMailBackupCAL.RowEnter, TablaMailBackupTSK.RowEnter, TablaMailBackupVCF.RowEnter
+            If CType(sender, DataGridView).SelectedRows.Count > 0 Then
+                lblMensajesBackup.Text = CType(sender, DataGridView).SelectedRows(0).Cells(1).Value
+            End If
         End Sub
-        Private Sub TablaMailBackupVCF_DataSourceChanged(sender As Object, e As EventArgs) Handles TablaMailBackupVCF.DataSourceChanged
-            Try
-                If TablaMailBackupVCF.DataSource.GetType = GetType(DataTable) Then
-                    lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupVCF.DataSource, DataTable).Rows.Count} Encontrados."
-                Else
-                    lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupVCF.DataSource, DataView).Count} Encontrados."
-                End If
-                TablaMailBackupVCF.Columns("ID").Visible = False
-                TablaMailBackupVCF.Columns("Archivo").Visible = False
-            Catch ex As Exception
-
-            End Try
-        End Sub
-#End Region
-        Private Sub txtFAsunto_TextChanged(sender As Object, e As EventArgs) Handles txtFAsunto.TextChanged, txtFRemitente.TextChanged, txtFDestinatarios.TextChanged
+        Private Sub BuscarEmail(sender As Object, e As EventArgs) Handles txtMaiAsunto.TextChanged, txtMaiRemitente.TextChanged, txtMaiDestinatarios.TextChanged
             Dim Filtro As DataView
             If TablaMailBackupMAI.DataSource.GetType = GetType(DataTable) Then
                 Filtro = New DataView(TablaMailBackupMAI.DataSource)
@@ -722,23 +755,80 @@ Namespace Interfaz
             Else
                 Filtro = TablaMailBackupMAI.DataSource
             End If
-            Filtro.RowFilter = $"Asunto LIKE '%{txtFAsunto.Text}%' 
-                                AND Remitente LIKE '%{txtFRemitente.Text}%'
-                                AND Destinatarios LIKE '%{txtFDestinatarios.Text}%'"
+            Filtro.RowFilter = $"Asunto LIKE '%{txtMaiAsunto.Text}%' 
+                                AND Remitente LIKE '%{txtMaiRemitente.Text}%'
+                                AND Destinatarios LIKE '%{txtMaiDestinatarios.Text}%'"
             lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupMAI.DataSource, DataView).Count} Encontrados."
         End Sub
-
-        Public Sub TablaMailBackup_Resize(sender As Object, e As EventArgs) Handles TablaMailBackupMAI.Resize
-            If Not IsNothing(TablaMailBackupMAI.Columns) AndAlso TablaMailBackupMAI.Columns.Contains("Asunto") Then TablaMailBackupMAI.Columns("Asunto").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        Private Sub BuscarCalendario(sender As Object, e As EventArgs) Handles txtCalDescripcion.TextChanged, txtCalHubicacion.TextChanged
+            Dim Filtro As DataView
+            If TablaMailBackupCAL.DataSource.GetType = GetType(DataTable) Then
+                Filtro = New DataView(TablaMailBackupCAL.DataSource)
+                TablaMailBackupCAL.DataSource = Filtro
+            Else
+                Filtro = TablaMailBackupCAL.DataSource
+            End If
+            Filtro.RowFilter = $"Descripcion LIKE '%{txtCalDescripcion.Text}%' 
+                                AND Hubicacion LIKE '%{txtCalHubicacion.Text}%'"
+            lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupCAL.DataSource, DataView).Count} Encontrados."
+        End Sub
+        Private Sub BuscarTarea(sender As Object, e As EventArgs) Handles txtTskAsunto.TextChanged, txtTskNotas.TextChanged
+            Dim Filtro As DataView
+            If TablaMailBackupTSK.DataSource.GetType = GetType(DataTable) Then
+                Filtro = New DataView(TablaMailBackupTSK.DataSource)
+                TablaMailBackupTSK.DataSource = Filtro
+            Else
+                Filtro = TablaMailBackupTSK.DataSource
+            End If
+            Filtro.RowFilter = $"Asunto LIKE '%{txtTskAsunto.Text}%' 
+                                AND Notas LIKE '%{txtTskNotas.Text}%'"
+            lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupTSK.DataSource, DataView).Count} Encontrados."
         End Sub
 
-        Private Sub BtnLimpiarFiltro_Click(sender As Object, e As EventArgs) Handles BtnLimpiarFiltro.Click
-            Dim Controles() As TextBox = {txtFAsunto, txtFDestinatarios, txtFRemitente}
+        Private Sub BuscarContacto(sender As Object, e As EventArgs) Handles txtVcfNombre.TextChanged, txtVcfCompleto.TextChanged, txtVcfPersonal.TextChanged, txtVcfTrabajo.TextChanged, txtVcfNick.TextChanged, txtVcfEmail.TextChanged
+            Dim Filtro As DataView
+            If TablaMailBackupVCF.DataSource.GetType = GetType(DataTable) Then
+                Filtro = New DataView(TablaMailBackupVCF.DataSource)
+                TablaMailBackupVCF.DataSource = Filtro
+            Else
+                Filtro = TablaMailBackupVCF.DataSource
+            End If
+            Filtro.RowFilter = $"Nombre LIKE '%{txtVcfNombre.Text}%' 
+                                AND NombreCompleto LIKE '%{txtVcfCompleto.Text}%'
+                                AND Email LIKE '%{txtVcfEmail.Text}%'
+                                AND EmailPersonal LIKE '%{txtVcfPersonal.Text}%'
+                                AND EmailTrabajo LIKE '%{txtVcfTrabajo.Text}%'
+                                AND Nick LIKE '%{txtVcfNick.Text}%'"
+            lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupVCF.DataSource, DataView).Count} Encontrados."
+        End Sub
+        Private Sub BtnLimpiarMai_Click(sender As Object, e As EventArgs) Handles BtnLimpiarMai.Click
+            Dim Controles() As TextBox = {txtMaiAsunto, txtMaiDestinatarios, txtMaiRemitente}
+            For Each txt In Controles
+                txt.Text = String.Empty
+            Next
+        End Sub
+        Private Sub BtnLimpiarCal_Click(sender As Object, e As EventArgs) Handles BtnLimpiarCal.Click
+            Dim Controles() As TextBox = {txtCalDescripcion, txtCalHubicacion}
+            For Each txt In Controles
+                txt.Text = String.Empty
+            Next
+        End Sub
+        Private Sub BtnLimpiarTSK_Click(sender As Object, e As EventArgs) Handles BtnLimpiarTSK.Click
+            Dim Controles() As TextBox = {txtTskAsunto, txtTskNotas}
+            For Each txt In Controles
+                txt.Text = String.Empty
+            Next
+        End Sub
+        Private Sub BtnLimpiarVCF_Click(sender As Object, e As EventArgs) Handles BtnLimpiarVCF.Click
+            Dim Controles() As TextBox = {txtVcfCompleto, txtVcfEmail, txtVcfNick, txtVcfNombre, txtVcfPersonal, txtVcfTrabajo}
             For Each txt In Controles
                 txt.Text = String.Empty
             Next
         End Sub
 
+        Private Sub TablaMailBackupMAI_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles TablaMailBackupMAI.CellContentClick
+
+        End Sub
         Private Sub ReindexarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReindexarEmail.Click
             If TablaMailBackupMAI.SelectedRows.Count > 0 Then
                 Dim mC As New List(Of Control) From {TablaMailBackupMAI, TreePostOffices}
@@ -777,7 +867,6 @@ Namespace Interfaz
                 mC.ForEach(Sub(c) c.Enabled = True)
             End If
         End Sub
-
         Private Sub VisualizarEnNotepadToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VisualizarEnNotepadToolStripMenuItem.Click
             If TablaMailBackupMAI.SelectedRows.Count > 0 Then
                 If IO.File.Exists(TablaMailBackupMAI.SelectedRows(0).Cells(1).Value) Then
@@ -796,9 +885,70 @@ Namespace Interfaz
                 End If
             End If
         End Sub
-        Private Sub RestaurarEmailToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RestaurarEmail.Click
-            For Each Fila As DataGridViewRow In TablaMailBackupMAI.SelectedRows
-                'Backup.Restaurar(Fila.Cells(1).Value)
+
+        Private Sub Restaurar(sender As Object, e As EventArgs) Handles RestaurarEmail.Click, RestaurarContacto.Click, RestaurarCalendario.Click, RestaurarTarea.Click
+            Select Case (CType(sender, ToolStripMenuItem).Name)
+                Case RestaurarEmail.Name
+                    RestaurarArchivos(TablaMailBackupMAI)
+                Case RestaurarTarea.Name
+                    RestaurarArchivos(TablaMailBackupTSK)
+                Case RestaurarCalendario.Name
+                    RestaurarArchivos(TablaMailBackupCAL)
+                Case RestaurarContacto.Name
+                    RestaurarArchivos(TablaMailBackupVCF)
+            End Select
+        End Sub
+        Private Sub RestaurarArchivos(Tabla As DataGridView)
+            'Deshabilitar Tabs
+            For Each iTAB In Relation.Values
+                iTAB.Key.Enabled = False
+            Next
+
+            'Restaurar Archivos
+            For Each Fila As DataGridViewRow In Tabla.SelectedRows
+                Try
+                    'Restaurar el Archivo
+                    If Backup.Restaurar(Fila.Cells(1).Value) Then
+                        'Limpiar Tabla
+                        Select Case Tabla.Name
+                            Case TablaMailBackupMAI.Name
+                                Dim mRow As DataRow = Backup.MAI.GetRow("Archivo", Fila.Cells(1).Value)
+                                Backup.MAI.Tabla.Rows.Remove(mRow)
+                            Case TablaMailBackupCAL.Name
+                                Dim mRow As DataRow = Backup.CAL.GetRow("Archivo", Fila.Cells(1).Value)
+                                Backup.CAL.Tabla.Rows.Remove(mRow)
+                            Case TablaMailBackupTSK.Name
+                                Dim mRow As DataRow = Backup.TSK.GetRow("Archivo", Fila.Cells(1).Value)
+                                Backup.TSK.Tabla.Rows.Remove(mRow)
+                            Case TablaMailBackupVCF.Name
+                                Dim mRow As DataRow = Backup.VCF.GetRow("Archivo", Fila.Cells(1).Value)
+                                Backup.VCF.Tabla.Rows.Remove(mRow)
+                        End Select
+
+                        'Limpiar del Control
+                        Tabla.Rows.Remove(Fila)
+                    End If
+
+                Catch ex As Exception
+                    MsgBox(ex.Message)
+                End Try
+            Next
+
+            'Guardar la Tabla
+            Select Case Tabla.Name
+                Case TablaMailBackupMAI.Name
+                    Backup.MAI.Guardar(Backup.BddMAIFullPath)
+                Case TablaMailBackupCAL.Name
+                    Backup.CAL.Guardar(Backup.BddCALFullPath)
+                Case TablaMailBackupTSK.Name
+                    Backup.TSK.Guardar(Backup.BddTSKFullPath)
+                Case TablaMailBackupVCF.Name
+                    Backup.VCF.Guardar(Backup.BddVCFFullPath)
+            End Select
+
+            'Habilitar Tabs
+            For Each iTAB In Relation.Values
+                iTAB.Key.Enabled = True
             Next
         End Sub
         Private Sub ReindexarTodoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReindexarTodoToolStripMenuItem.Click
@@ -821,18 +971,32 @@ Namespace Interfaz
             'Dim Accion As Action = Async Sub() Await Backup.Indexar()
             'Dim Lanzar As Task = Task.Run(Accion)
         End Sub
-        Private Sub TablaMailBackup_EnabledChanged(sender As Object, e As EventArgs) Handles TablaMailBackupMAI.EnabledChanged
-            TablaMailBackupMAI.ForeColor = If(TablaMailBackupMAI.Enabled, Color.Black, Color.LightGray)
-        End Sub
-
-
-        Private Sub TablaMailBackup_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles TablaMailBackupMAI.RowEnter
-            If TablaMailBackupMAI.SelectedRows.Count > 0 Then
-                lblMensajesBackup.Text = TablaMailBackupMAI.SelectedRows(0).Cells(1).Value
-            End If
-        End Sub
 
         Private Sub MenuTablaBackup_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles MenuTablaBackup.Opening
+            RestaurarEmail.Visible = False
+            RestaurarCalendario.Visible = False
+            RestaurarContacto.Visible = False
+            RestaurarTarea.Visible = False
+            ReindexarEmail.Visible = False
+            VisualizarEnNotepadToolStripMenuItem.Enabled = False
+            VisualizarEnOutlookToolStripMenuItem.Enabled = False
+
+
+            Select Case TabBackup.SelectedTab.Name
+                Case TabPCAL.Name
+                    RestaurarCalendario.Visible = True
+
+                Case TabPMAI.Name
+                    RestaurarEmail.Visible = True
+                    ReindexarEmail.Visible = True
+
+                Case TabPTSK.Name
+                    RestaurarTarea.Visible = True
+
+                Case TabPVCF.Name
+                    RestaurarContacto.Visible = True
+
+            End Select
 
             If Not IsNothing(TreePostOffices.SelectedNode) Then
                 ReindexarCarpeta.Enabled = True
@@ -841,27 +1005,71 @@ Namespace Interfaz
                 ReindexarCarpeta.Text = "Indexar Carpeta"
                 ReindexarCarpeta.Enabled = False
             End If
+            Select Case TabBackup.SelectedTab.Name
+                Case TabPMAI.Name
+                    If TablaMailBackupMAI.SelectedRows.Count > 0 Then
+                        ReindexarEmail.Enabled = True
+                        RestaurarEmail.Enabled = True
+                        VisualizarEnNotepadToolStripMenuItem.Enabled = True
+                        VisualizarEnOutlookToolStripMenuItem.Enabled = True
 
-            If TablaMailBackupMAI.SelectedRows.Count > 0 Then
-                ReindexarEmail.Enabled = True
-                RestaurarEmail.Enabled = True
-                VisualizarEnNotepadToolStripMenuItem.Enabled = True
+                        If TablaMailBackupMAI.SelectedRows.Count = 1 Then
+                            ReindexarEmail.Text = $"Reindexar: {TablaMailBackupMAI.SelectedRows(0).Cells(5).Value}"
+                            RestaurarEmail.Text = $"Restaurar: {TablaMailBackupMAI.SelectedRows(0).Cells(5).Value}"
+                        Else
+                            ReindexarEmail.Text = $"Reindexar: Emails seleccionados."
+                            RestaurarEmail.Text = $"Restaurar: Emails seleccionados."
+                        End If
 
-                If TablaMailBackupMAI.SelectedRows.Count = 1 Then
-                    ReindexarEmail.Text = $"Reindexar: {TablaMailBackupMAI.SelectedRows(0).Cells(5).Value}"
-                    RestaurarEmail.Text = $"Restaurar: {TablaMailBackupMAI.SelectedRows(0).Cells(5).Value}"
-                Else
-                    ReindexarEmail.Text = $"Reindexar: Emails seleccionados."
-                    RestaurarEmail.Text = $"Restaurar: Emails seleccionados."
-                End If
+                    Else
+                        RestaurarEmail.Enabled = False
+                        RestaurarEmail.Text = "Restaurar Email"
+                        ReindexarEmail.Enabled = False
+                        ReindexarEmail.Text = "Reindexar Email"
+                        VisualizarEnNotepadToolStripMenuItem.Enabled = False
+                        VisualizarEnOutlookToolStripMenuItem.Enabled = False
+                    End If
 
-            Else
-                RestaurarEmail.Enabled = False
-                RestaurarEmail.Text = "Restaurar Email"
-                ReindexarEmail.Enabled = False
-                ReindexarEmail.Text = "Reindexar Email"
-                VisualizarEnNotepadToolStripMenuItem.Enabled = False
-            End If
+                Case TabPCAL.Name
+                    If TablaMailBackupCAL.SelectedRows.Count > 0 Then
+                        RestaurarCalendario.Enabled = True
+                        If TablaMailBackupCAL.SelectedRows.Count = 1 Then
+                            RestaurarCalendario.Text = $"Restaurar: {TablaMailBackupCAL.SelectedRows(0).Cells(2).Value}"
+                        Else
+                            RestaurarCalendario.Text = $"Restaurar: Calendarios seleccionados."
+                        End If
+                    Else
+                        RestaurarCalendario.Enabled = False
+                        RestaurarCalendario.Text = "Restaurar Calendario"
+                    End If
+
+                Case TabPTSK.Name
+                    If TablaMailBackupTSK.SelectedRows.Count > 0 Then
+                        RestaurarTarea.Enabled = True
+                        If TablaMailBackupTSK.SelectedRows.Count = 1 Then
+                            RestaurarTarea.Text = $"Restaurar: {TablaMailBackupTSK.SelectedRows(0).Cells(2).Value}"
+                        Else
+                            RestaurarTarea.Text = $"Restaurar: Tareas seleccionados."
+                        End If
+                    Else
+                        RestaurarTarea.Enabled = False
+                        RestaurarTarea.Text = "Restaurar Tarea"
+                    End If
+
+                Case TabPVCF.Name
+                    If TablaMailBackupVCF.SelectedRows.Count > 0 Then
+                        RestaurarContacto.Enabled = True
+                        If TablaMailBackupVCF.SelectedRows.Count = 1 Then
+                            RestaurarContacto.Text = $"Restaurar: {TablaMailBackupVCF.SelectedRows(0).Cells(2).Value}"
+                        Else
+                            RestaurarContacto.Text = $"Restaurar: Contactos seleccionados."
+                        End If
+                    Else
+                        RestaurarContacto.Enabled = False
+                        RestaurarContacto.Text = "Restaurar Contacto"
+                    End If
+            End Select
+
         End Sub
 
         Private Sub ReindexarCarpeta_Click(sender As Object, e As EventArgs) Handles ReindexarCarpeta.Click
@@ -873,10 +1081,12 @@ Namespace Interfaz
                 'Dim Lanzar As Task = Task.Run(Accion)
             End If
         End Sub
+#End Region 'Tablas MailBackup
 
-        Private Sub TablaMailBackup_CellContentDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles TablaMailBackupMAI.CellContentDoubleClick
-            VisualizarEnOutlookToolStripMenuItem_Click(sender, e)
-        End Sub
+
+
+
+
 
         Private Sub BtnRecargarTreeNodePostOffices_Click(sender As Object, e As EventArgs) Handles BtnRecargarTreeNodePostOffices.Click
             Dim Desechar As Task = Task.Run(Sub() LoadFolders(Configuracion.CARPETA_BACKUP, TreePostOffices))

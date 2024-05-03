@@ -25,7 +25,7 @@ Namespace Backup
         Public WithEvents IndexadorArchivos As New Indexador
         Private WithEvents iFaceNotificador As New MailEnable.Core.Bucle.DoBucle("iFaceNotificadorBackup")
         Private WithEvents AutoIndex As New MailEnable.Core.Bucle.DoBucle("AutoIndexMailBackup") With {.Intervalo = DateDiff(DateInterval.Second, Now, Now.AddHours(1)) * 1000}
-        Public ControlesProtegidos As New List(Of Control) From {IpBanForm.TreePostOffices, IpBanForm.TabVCF, IpBanForm.MenuTablaBackup}
+        Public ControlesProtegidos As New List(Of Control) From {IpBanForm.TreePostOffices, IpBanForm.TabBackup, IpBanForm.MenuTablaBackup}
         Public Sub Main()
             If IO.File.Exists(BddMAIFullPath) Then MAI.Tabla.ReadXml(BddMAIFullPath)
             If IO.File.Exists(BddVCFFullPath) Then VCF.Tabla.ReadXml(BddVCFFullPath)
@@ -43,6 +43,34 @@ Namespace Backup
             BuscadorCarpetas.Buscar(Configuracion.CARPETA_BACKUP)
             AutoIndex.Iniciar()
         End Sub
+
+        Public Function Restaurar(Archivo As String) As Boolean
+            If IO.File.Exists(Archivo) Then
+                If Not IO.File.Exists(OriginalPath(Archivo)) Then
+                    If IO.Directory.Exists(IO.Path.GetDirectoryName(OriginalPath(Archivo))) Then
+                        Try
+                            IO.File.Copy(Archivo, OriginalPath(Archivo))
+                            IO.File.WriteAllText($"{IO.Path.GetDirectoryName(OriginalPath(Archivo))}\_change.dty", "index")
+                            Return True
+                        Catch ex As Exception
+                            MsgBox(ex.Message)
+                        End Try
+                    Else
+                        MsgBox($"No existe un directorio donde restaurar el archivo, {OriginalPath(Archivo)}")
+                    End If
+                Else
+                    IO.File.WriteAllText($"{IO.Path.GetDirectoryName(OriginalPath(Archivo))}\_change.dty", "index")
+                    Return True
+                End If
+            Else
+                MsgBox($"No existe el archivo del Backup, {Archivo}")
+            End If
+            Return False
+        End Function
+        Private Function OriginalPath(Archivo As String) As String
+            Return Archivo.Replace(MailEnableLog.Configuracion.CARPETA_BACKUP, MailEnableLog.Configuracion.POST_OFFICES)
+        End Function
+
         Private Sub BuscadorCarpetas_AlIniciarBusquedaDeCarpetas(sender As Object) Handles BuscadorCarpetas.AlIniciarBusquedaDeCarpetas
             'Iniciar el Notificador con la Iniciacion de la Busqueda
             If iFaceNotificador.Estado = DoBucle.EnumEstado.Detenido Then iFaceNotificador.Iniciar()
@@ -107,7 +135,7 @@ Namespace Backup
             End If
             If Not IsNothing(IpBanForm.TablaMailBackupMAI.Columns) AndAlso IpBanForm.TablaMailBackupMAI.Columns.Contains("Asunto") AndAlso IpBanForm.TablaMailBackupMAI.Columns("Asunto").AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet Then IpBanForm.TablaMailBackupMAI.Columns("Asunto").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             If Not IsNothing(IpBanForm.TablaMailBackupVCF.Columns) AndAlso IpBanForm.TablaMailBackupVCF.Columns.Contains("Nombre") AndAlso IpBanForm.TablaMailBackupVCF.Columns("Nombre").AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet Then IpBanForm.TablaMailBackupVCF.Columns("Nombre").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-            If Not IsNothing(IpBanForm.TablaMailBackupCAL.Columns) AndAlso IpBanForm.TablaMailBackupCAL.Columns.Contains("Descricion") AndAlso IpBanForm.TablaMailBackupCAL.Columns("Descricion").AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet Then IpBanForm.TablaMailBackupCAL.Columns("Descricion").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            If Not IsNothing(IpBanForm.TablaMailBackupCAL.Columns) AndAlso IpBanForm.TablaMailBackupCAL.Columns.Contains("Descripcion") AndAlso IpBanForm.TablaMailBackupCAL.Columns("Descripcion").AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet Then IpBanForm.TablaMailBackupCAL.Columns("Descripcion").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             If Not IsNothing(IpBanForm.TablaMailBackupTSK.Columns) AndAlso IpBanForm.TablaMailBackupTSK.Columns.Contains("Asunto") AndAlso IpBanForm.TablaMailBackupTSK.Columns("Asunto").AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet Then IpBanForm.TablaMailBackupTSK.Columns("Asunto").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
 
             'Desactivar el Notificador al terminar la Indexacion

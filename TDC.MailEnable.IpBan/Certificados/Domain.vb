@@ -9,6 +9,8 @@
         Public Navigation As New Concurrent.ConcurrentDictionary(Of String, Uri)
         Public Scripts As New Concurrent.ConcurrentDictionary(Of String, String)
         Public Viewer As Interfaz.Navegador
+        'Public Hosting As Hosting
+
         Public Sub New(Key As String)
             Me.Key = Key
         End Sub

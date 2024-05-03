@@ -1,5 +1,7 @@
 ﻿Imports System.Runtime.ConstrainedExecution
 Imports System.Security.Cryptography.X509Certificates
+Imports System.Xml.Serialization
+Imports System.IO
 
 Namespace Certificados
     Module Core
@@ -14,14 +16,43 @@ Namespace Certificados
         Private FaceListLogDownload As ListView
 
         Private WithEvents Actualizador As New TDC.MailEnable.Core.Bucle.DoBucle("ActualizadorSsl")
+
+        'Friend Hostings As New Concurrent.ConcurrentDictionary(Of String, Hosting)
+
+
         Public Sub Main(TabControl As TabControl, ListControl As ListView, ListDownload As ListView)
             If Not CertificateFolder.Exists Then CertificateFolder.Create()
 
             FaceListControl = ListControl
             FaceTabControl = TabControl
             FaceListLogDownload = ListDownload
+
+            'Hostings.TryAdd("Viejo", New Hosting("Viejo"))
+
             Actualizador.Iniciar()
         End Sub
+
+        'Public Sub SerializeConfiguration()
+        '    Dim config As New Hosting("Test") With {
+        '        .Name = "Example Hosting",
+        '        .Url = New Uri("https://example.com"),
+        '        .Navigation = New Concurrent.ConcurrentDictionary(Of String, Uri),
+        '        .Scripts = New Concurrent.ConcurrentDictionary(Of String, String)
+        '    }
+        '    config.Navigation.TryAdd("home", New Uri("https://example.com/home"))
+        '    config.Scripts.TryAdd("init", "console.log('Initialized');")
+
+        '    Dim serializer As New XmlSerializer(GetType(Hosting))
+        '    Using writer As New StreamWriter("configuration.xml")
+        '        serializer.Serialize(writer, config)
+        '    End Using
+        'End Sub
+        'Public Function DeserializeConfiguration() As Hosting
+        '    Dim serializer As New XmlSerializer(GetType(Hosting))
+        '    Using reader As New StreamReader("configuration.xml")
+        '        Return CType(serializer.Deserialize(reader), Hosting)
+        '    End Using
+        'End Function
 
         Public Sub DownloadedFile(sender As Object, File As Interfaz.FileDownloadedEvent)
             CType(sender, Interfaz.Navegador).Domain.LogOut()
