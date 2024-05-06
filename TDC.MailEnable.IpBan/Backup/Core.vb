@@ -120,7 +120,7 @@ Namespace Backup
             IpBanForm.lblCarpetas.Text = $"Carpetas ({BuscadorCarpetas.Directorios.Count})"
             IpBanForm.lblEmails.Text = $"Pendientes ({BuscadorArchivos.Archivos.Count})"
             IpBanForm.lblAnalizadoresBackup.Text = $"Analizadores (" &
-            $"Indexadores: {IndexadorArchivos.Buscadores.TakeWhile(Function(Buscador) Buscador.Value.Estado = Global.TDC.MailEnable.Core.Bucle.DoBucle.EnumEstado.Corriendo).Count}, " &
+            $"Indexadores: {IndexadorArchivos.Indexadores.TakeWhile(Function(Buscador) Buscador.Value.Estado = Global.TDC.MailEnable.Core.Bucle.DoBucle.EnumEstado.Corriendo).Count}, " &
             $"Archivos: {BuscadorArchivos.Buscadores.TakeWhile(Function(Buscador) Buscador.Value.Estado = Global.TDC.MailEnable.Core.Bucle.DoBucle.EnumEstado.Corriendo).Count}, " &
             $"Carpetas: {BuscadorCarpetas.Buscadores.Count} , " &
             $"Escaneo: {BuscadorCarpetas.Escaneo.Count} - " &

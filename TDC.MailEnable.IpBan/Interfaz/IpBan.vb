@@ -1116,7 +1116,7 @@ Namespace Interfaz
         End Sub
 
         Private Sub TabApp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TabApp.SelectedIndexChanged
-            If TabApp.SelectedTab.Name = TabApp.TabPages.Item("TabMigraciones").Name Then
+            If TabApp.SelectedTab.Name = TabMigraciones.Name Then
                 Migracion.LabelService = lblEstadoServicioMigracion
                 Migracion.BtnService = BtnServicioMigracion
                 Migracion.lstDominiosConfigurados = lstDominiosMigracion
@@ -1124,6 +1124,14 @@ Namespace Interfaz
                 Migracion.lstListaDeEspera = lstListaDeEsperaMigracion
                 Migracion.lstErroneos = lstErroneosMigracion
                 Migracion.CargarMigraciones()
+            End If
+
+            If TabApp.SelectedTab.Name = TabAutoResponder.Name Then
+                For Each Email In AutoResponder.Modificados
+                    If Not lstEmailsReparadosAutoResponder.Items.Contains(Email) Then
+                        lstEmailsReparadosAutoResponder.Items.Add(Email)
+                    End If
+                Next
             End If
         End Sub
 
@@ -1209,6 +1217,14 @@ Namespace Interfaz
             TDC.MailEnable.Core.Bucle.Mod_GlobalDoBucle.View()
         End Sub
 
-
+        Private Sub lstEmailsReparadosAutoResponder_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstEmailsReparadosAutoResponder.SelectedIndexChanged
+            If lstEmailsReparadosAutoResponder.SelectedItems.Count > 0 Then
+                RichAutoResponderMail.Text = AutoResponder.Mensajes(lstEmailsReparadosAutoResponder.SelectedItems.Item(0))
+                RichAutoResponderStatus.Text = AutoResponder.Estados(lstEmailsReparadosAutoResponder.SelectedItems.Item(0))
+            Else
+                RichAutoResponderMail.Text = String.Empty
+                RichAutoResponderStatus.Text = String.Empty
+            End If
+        End Sub
     End Class
 End Namespace
