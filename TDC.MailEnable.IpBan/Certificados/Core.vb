@@ -5,13 +5,14 @@ Imports System.IO
 
 Namespace Certificados
     Module Core
-        Public dQuene As New Concurrent.ConcurrentQueue(Of Domain)
-        Public dProcess As New Concurrent.ConcurrentQueue(Of Domain)
-        Public dProcessed As New Concurrent.ConcurrentQueue(Of Domain)
+        Public Hostings As New Concurrent.ConcurrentDictionary(Of String, PleskHosting)
+        Public Domains As New Concurrent.ConcurrentQueue(Of PleskDomain)
+
+        Public ReadOnly Property Guiones As New Concurrent.ConcurrentQueue(Of PleskGuionDeDescarga)
+        Public ReadOnly Property GuionesProcesados As New Concurrent.ConcurrentQueue(Of PleskGuionDeDescarga)
 
         Public CertificateFolder As New IO.DirectoryInfo(Application.StartupPath & "\Certificados")
         Private FaceTabControl As TabControl
-        Private WithEvents Exportador As PemToPfx
         Private FaceListControl As ListView
         Private FaceListLogDownload As ListView
 
@@ -27,35 +28,63 @@ Namespace Certificados
             FaceTabControl = TabControl
             FaceListLogDownload = ListDownload
 
-            'Hostings.TryAdd("Viejo", New Hosting("Viejo"))
+            Privado.EnquenePleskDomains()
+
+            Dim PleskHostingAntiguo As New PleskHosting("dns17684.phdns3.es") With {.Url = New Uri("https://dns17684.phdns3.es:8443")}
+            With PleskHostingAntiguo
+                .Navigation.TryAdd("/view", New Uri($"{ .Url.AbsoluteUri}modules/sslit/index.php/index/proxy?dom_id=[$DomainId]&site_id=[$DomainId]"))
+                .Navigation.TryAdd("certificate/id/[$DomainId]", New Uri($"{ .Url.AbsoluteUri}smb/ssl-certificate/list/id/[$DomainId]"))
+                .Navigation.TryAdd("list/id/[$DomainId]", New Uri($"{ .Url.AbsoluteUri}smb/ssl-certificate/download/id/[$DomainId]/certificateId/[$CertificateId]"))
+                .Scripts.TryAdd("login_up.php", "var formulario = document.getElementById('form-login');
+                                    if (formulario) {{
+                                        formulario.login_name.value = '[$UserName]';
+                                        formulario.passwd.value = '[$UserPassword]';
+                                        formulario.submit();
+                                    }} else {{
+                                        console.error('No se encontró el formulario con el id formulario_prueba');
+                                    }}")
+            End With
+            Hostings.TryAdd(PleskHostingAntiguo.Name, PleskHostingAntiguo)
+
+            Dim PleskHostingNuevo As New PleskHosting("s4correo.profesionalhosting.com") With {.Url = New Uri("https://s4correo.profesionalhosting.com:8443")}
+            With PleskHostingNuevo
+                .Navigation.TryAdd("/web/view", New Uri($"{ .Url.AbsoluteUri}smb/ssl-certificate/list/id/[$DomainId]"))
+                .Navigation.TryAdd("ssl-certificate/list/id/[$DomainId]", New Uri($"{ .Url.AbsoluteUri}smb/ssl-certificate/download/id/[$DomainId]/certificateId/[$CertificateId]"))
+                .Scripts.TryAdd("login_up.php", "var formulario = document.getElementById('form-login');
+                                    if (formulario) {{
+                                        formulario.login_name.value = '[$UserName]';
+                                        formulario.passwd.value = '[$UserPassword]';
+                                        formulario.submit();
+                                    }} else {{
+                                        console.error('No se encontró el formulario con el id formulario_prueba');
+                                    }}")
+            End With
+            Hostings.TryAdd(PleskHostingNuevo.Name, PleskHostingNuevo)
+
+            For Each Domain In Domains
+                Dim EnlaceHosting As New PleskHosting(Domain.HostingKey) With {.Url = Hostings(Domain.HostingKey).Url}
+                For Each Navigation In Hostings(Domain.HostingKey).Navigation
+                    EnlaceHosting.Navigation.TryAdd(GuionToDomain(Navigation.Key, Domain), New Uri(GuionToDomain(Navigation.Value.AbsoluteUri, Domain)))
+                Next
+                For Each Script In Hostings(Domain.HostingKey).Scripts
+                    EnlaceHosting.Scripts.TryAdd(GuionToDomain(Script.Key, Domain), GuionToDomain(Script.Value, Domain))
+                Next
+                Guiones.Enqueue(New PleskGuionDeDescarga With {.Domain = Domain, .Hosting = EnlaceHosting})
+            Next
 
             Actualizador.Iniciar()
         End Sub
 
-        'Public Sub SerializeConfiguration()
-        '    Dim config As New Hosting("Test") With {
-        '        .Name = "Example Hosting",
-        '        .Url = New Uri("https://example.com"),
-        '        .Navigation = New Concurrent.ConcurrentDictionary(Of String, Uri),
-        '        .Scripts = New Concurrent.ConcurrentDictionary(Of String, String)
-        '    }
-        '    config.Navigation.TryAdd("home", New Uri("https://example.com/home"))
-        '    config.Scripts.TryAdd("init", "console.log('Initialized');")
-
-        '    Dim serializer As New XmlSerializer(GetType(Hosting))
-        '    Using writer As New StreamWriter("configuration.xml")
-        '        serializer.Serialize(writer, config)
-        '    End Using
-        'End Sub
-        'Public Function DeserializeConfiguration() As Hosting
-        '    Dim serializer As New XmlSerializer(GetType(Hosting))
-        '    Using reader As New StreamReader("configuration.xml")
-        '        Return CType(serializer.Deserialize(reader), Hosting)
-        '    End Using
-        'End Function
-
+        Private Function GuionToDomain(Cadena As String, Dominio As PleskDomain) As String
+            Dim nCadena As String = Cadena
+            nCadena = nCadena.Replace("[$DomainId]", Dominio.DomainId)
+            nCadena = nCadena.Replace("[$CertificateId]", Dominio.CertificateId)
+            nCadena = nCadena.Replace("[$UserName]", Dominio.UserName)
+            nCadena = nCadena.Replace("[$UserPassword]", Dominio.UserPassword)
+            Return nCadena
+        End Function
         Public Sub DownloadedFile(sender As Object, File As Interfaz.FileDownloadedEvent)
-            CType(sender, Interfaz.Navegador).Domain.LogOut()
+            CType(sender, Interfaz.Navegador).Guion.LogOut()
             Dim Convertir As New PemToPfx
             AddHandler Convertir.AlConvertirPem, AddressOf Exportador_AlConvertirPem
             Convertir.Convert(File.Path)
@@ -84,44 +113,36 @@ Namespace Certificados
         End Sub
 
         Private Sub TryGetCertificate()
-            If dQuene.Count > 0 Then
-                Dim eDomain As Domain = Nothing
-                If dQuene.TryDequeue(eDomain) Then
-                    If Not FaceTabControl.TabPages.ContainsKey(eDomain.Key) Then
-                        Dim cTab As New TabPage With {.Name = eDomain.Key, .Text = eDomain.Key}
+            If Guiones.Count > 0 Then
+                Dim Guion As PleskGuionDeDescarga = Nothing
+                If Guiones.TryDequeue(Guion) Then
+                    If Not FaceTabControl.TabPages.ContainsKey(Guion.Domain.Name) Then
+                        Dim cTab As New TabPage With {.Name = Guion.Domain.Name, .Text = Guion.Domain.Name}
                         FaceTabControl.TabPages.Add(cTab)
-                        eDomain.Download()
-                        cTab.Controls.Add(eDomain.Viewer)
-                        FaceTabControl.SelectTab(FaceTabControl.TabPages(eDomain.Key).TabIndex)
-                        eDomain.Viewer.Dock = DockStyle.Fill
-                        AddHandler eDomain.Viewer.FileDownloaded, AddressOf DownloadedFile
-                        AddHandler eDomain.Viewer.EndProcess, AddressOf EndProcessGetCertificate
+                        Guion.Download()
+                        cTab.Controls.Add(Guion.Viewer)
+                        FaceTabControl.SelectTab(FaceTabControl.TabPages(Guion.Domain.Name).TabIndex)
+                        Guion.Viewer.Dock = DockStyle.Fill
+                        AddHandler Guion.Viewer.FileDownloaded, AddressOf DownloadedFile
+                        AddHandler Guion.Viewer.EndProcess, AddressOf EndProcessGetCertificate
                     Else
-                        FaceTabControl.SelectTab(FaceTabControl.TabPages(eDomain.Key).TabIndex)
-                        eDomain.Viewer.esDescargado = False
-                        eDomain.Viewer.WB.Reload()
+                        FaceTabControl.SelectTab(FaceTabControl.TabPages(Guion.Domain.Name).TabIndex)
+                        Guion.Viewer.esDescargado = False
+                        Guion.Viewer.WB.Reload()
                     End If
-                    dProcess.Enqueue(eDomain)
+                    GuionesProcesados.Enqueue(Guion)
                 End If
             End If
         End Sub
 
         Private Sub Actualizador_Foreground(Sender As Object, Detener As MailEnable.Core.Bucle.BackgroundEventArgs) Handles Actualizador.ForeGround
-            If dQuene.Count = 0 AndAlso dProcess.Count = 0 Then
-                Domain1()
-                Domain2()
-                Domain3()
-                Domain4()
-                Domain5()
-                Domain6()
-                Domain7()
-                Domain8()
+            If Guiones.Count > 0 AndAlso GuionesProcesados.Count = 0 Then
                 TryGetCertificate()
-            ElseIf dQuene.Count = 0 AndAlso dProcess.Count > 0 Then
-                Do While dProcess.Count > 0
-                    Dim Dominio As Domain = Nothing
-                    If dProcess.TryDequeue(Dominio) Then
-                        dQuene.Enqueue(Dominio)
+            ElseIf Guiones.Count = 0 AndAlso GuionesProcesados.Count > 0 Then
+                Do While GuionesProcesados.Count > 0
+                    Dim Guion As PleskGuionDeDescarga = Nothing
+                    If GuionesProcesados.TryDequeue(Guion) Then
+                        Guiones.Enqueue(Guion)
                     End If
                 Loop
                 TryGetCertificate()
@@ -164,12 +185,13 @@ Namespace Certificados
         Private Function CertificadoSistema(Pfx As X509Certificate2) As X509Certificate2
             Dim store As X509Store = New X509Store(StoreName.My, StoreLocation.LocalMachine)
             store.Open(OpenFlags.ReadOnly)
-            Dim certCollection As X509Certificate2Collection = store.Certificates.Find(X509FindType.FindBySubjectDistinguishedName, Pfx.GetName, False)
+            Dim certCollection As X509Certificate2Collection = store.Certificates.Find(X509FindType.FindBySubjectDistinguishedName, Pfx.Subject, False)
             store.Close()
             'devuelve el primer certificado encontrado
             If certCollection.Count > 0 Then Return certCollection.Item(0)
             'no devuelve nada
             Return Nothing
         End Function
+
     End Module
 End Namespace

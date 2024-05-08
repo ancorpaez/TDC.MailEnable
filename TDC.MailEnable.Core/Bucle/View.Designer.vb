@@ -49,7 +49,7 @@
             Me.lstBucles.Location = New System.Drawing.Point(0, 0)
             Me.lstBucles.MultiSelect = False
             Me.lstBucles.Name = "lstBucles"
-            Me.lstBucles.Size = New System.Drawing.Size(404, 381)
+            Me.lstBucles.Size = New System.Drawing.Size(404, 369)
             Me.lstBucles.Sorting = System.Windows.Forms.SortOrder.Ascending
             Me.lstBucles.TabIndex = 0
             Me.lstBucles.UseCompatibleStateImageBehavior = False
@@ -74,9 +74,9 @@
             'StatusStrip1
             '
             Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tlblBucles, Me.tlblSeparador1, Me.tlblVisualizador, Me.tBtnManual})
-            Me.StatusStrip1.Location = New System.Drawing.Point(0, 400)
+            Me.StatusStrip1.Location = New System.Drawing.Point(0, 403)
             Me.StatusStrip1.Name = "StatusStrip1"
-            Me.StatusStrip1.Size = New System.Drawing.Size(404, 22)
+            Me.StatusStrip1.Size = New System.Drawing.Size(404, 24)
             Me.StatusStrip1.TabIndex = 1
             Me.StatusStrip1.Text = "Bucles"
             '
@@ -88,51 +88,53 @@
             '
             'tlblSeparador1
             '
+            Me.tlblSeparador1.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
             Me.tlblSeparador1.Name = "tlblSeparador1"
-            Me.tlblSeparador1.Size = New System.Drawing.Size(198, 17)
+            Me.tlblSeparador1.Size = New System.Drawing.Size(179, 19)
             Me.tlblSeparador1.Spring = True
-            Me.tlblSeparador1.Text = "|"
             '
             'tlblVisualizador
             '
+            Me.tlblVisualizador.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right
             Me.tlblVisualizador.Name = "tlblVisualizador"
-            Me.tlblVisualizador.Size = New System.Drawing.Size(73, 17)
+            Me.tlblVisualizador.Size = New System.Drawing.Size(77, 19)
             Me.tlblVisualizador.Text = "Visualizar (0)"
             '
             'tBtnManual
             '
-            Me.tBtnManual.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             Me.tBtnManual.Image = CType(resources.GetObject("tBtnManual.Image"), System.Drawing.Image)
             Me.tBtnManual.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.tBtnManual.Name = "tBtnManual"
-            Me.tBtnManual.Size = New System.Drawing.Size(60, 20)
-            Me.tBtnManual.Text = "Manual"
+            Me.tBtnManual.ShowDropDownArrow = False
+            Me.tBtnManual.Size = New System.Drawing.Size(75, 22)
+            Me.tBtnManual.Text = "Refrescar"
             '
             'TrakVisualizador
             '
             Me.TrakVisualizador.AutoSize = False
+            Me.TrakVisualizador.BackColor = System.Drawing.SystemColors.Control
             Me.TrakVisualizador.Dock = System.Windows.Forms.DockStyle.Bottom
             Me.TrakVisualizador.LargeChange = 10
-            Me.TrakVisualizador.Location = New System.Drawing.Point(0, 381)
+            Me.TrakVisualizador.Location = New System.Drawing.Point(0, 369)
             Me.TrakVisualizador.Maximum = 1000
             Me.TrakVisualizador.Minimum = 10
             Me.TrakVisualizador.Name = "TrakVisualizador"
-            Me.TrakVisualizador.Size = New System.Drawing.Size(404, 19)
+            Me.TrakVisualizador.Size = New System.Drawing.Size(404, 34)
             Me.TrakVisualizador.TabIndex = 2
-            Me.TrakVisualizador.TickStyle = System.Windows.Forms.TickStyle.TopLeft
+            Me.TrakVisualizador.TickStyle = System.Windows.Forms.TickStyle.None
             Me.TrakVisualizador.Value = 1000
             '
             'View
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(404, 422)
+            Me.ClientSize = New System.Drawing.Size(404, 427)
             Me.Controls.Add(Me.lstBucles)
             Me.Controls.Add(Me.TrakVisualizador)
             Me.Controls.Add(Me.StatusStrip1)
             Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
             Me.Name = "View"
-            Me.Text = "Bucle View"
+            Me.Text = "Back Ground View Bucles"
             Me.StatusStrip1.ResumeLayout(False)
             Me.StatusStrip1.PerformLayout()
             CType(Me.TrakVisualizador, System.ComponentModel.ISupportInitialize).EndInit()

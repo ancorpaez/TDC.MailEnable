@@ -1256,7 +1256,7 @@
             Me.TabPCAL.Location = New System.Drawing.Point(4, 39)
             Me.TabPCAL.Name = "TabPCAL"
             Me.TabPCAL.Padding = New System.Windows.Forms.Padding(3)
-            Me.TabPCAL.Size = New System.Drawing.Size(940, 350)
+            Me.TabPCAL.Size = New System.Drawing.Size(1105, 350)
             Me.TabPCAL.TabIndex = 1
             Me.TabPCAL.Text = "Calendario (*.CAL)"
             Me.TabPCAL.UseVisualStyleBackColor = True
@@ -1273,7 +1273,7 @@
             Me.TablaMailBackupCAL.ReadOnly = True
             Me.TablaMailBackupCAL.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
             Me.TablaMailBackupCAL.ShowEditingIcon = False
-            Me.TablaMailBackupCAL.Size = New System.Drawing.Size(934, 304)
+            Me.TablaMailBackupCAL.Size = New System.Drawing.Size(1099, 304)
             Me.TablaMailBackupCAL.TabIndex = 1
             '
             'PanelFiltroCALBackup
@@ -1282,7 +1282,7 @@
             Me.PanelFiltroCALBackup.Dock = System.Windows.Forms.DockStyle.Top
             Me.PanelFiltroCALBackup.Location = New System.Drawing.Point(3, 3)
             Me.PanelFiltroCALBackup.Name = "PanelFiltroCALBackup"
-            Me.PanelFiltroCALBackup.Size = New System.Drawing.Size(934, 40)
+            Me.PanelFiltroCALBackup.Size = New System.Drawing.Size(1099, 40)
             Me.PanelFiltroCALBackup.TabIndex = 0
             '
             'TableLayoutPanel5
@@ -1290,7 +1290,7 @@
             Me.TableLayoutPanel5.ColumnCount = 3
             Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
             Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50.0!))
+            Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 51.0!))
             Me.TableLayoutPanel5.Controls.Add(Me.Label21, 0, 0)
             Me.TableLayoutPanel5.Controls.Add(Me.Label22, 1, 0)
             Me.TableLayoutPanel5.Controls.Add(Me.txtCalDescripcion, 0, 1)
@@ -1302,7 +1302,7 @@
             Me.TableLayoutPanel5.RowCount = 2
             Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle())
             Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.TableLayoutPanel5.Size = New System.Drawing.Size(934, 40)
+            Me.TableLayoutPanel5.Size = New System.Drawing.Size(1099, 40)
             Me.TableLayoutPanel5.TabIndex = 0
             '
             'Label21
@@ -1317,7 +1317,7 @@
             'Label22
             '
             Me.Label22.AutoSize = True
-            Me.Label22.Location = New System.Drawing.Point(445, 0)
+            Me.Label22.Location = New System.Drawing.Point(527, 0)
             Me.Label22.Name = "Label22"
             Me.Label22.Size = New System.Drawing.Size(64, 13)
             Me.Label22.TabIndex = 1
@@ -1328,23 +1328,23 @@
             Me.txtCalDescripcion.Dock = System.Windows.Forms.DockStyle.Top
             Me.txtCalDescripcion.Location = New System.Drawing.Point(3, 16)
             Me.txtCalDescripcion.Name = "txtCalDescripcion"
-            Me.txtCalDescripcion.Size = New System.Drawing.Size(436, 20)
+            Me.txtCalDescripcion.Size = New System.Drawing.Size(518, 20)
             Me.txtCalDescripcion.TabIndex = 4
             '
             'txtCalHubicacion
             '
             Me.txtCalHubicacion.Dock = System.Windows.Forms.DockStyle.Top
-            Me.txtCalHubicacion.Location = New System.Drawing.Point(445, 16)
+            Me.txtCalHubicacion.Location = New System.Drawing.Point(527, 16)
             Me.txtCalHubicacion.Name = "txtCalHubicacion"
-            Me.txtCalHubicacion.Size = New System.Drawing.Size(436, 20)
+            Me.txtCalHubicacion.Size = New System.Drawing.Size(518, 20)
             Me.txtCalHubicacion.TabIndex = 5
             '
             'BtnLimpiarCal
             '
             Me.BtnLimpiarCal.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.BtnLimpiarCal.Location = New System.Drawing.Point(887, 16)
+            Me.BtnLimpiarCal.Location = New System.Drawing.Point(1051, 16)
             Me.BtnLimpiarCal.Name = "BtnLimpiarCal"
-            Me.BtnLimpiarCal.Size = New System.Drawing.Size(44, 21)
+            Me.BtnLimpiarCal.Size = New System.Drawing.Size(45, 21)
             Me.BtnLimpiarCal.TabIndex = 6
             Me.BtnLimpiarCal.Text = "X"
             Me.BtnLimpiarCal.UseVisualStyleBackColor = True
@@ -1356,7 +1356,7 @@
             Me.TabPTSK.ImageKey = "iTarea"
             Me.TabPTSK.Location = New System.Drawing.Point(4, 39)
             Me.TabPTSK.Name = "TabPTSK"
-            Me.TabPTSK.Size = New System.Drawing.Size(940, 350)
+            Me.TabPTSK.Size = New System.Drawing.Size(1105, 350)
             Me.TabPTSK.TabIndex = 2
             Me.TabPTSK.Text = "Tareas (*.TSK)"
             Me.TabPTSK.UseVisualStyleBackColor = True
@@ -1373,7 +1373,7 @@
             Me.TablaMailBackupTSK.ReadOnly = True
             Me.TablaMailBackupTSK.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
             Me.TablaMailBackupTSK.ShowEditingIcon = False
-            Me.TablaMailBackupTSK.Size = New System.Drawing.Size(940, 310)
+            Me.TablaMailBackupTSK.Size = New System.Drawing.Size(1105, 310)
             Me.TablaMailBackupTSK.TabIndex = 1
             '
             'PanelFiltroTSK
@@ -1382,7 +1382,7 @@
             Me.PanelFiltroTSK.Dock = System.Windows.Forms.DockStyle.Top
             Me.PanelFiltroTSK.Location = New System.Drawing.Point(0, 0)
             Me.PanelFiltroTSK.Name = "PanelFiltroTSK"
-            Me.PanelFiltroTSK.Size = New System.Drawing.Size(940, 40)
+            Me.PanelFiltroTSK.Size = New System.Drawing.Size(1105, 40)
             Me.PanelFiltroTSK.TabIndex = 0
             '
             'TableLayoutPanel6
@@ -1390,7 +1390,7 @@
             Me.TableLayoutPanel6.ColumnCount = 3
             Me.TableLayoutPanel6.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
             Me.TableLayoutPanel6.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.TableLayoutPanel6.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50.0!))
+            Me.TableLayoutPanel6.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 51.0!))
             Me.TableLayoutPanel6.Controls.Add(Me.Label23, 0, 0)
             Me.TableLayoutPanel6.Controls.Add(Me.Label24, 1, 0)
             Me.TableLayoutPanel6.Controls.Add(Me.txtTskAsunto, 0, 1)
@@ -1402,7 +1402,7 @@
             Me.TableLayoutPanel6.RowCount = 2
             Me.TableLayoutPanel6.RowStyles.Add(New System.Windows.Forms.RowStyle())
             Me.TableLayoutPanel6.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.TableLayoutPanel6.Size = New System.Drawing.Size(940, 40)
+            Me.TableLayoutPanel6.Size = New System.Drawing.Size(1105, 40)
             Me.TableLayoutPanel6.TabIndex = 0
             '
             'Label23
@@ -1417,7 +1417,7 @@
             'Label24
             '
             Me.Label24.AutoSize = True
-            Me.Label24.Location = New System.Drawing.Point(448, 0)
+            Me.Label24.Location = New System.Drawing.Point(530, 0)
             Me.Label24.Name = "Label24"
             Me.Label24.Size = New System.Drawing.Size(38, 13)
             Me.Label24.TabIndex = 1
@@ -1428,20 +1428,20 @@
             Me.txtTskAsunto.Dock = System.Windows.Forms.DockStyle.Fill
             Me.txtTskAsunto.Location = New System.Drawing.Point(3, 16)
             Me.txtTskAsunto.Name = "txtTskAsunto"
-            Me.txtTskAsunto.Size = New System.Drawing.Size(439, 20)
+            Me.txtTskAsunto.Size = New System.Drawing.Size(521, 20)
             Me.txtTskAsunto.TabIndex = 2
             '
             'txtTskNotas
             '
             Me.txtTskNotas.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.txtTskNotas.Location = New System.Drawing.Point(448, 16)
+            Me.txtTskNotas.Location = New System.Drawing.Point(530, 16)
             Me.txtTskNotas.Name = "txtTskNotas"
-            Me.txtTskNotas.Size = New System.Drawing.Size(439, 20)
+            Me.txtTskNotas.Size = New System.Drawing.Size(521, 20)
             Me.txtTskNotas.TabIndex = 3
             '
             'BtnLimpiarTSK
             '
-            Me.BtnLimpiarTSK.Location = New System.Drawing.Point(893, 16)
+            Me.BtnLimpiarTSK.Location = New System.Drawing.Point(1057, 16)
             Me.BtnLimpiarTSK.Name = "BtnLimpiarTSK"
             Me.BtnLimpiarTSK.Size = New System.Drawing.Size(44, 21)
             Me.BtnLimpiarTSK.TabIndex = 4
@@ -1455,7 +1455,7 @@
             Me.TabPVCF.ImageKey = "iContacto"
             Me.TabPVCF.Location = New System.Drawing.Point(4, 39)
             Me.TabPVCF.Name = "TabPVCF"
-            Me.TabPVCF.Size = New System.Drawing.Size(940, 350)
+            Me.TabPVCF.Size = New System.Drawing.Size(1105, 350)
             Me.TabPVCF.TabIndex = 3
             Me.TabPVCF.Text = "Contactos (*.VCF)"
             Me.TabPVCF.UseVisualStyleBackColor = True
@@ -1472,7 +1472,7 @@
             Me.TablaMailBackupVCF.ReadOnly = True
             Me.TablaMailBackupVCF.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
             Me.TablaMailBackupVCF.ShowEditingIcon = False
-            Me.TablaMailBackupVCF.Size = New System.Drawing.Size(940, 310)
+            Me.TablaMailBackupVCF.Size = New System.Drawing.Size(1105, 310)
             Me.TablaMailBackupVCF.TabIndex = 1
             '
             'PanelFiltroVCFBackup
@@ -1481,7 +1481,7 @@
             Me.PanelFiltroVCFBackup.Dock = System.Windows.Forms.DockStyle.Top
             Me.PanelFiltroVCFBackup.Location = New System.Drawing.Point(0, 0)
             Me.PanelFiltroVCFBackup.Name = "PanelFiltroVCFBackup"
-            Me.PanelFiltroVCFBackup.Size = New System.Drawing.Size(940, 40)
+            Me.PanelFiltroVCFBackup.Size = New System.Drawing.Size(1105, 40)
             Me.PanelFiltroVCFBackup.TabIndex = 0
             '
             'TableLayoutPanel4
@@ -1493,7 +1493,7 @@
             Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
             Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
             Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
-            Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50.0!))
+            Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 54.0!))
             Me.TableLayoutPanel4.Controls.Add(Me.Label15, 0, 0)
             Me.TableLayoutPanel4.Controls.Add(Me.Label16, 1, 0)
             Me.TableLayoutPanel4.Controls.Add(Me.Label17, 2, 0)
@@ -1513,7 +1513,7 @@
             Me.TableLayoutPanel4.RowCount = 2
             Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
             Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.TableLayoutPanel4.Size = New System.Drawing.Size(940, 40)
+            Me.TableLayoutPanel4.Size = New System.Drawing.Size(1105, 40)
             Me.TableLayoutPanel4.TabIndex = 0
             '
             'Label15
@@ -1528,7 +1528,7 @@
             'Label16
             '
             Me.Label16.AutoSize = True
-            Me.Label16.Location = New System.Drawing.Point(181, 0)
+            Me.Label16.Location = New System.Drawing.Point(213, 0)
             Me.Label16.Name = "Label16"
             Me.Label16.Size = New System.Drawing.Size(54, 13)
             Me.Label16.TabIndex = 1
@@ -1537,7 +1537,7 @@
             'Label17
             '
             Me.Label17.AutoSize = True
-            Me.Label17.Location = New System.Drawing.Point(537, 0)
+            Me.Label17.Location = New System.Drawing.Point(633, 0)
             Me.Label17.Name = "Label17"
             Me.Label17.Size = New System.Drawing.Size(35, 13)
             Me.Label17.TabIndex = 2
@@ -1546,7 +1546,7 @@
             'Label18
             '
             Me.Label18.AutoSize = True
-            Me.Label18.Location = New System.Drawing.Point(626, 0)
+            Me.Label18.Location = New System.Drawing.Point(738, 0)
             Me.Label18.Name = "Label18"
             Me.Label18.Size = New System.Drawing.Size(51, 13)
             Me.Label18.TabIndex = 3
@@ -1555,7 +1555,7 @@
             'Label19
             '
             Me.Label19.AutoSize = True
-            Me.Label19.Location = New System.Drawing.Point(715, 0)
+            Me.Label19.Location = New System.Drawing.Point(843, 0)
             Me.Label19.Name = "Label19"
             Me.Label19.Size = New System.Drawing.Size(46, 13)
             Me.Label19.TabIndex = 4
@@ -1564,7 +1564,7 @@
             'Label20
             '
             Me.Label20.AutoSize = True
-            Me.Label20.Location = New System.Drawing.Point(804, 0)
+            Me.Label20.Location = New System.Drawing.Point(948, 0)
             Me.Label20.Name = "Label20"
             Me.Label20.Size = New System.Drawing.Size(32, 13)
             Me.Label20.TabIndex = 5
@@ -1575,52 +1575,52 @@
             Me.txtVcfNombre.Dock = System.Windows.Forms.DockStyle.Top
             Me.txtVcfNombre.Location = New System.Drawing.Point(3, 16)
             Me.txtVcfNombre.Name = "txtVcfNombre"
-            Me.txtVcfNombre.Size = New System.Drawing.Size(172, 20)
+            Me.txtVcfNombre.Size = New System.Drawing.Size(204, 20)
             Me.txtVcfNombre.TabIndex = 6
             '
             'txtVcfCompleto
             '
             Me.txtVcfCompleto.Dock = System.Windows.Forms.DockStyle.Top
-            Me.txtVcfCompleto.Location = New System.Drawing.Point(181, 16)
+            Me.txtVcfCompleto.Location = New System.Drawing.Point(213, 16)
             Me.txtVcfCompleto.Name = "txtVcfCompleto"
-            Me.txtVcfCompleto.Size = New System.Drawing.Size(350, 20)
+            Me.txtVcfCompleto.Size = New System.Drawing.Size(414, 20)
             Me.txtVcfCompleto.TabIndex = 7
             '
             'txtVcfEmail
             '
             Me.txtVcfEmail.Dock = System.Windows.Forms.DockStyle.Top
-            Me.txtVcfEmail.Location = New System.Drawing.Point(537, 16)
+            Me.txtVcfEmail.Location = New System.Drawing.Point(633, 16)
             Me.txtVcfEmail.Name = "txtVcfEmail"
-            Me.txtVcfEmail.Size = New System.Drawing.Size(83, 20)
+            Me.txtVcfEmail.Size = New System.Drawing.Size(99, 20)
             Me.txtVcfEmail.TabIndex = 8
             '
             'txtVcfPersonal
             '
             Me.txtVcfPersonal.Dock = System.Windows.Forms.DockStyle.Top
-            Me.txtVcfPersonal.Location = New System.Drawing.Point(626, 16)
+            Me.txtVcfPersonal.Location = New System.Drawing.Point(738, 16)
             Me.txtVcfPersonal.Name = "txtVcfPersonal"
-            Me.txtVcfPersonal.Size = New System.Drawing.Size(83, 20)
+            Me.txtVcfPersonal.Size = New System.Drawing.Size(99, 20)
             Me.txtVcfPersonal.TabIndex = 9
             '
             'txtVcfTrabajo
             '
             Me.txtVcfTrabajo.Dock = System.Windows.Forms.DockStyle.Top
-            Me.txtVcfTrabajo.Location = New System.Drawing.Point(715, 16)
+            Me.txtVcfTrabajo.Location = New System.Drawing.Point(843, 16)
             Me.txtVcfTrabajo.Name = "txtVcfTrabajo"
-            Me.txtVcfTrabajo.Size = New System.Drawing.Size(83, 20)
+            Me.txtVcfTrabajo.Size = New System.Drawing.Size(99, 20)
             Me.txtVcfTrabajo.TabIndex = 10
             '
             'txtVcfNick
             '
             Me.txtVcfNick.Dock = System.Windows.Forms.DockStyle.Top
-            Me.txtVcfNick.Location = New System.Drawing.Point(804, 16)
+            Me.txtVcfNick.Location = New System.Drawing.Point(948, 16)
             Me.txtVcfNick.Name = "txtVcfNick"
-            Me.txtVcfNick.Size = New System.Drawing.Size(83, 20)
+            Me.txtVcfNick.Size = New System.Drawing.Size(99, 20)
             Me.txtVcfNick.TabIndex = 11
             '
             'BtnLimpiarVCF
             '
-            Me.BtnLimpiarVCF.Location = New System.Drawing.Point(893, 16)
+            Me.BtnLimpiarVCF.Location = New System.Drawing.Point(1053, 16)
             Me.BtnLimpiarVCF.Name = "BtnLimpiarVCF"
             Me.BtnLimpiarVCF.Size = New System.Drawing.Size(44, 21)
             Me.BtnLimpiarVCF.TabIndex = 12
@@ -2327,15 +2327,17 @@
             '
             'ConfiguraciónToolStripMenuItem
             '
+            Me.ConfiguraciónToolStripMenuItem.Image = CType(resources.GetObject("ConfiguraciónToolStripMenuItem.Image"), System.Drawing.Image)
             Me.ConfiguraciónToolStripMenuItem.Name = "ConfiguraciónToolStripMenuItem"
-            Me.ConfiguraciónToolStripMenuItem.Size = New System.Drawing.Size(95, 20)
+            Me.ConfiguraciónToolStripMenuItem.Size = New System.Drawing.Size(111, 20)
             Me.ConfiguraciónToolStripMenuItem.Text = "Configuración"
             '
             'BuclesToolStripMenuItem
             '
+            Me.BuclesToolStripMenuItem.Image = CType(resources.GetObject("BuclesToolStripMenuItem.Image"), System.Drawing.Image)
             Me.BuclesToolStripMenuItem.Name = "BuclesToolStripMenuItem"
-            Me.BuclesToolStripMenuItem.Size = New System.Drawing.Size(69, 20)
-            Me.BuclesToolStripMenuItem.Text = "Bucles BE"
+            Me.BuclesToolStripMenuItem.Size = New System.Drawing.Size(100, 20)
+            Me.BuclesToolStripMenuItem.Text = "BackGround"
             '
             'TimerIpBan
             '

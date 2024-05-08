@@ -4,7 +4,7 @@ Namespace Backup
         Implements IDisposable
 
         Public ReadOnly Property Directorios As New Concurrent.ConcurrentQueue(Of String)
-        Public ReadOnly Escaneo As New Concurrent.ConcurrentQueue(Of String)
+        Private ReadOnly Escaneo As New Concurrent.ConcurrentQueue(Of String)
         Private WithEvents BuscadoresEvents As MailEnable.Core.Bucle.DoBucle
         Public ReadOnly Buscadores As New Concurrent.ConcurrentDictionary(Of String, MailEnable.Core.Bucle.DoBucle)
         Private WithEvents Controlador As MailEnable.Core.Bucle.DoBucle
@@ -22,8 +22,9 @@ Namespace Backup
 
         Public Sub New()
             For i = 0 To Configuracion.ANALIZADORES_BACKUP - 1
+                Dim KeyIndex As Integer = i
                 IpBanForm.Invoke(Sub()
-                                     Dim Buscador As KeyValuePair(Of String, MailEnable.Core.Bucle.DoBucle) = CrearBuscador(i)
+                                     Dim Buscador As KeyValuePair(Of String, MailEnable.Core.Bucle.DoBucle) = CrearBuscador(KeyIndex)
                                      If Not IsNothing(Buscador) Then
                                          Buscadores.TryAdd(Buscador.Key, Buscador.Value)
                                      Else

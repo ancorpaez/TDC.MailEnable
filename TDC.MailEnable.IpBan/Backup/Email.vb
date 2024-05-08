@@ -13,10 +13,10 @@ Namespace Backup
         Public Fecha As DateTime = Now
 
 
-        Private Coincidencias As New List(Of String) From {"Subject:", "From:", "To:", "CC:", "Sent:"}
-        Private Banderas As New List(Of Boolean) From {False, False, False, False, False}
+        Private ReadOnly Coincidencias As New List(Of String) From {"Subject:", "From:", "To:", "CC:", "Sent:"}
+        Private ReadOnly Banderas As New List(Of Boolean) From {False, False, False, False, False}
 
-        Private Codificadores As New List(Of String) From {"?Q?", "?T?", "?B?", "?U?", "?C?"}
+        Private ReadOnly Codificadores As New List(Of String) From {"?Q?", "?T?", "?B?", "?U?", "?C?"}
 
         Public Sub New(archivo As String)
             Me.Archivo = archivo
@@ -214,10 +214,11 @@ Namespace Backup
                     If esCodificada AndAlso esMultilinea Then
                         Dim Partes3 As List(Of String) = SepararCodificacion(Unilinea)
                         For i = 0 To Partes1.Count - 1
-                            If {"?Q?", "?T?", "?B?", "?U?", "?C?"}.Any(Function(Codificador) Partes1(i).ToUpper.Contains(Codificador)) Then
+                            Dim iIndex As Integer = i
+                            If {"?Q?", "?T?", "?B?", "?U?", "?C?"}.Any(Function(Codificador) Partes1(iIndex).ToUpper.Contains(Codificador)) Then
                                 Dim Espacio As String = ""
-                                If Partes1(i).EndsWith(" ") Then Espacio = " "
-                                Partes1(i) = Decodificar(Partes1(i).Trim) & Espacio
+                                If Partes1(iIndex).EndsWith(" ") Then Espacio = " "
+                                Partes1(iIndex) = Decodificar(Partes1(iIndex).Trim) & Espacio
                             End If
                         Next
                         Extraer = String.Join("", Partes1)
@@ -290,7 +291,7 @@ Namespace Backup
                     Case Else
                         CodificaString = Coincidencia.Groups(1).Value.ToUpper
                 End Select
-                Dim Codificacion As Encoding
+                Dim Codificacion As Encoding = Encoding.Default
 
                 Try
                     Codificacion = Encoding.GetEncoding(CodificaString)
@@ -450,11 +451,12 @@ Namespace Backup
 
             Dim Repair As New List(Of String)
             For i = 0 To parts.Count - 1
-                If {"=?windows-1252?q?=", "=?utf-8?q?=", "=?iso-8859-1?q?="}.Any(Function(Codificacion) parts(i).ToLower = Codificacion) Then
+                Dim Index As Integer = i
+                If {"=?windows-1252?q?=", "=?utf-8?q?=", "=?iso-8859-1?q?="}.Any(Function(Codificacion) parts(Index).ToLower = Codificacion) Then
                     Repair.Add(parts(i) & parts(i + 1))
                 Else
                     If i > 0 Then
-                        If Not {"=?windows-1252?q?=", "=?utf-8?q?=", "=?iso-8859-1?q?="}.Any(Function(Codificacion) parts(i - 1).ToLower = Codificacion) Then
+                        If Not {"=?windows-1252?q?=", "=?utf-8?q?=", "=?iso-8859-1?q?="}.Any(Function(Codificacion) parts(Index - 1).ToLower = Codificacion) Then
                             Repair.Add(parts(i))
                         End If
                     Else

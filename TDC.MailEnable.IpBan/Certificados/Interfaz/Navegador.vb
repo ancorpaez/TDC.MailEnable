@@ -3,7 +3,7 @@ Imports Microsoft.Web.WebView2.Core
 
 Namespace Certificados.Interfaz
     Public Class Navegador
-        Public Domain As Domain
+        Public Guion As PleskGuionDeDescarga
         Private WithEvents DownloadOperation As CoreWebView2DownloadOperation = Nothing
         Private WithEvents DownloadStarting As CoreWebView2DownloadStartingEventArgs = Nothing
         Public Event FileDownloaded(sender As Object, File As FileDownloadedEvent)
@@ -11,14 +11,14 @@ Namespace Certificados.Interfaz
 
         Private isHandler As Boolean = False
         Public esDescargado As Boolean = False
-        Public Sub New(Domain As Domain)
+        Public Sub New(Guion As PleskGuionDeDescarga)
 
             ' Esta llamada es exigida por el diseñador.
             InitializeComponent()
 
             ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
-            Me.Domain = Domain
-            WB.Source = Domain.Url
+            Me.Guion = Guion
+            WB.Source = Guion.Hosting.Url
         End Sub
         Private Sub WB_NavigationCompleted(sender As Object, e As CoreWebView2NavigationCompletedEventArgs) Handles WB.NavigationCompleted
             If Not isHandler Then
@@ -27,14 +27,14 @@ Namespace Certificados.Interfaz
             End If
 
             If Not esDescargado Then
-                For Each Script In Domain.Scripts
+                For Each Script In Guion.Hosting.Scripts
                     If WB.Source.AbsoluteUri.Contains(Script.Key) Then
                         WB.ExecuteScriptAsync(Script.Value)
                         'EjecutarScript(Script.Value).ConfigureAwait(False)
                     End If
                 Next
 
-                For Each Nav In Domain.Navigation
+                For Each Nav In Guion.Hosting.Navigation
                     If WB.Source.AbsoluteUri.Contains(Nav.Key) Then
                         WB.Source = Nav.Value
                     End If

@@ -155,8 +155,10 @@
     <Compile Include="Backup\Email.vb" />
     <Compile Include="Backup\Core.vb" />
     <Compile Include="Certificados\Core.vb" />
+    <Compile Include="Certificados\PleskDomain.vb" />
+    <Compile Include="Certificados\PleskGuionDeDescarga.vb" />
+    <Compile Include="Certificados\PleskHosting.vb" />
     <Compile Include="Certificados\Instalar.vb" />
-    <Compile Include="Certificados\Domain.vb" />
     <Compile Include="Certificados\Interfaz\Navegador.Designer.vb">
       <DependentUpon>Navegador.vb</DependentUpon>
     </Compile>

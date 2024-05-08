@@ -21,6 +21,7 @@ Namespace Backup
                 Tarea.TryAdd(key, " ")
             Next
             If IO.File.Exists(FileFullName) Then Lineas = IO.File.ReadAllLines(FileFullName)
+            Analizar()
         End Sub
 
         Public Sub Analizar()

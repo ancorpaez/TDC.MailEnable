@@ -730,9 +730,9 @@ Namespace Interfaz
                     Dim Tabla As DataGridView = sender
                     If Not IsNothing(Tabla.DataSource) Then
                         If Tabla.DataSource.GetType = GetType(DataTable) Then
-                            lblMailBackupSeleccionados.Text = $"{CType(Tabla.DataSource, DataTable).Rows.Count} Encontrados."
+                            lblMailBackupSeleccionados.Text = $"{CType(Tabla.DataSource, DataTable).Rows.Count} Indexados."
                         Else
-                            lblMailBackupSeleccionados.Text = $"{CType(Tabla.DataSource, DataView).Count} Encontrados."
+                            lblMailBackupSeleccionados.Text = $"{CType(Tabla.DataSource, DataView).Count} Indexados."
                         End If
                         Tabla.Columns("ID").Visible = False
                         Tabla.Columns("Archivo").Visible = False
@@ -758,7 +758,7 @@ Namespace Interfaz
             Filtro.RowFilter = $"Asunto LIKE '%{txtMaiAsunto.Text}%' 
                                 AND Remitente LIKE '%{txtMaiRemitente.Text}%'
                                 AND Destinatarios LIKE '%{txtMaiDestinatarios.Text}%'"
-            lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupMAI.DataSource, DataView).Count} Encontrados."
+            lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupMAI.DataSource, DataView).Count} Indexados."
         End Sub
         Private Sub BuscarCalendario(sender As Object, e As EventArgs) Handles txtCalDescripcion.TextChanged, txtCalHubicacion.TextChanged
             Dim Filtro As DataView
@@ -770,7 +770,7 @@ Namespace Interfaz
             End If
             Filtro.RowFilter = $"Descripcion LIKE '%{txtCalDescripcion.Text}%' 
                                 AND Hubicacion LIKE '%{txtCalHubicacion.Text}%'"
-            lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupCAL.DataSource, DataView).Count} Encontrados."
+            lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupCAL.DataSource, DataView).Count} Indexados."
         End Sub
         Private Sub BuscarTarea(sender As Object, e As EventArgs) Handles txtTskAsunto.TextChanged, txtTskNotas.TextChanged
             Dim Filtro As DataView
@@ -782,7 +782,7 @@ Namespace Interfaz
             End If
             Filtro.RowFilter = $"Asunto LIKE '%{txtTskAsunto.Text}%' 
                                 AND Notas LIKE '%{txtTskNotas.Text}%'"
-            lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupTSK.DataSource, DataView).Count} Encontrados."
+            lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupTSK.DataSource, DataView).Count} Indexados."
         End Sub
 
         Private Sub BuscarContacto(sender As Object, e As EventArgs) Handles txtVcfNombre.TextChanged, txtVcfCompleto.TextChanged, txtVcfPersonal.TextChanged, txtVcfTrabajo.TextChanged, txtVcfNick.TextChanged, txtVcfEmail.TextChanged
@@ -799,7 +799,7 @@ Namespace Interfaz
                                 AND EmailPersonal LIKE '%{txtVcfPersonal.Text}%'
                                 AND EmailTrabajo LIKE '%{txtVcfTrabajo.Text}%'
                                 AND Nick LIKE '%{txtVcfNick.Text}%'"
-            lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupVCF.DataSource, DataView).Count} Encontrados."
+            lblMailBackupSeleccionados.Text = $"{CType(TablaMailBackupVCF.DataSource, DataView).Count} Indexados."
         End Sub
         Private Sub BtnLimpiarMai_Click(sender As Object, e As EventArgs) Handles BtnLimpiarMai.Click
             Dim Controles() As TextBox = {txtMaiAsunto, txtMaiDestinatarios, txtMaiRemitente}

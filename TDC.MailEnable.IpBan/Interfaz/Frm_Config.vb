@@ -213,9 +213,11 @@ Namespace Interfaz
         End Sub
 
         Private Sub txtTimerAnalizadoresEmail_TextChanged(sender As Object, e As EventArgs) Handles txtTimerAnalizadoresEmail.TextChanged
-            If IsNumeric(txtTimerAnalizadoresEmail.Text) Then
+            If IsNumeric(txtTimerAnalizadoresEmail.Text) AndAlso txtTimerAnalizadoresEmail.Text <= TrackAnalizadoresMailTimer.Maximum Then
                 TrackAnalizadoresMailTimer.Value = txtTimerAnalizadoresEmail.Text
                 Configuracion.ANALIZADORES_BACKUP_TIMER = txtTimerAnalizadoresEmail.Text
+            Else
+                txtTimerAnalizadoresEmail.Text = TrackAnalizadoresMailTimer.Maximum
             End If
         End Sub
 

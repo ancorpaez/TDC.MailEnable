@@ -1,11 +1,13 @@
-﻿Namespace BDD
-    Public MustInherit Class Mod_Backup
+﻿Imports System.Threading
+
+Namespace BDD
+    Public MustInherit Class InheritBdd
         Public Property Tabla As DataTable
         Protected Friend Fila As DataRow
-        Public Columnas As Columnas
-        Protected Friend MustOverride Function Inicializar() As Columnas
-        Public MustOverride Function GetColString(Columnas As Columnas.Columnas)
-        Public MustOverride Function GetColIndex(Columnas As Columnas.Columnas)
+        Public Columnas As InheritColumnas
+        Protected Friend MustOverride Function Inicializar() As InheritColumnas
+        Public MustOverride Function GetColString(Columnas As InheritColumnas.Columnas)
+        Public MustOverride Function GetColIndex(Columnas As InheritColumnas.Columnas)
         Public Enum EnumGuardado
             Guardando
             Guardado
@@ -17,6 +19,7 @@
 
         'Operaciones Asincronas
         Private Shared SyncLockAction As New Object()
+        Private ReadOnly _SyncLockAction As New ReaderWriterLockSlim
 
         Public Sub New(Name As String)
             Tabla = New DataTable(Name)
@@ -51,7 +54,7 @@
                 End If
             End SyncLock
         End Sub
-        Public Function Add(Valor As Columnas) As Integer
+        Public Function Add(Valor As InheritColumnas) As Integer
             SyncLock SyncLockAction
                 Fila = Tabla.NewRow
                 Try

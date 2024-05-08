@@ -1,5 +1,5 @@
 ﻿Namespace BDD
-    Public MustInherit Class Columnas
+    Public MustInherit Class InheritColumnas
         Public Enum Columnas
             Vacio
         End Enum

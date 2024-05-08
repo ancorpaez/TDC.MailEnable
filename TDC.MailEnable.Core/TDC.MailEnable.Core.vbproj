@@ -66,11 +66,11 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BDD\Columnas.vb" />
+    <Compile Include="BDD\InheritColumnas.vb" />
     <Compile Include="BDD\MailBackup_CAL.vb" />
     <Compile Include="BDD\MailBackup_TSK.vb" />
     <Compile Include="BDD\MailBackup_VCF.vb" />
-    <Compile Include="BDD\Mod_Backup.vb" />
+    <Compile Include="BDD\InheritBdd.vb" />
     <Compile Include="BDD\MailBackupCleaner.vb" />
     <Compile Include="BDD\MailBackup_MAI.vb" />
     <Compile Include="BDD\IMAPBaneadas.vb" />

@@ -5,7 +5,7 @@ Imports System.Windows.Forms
 
 Namespace Bucle
     Public Class DoBucle
-        Private WithEvents _Trabajador As BackgroundWorker
+        Private WithEvents Trabajador As BackgroundWorker
         Private InvokeForm As Form
         Private LabelCount As Label
         Private BtnDetenerBackground As Button, FlagBtnDetenerBackground As Boolean = False
@@ -69,20 +69,20 @@ Namespace Bucle
             InvokeForm.Show()
             If InvokeForm.Opacity = 0 Then InvokeForm.Hide() Else InvokeForm.Refresh()
 
-            _Trabajador = New BackgroundWorker With {.WorkerReportsProgress = True, .WorkerSupportsCancellation = True}
+            Trabajador = New BackgroundWorker With {.WorkerReportsProgress = True, .WorkerSupportsCancellation = True}
         End Sub
 
         Public Sub Iniciar()
             Cancelar = False
-            If Not IsNothing(_Trabajador) AndAlso Not _Trabajador.IsBusy Then _Trabajador.RunWorkerAsync()
+            If Not IsNothing(Trabajador) AndAlso Not Trabajador.IsBusy Then Trabajador.RunWorkerAsync()
             Estado = EnumEstado.Corriendo
         End Sub
         Public Sub Detener()
             Cancelar = True
-            _Trabajador.CancelAsync()
+            Trabajador.CancelAsync()
         End Sub
         Public Sub Matar()
-            _Trabajador.Dispose()
+            Trabajador.Dispose()
             Try
                 If InvokeForm.Created Then
                     InvokeForm.Invoke(Sub() If Not IsNothing(LabelCount) Then LabelCount.Dispose())
@@ -94,13 +94,13 @@ Namespace Bucle
             Catch ex As Exception
             End Try
         End Sub
-        Private Sub _Trabajador_DoWork(sender As Object, e As DoWorkEventArgs) Handles _Trabajador.DoWork
+        Private Sub Trabajador_DoWork(sender As Object, e As DoWorkEventArgs) Handles Trabajador.DoWork
             Do While Not e.Cancel
                 'Iniciamos despues del Intervalo establecido
                 Thread.Sleep(Intervalo)
 
                 'Comprobamos si es necesario cancelar la tarea
-                If _Trabajador.CancellationPending Then
+                If Trabajador.CancellationPending Then
                     e.Cancel = True
                     Cancelar = True
                     Exit Do
@@ -149,15 +149,15 @@ Namespace Bucle
                 End Try
             Loop
         End Sub
-        Private Sub _Trabajador_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles _Trabajador.RunWorkerCompleted
+        Private Sub Trabajador_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles Trabajador.RunWorkerCompleted
             Try
                 Dim CancelarEndground As New BackgroundEventArgs() With {.Detener = False}
                 RaiseEvent EndGround(Me, CancelarEndground)
                 If Not CancelarEndground.Detener AndAlso Not Cancelar Then
-                    If Not _Trabajador.IsBusy Then _Trabajador.RunWorkerAsync()
+                    If Not Trabajador.IsBusy Then Trabajador.RunWorkerAsync()
                 Else
                     Cancelar = True
-                    _Trabajador.CancelAsync()
+                    Trabajador.CancelAsync()
                     Estado = EnumEstado.Detenido
                 End If
             Catch ex As Exception

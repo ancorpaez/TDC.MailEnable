@@ -100,8 +100,8 @@ Namespace Bucle
         Private Sub SetText()
             If Not IsNothing(Visualizador) Then
                 Visualizador.Intervalo = TrakVisualizador.Value
-                tlblVisualizador.Text = $"Visualizador ({Visualizador.Intervalo})"
-                tlblBucles.Text = $"Bucles ({lstBucles.Items.Count})"
+                tlblVisualizador.Text = $"Refresco ({Visualizador.Intervalo})"
+                tlblBucles.Text = $"Procesos ({lstBucles.Items.Count})"
             End If
         End Sub
         Private Sub TrakVisualizador_Scroll(sender As Object, e As EventArgs) Handles TrakVisualizador.Scroll

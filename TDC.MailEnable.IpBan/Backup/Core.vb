@@ -117,14 +117,14 @@ Namespace Backup
             End If
         End Sub
         Private Sub iFaceNotificador_Foreground(Sender As Object, Detener As MailEnable.Core.Bucle.BackgroundEventArgs) Handles iFaceNotificador.ForeGround
-            IpBanForm.lblCarpetas.Text = $"Carpetas ({BuscadorCarpetas.Directorios.Count})"
-            IpBanForm.lblEmails.Text = $"Pendientes ({BuscadorArchivos.Archivos.Count})"
-            IpBanForm.lblAnalizadoresBackup.Text = $"Analizadores (" &
-            $"Indexadores: {IndexadorArchivos.Indexadores.TakeWhile(Function(Buscador) Buscador.Value.Estado = Global.TDC.MailEnable.Core.Bucle.DoBucle.EnumEstado.Corriendo).Count}, " &
-            $"Archivos: {BuscadorArchivos.Buscadores.TakeWhile(Function(Buscador) Buscador.Value.Estado = Global.TDC.MailEnable.Core.Bucle.DoBucle.EnumEstado.Corriendo).Count}, " &
-            $"Carpetas: {BuscadorCarpetas.Buscadores.Count} , " &
-            $"Escaneo: {BuscadorCarpetas.Escaneo.Count} - " &
-            $"Temporizador: {Configuracion.ANALIZADORES_BACKUP_TIMER})"
+            If IndexadorArchivos.Estado = Indexador.EnumEstado.Analizando AndAlso IndexadorArchivos.Quened > 0 Then IpBanForm.lblMailBackupSeleccionados.Text = $"Analizados ({IndexadorArchivos.Quened})"
+            IpBanForm.lblCarpetas.Text = $"Carpetas, {BuscadorCarpetas.Directorios.Count}]"
+            IpBanForm.lblEmails.Text = $"Colas: [Archivos, {BuscadorArchivos.Archivos.Count}"
+            IpBanForm.lblAnalizadoresBackup.Text = $"" &
+            $"Subprocesos: [Indexadores {IndexadorArchivos.Indexadores.TakeWhile(Function(Buscador) Buscador.Value.Estado = Global.TDC.MailEnable.Core.Bucle.DoBucle.EnumEstado.Corriendo).Count}, " &
+            $"Archivos {BuscadorArchivos.Buscadores.TakeWhile(Function(Buscador) Buscador.Value.Estado = Global.TDC.MailEnable.Core.Bucle.DoBucle.EnumEstado.Corriendo).Count}, " &
+            $"Carpetas {BuscadorCarpetas.Buscadores.Count} , " &
+            $"Relajación {Configuracion.ANALIZADORES_BACKUP_TIMER} ms]"
 
             If BuscadorCarpetas.Estado = QueneDirectorios.EnumEstado.Analizando OrElse
                BuscadorArchivos.Estado = QueneArchivos.EnumEstado.Analizando OrElse

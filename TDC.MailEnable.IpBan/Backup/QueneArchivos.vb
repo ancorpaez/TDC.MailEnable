@@ -25,8 +25,9 @@ Namespace Backup
 
         Public Sub New()
             For i = 0 To Configuracion.ANALIZADORES_BACKUP - 1
+                Dim KeyId As Integer = i
                 IpBanForm.Invoke(Sub()
-                                     Dim Buscador As KeyValuePair(Of String, MailEnable.Core.Bucle.DoBucle) = CrearBuscador(i)
+                                     Dim Buscador As KeyValuePair(Of String, MailEnable.Core.Bucle.DoBucle) = CrearBuscador(KeyId)
                                      If Not IsNothing(Buscador) Then
                                          Buscadores.TryAdd(Buscador.Key, Buscador.Value)
                                      Else
