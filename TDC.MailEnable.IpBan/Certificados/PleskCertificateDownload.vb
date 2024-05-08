@@ -1,7 +1,7 @@
 ﻿Imports System.Security.Policy
 
 Namespace Certificados
-    Public Class PleskGuionDeDescarga
+    Public Class PleskCertificateDownload
         Public Hosting As PleskHosting = Nothing
         Public Domain As PleskDomain = Nothing
         Public Viewer As Interfaz.Navegador

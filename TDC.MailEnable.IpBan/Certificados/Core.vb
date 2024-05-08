@@ -7,8 +7,8 @@ Namespace Certificados
     Module Core
         Public Hostings As New Concurrent.ConcurrentDictionary(Of String, PleskHosting)
         Public Domains As New Concurrent.ConcurrentQueue(Of PleskDomain)
-        Public ReadOnly Property Guiones As New Concurrent.ConcurrentQueue(Of PleskGuionDeDescarga)
-        Public ReadOnly Property GuionesProcesados As New Concurrent.ConcurrentQueue(Of PleskGuionDeDescarga)
+        Public ReadOnly Property Guiones As New Concurrent.ConcurrentQueue(Of PleskCertificateDownload)
+        Public ReadOnly Property GuionesProcesados As New Concurrent.ConcurrentQueue(Of PleskCertificateDownload)
 
         Public CarpetaCertificadosDescargados As New IO.DirectoryInfo(Application.StartupPath & "\Certificados")
 
@@ -67,7 +67,7 @@ Namespace Certificados
                 For Each Script In Hostings(Domain.HostingKey).Scripts
                     EnlaceHosting.Scripts.TryAdd(GuionToDomain(Script.Key, Domain), GuionToDomain(Script.Value, Domain))
                 Next
-                Guiones.Enqueue(New PleskGuionDeDescarga With {.Domain = Domain, .Hosting = EnlaceHosting})
+                Guiones.Enqueue(New PleskCertificateDownload With {.Domain = Domain, .Hosting = EnlaceHosting})
             Next
 
             Actualizador.Iniciar()
@@ -112,7 +112,7 @@ Namespace Certificados
 
         Private Sub TryGetCertificate()
             If Guiones.Count > 0 Then
-                Dim Guion As PleskGuionDeDescarga = Nothing
+                Dim Guion As PleskCertificateDownload = Nothing
                 If Guiones.TryDequeue(Guion) Then
                     If Not UiFaceTabControl.TabPages.ContainsKey(Guion.Domain.Name) Then
                         Dim cTab As New TabPage With {.Name = Guion.Domain.Name, .Text = Guion.Domain.Name}
@@ -139,7 +139,7 @@ Namespace Certificados
                 TryGetCertificate()
             ElseIf Guiones.Count = 0 AndAlso GuionesProcesados.Count > 0 Then
                 Do While GuionesProcesados.Count > 0
-                    Dim Guion As PleskGuionDeDescarga = Nothing
+                    Dim Guion As PleskCertificateDownload = Nothing
                     If GuionesProcesados.TryDequeue(Guion) Then
                         Guiones.Enqueue(Guion)
                     End If

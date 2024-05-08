@@ -3,7 +3,7 @@ Imports Microsoft.Web.WebView2.Core
 
 Namespace Certificados.Interfaz
     Public Class Navegador
-        Public Guion As PleskGuionDeDescarga
+        Public Guion As PleskCertificateDownload
         Private WithEvents DownloadOperation As CoreWebView2DownloadOperation = Nothing
         Private WithEvents DownloadStarting As CoreWebView2DownloadStartingEventArgs = Nothing
         Public Event FileDownloaded(sender As Object, File As FileDownloadedEvent)
@@ -11,7 +11,7 @@ Namespace Certificados.Interfaz
 
         Private isHandler As Boolean = False
         Public esDescargado As Boolean = False
-        Public Sub New(Guion As PleskGuionDeDescarga)
+        Public Sub New(Guion As PleskCertificateDownload)
 
             ' Esta llamada es exigida por el diseñador.
             InitializeComponent()
