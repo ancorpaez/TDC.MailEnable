@@ -83,7 +83,7 @@
             'tlblBucles
             '
             Me.tlblBucles.Name = "tlblBucles"
-            Me.tlblBucles.Size = New System.Drawing.Size(58, 17)
+            Me.tlblBucles.Size = New System.Drawing.Size(58, 19)
             Me.tlblBucles.Text = "Bucles (0)"
             '
             'tlblSeparador1

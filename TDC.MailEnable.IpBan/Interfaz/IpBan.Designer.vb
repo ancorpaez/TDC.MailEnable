@@ -37,10 +37,6 @@
             Me.Panel5 = New System.Windows.Forms.Panel()
             Me.lblLineasCrossDomain = New System.Windows.Forms.Label()
             Me.lblCrossDomainLog = New System.Windows.Forms.Label()
-            Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.PanelIps = New System.Windows.Forms.Panel()
             Me.PanelListaNegra = New System.Windows.Forms.Panel()
             Me.lstIpBaneadas = New System.Windows.Forms.ListBox()
@@ -232,6 +228,10 @@
             Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
             Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
+            Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.PanelIpBaneadas.SuspendLayout()
             Me.PanelBuscadores.SuspendLayout()
             Me.PanelLogs.SuspendLayout()
@@ -458,38 +458,6 @@
             Me.lblCrossDomainLog.Size = New System.Drawing.Size(200, 51)
             Me.lblCrossDomainLog.TabIndex = 2
             Me.lblCrossDomainLog.Text = "CrossDomain (0)"
-            '
-            'UcWEB
-            '
-            Me.UcWEB.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcWEB.Location = New System.Drawing.Point(3, 123)
-            Me.UcWEB.Name = "UcWEB"
-            Me.UcWEB.Size = New System.Drawing.Size(1088, 40)
-            Me.UcWEB.TabIndex = 0
-            '
-            'UcIMAPEx
-            '
-            Me.UcIMAPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcIMAPEx.Location = New System.Drawing.Point(3, 83)
-            Me.UcIMAPEx.Name = "UcIMAPEx"
-            Me.UcIMAPEx.Size = New System.Drawing.Size(1088, 40)
-            Me.UcIMAPEx.TabIndex = 0
-            '
-            'UcSMTPEx
-            '
-            Me.UcSMTPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcSMTPEx.Location = New System.Drawing.Point(3, 43)
-            Me.UcSMTPEx.Name = "UcSMTPEx"
-            Me.UcSMTPEx.Size = New System.Drawing.Size(1088, 40)
-            Me.UcSMTPEx.TabIndex = 0
-            '
-            'UcPOPEx
-            '
-            Me.UcPOPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcPOPEx.Location = New System.Drawing.Point(3, 3)
-            Me.UcPOPEx.Name = "UcPOPEx"
-            Me.UcPOPEx.Size = New System.Drawing.Size(1088, 40)
-            Me.UcPOPEx.TabIndex = 0
             '
             'PanelIps
             '
@@ -1493,7 +1461,7 @@
             Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
             Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
             Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
-            Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 54.0!))
+            Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55.0!))
             Me.TableLayoutPanel4.Controls.Add(Me.Label15, 0, 0)
             Me.TableLayoutPanel4.Controls.Add(Me.Label16, 1, 0)
             Me.TableLayoutPanel4.Controls.Add(Me.Label17, 2, 0)
@@ -1651,8 +1619,8 @@
             '
             Me.lblMailBackupSeleccionados.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right
             Me.lblMailBackupSeleccionados.Name = "lblMailBackupSeleccionados"
-            Me.lblMailBackupSeleccionados.Size = New System.Drawing.Size(17, 19)
-            Me.lblMailBackupSeleccionados.Text = "0"
+            Me.lblMailBackupSeleccionados.Size = New System.Drawing.Size(79, 19)
+            Me.lblMailBackupSeleccionados.Text = "Analizando..."
             '
             'ProgresoIndexacion
             '
@@ -2336,8 +2304,8 @@
             '
             Me.BuclesToolStripMenuItem.Image = CType(resources.GetObject("BuclesToolStripMenuItem.Image"), System.Drawing.Image)
             Me.BuclesToolStripMenuItem.Name = "BuclesToolStripMenuItem"
-            Me.BuclesToolStripMenuItem.Size = New System.Drawing.Size(100, 20)
-            Me.BuclesToolStripMenuItem.Text = "BackGround"
+            Me.BuclesToolStripMenuItem.Size = New System.Drawing.Size(102, 20)
+            Me.BuclesToolStripMenuItem.Text = "Subprocesos"
             '
             'TimerIpBan
             '
@@ -2391,6 +2359,38 @@
             Me.ImageList2.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
             Me.ImageList2.ImageSize = New System.Drawing.Size(16, 16)
             Me.ImageList2.TransparentColor = System.Drawing.Color.Transparent
+            '
+            'UcWEB
+            '
+            Me.UcWEB.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcWEB.Location = New System.Drawing.Point(3, 123)
+            Me.UcWEB.Name = "UcWEB"
+            Me.UcWEB.Size = New System.Drawing.Size(1088, 40)
+            Me.UcWEB.TabIndex = 0
+            '
+            'UcIMAPEx
+            '
+            Me.UcIMAPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcIMAPEx.Location = New System.Drawing.Point(3, 83)
+            Me.UcIMAPEx.Name = "UcIMAPEx"
+            Me.UcIMAPEx.Size = New System.Drawing.Size(1088, 40)
+            Me.UcIMAPEx.TabIndex = 0
+            '
+            'UcSMTPEx
+            '
+            Me.UcSMTPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcSMTPEx.Location = New System.Drawing.Point(3, 43)
+            Me.UcSMTPEx.Name = "UcSMTPEx"
+            Me.UcSMTPEx.Size = New System.Drawing.Size(1088, 40)
+            Me.UcSMTPEx.TabIndex = 0
+            '
+            'UcPOPEx
+            '
+            Me.UcPOPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcPOPEx.Location = New System.Drawing.Point(3, 3)
+            Me.UcPOPEx.Name = "UcPOPEx"
+            Me.UcPOPEx.Size = New System.Drawing.Size(1088, 40)
+            Me.UcPOPEx.TabIndex = 0
             '
             'IpBan
             '

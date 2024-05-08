@@ -58,6 +58,7 @@ Namespace Backup
         End Sub
 
         Private Sub BuscarCarpetas(Carpeta As String)
+            If Not IO.Directory.Exists(Carpeta) Then Exit Sub
             For Each Carpeta In IO.Directory.GetDirectories(Carpeta)
                 Directorios.Enqueue(Carpeta)
                 Escaneo.Enqueue(Carpeta)
