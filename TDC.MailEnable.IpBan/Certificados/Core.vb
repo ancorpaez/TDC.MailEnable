@@ -27,8 +27,8 @@ Namespace Certificados
 
             Privado.EnquenePleskDomains()
 
-            Dim PleskHostingAntiguo As New PleskHosting("dns17684.phdns3.es") With {.Url = New Uri("https://dns17684.phdns3.es:8443")}
-            With PleskHostingAntiguo
+            'Ej: Dim PleskHostingAntiguo As New PleskHosting("hosting.com") With {.Url = New Uri("https://hosting.com")}
+            With Privado.PleskHostingAntiguo
                 .Navigation.TryAdd("/view", New Uri($"{ .Url.AbsoluteUri}modules/sslit/index.php/index/proxy?dom_id=[$DomainId]&site_id=[$DomainId]"))
                 .Navigation.TryAdd("certificate/id/[$DomainId]", New Uri($"{ .Url.AbsoluteUri}smb/ssl-certificate/list/id/[$DomainId]"))
                 .Navigation.TryAdd("list/id/[$DomainId]", New Uri($"{ .Url.AbsoluteUri}smb/ssl-certificate/download/id/[$DomainId]/certificateId/[$CertificateId]"))
@@ -43,8 +43,8 @@ Namespace Certificados
             End With
             Hostings.TryAdd(PleskHostingAntiguo.Name, PleskHostingAntiguo)
 
-            Dim PleskHostingNuevo As New PleskHosting("s4correo.profesionalhosting.com") With {.Url = New Uri("https://s4correo.profesionalhosting.com:8443")}
-            With PleskHostingNuevo
+
+            With Privado.PleskHostingNuevo
                 .Navigation.TryAdd("/web/view", New Uri($"{ .Url.AbsoluteUri}smb/ssl-certificate/list/id/[$DomainId]"))
                 .Navigation.TryAdd("ssl-certificate/list/id/[$DomainId]", New Uri($"{ .Url.AbsoluteUri}smb/ssl-certificate/download/id/[$DomainId]/certificateId/[$CertificateId]"))
                 .Scripts.TryAdd("login_up.php", "var formulario = document.getElementById('form-login');
