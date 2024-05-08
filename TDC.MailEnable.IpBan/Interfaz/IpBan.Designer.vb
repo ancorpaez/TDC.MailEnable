@@ -228,6 +228,9 @@
             Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
             Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
+            Me.SplitContainer6 = New System.Windows.Forms.SplitContainer()
+            Me.Label27 = New System.Windows.Forms.Label()
+            Me.RichAutoResponderRespuesta = New System.Windows.Forms.RichTextBox()
             Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
@@ -323,6 +326,10 @@
             Me.MenuPrincipal.SuspendLayout()
             Me.StatusStrip2.SuspendLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.SplitContainer6, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.SplitContainer6.Panel1.SuspendLayout()
+            Me.SplitContainer6.Panel2.SuspendLayout()
+            Me.SplitContainer6.SuspendLayout()
             Me.SuspendLayout()
             '
             'PanelIpBaneadas
@@ -2213,10 +2220,9 @@
             '
             'SplitContainer5.Panel2
             '
-            Me.SplitContainer5.Panel2.Controls.Add(Me.RichAutoResponderStatus)
-            Me.SplitContainer5.Panel2.Controls.Add(Me.Label26)
+            Me.SplitContainer5.Panel2.Controls.Add(Me.SplitContainer6)
             Me.SplitContainer5.Size = New System.Drawing.Size(1206, 427)
-            Me.SplitContainer5.SplitterDistance = 531
+            Me.SplitContainer5.SplitterDistance = 252
             Me.SplitContainer5.TabIndex = 2
             '
             'RichAutoResponderMail
@@ -2224,7 +2230,7 @@
             Me.RichAutoResponderMail.Dock = System.Windows.Forms.DockStyle.Fill
             Me.RichAutoResponderMail.Location = New System.Drawing.Point(0, 20)
             Me.RichAutoResponderMail.Name = "RichAutoResponderMail"
-            Me.RichAutoResponderMail.Size = New System.Drawing.Size(531, 407)
+            Me.RichAutoResponderMail.Size = New System.Drawing.Size(252, 407)
             Me.RichAutoResponderMail.TabIndex = 0
             Me.RichAutoResponderMail.Text = ""
             '
@@ -2235,7 +2241,7 @@
             Me.Label25.ForeColor = System.Drawing.Color.White
             Me.Label25.Location = New System.Drawing.Point(0, 0)
             Me.Label25.Name = "Label25"
-            Me.Label25.Size = New System.Drawing.Size(531, 20)
+            Me.Label25.Size = New System.Drawing.Size(252, 20)
             Me.Label25.TabIndex = 0
             Me.Label25.Text = "Email"
             Me.Label25.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -2245,7 +2251,7 @@
             Me.RichAutoResponderStatus.Dock = System.Windows.Forms.DockStyle.Fill
             Me.RichAutoResponderStatus.Location = New System.Drawing.Point(0, 20)
             Me.RichAutoResponderStatus.Name = "RichAutoResponderStatus"
-            Me.RichAutoResponderStatus.Size = New System.Drawing.Size(671, 407)
+            Me.RichAutoResponderStatus.Size = New System.Drawing.Size(316, 407)
             Me.RichAutoResponderStatus.TabIndex = 0
             Me.RichAutoResponderStatus.Text = ""
             '
@@ -2256,7 +2262,7 @@
             Me.Label26.ForeColor = System.Drawing.Color.White
             Me.Label26.Location = New System.Drawing.Point(0, 0)
             Me.Label26.Name = "Label26"
-            Me.Label26.Size = New System.Drawing.Size(671, 20)
+            Me.Label26.Size = New System.Drawing.Size(316, 20)
             Me.Label26.TabIndex = 1
             Me.Label26.Text = "Estado"
             Me.Label26.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -2359,6 +2365,46 @@
             Me.ImageList2.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
             Me.ImageList2.ImageSize = New System.Drawing.Size(16, 16)
             Me.ImageList2.TransparentColor = System.Drawing.Color.Transparent
+            '
+            'SplitContainer6
+            '
+            Me.SplitContainer6.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.SplitContainer6.Location = New System.Drawing.Point(0, 0)
+            Me.SplitContainer6.Name = "SplitContainer6"
+            '
+            'SplitContainer6.Panel1
+            '
+            Me.SplitContainer6.Panel1.Controls.Add(Me.RichAutoResponderStatus)
+            Me.SplitContainer6.Panel1.Controls.Add(Me.Label26)
+            '
+            'SplitContainer6.Panel2
+            '
+            Me.SplitContainer6.Panel2.Controls.Add(Me.RichAutoResponderRespuesta)
+            Me.SplitContainer6.Panel2.Controls.Add(Me.Label27)
+            Me.SplitContainer6.Size = New System.Drawing.Size(950, 427)
+            Me.SplitContainer6.SplitterDistance = 316
+            Me.SplitContainer6.TabIndex = 2
+            '
+            'Label27
+            '
+            Me.Label27.BackColor = System.Drawing.Color.Black
+            Me.Label27.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Label27.ForeColor = System.Drawing.Color.White
+            Me.Label27.Location = New System.Drawing.Point(0, 0)
+            Me.Label27.Name = "Label27"
+            Me.Label27.Size = New System.Drawing.Size(630, 20)
+            Me.Label27.TabIndex = 2
+            Me.Label27.Text = "Respuesta"
+            Me.Label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'RichAutoResponderRespuesta
+            '
+            Me.RichAutoResponderRespuesta.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.RichAutoResponderRespuesta.Location = New System.Drawing.Point(0, 20)
+            Me.RichAutoResponderRespuesta.Name = "RichAutoResponderRespuesta"
+            Me.RichAutoResponderRespuesta.Size = New System.Drawing.Size(630, 407)
+            Me.RichAutoResponderRespuesta.TabIndex = 3
+            Me.RichAutoResponderRespuesta.Text = ""
             '
             'UcWEB
             '
@@ -2516,6 +2562,10 @@
             Me.StatusStrip2.ResumeLayout(False)
             Me.StatusStrip2.PerformLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.SplitContainer6.Panel1.ResumeLayout(False)
+            Me.SplitContainer6.Panel2.ResumeLayout(False)
+            CType(Me.SplitContainer6, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.SplitContainer6.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -2727,5 +2777,8 @@
         Friend WithEvents RichAutoResponderMail As RichTextBox
         Friend WithEvents RichAutoResponderStatus As RichTextBox
         Friend WithEvents Label26 As Label
+        Friend WithEvents SplitContainer6 As SplitContainer
+        Friend WithEvents RichAutoResponderRespuesta As RichTextBox
+        Friend WithEvents Label27 As Label
     End Class
 End Namespace

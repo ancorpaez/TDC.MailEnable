@@ -4,10 +4,11 @@ Imports TDC.MailEnable.IpBan.Backup
 Imports TDC.MailEnable.IpBan.MailEnableLog
 Namespace AutoResponder
     Module Core
-        Private WithEvents AutoResponderRepair As New Bucle.DoBucle("AutoResponder") With {.Intervalo = DateDiff(DateInterval.Second, Now, Now.AddMinutes(1)) * 1000}
+        Private WithEvents AutoResponderRepair As New Bucle.DoBucle("AutoResponder")
         Public ReadOnly Property Modificados As New Collections.Concurrent.ConcurrentBag(Of String)
         Public ReadOnly Property Mensajes As New Collections.Concurrent.ConcurrentDictionary(Of String, String)
         Public ReadOnly Property Estados As New Collections.Concurrent.ConcurrentDictionary(Of String, String)
+        Public ReadOnly Property Respuestas As New Collections.Concurrent.ConcurrentDictionary(Of String, String)
 
         Private QueneFolder As IO.DirectoryInfo
 
@@ -28,17 +29,32 @@ Namespace AutoResponder
                             'Registrar Estado
                             Estados.TryAdd(Email.Name, IO.File.ReadAllText($"{QueneFolder.Parent.FullName}\{Email.Name}"))
 
+                            'Registrar Mensaje
+                            Mensajes.TryAdd(Email.Name, IO.File.ReadAllText(Email.FullName))
+
+                            'Buscar Respuesta
+                            If IO.Directory.Exists(Configuracion.SMTP) Then
+                                If IO.File.Exists($"{Configuracion.SMTP}\SMTP-Debug-{Now.ToString("yyMMdd")}.log") Then
+                                    Using Buscador As New BuscadorRespuesta($"{Configuracion.SMTP}\SMTP-Debug-{Now.ToString("yyMMdd")}.log", Email.Name)
+                                        'Registrar Respuesta
+                                        Respuestas.TryAdd(Email.Name, Buscador.Respuesta)
+                                    End Using
+                                End If
+                            End If
+
+                            'Registrar Email
+                            Modificados.Add(Email.Name)
+
                             'Modificar Mensaje
                             Dim Lineas() As String = IO.File.ReadAllLines(Email.FullName)
                             IO.File.WriteAllText(Email.FullName, String.Join(vbCrLf, Lineas) & vbCrLf)
-                            Modificados.Add(Email.Name)
-
-                            'Registrar Mensaje
-                            Mensajes.TryAdd(Email.Name, IO.File.ReadAllText(Email.FullName))
                         End If
                     Next
                 End If
             End If
+
+            'Establecer la Busqueda a 1 Minuto
+            CType(Sender, Bucle.DoBucle).Intervalo = DateDiff(DateInterval.Second, Now, Now.AddMinutes(1)) * 1000
         End Sub
 
         Private Function isRetry(Mensaje As IO.FileInfo) As Boolean
@@ -56,6 +72,7 @@ Namespace AutoResponder
         Private Function ExistLog(Mensaje As IO.FileInfo) As Boolean
             Return IO.File.Exists($"{QueneFolder.Parent.FullName}\{Mensaje.Name}")
         End Function
+
         Private Function LogFile(Mensaje As IO.FileInfo) As IO.FileInfo
             If ExistLog(Mensaje) Then Return New IO.FileInfo($"{QueneFolder.Parent.FullName}\{Mensaje.Name}") Else Return Nothing
         End Function

@@ -1221,10 +1221,20 @@ Namespace Interfaz
             If lstEmailsReparadosAutoResponder.SelectedItems.Count > 0 Then
                 RichAutoResponderMail.Text = AutoResponder.Mensajes(lstEmailsReparadosAutoResponder.SelectedItems.Item(0))
                 RichAutoResponderStatus.Text = AutoResponder.Estados(lstEmailsReparadosAutoResponder.SelectedItems.Item(0))
+                RichAutoResponderRespuesta.Text = AutoResponder.Respuestas(lstEmailsReparadosAutoResponder.SelectedItems.Item(0))
             Else
                 RichAutoResponderMail.Text = String.Empty
                 RichAutoResponderStatus.Text = String.Empty
+                RichAutoResponderRespuesta.Text = String.Empty
             End If
+        End Sub
+
+        Private Sub RichAutoResponderRespuesta_LinkClicked(sender As Object, e As LinkClickedEventArgs) Handles RichAutoResponderRespuesta.LinkClicked
+            Try
+                Process.Start(e.LinkText)
+            Catch ex As Exception
+                MessageBox.Show("No se pudo abrir el enlace. Error: " & ex.Message)
+            End Try
         End Sub
     End Class
 End Namespace

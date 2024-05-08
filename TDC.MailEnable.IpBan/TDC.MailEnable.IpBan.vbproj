@@ -146,6 +146,7 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="AutoResponder\Core.vb" />
+    <Compile Include="AutoResponder\BuscadorRespuesta.vb" />
     <Compile Include="Backup\QueneArchivos.vb" />
     <Compile Include="Backup\Task.vb" />
     <Compile Include="Backup\Indexador.vb" />
