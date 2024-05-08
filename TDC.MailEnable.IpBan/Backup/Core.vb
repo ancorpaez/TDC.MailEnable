@@ -118,9 +118,9 @@ Namespace Backup
         End Sub
         Private Sub iFaceNotificador_Foreground(Sender As Object, Detener As MailEnable.Core.Bucle.BackgroundEventArgs) Handles iFaceNotificador.ForeGround
             'Si hay Archivos por Indexar
-            If IndexadorArchivos.Estado = Indexador.EnumEstado.Analizando AndAlso IndexadorArchivos.Quened > 0 Then IpBanForm.lblMailBackupSeleccionados.Text = $"Analizados ({IndexadorArchivos.Quened})"
-            'Si no hay por Indexar pero seguimos en Analizados, Actualiza el Interface a 0
-            If IndexadorArchivos.Estado = Indexador.EnumEstado.Analizando AndAlso IpBanForm.lblMailBackupSeleccionados.Text.StartsWith("Analizados") Then IpBanForm.lblMailBackupSeleccionados.Text = $"Analizados ({IndexadorArchivos.Quened})"
+            If IndexadorArchivos.Estado = Indexador.EnumEstado.Analizando AndAlso IndexadorArchivos.Quened > 0 Then IpBanForm.lblMailBackupSeleccionados.Text = $"Pendientes ({IndexadorArchivos.Quened})"
+            'Si no hay por Indexar
+            If IndexadorArchivos.Estado = Indexador.EnumEstado.Analizado AndAlso IpBanForm.lblMailBackupSeleccionados.Text.StartsWith("Pendientes") Then IpBanForm.lblMailBackupSeleccionados.Text = $"Pendientes ({IndexadorArchivos.Quened})"
 
             IpBanForm.lblCarpetas.Text = $"Carpetas, {BuscadorCarpetas.Directorios.Count}]"
             IpBanForm.lblEmails.Text = $"Colas: [Archivos, {BuscadorArchivos.Archivos.Count}"

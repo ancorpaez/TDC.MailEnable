@@ -3,7 +3,7 @@
         Friend GlobalDoBucle As New System.Collections.Concurrent.ConcurrentDictionary(Of String, DoBucle)
 
         Public Sub View()
-            Dim v As New View With {.TopMost = True}
+            Dim v As New View
             v.Show()
         End Sub
         Friend Sub Add(iBucle As DoBucle)

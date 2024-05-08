@@ -45,6 +45,7 @@
             Me.lstBucles.Dock = System.Windows.Forms.DockStyle.Fill
             Me.lstBucles.FullRowSelect = True
             Me.lstBucles.GridLines = True
+            Me.lstBucles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
             Me.lstBucles.HideSelection = False
             Me.lstBucles.Location = New System.Drawing.Point(0, 0)
             Me.lstBucles.MultiSelect = False
@@ -116,13 +117,13 @@
             Me.TrakVisualizador.Dock = System.Windows.Forms.DockStyle.Bottom
             Me.TrakVisualizador.LargeChange = 10
             Me.TrakVisualizador.Location = New System.Drawing.Point(0, 369)
-            Me.TrakVisualizador.Maximum = 1000
+            Me.TrakVisualizador.Maximum = 10000
             Me.TrakVisualizador.Minimum = 10
             Me.TrakVisualizador.Name = "TrakVisualizador"
             Me.TrakVisualizador.Size = New System.Drawing.Size(404, 34)
             Me.TrakVisualizador.TabIndex = 2
             Me.TrakVisualizador.TickStyle = System.Windows.Forms.TickStyle.None
-            Me.TrakVisualizador.Value = 1000
+            Me.TrakVisualizador.Value = 10000
             '
             'View
             '
