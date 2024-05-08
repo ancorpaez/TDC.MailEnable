@@ -1,7 +1,7 @@
 ﻿Imports System.Net
 Imports System.Collections.Concurrent
 Namespace MailEnableLog
-    Public Class Cls_Geolocalizacion
+    Public Class ArchivoLocal
         '(IP,PAIS)
         Private WithEvents Almacen As New ConcurrentDictionary(Of String, String)
         Private Path As String

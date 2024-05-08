@@ -18,7 +18,7 @@ Namespace MailEnableLog
         'ARCHIVO UNICO GEOLOCALIZACION
         Dim File_Geolocalizacion As String = $"{Application.StartupPath}\Geolocalizacion\Geolocalizacion.lst"
         Dim File_GeolocalizacionInfo As New IO.FileInfo(File_Geolocalizacion)
-        Public Geolocalizador As Cls_Geolocalizacion = Nothing
+        Public Geolocalizador As ArchivoLocal = Nothing
 
         'SPAMASSASSIN
 
@@ -112,7 +112,7 @@ Namespace MailEnableLog
 
             'Establecer Geolocalizador
             If Not File_GeolocalizacionInfo.Directory.Exists Then File_GeolocalizacionInfo.Directory.Create()
-            Geolocalizador = New Cls_Geolocalizacion(File_GeolocalizacionInfo.FullName)
+            Geolocalizador = New ArchivoLocal(File_GeolocalizacionInfo.FullName)
         End Sub
 
         '::::::::: ARCHIVO DE CONFIGURACION

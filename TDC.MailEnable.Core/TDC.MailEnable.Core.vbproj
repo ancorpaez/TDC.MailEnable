@@ -84,9 +84,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Concurrent\ConcurrentBindingList.vb" />
-    <Compile Include="GeoLocalizacion\Cls_Geolocalizacion.vb" />
+    <Compile Include="GeoLocalizacion\ArchivoLocal.vb" />
     <Compile Include="GeoLocalizacion\IpInfo.vb" />
-    <Compile Include="GeoLocalizacion\IpInfoPrivate.vb" />
+    <Compile Include="GeoLocalizacion\Privado.vb" />
     <Compile Include="GeoLocalizacion\MyNsLookUp.vb" />
     <Compile Include="LOG\MemoryLOG.vb" />
     <Compile Include="Main.vb" />

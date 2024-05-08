@@ -4,10 +4,10 @@ Imports TDC.MailEnable.Core.MailEnableLog
 
 Namespace GeoLocalizacion
     Public Class IpInfo
-        Public Function Geolocalizar(Ip As String, Almacen As Cls_Geolocalizacion) As String
+        Public Function Geolocalizar(Ip As String, Almacen As ArchivoLocal) As String
             Try
                 If Not Almacen.Contains(Ip) Then
-                    Dim Req As HttpWebRequest = HttpWebRequest.Create("https://ipinfo.io/" & Ip & $"?token={Token}")
+                    Dim Req As HttpWebRequest = HttpWebRequest.Create("https://ipinfo.io/" & Ip & $"?token={Privado.Token}")
                     Dim Resp As HttpWebResponse
                     Req.Method = "GET"
                     Req.UserAgent = "curl/7/29/0"
