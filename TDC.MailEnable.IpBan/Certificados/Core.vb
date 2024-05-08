@@ -25,6 +25,7 @@ Namespace Certificados
             UiFaceTabControl = TabControl
             UiFaceListLogDownload = ListDownload
 
+            'Ej: Domains.Enqueue(New PleskDomain("midominio.com") With {.DomainId = "100", .CertificateId = "50", .UserName = "myuser", .UserPassword = "mypassword", .HostingKey = "hosting.com"})
             Privado.EnquenePleskDomains()
 
             'Ej: Dim PleskHostingAntiguo As New PleskHosting("hosting.com") With {.Url = New Uri("https://hosting.com")}
