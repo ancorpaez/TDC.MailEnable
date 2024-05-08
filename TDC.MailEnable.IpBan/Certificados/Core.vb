@@ -7,26 +7,23 @@ Namespace Certificados
     Module Core
         Public Hostings As New Concurrent.ConcurrentDictionary(Of String, PleskHosting)
         Public Domains As New Concurrent.ConcurrentQueue(Of PleskDomain)
-
         Public ReadOnly Property Guiones As New Concurrent.ConcurrentQueue(Of PleskGuionDeDescarga)
         Public ReadOnly Property GuionesProcesados As New Concurrent.ConcurrentQueue(Of PleskGuionDeDescarga)
 
-        Public CertificateFolder As New IO.DirectoryInfo(Application.StartupPath & "\Certificados")
-        Private FaceTabControl As TabControl
-        Private FaceListControl As ListView
-        Private FaceListLogDownload As ListView
+        Public CarpetaCertificadosDescargados As New IO.DirectoryInfo(Application.StartupPath & "\Certificados")
 
-        Private WithEvents Actualizador As New TDC.MailEnable.Core.Bucle.DoBucle("ActualizadorSsl")
+        Private UiFaceTabControl As TabControl = Nothing
+        Private UiFaceListControl As ListView = Nothing
+        Private UiFaceListLogDownload As ListView = Nothing
 
-        'Friend Hostings As New Concurrent.ConcurrentDictionary(Of String, Hosting)
-
+        Private WithEvents Actualizador As New MailEnable.Core.Bucle.DoBucle("ActualizadorSsl")
 
         Public Sub Main(TabControl As TabControl, ListControl As ListView, ListDownload As ListView)
-            If Not CertificateFolder.Exists Then CertificateFolder.Create()
+            If Not CarpetaCertificadosDescargados.Exists Then CarpetaCertificadosDescargados.Create()
 
-            FaceListControl = ListControl
-            FaceTabControl = TabControl
-            FaceListLogDownload = ListDownload
+            UiFaceListControl = ListControl
+            UiFaceTabControl = TabControl
+            UiFaceListLogDownload = ListDownload
 
             Privado.EnquenePleskDomains()
 
@@ -109,24 +106,24 @@ Namespace Certificados
                 cItemResult = New ListViewItem.ListViewSubItem With {.Text = "False"}
             End If
             cItem.SubItems.Add(cItemResult)
-            If Not IsNothing(FaceListLogDownload) Then FaceListLogDownload.Items.Add(cItem)
+            If Not IsNothing(UiFaceListLogDownload) Then UiFaceListLogDownload.Items.Add(cItem)
         End Sub
 
         Private Sub TryGetCertificate()
             If Guiones.Count > 0 Then
                 Dim Guion As PleskGuionDeDescarga = Nothing
                 If Guiones.TryDequeue(Guion) Then
-                    If Not FaceTabControl.TabPages.ContainsKey(Guion.Domain.Name) Then
+                    If Not UiFaceTabControl.TabPages.ContainsKey(Guion.Domain.Name) Then
                         Dim cTab As New TabPage With {.Name = Guion.Domain.Name, .Text = Guion.Domain.Name}
-                        FaceTabControl.TabPages.Add(cTab)
+                        UiFaceTabControl.TabPages.Add(cTab)
                         Guion.Download()
                         cTab.Controls.Add(Guion.Viewer)
-                        FaceTabControl.SelectTab(FaceTabControl.TabPages(Guion.Domain.Name).TabIndex)
+                        UiFaceTabControl.SelectTab(UiFaceTabControl.TabPages(Guion.Domain.Name).TabIndex)
                         Guion.Viewer.Dock = DockStyle.Fill
                         AddHandler Guion.Viewer.FileDownloaded, AddressOf DownloadedFile
                         AddHandler Guion.Viewer.EndProcess, AddressOf EndProcessGetCertificate
                     Else
-                        FaceTabControl.SelectTab(FaceTabControl.TabPages(Guion.Domain.Name).TabIndex)
+                        UiFaceTabControl.SelectTab(UiFaceTabControl.TabPages(Guion.Domain.Name).TabIndex)
                         Guion.Viewer.esDescargado = False
                         Guion.Viewer.WB.Reload()
                     End If
@@ -136,6 +133,7 @@ Namespace Certificados
         End Sub
 
         Private Sub Actualizador_Foreground(Sender As Object, Detener As MailEnable.Core.Bucle.BackgroundEventArgs) Handles Actualizador.ForeGround
+            'Resetea los Guiones
             If Guiones.Count > 0 AndAlso GuionesProcesados.Count = 0 Then
                 TryGetCertificate()
             ElseIf Guiones.Count = 0 AndAlso GuionesProcesados.Count > 0 Then
@@ -148,20 +146,22 @@ Namespace Certificados
                 TryGetCertificate()
             End If
 
-            For Each CertificadoPfx In CertificateFolder.GetFiles("*.pfx")
+            'Muestra los certificados descargados
+            For Each CertificadoPfx In CarpetaCertificadosDescargados.GetFiles("*.pfx")
                 Dim aPfx As X509Certificate2 = New X509Certificate2(CertificadoPfx.FullName, "")
                 Dim Item As New ListViewItem With {.Name = aPfx.GetNameInfo(X509NameType.SimpleName, False), .Text = aPfx.GetNameInfo(X509NameType.SimpleName, False)}
                 Dim sItem As New ListViewItem.ListViewSubItem With {.Name = $"_{aPfx.GetNameInfo(X509NameType.SimpleName, False)}", .Text = CDate(aPfx.GetExpirationDateString).ToShortDateString}
                 Item.SubItems.Add(sItem)
 
-                If Not FaceListControl.Items.ContainsKey(Item.Name) Then
-                    FaceListControl.Items.Add(Item)
+                If Not UiFaceListControl.Items.ContainsKey(Item.Name) Then
+                    UiFaceListControl.Items.Add(Item)
                 Else
-                    FaceListControl.Items(Item.Name).SubItems($"_{Item.Name}").Text = CDate(aPfx.GetExpirationDateString).ToShortDateString
+                    UiFaceListControl.Items(Item.Name).SubItems($"_{Item.Name}").Text = CDate(aPfx.GetExpirationDateString).ToShortDateString
                 End If
             Next
+
+            'Establece el periodo de descarga en 12 Horas
             Actualizador.Intervalo = DateDiff(DateInterval.Second, Now, Now.AddHours(12)) * 1000
-            'Actualizador.Intervalo = 30000
         End Sub
 
         Private Function RequiereInstalar(Pfx As String) As Boolean

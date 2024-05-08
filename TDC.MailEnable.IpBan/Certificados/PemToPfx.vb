@@ -19,7 +19,7 @@ Namespace Certificados
                 'Recoger de la Descarga
                 PemOriginalPath = New IO.FileInfo(Pem)
                 'Asignar destino
-                PemFile = New IO.FileInfo(CertificateFolder.FullName & "\" & PemOriginalPath.Name)
+                PemFile = New IO.FileInfo(CarpetaCertificadosDescargados.FullName & "\" & PemOriginalPath.Name)
                 'Eliminar anterior
                 If PemFile.Exists Then PemFile.Delete()
                 'Mover archivo
