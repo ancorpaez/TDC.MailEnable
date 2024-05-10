@@ -221,7 +221,10 @@
             Me.Label26 = New System.Windows.Forms.Label()
             Me.RichAutoResponderRespuesta = New System.Windows.Forms.RichTextBox()
             Me.Label27 = New System.Windows.Forms.Label()
+            Me.SplitterAutoResponderLst = New System.Windows.Forms.Splitter()
+            Me.PanellstEmailsColaSMTP = New System.Windows.Forms.Panel()
             Me.lstEmailsReparadosAutoResponder = New System.Windows.Forms.ListBox()
+            Me.Label28 = New System.Windows.Forms.Label()
             Me.IconosTab = New System.Windows.Forms.ImageList(Me.components)
             Me.MenuPrincipal = New System.Windows.Forms.MenuStrip()
             Me.ConfiguraciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -235,9 +238,6 @@
             Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
             Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
-            Me.PanellstEmailsColaSMTP = New System.Windows.Forms.Panel()
-            Me.Label28 = New System.Windows.Forms.Label()
-            Me.SplitterAutoResponderLst = New System.Windows.Forms.Splitter()
             Me.PanelIpBaneadas.SuspendLayout()
             Me.PanelBuscadores.SuspendLayout()
             Me.PanelLogs.SuspendLayout()
@@ -330,10 +330,10 @@
             Me.SplitContainer6.Panel1.SuspendLayout()
             Me.SplitContainer6.Panel2.SuspendLayout()
             Me.SplitContainer6.SuspendLayout()
+            Me.PanellstEmailsColaSMTP.SuspendLayout()
             Me.MenuPrincipal.SuspendLayout()
             Me.StatusStrip2.SuspendLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.PanellstEmailsColaSMTP.SuspendLayout()
             Me.SuspendLayout()
             '
             'PanelIpBaneadas
@@ -2260,7 +2260,7 @@
             '
             Me.SplitContainer5.Panel2.Controls.Add(Me.SplitContainer6)
             Me.SplitContainer5.Size = New System.Drawing.Size(1216, 427)
-            Me.SplitContainer5.SplitterDistance = 254
+            Me.SplitContainer5.SplitterDistance = 253
             Me.SplitContainer5.TabIndex = 2
             '
             'RichAutoResponderMail
@@ -2268,7 +2268,7 @@
             Me.RichAutoResponderMail.Dock = System.Windows.Forms.DockStyle.Fill
             Me.RichAutoResponderMail.Location = New System.Drawing.Point(0, 20)
             Me.RichAutoResponderMail.Name = "RichAutoResponderMail"
-            Me.RichAutoResponderMail.Size = New System.Drawing.Size(254, 407)
+            Me.RichAutoResponderMail.Size = New System.Drawing.Size(253, 407)
             Me.RichAutoResponderMail.TabIndex = 0
             Me.RichAutoResponderMail.Text = ""
             '
@@ -2279,7 +2279,7 @@
             Me.Label25.ForeColor = System.Drawing.Color.White
             Me.Label25.Location = New System.Drawing.Point(0, 0)
             Me.Label25.Name = "Label25"
-            Me.Label25.Size = New System.Drawing.Size(254, 20)
+            Me.Label25.Size = New System.Drawing.Size(253, 20)
             Me.Label25.TabIndex = 0
             Me.Label25.Text = "Email"
             Me.Label25.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -2299,7 +2299,7 @@
             '
             Me.SplitContainer6.Panel2.Controls.Add(Me.RichAutoResponderRespuesta)
             Me.SplitContainer6.Panel2.Controls.Add(Me.Label27)
-            Me.SplitContainer6.Size = New System.Drawing.Size(958, 427)
+            Me.SplitContainer6.Size = New System.Drawing.Size(959, 427)
             Me.SplitContainer6.SplitterDistance = 318
             Me.SplitContainer6.TabIndex = 2
             '
@@ -2329,7 +2329,7 @@
             Me.RichAutoResponderRespuesta.Dock = System.Windows.Forms.DockStyle.Fill
             Me.RichAutoResponderRespuesta.Location = New System.Drawing.Point(0, 20)
             Me.RichAutoResponderRespuesta.Name = "RichAutoResponderRespuesta"
-            Me.RichAutoResponderRespuesta.Size = New System.Drawing.Size(636, 407)
+            Me.RichAutoResponderRespuesta.Size = New System.Drawing.Size(637, 407)
             Me.RichAutoResponderRespuesta.TabIndex = 3
             Me.RichAutoResponderRespuesta.Text = ""
             '
@@ -2340,10 +2340,29 @@
             Me.Label27.ForeColor = System.Drawing.Color.White
             Me.Label27.Location = New System.Drawing.Point(0, 0)
             Me.Label27.Name = "Label27"
-            Me.Label27.Size = New System.Drawing.Size(636, 20)
+            Me.Label27.Size = New System.Drawing.Size(637, 20)
             Me.Label27.TabIndex = 2
             Me.Label27.Text = "Respuesta"
             Me.Label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'SplitterAutoResponderLst
+            '
+            Me.SplitterAutoResponderLst.BackColor = System.Drawing.Color.Black
+            Me.SplitterAutoResponderLst.Location = New System.Drawing.Point(216, 0)
+            Me.SplitterAutoResponderLst.Name = "SplitterAutoResponderLst"
+            Me.SplitterAutoResponderLst.Size = New System.Drawing.Size(8, 427)
+            Me.SplitterAutoResponderLst.TabIndex = 1
+            Me.SplitterAutoResponderLst.TabStop = False
+            '
+            'PanellstEmailsColaSMTP
+            '
+            Me.PanellstEmailsColaSMTP.Controls.Add(Me.lstEmailsReparadosAutoResponder)
+            Me.PanellstEmailsColaSMTP.Controls.Add(Me.Label28)
+            Me.PanellstEmailsColaSMTP.Dock = System.Windows.Forms.DockStyle.Left
+            Me.PanellstEmailsColaSMTP.Location = New System.Drawing.Point(0, 0)
+            Me.PanellstEmailsColaSMTP.Name = "PanellstEmailsColaSMTP"
+            Me.PanellstEmailsColaSMTP.Size = New System.Drawing.Size(216, 427)
+            Me.PanellstEmailsColaSMTP.TabIndex = 3
             '
             'lstEmailsReparadosAutoResponder
             '
@@ -2354,6 +2373,18 @@
             Me.lstEmailsReparadosAutoResponder.Name = "lstEmailsReparadosAutoResponder"
             Me.lstEmailsReparadosAutoResponder.Size = New System.Drawing.Size(216, 407)
             Me.lstEmailsReparadosAutoResponder.TabIndex = 1
+            '
+            'Label28
+            '
+            Me.Label28.BackColor = System.Drawing.Color.Black
+            Me.Label28.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Label28.ForeColor = System.Drawing.Color.White
+            Me.Label28.Location = New System.Drawing.Point(0, 0)
+            Me.Label28.Name = "Label28"
+            Me.Label28.Size = New System.Drawing.Size(216, 20)
+            Me.Label28.TabIndex = 2
+            Me.Label28.Text = "Cola SMTP"
+            Me.Label28.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'IconosTab
             '
@@ -2443,37 +2474,6 @@
             Me.ImageList2.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
             Me.ImageList2.ImageSize = New System.Drawing.Size(16, 16)
             Me.ImageList2.TransparentColor = System.Drawing.Color.Transparent
-            '
-            'PanellstEmailsColaSMTP
-            '
-            Me.PanellstEmailsColaSMTP.Controls.Add(Me.lstEmailsReparadosAutoResponder)
-            Me.PanellstEmailsColaSMTP.Controls.Add(Me.Label28)
-            Me.PanellstEmailsColaSMTP.Dock = System.Windows.Forms.DockStyle.Left
-            Me.PanellstEmailsColaSMTP.Location = New System.Drawing.Point(0, 0)
-            Me.PanellstEmailsColaSMTP.Name = "PanellstEmailsColaSMTP"
-            Me.PanellstEmailsColaSMTP.Size = New System.Drawing.Size(216, 427)
-            Me.PanellstEmailsColaSMTP.TabIndex = 3
-            '
-            'Label28
-            '
-            Me.Label28.BackColor = System.Drawing.Color.Black
-            Me.Label28.Dock = System.Windows.Forms.DockStyle.Top
-            Me.Label28.ForeColor = System.Drawing.Color.White
-            Me.Label28.Location = New System.Drawing.Point(0, 0)
-            Me.Label28.Name = "Label28"
-            Me.Label28.Size = New System.Drawing.Size(216, 20)
-            Me.Label28.TabIndex = 2
-            Me.Label28.Text = "Cola SMTP"
-            Me.Label28.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
-            'SplitterAutoResponderLst
-            '
-            Me.SplitterAutoResponderLst.BackColor = System.Drawing.Color.Black
-            Me.SplitterAutoResponderLst.Location = New System.Drawing.Point(216, 0)
-            Me.SplitterAutoResponderLst.Name = "SplitterAutoResponderLst"
-            Me.SplitterAutoResponderLst.Size = New System.Drawing.Size(8, 427)
-            Me.SplitterAutoResponderLst.TabIndex = 1
-            Me.SplitterAutoResponderLst.TabStop = False
             '
             'IpBan
             '
@@ -2598,12 +2598,12 @@
             Me.SplitContainer6.Panel2.ResumeLayout(False)
             CType(Me.SplitContainer6, System.ComponentModel.ISupportInitialize).EndInit()
             Me.SplitContainer6.ResumeLayout(False)
+            Me.PanellstEmailsColaSMTP.ResumeLayout(False)
             Me.MenuPrincipal.ResumeLayout(False)
             Me.MenuPrincipal.PerformLayout()
             Me.StatusStrip2.ResumeLayout(False)
             Me.StatusStrip2.PerformLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.PanellstEmailsColaSMTP.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
