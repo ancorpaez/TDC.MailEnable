@@ -18,5 +18,12 @@ Namespace Concurrent
             End SyncLock
         End Sub
 
+        Public Function ToQuene() As Collections.Concurrent.ConcurrentQueue(Of T)
+            Dim Resultado As New Collections.Concurrent.ConcurrentQueue(Of T)
+            For Each iItem In Me
+                Resultado.Enqueue(iItem)
+            Next
+            Return Resultado
+        End Function
     End Class
 End Namespace

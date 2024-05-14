@@ -203,7 +203,7 @@
     <Compile Include="MailEnableLog\Mod_Core.vb" />
     <Compile Include="MailEnableLog\Cls_ISS.vb" />
     <Compile Include="MailEnableLog\Cls_MailBoxLogin.vb" />
-    <Compile Include="MailEnableLog\Mod_FileMemory.vb" />
+    <Compile Include="MailEnableLog\ArchivosEnMemoria\Core.vb" />
     <Compile Include="Migracion\Core.vb" />
     <Compile Include="Migracion\Interfaz\FrmActivarDominio.Designer.vb">
       <DependentUpon>FrmActivarDominio.vb</DependentUpon>

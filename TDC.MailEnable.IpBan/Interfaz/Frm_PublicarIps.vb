@@ -11,7 +11,7 @@ Namespace Interfaz
         Private ListaSMTP As Cls_MailEnableDeny
         Private ListaPOP As Cls_MailEnableDeny
         Private ListaWEB As Cls_ISS
-        Public Lista As List(Of String)
+        Public Property ListaIPBaneadas As Collections.Concurrent.ConcurrentQueue(Of String)
         Private Enum EnumEstado
             Cargando
             Cargado
@@ -45,67 +45,75 @@ Namespace Interfaz
             ListaSMTP.Clear()
             ListaWEB.Clear()
 
+            'Intervalo
             If IsNumeric(Configuracion.TIMER_PROPAGACION) Then Publicador.Intervalo = Configuracion.TIMER_PROPAGACION Else Publicador.Intervalo = 1
+
+            'Interfaz
+            Progreso.Maximum = ListaIPBaneadas.Count
+            lblIndex.Text = Progreso.Maximum
+
+            'Publicar
             Publicador.Iniciar()
-            If Not IsNothing(Lista) AndAlso Lista.Count > 0 Then
-                Progreso.Maximum = Lista.Count - 1
-            End If
+
         End Sub
-        Private Sub Publicador_Background(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs)
+        Private Sub Publicador_Background(Sender As Object, e As BackgroundEventArgs)
             If IsNumeric(Configuracion.TIMER_PROPAGACION) Then Publicador.Intervalo = Configuracion.TIMER_PROPAGACION Else Publicador.Intervalo = 1
             'Proteger
-            If Lista.Count = 0 Then Exit Sub
+            If ListaIPBaneadas.IsEmpty Then
+                e.Detener = True
+                Exit Sub
+            End If
+
             'Meterdatos
-            If Not ListaPOP.Contais(Lista(IndexIp)) Then ListaPOP.Add(Lista(IndexIp))
-            If Not ListaSMTP.Contais(Lista(IndexIp)) Then ListaSMTP.Add(Lista(IndexIp))
-            If Not ListaWEB.Contains(Lista(IndexIp)) Then ListaWEB.Add(Lista(IndexIp))
-
-            'Comprobar el Index
-            If IndexIp < (Lista.Count - 1) Then
-                'Aumentar uno
-                'Me.Invoke(Sub() Progreso.Value = IndexIp)
-                'Me.Invoke(Sub() lblIp.Text = Lista(IndexIp))
-                'Me.Invoke(Sub() lblIndex.Text = IndexIp)
-                'Me.Invoke(Sub() lblCount.Text = Lista.Count)
-
-                IndexIp += 1
-            Else
-                'Salvar los datos
-                ListaPOP.Guardar()
-                ListaSMTP.Guardar()
-                Do While Not ListaWEB.Guardar()
-                    Threading.Thread.Sleep(100)
-                Loop
-                IndexIp += 1
+            Dim cIp As String = String.Empty
+            If ListaIPBaneadas.TryDequeue(cIp) Then
+                ListaPOP.Add(cIp)
+                ListaSMTP.Add(cIp)
+                ListaWEB.Add(cIp)
             End If
         End Sub
 
         Private Sub Publicador_Foreground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs)
-            If IndexIp < Lista.Count Then
-                Progreso.Value = IndexIp
-                lblIp.Text = Lista(IndexIp)
-                lblIndex.Text = IndexIp
-                lblCount.Text = Lista.Count
-            Else
-                'Detener la publicacion
-                Detener.Detener = True
-                Publicador.Detener()
+            If Not Publicador.Cancelar Then
+                If Not ListaIPBaneadas.IsEmpty Then
+                    Progreso.Value = Progreso.Maximum - (ListaIPBaneadas.Count - 1)
+                    lblCount.Text = ListaIPBaneadas.Count
+                    lblIp.Text = ListaIPBaneadas.First
+                End If
             End If
         End Sub
 
 
 
         Private Sub Publicador_Endground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs)
+
+            'Salvar los datos
+            If Not Publicador.AsUserCancel AndAlso Not Publicador.esErroneo Then
+                ListaPOP.Guardar()
+                ListaSMTP.Guardar()
+                Do While Not ListaWEB.Guardar()
+                    Threading.Thread.Sleep(100)
+                Loop
+            End If
+
+            'Limpiar Memoria
+            ListaPOP.Clear()
+            ListaSMTP.Clear()
+            ListaWEB.Clear()
+
             ListaSMTP.Dispose()
             ListaPOP.Dispose()
+
+            'Salir
             Me.Close()
         End Sub
         Private Sub Publicador_ErrorGround(Sender As Object, e As BackgroundEventArgs)
-
+            MsgBox($"{e.Excepcion.Message}{vbNewLine}{vbNewLine}No se ha podido propagar la lista IP", MsgBoxStyle.Critical, "Error")
+            e.Detener = True
+            Me.Close()
         End Sub
         Private Sub BtnCancelar_Click(sender As Object, e As EventArgs) Handles BtnCancelar.Click
-            Publicador.Detener()
-            'Me.Close()
+            Publicador.Detener(True)
         End Sub
 
 

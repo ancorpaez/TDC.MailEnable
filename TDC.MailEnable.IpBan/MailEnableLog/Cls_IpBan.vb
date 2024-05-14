@@ -74,5 +74,8 @@ Namespace MailEnableLog
         Public Function ToList() As List(Of String)
             Return Ips.ToList
         End Function
+        Public Function ToQuene() As Collections.Concurrent.ConcurrentQueue(Of String)
+            Return Ips.ToQuene
+        End Function
     End Class
 End Namespace

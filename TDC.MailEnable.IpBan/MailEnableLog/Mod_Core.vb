@@ -5,6 +5,7 @@ Imports TDC.MailEnable.Core.MailEnableLog
 Namespace MailEnableLog
 
     Module Mod_Core
+
         'ARCHIVO DE CONFIGURACION
         Const File_Config As String = "Config.xml"
         Public Configuracion As New Cls_Config
@@ -42,6 +43,23 @@ Namespace MailEnableLog
             'Geolocalizador.Add("0.0.0.0", "ES")
             'Geolocalizador.Add("0.0.0.1", "ES")
             'Geolocalizador.Remove("0.0.0.2")
+            'System.Threading.Tasks.Task.Run(Sub()
+            '                                    Dim d1 As New TDC.MailEnable.Core.Bucle.DoBucle("Test1")
+            '                                End Sub)
+
+            'System.Threading.Tasks.Task.Run(Sub()
+            '                                    Dim d2 As New TDC.MailEnable.Core.Bucle.DoBucle("Test2")
+            '                                End Sub)
+            'System.Threading.Tasks.Task.Run(Sub()
+            '                                    Dim d3 As New TDC.MailEnable.Core.Bucle.DoBucle("Test3")
+            '                                End Sub)
+            'System.Threading.Tasks.Task.Run(Sub()
+            '                                    Dim d4 As New TDC.MailEnable.Core.Bucle.DoBucle("Test4")
+            '                                End Sub)
+            'Dim test5 = New Threading.Thread(Sub()
+            '                                     Dim d5 As New TDC.MailEnable.Core.Bucle.DoBucle("Test5")
+            '                                 End Sub)
+            'test5.Start()
             '******************************************************
 
             If Not CargarConfiguracion() Then

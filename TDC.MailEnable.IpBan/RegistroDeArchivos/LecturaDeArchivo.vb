@@ -19,8 +19,6 @@ Namespace RegistroDeArchivos
         Public Filtros As New List(Of Cls_Filtro)
         'Solicita la ip al Hilo principal donde estan agrupadas las diferentens funciones para realizarlo.
         Public Property ObtenerIp As Func(Of String, String)
-        'Almacena las coincidencias por IP la lectura General del Archivo
-        'Private Coincidentes As New Collections.Concurrent.ConcurrentDictionary(Of String, Integer)
         'Almacena los MailBox a los que accedio la IP
         Private IpMailBoxLogins As New Collections.Concurrent.ConcurrentDictionary(Of String, String)
         'Evita la continuacion del codigo hasta haber procesado todas las lineas del archivo
@@ -49,27 +47,27 @@ Namespace RegistroDeArchivos
                 Me.Archivo = Archivo
 
                 'Crear o Enlazar Bucle del Control General de Bucles
-                Mod_Core.IpBanForm.Invoke(Sub() Lector = TDC.MailEnable.Core.Bucle.GetOrCreate(Archivo))
-                AddHandler Lector.Background, AddressOf Lector_Background
-                AddHandler Lector.Foreground, AddressOf Lector_Foreground
-                AddHandler Lector.Endground, AddressOf Lector_Endground
+                If IpBanForm.InvokeRequired Then IpBanForm.Invoke(Sub() Lector = Bucle.GetOrCreate(Archivo)) Else Lector = Bucle.GetOrCreate(Archivo)
+                AddHandler Lector.BackGround, AddressOf Lector_Background
+                AddHandler Lector.ForeGround, AddressOf Lector_Foreground
+                AddHandler Lector.EndGround, AddressOf Lector_Endground
 
                 'Establecer una Memoria de Archivo
-                If Not FileMemory.ContainsKey(Archivo) Then FileMemory.TryAdd(Archivo, New Cls_FileMemory)
+                If Not ArchivosEnMemoria.Archivos.ContainsKey(Archivo) Then ArchivosEnMemoria.Archivos.TryAdd(Archivo, New ArchivosEnMemoria.Archivo)
 
                 'Cargar el Archivo en Memoria
                 Using Cargar As StreamReader = New IO.StreamReader(IO.File.Open(Archivo, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.ReadWrite))
                     Dim Linea As String = String.Empty
                     Dim Index As Integer = 0
                     Do
-                        If Not FileMemory(Archivo).Lines.ContainsKey(Index) Then
+                        If Not ArchivosEnMemoria.Archivos(Archivo).Lines.ContainsKey(Index) Then
 
                             'Obtener la linea
                             Linea = Cargar.ReadLine
                             If Not String.IsNullOrEmpty(Linea) Then
 
                                 'Cargar la linea
-                                If Not FileMemory(Archivo).Lines.TryAdd(Index, Linea) Then
+                                If Not ArchivosEnMemoria.Archivos(Archivo).Lines.TryAdd(Index, Linea) Then
                                     Console.WriteLine($"No se pudo cargar la línea{Index} del Archivo {Archivo}.")
                                 End If
                             End If
@@ -84,7 +82,7 @@ Namespace RegistroDeArchivos
                         Index += 1
                     Loop While Not String.IsNullOrEmpty(Linea)
                 End Using
-                Total = FileMemory(Archivo).Lines.Count
+                Total = ArchivosEnMemoria.Archivos(Archivo).Lines.Count
 
             Catch ex As Exception
 
@@ -100,18 +98,18 @@ Namespace RegistroDeArchivos
                 If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
 
                 'Si el Control de Memoria no contiene el archivo detenemos el analizador.
-                If Not FileMemory.ContainsKey(Archivo) Then
+                If Not ArchivosEnMemoria.Archivos.ContainsKey(Archivo) Then
                     Estado = EnumEstado.Analizado
                     Lector.Detener()
                     Exit Sub
                 End If
 
                 'Analizamos Linea por Linea
-                If FileMemory(Archivo).Line <= FileMemory(Archivo).Lines.Count AndAlso FileMemory(Archivo).Lines.ContainsKey(FileMemory(Archivo).Line) Then
+                If ArchivosEnMemoria.Archivos(Archivo).Line <= ArchivosEnMemoria.Archivos(Archivo).Lines.Count AndAlso ArchivosEnMemoria.Archivos(Archivo).Lines.ContainsKey(ArchivosEnMemoria.Archivos(Archivo).Line) Then
                     Estado = EnumEstado.Analizando
                     If Not IsNothing(Filtros) Then
                         'Analizamos la linea con cada Filtro
-                        Dim Linea As String = FileMemory(Archivo).Lines(FileMemory(Archivo).Line)
+                        Dim Linea As String = ArchivosEnMemoria.Archivos(Archivo).Lines(ArchivosEnMemoria.Archivos(Archivo).Line)
 
                         For Each Filtro In Filtros
                             Select Case Filtro.DetectarCrossDomainLogin
@@ -165,7 +163,7 @@ Namespace RegistroDeArchivos
                                             If Not ExclusionPais.Any(Function(Excento) Excento = Pais) Then
 
                                                 'Almacena la Ip Remota o Suma en Contador de la Misma
-                                                If Not FileMemory(Archivo).Coincidentes.ContainsKey(Ip) Then FileMemory(Archivo).Coincidentes.TryAdd(Ip, 1) Else FileMemory(Archivo).Coincidentes(Ip) += 1
+                                                If Not ArchivosEnMemoria.Archivos(Archivo).Coincidentes.ContainsKey(Ip) Then ArchivosEnMemoria.Archivos(Archivo).Coincidentes.TryAdd(Ip, 1) Else ArchivosEnMemoria.Archivos(Archivo).Coincidentes(Ip) += 1
 
                                                 'Bandera para saber si se debe Banear la IP
                                                 Dim Banear As Boolean = False
@@ -224,8 +222,8 @@ Namespace RegistroDeArchivos
                                                                             'Registramos la Ip,MailBox y contraseña.
                                                                             Dim PasswordRecord As String = String.Empty
                                                                             PasswordRecord = Text.Encoding.UTF8.GetString(Convert.FromBase64String(Get64Password))
-                                                                            If Not FileMemory(Archivo).IpLoginsRecords.ContainsKey(Ip) Then FileMemory(Archivo).IpLoginsRecords.TryAdd(Ip, New MailBoxPasswordsUsedRecords)
-                                                                            FileMemory(Archivo).IpLoginsRecords(Ip).Add(New MailBoxPasswordsUsedRecord With {.MailBox = FullMailbox, .Password = PasswordRecord})
+                                                                            If Not ArchivosEnMemoria.Archivos(Archivo).IpLoginsRecords.ContainsKey(Ip) Then ArchivosEnMemoria.Archivos(Archivo).IpLoginsRecords.TryAdd(Ip, New ArchivosEnMemoria.MailBoxLogins)
+                                                                            ArchivosEnMemoria.Archivos(Archivo).IpLoginsRecords(Ip).Add(New ArchivosEnMemoria.MailBoxLogin With {.MailBox = FullMailbox, .Password = PasswordRecord})
                                                                         Catch ex As Exception
                                                                             'Preparado para el Futuro si otro Filtro requiere comprobar MailBox, para registrar la Ip,MailBox y contraseña
                                                                             Stop
@@ -235,29 +233,29 @@ Namespace RegistroDeArchivos
                                                                 Case FilterKeys.FilterKey.IMAPLoginFail
                                                                     Dim PasswordRecord As String = String.Empty
                                                                     PasswordRecord = Linea.Split(" ")(10).Split("+").First
-                                                                    If Not FileMemory(Archivo).IpLoginsRecords.ContainsKey(Ip) Then FileMemory(Archivo).IpLoginsRecords.TryAdd(Ip, New MailBoxPasswordsUsedRecords)
-                                                                    FileMemory(Archivo).IpLoginsRecords(Ip).Add(New MailBoxPasswordsUsedRecord With {.MailBox = FullMailbox, .Password = PasswordRecord})
+                                                                    If Not ArchivosEnMemoria.Archivos(Archivo).IpLoginsRecords.ContainsKey(Ip) Then ArchivosEnMemoria.Archivos(Archivo).IpLoginsRecords.TryAdd(Ip, New ArchivosEnMemoria.MailBoxLogins)
+                                                                    ArchivosEnMemoria.Archivos(Archivo).IpLoginsRecords(Ip).Add(New ArchivosEnMemoria.MailBoxLogin With {.MailBox = FullMailbox, .Password = PasswordRecord})
 
                                                                 Case FilterKeys.FilterKey.PopLoginFail
                                                                     Dim PasswordRecord As String = String.Empty
                                                                     PasswordRecord = Linea.Split(" ")(8).Split("+").Last
-                                                                    If Not FileMemory(Archivo).IpLoginsRecords.ContainsKey(Ip) Then FileMemory(Archivo).IpLoginsRecords.TryAdd(Ip, New MailBoxPasswordsUsedRecords)
-                                                                    FileMemory(Archivo).IpLoginsRecords(Ip).Add(New MailBoxPasswordsUsedRecord With {.MailBox = FullMailbox, .Password = PasswordRecord})
+                                                                    If Not ArchivosEnMemoria.Archivos(Archivo).IpLoginsRecords.ContainsKey(Ip) Then ArchivosEnMemoria.Archivos(Archivo).IpLoginsRecords.TryAdd(Ip, New ArchivosEnMemoria.MailBoxLogins)
+                                                                    ArchivosEnMemoria.Archivos(Archivo).IpLoginsRecords(Ip).Add(New ArchivosEnMemoria.MailBoxLogin With {.MailBox = FullMailbox, .Password = PasswordRecord})
 
                                                                 Case Else
                                                                     Stop
                                                             End Select
                                                             'Establece coincidencias por MailBox
-                                                            If Not FileMemory(Archivo).MailBoxLogin.Exist(FullMailbox) Then FileMemory(Archivo).MailBoxLogin.Add(FullMailbox)
-                                                            FileMemory(Archivo).MailBoxLogin.AddIp(FullMailbox, Ip)
+                                                            If Not ArchivosEnMemoria.Archivos(Archivo).MailBoxLogin.Exist(FullMailbox) Then ArchivosEnMemoria.Archivos(Archivo).MailBoxLogin.Add(FullMailbox)
+                                                            ArchivosEnMemoria.Archivos(Archivo).MailBoxLogin.AddIp(FullMailbox, Ip)
 
                                                             'Comprobamos el Limite del Filtro (No del Pais), MailBox
-                                                            If FileMemory(Archivo).MailBoxLogin.Exist(FullMailbox) AndAlso FileMemory(Archivo).MailBoxLogin.Count(FullMailbox) >= Filtro.Repeteciones Then
+                                                            If ArchivosEnMemoria.Archivos(Archivo).MailBoxLogin.Exist(FullMailbox) AndAlso ArchivosEnMemoria.Archivos(Archivo).MailBoxLogin.Count(FullMailbox) >= Filtro.Repeteciones Then
                                                                 'El MailBox supera el limite de Coincidencias del Filtro
                                                                 Banear = True
                                                                 BanearMailBox = True
                                                                 'Comprobamos el Limite por Pais (No del Filtro), Ip
-                                                            ElseIf FileMemory(Archivo).Coincidentes(Ip) >= NumeroCoincidentes Then
+                                                            ElseIf ArchivosEnMemoria.Archivos(Archivo).Coincidentes(Ip) >= NumeroCoincidentes Then
                                                                 Banear = True
                                                             End If
 
@@ -268,7 +266,7 @@ Namespace RegistroDeArchivos
                                                     End If
                                                 Else
                                                     'No requiere Comprobar MailBox se comprueba el limite de Concidencias
-                                                    If FileMemory(Archivo).Coincidentes(Ip) > NumeroCoincidentes Then Banear = True
+                                                    If ArchivosEnMemoria.Archivos(Archivo).Coincidentes(Ip) > NumeroCoincidentes Then Banear = True
                                                 End If
 
 
@@ -276,9 +274,9 @@ Namespace RegistroDeArchivos
                                                     Dim FiltroStringOut As String = "Filtro: {0,22} | {1,15} | {2,40} | {3,2} | IpCount:{4,3} | MailCount:{5,3} | Límite:{6,2} | Pwd:{7,21} {8}"
                                                     If BanearMailBox Then
                                                         'Solicita Banear el MailBox
-                                                        If FileMemory(Archivo).MailBoxLogin.Exist(FullMailbox) Then
+                                                        If ArchivosEnMemoria.Archivos(Archivo).MailBoxLogin.Exist(FullMailbox) Then
                                                             'Existe el MailBox Banea todas Las IP Que Intentaron Loguear
-                                                            For Each IpBox In FileMemory(Archivo).MailBoxLogin.Get(FullMailbox)
+                                                            For Each IpBox In ArchivosEnMemoria.Archivos(Archivo).MailBoxLogin.Get(FullMailbox)
                                                                 If Not String.IsNullOrEmpty(IpBox) Then
                                                                     'Obtiene los datos Necesario por IP {Coincidencias por Pais}
                                                                     Dim IpGeolocalizar As New IpInfo
@@ -289,20 +287,20 @@ Namespace RegistroDeArchivos
                                                                     If CoincidenciasPais.ContainsKey(IpPais) AndAlso CoincidenciasPais(IpPais).ContainsKey(Filtro.Key) Then IpCoincidencias = CoincidenciasPais(IpPais)(Filtro.Key)
 
                                                                     'Si el Numero de Logins del MailBox Supera o Iguala al Pais Baneamos
-                                                                    If FileMemory(Archivo).MailBoxLogin.Count(FullMailbox) > IpCoincidencias Then
+                                                                    If ArchivosEnMemoria.Archivos(Archivo).MailBoxLogin.Count(FullMailbox) > IpCoincidencias Then
                                                                         If Not FiltroIp.Contains(IpBox) Then FiltroIp.Add(IpBox)
                                                                         'Escaneamos los Logins asociados a la IP y el MailBox
-                                                                        If FileMemory(Archivo).IpLoginsRecords.ContainsKey(IpBox) Then
-                                                                            For Each LoginRecord In FileMemory(Archivo).IpLoginsRecords(IpBox).Items
+                                                                        If ArchivosEnMemoria.Archivos(Archivo).IpLoginsRecords.ContainsKey(IpBox) Then
+                                                                            For Each LoginRecord In ArchivosEnMemoria.Archivos(Archivo).IpLoginsRecords(IpBox).Items
                                                                                 If LoginRecord.MailBox = FullMailbox Then
                                                                                     'Imprimimos las coincidencias
-                                                                                    LOG.Logs(LOG.MemoryLOG.EnumLogs.General).Lineas.Enqueue(String.Format(FiltroStringOut, Filtro.Key.ToString, IpBox, FullMailbox, IpPais, FileMemory(Archivo).Coincidentes(IpBox), FileMemory(Archivo).MailBoxLogin.Count(FullMailbox), IpCoincidencias, LoginRecord.Password, vbNewLine))
+                                                                                    LOG.Logs(LOG.MemoryLOG.EnumLogs.General).Lineas.Enqueue(String.Format(FiltroStringOut, Filtro.Key.ToString, IpBox, FullMailbox, IpPais, ArchivosEnMemoria.Archivos(Archivo).Coincidentes(IpBox), ArchivosEnMemoria.Archivos(Archivo).MailBoxLogin.Count(FullMailbox), IpCoincidencias, LoginRecord.Password, vbNewLine))
                                                                                 End If
                                                                             Next
                                                                         Else
-                                                                            LOG.Logs(LOG.MemoryLOG.EnumLogs.General).Lineas.Enqueue(String.Format(FiltroStringOut, Filtro.Key.ToString, IpBox, FullMailbox, IpPais, FileMemory(Archivo).Coincidentes(IpBox), FileMemory(Archivo).MailBoxLogin.Count(FullMailbox), IpCoincidencias, "*", vbNewLine))
+                                                                            LOG.Logs(LOG.MemoryLOG.EnumLogs.General).Lineas.Enqueue(String.Format(FiltroStringOut, Filtro.Key.ToString, IpBox, FullMailbox, IpPais, ArchivosEnMemoria.Archivos(Archivo).Coincidentes(IpBox), ArchivosEnMemoria.Archivos(Archivo).MailBoxLogin.Count(FullMailbox), IpCoincidencias, "*", vbNewLine))
                                                                         End If
-                                                                        'LOG.Logs(LOG.MemoryLOG.EnumLogs.General).Lineas.Enqueue(String.Format(FiltroStringOut, Filtro.Key.ToString, IpBox, FullMailbox, IpPais, FileMemory(Archivo).Coincidentes(IpBox), FileMemory(Archivo).MailBoxLogin.Count(FullMailbox), IpCoincidencias, vbNewLine))
+                                                                        'LOG.Logs(LOG.MemoryLOG.EnumLogs.General).Lineas.Enqueue(String.Format(FiltroStringOut, Filtro.Key.ToString, IpBox, FullMailbox, IpPais, ArchivoEnMemoria.FileMemory(Archivo).Coincidentes(IpBox), ArchivoEnMemoria.FileMemory(Archivo).MailBoxLogin.Count(FullMailbox), IpCoincidencias, vbNewLine))
                                                                     End If
                                                                 End If
                                                             Next
@@ -310,7 +308,7 @@ Namespace RegistroDeArchivos
                                                     ElseIf Not BanearMailBox Then
                                                         'Solicita Banear IP
                                                         If Not FiltroIp.Contains(Ip) Then FiltroIp.Add(Ip)
-                                                        LOG.Logs(LOG.MemoryLOG.EnumLogs.General).Lineas.Enqueue(String.Format(FiltroStringOut, Filtro.Key.ToString, Ip, FullMailbox, Pais, FileMemory(Archivo).Coincidentes(Ip), "0", NumeroCoincidentes, "*", vbNewLine))
+                                                        LOG.Logs(LOG.MemoryLOG.EnumLogs.General).Lineas.Enqueue(String.Format(FiltroStringOut, Filtro.Key.ToString, Ip, FullMailbox, Pais, ArchivosEnMemoria.Archivos(Archivo).Coincidentes(Ip), "0", NumeroCoincidentes, "*", vbNewLine))
                                                     End If
                                                 End If
                                             End If
@@ -365,15 +363,15 @@ Namespace RegistroDeArchivos
                                             If Not String.IsNullOrEmpty(FullMailBox) AndAlso FullMailBox.Contains("@") Then
                                                 Dim Dominio As String = FullMailBox.Split("@")(1).ToLower
                                                 If FullMailBox.Contains("-") Then Stop
-                                                If Not FileMemory(Archivo).CrossLogin.ContainsKey(IpCliente) Then FileMemory(Archivo).CrossLogin.TryAdd(IpCliente, New Collections.Concurrent.ConcurrentDictionary(Of String, Collections.Concurrent.ConcurrentBag(Of String)))
-                                                If Not FileMemory(Archivo).CrossLogin(IpCliente).ContainsKey(Dominio) Then FileMemory(Archivo).CrossLogin(IpCliente).TryAdd(Dominio, New Collections.Concurrent.ConcurrentBag(Of String))
-                                                If Not FileMemory(Archivo).CrossLogin(IpCliente)(Dominio).Contains($"{FullMailBox} {Linea}{vbNewLine}") Then FileMemory(Archivo).CrossLogin(IpCliente)(Dominio).Add($"{FullMailBox} {Linea}")
-                                                If FileMemory(Archivo).CrossLogin(IpCliente).Count > 1 Then
+                                                If Not ArchivosEnMemoria.Archivos(Archivo).CrossLogin.ContainsKey(IpCliente) Then ArchivosEnMemoria.Archivos(Archivo).CrossLogin.TryAdd(IpCliente, New Collections.Concurrent.ConcurrentDictionary(Of String, Collections.Concurrent.ConcurrentBag(Of String)))
+                                                If Not ArchivosEnMemoria.Archivos(Archivo).CrossLogin(IpCliente).ContainsKey(Dominio) Then ArchivosEnMemoria.Archivos(Archivo).CrossLogin(IpCliente).TryAdd(Dominio, New Collections.Concurrent.ConcurrentBag(Of String))
+                                                If Not ArchivosEnMemoria.Archivos(Archivo).CrossLogin(IpCliente)(Dominio).Contains($"{FullMailBox} {Linea}{vbNewLine}") Then ArchivosEnMemoria.Archivos(Archivo).CrossLogin(IpCliente)(Dominio).Add($"{FullMailBox} {Linea}")
+                                                If ArchivosEnMemoria.Archivos(Archivo).CrossLogin(IpCliente).Count > 1 Then
                                                     Dim LogString As String = vbNewLine & "Filtro: {0,22} ({1,15}) | ({2,40}) {3,40}"
                                                     Dim Dom1 = String.Empty, Box1 = String.Empty
-                                                    Dom1 = String.Join(",", FileMemory(Archivo).CrossLogin(IpCliente).Keys)
+                                                    Dom1 = String.Join(",", ArchivosEnMemoria.Archivos(Archivo).CrossLogin(IpCliente).Keys)
 
-                                                    For Each Dom In FileMemory(Archivo).CrossLogin(IpCliente)
+                                                    For Each Dom In ArchivosEnMemoria.Archivos(Archivo).CrossLogin(IpCliente)
                                                         For Each Box In Dom.Value
                                                             Box1 &= $"{vbNewLine}{vbTab}{Box},"
                                                         Next
@@ -402,10 +400,10 @@ Namespace RegistroDeArchivos
         Private Sub Lector_Foreground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs)
             If Estado = EnumEstado.Analizando Then
                 'Avanza en el conteo de lineas procesadas
-                FileMemory(Archivo).Line += 1
+                ArchivosEnMemoria.Archivos(Archivo).Line += 1
 
                 'Informa en el avance de lectura
-                Index = FileMemory(Archivo).Line
+                Index = ArchivosEnMemoria.Archivos(Archivo).Line
             Else
                 Detener.Detener = True
             End If

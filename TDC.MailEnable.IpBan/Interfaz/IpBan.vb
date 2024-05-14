@@ -63,6 +63,10 @@ Namespace Interfaz
             'MiBucle.Intervalo = 1
             'MiBucle.Iniciar()
             '*************
+            'Dim test5 = New Threading.Thread(Sub()
+            '                                     Dim d5 As New TDC.MailEnable.Core.Bucle.DoBucle("Test5")
+            '                                 End Sub)
+            'test5.Start()
 
             'Iniciar Log Temporal
             LOG.Logs.TryAdd(LOG.MemoryLOG.EnumLogs.General, New LOG.LogConfig With {.Salida = SalidaConsola})
@@ -378,9 +382,9 @@ Namespace Interfaz
 
                 If Not ControlCarpeta.Contains(Archivo.Name) AndAlso esLegible(Archivo.FullName) Then
                     'Establecer una Memoria de Archivo
-                    If Not FileMemory.ContainsKey(Archivo.FullName) Then FileMemory.TryAdd(Archivo.FullName, New Cls_FileMemory)
+                    If Not ArchivosEnMemoria.Archivos.ContainsKey(Archivo.FullName) Then ArchivosEnMemoria.Archivos.TryAdd(Archivo.FullName, New ArchivosEnMemoria.Archivo)
                     'Analizar Archivo
-                    Dim EscanearArchivo As New LecturaDeArchivo(Archivo.FullName) With {.ObtenerIp = DelimitadorIp, .Filtros = ControlCarpeta.Filtro, .Index = FileMemory(Archivo.FullName).Line}
+                    Dim EscanearArchivo As New LecturaDeArchivo(Archivo.FullName) With {.ObtenerIp = DelimitadorIp, .Filtros = ControlCarpeta.Filtro, .Index = ArchivosEnMemoria.Archivos(Archivo.FullName).Line}
 
                     'Actualizar Progreso Archivos
                     Me.Invoke(Sub()
@@ -404,7 +408,7 @@ Namespace Interfaz
                         ControlCarpeta.Add(Archivo.Name)
 
                         'Eliminamos el Control de Valores del Archivo
-                        If FileMemory.ContainsKey(Archivo.FullName) Then FileMemory.TryRemove(Archivo.FullName, Nothing)
+                        If ArchivosEnMemoria.Archivos.ContainsKey(Archivo.FullName) Then ArchivosEnMemoria.Archivos.TryRemove(Archivo.FullName, Nothing)
 
                         'Eliminamos el Bucle del archivo
                         Core.Bucle.Remove(Archivo.FullName)
@@ -551,7 +555,7 @@ Namespace Interfaz
                                 If ListaSMTP.Count <> IpBaneadas.Count Then
                                     If Not ChkDetenerPublicacion.Checked Then
                                         With Publicador
-                                            .Lista = IpBaneadas.ToList
+                                            .ListaIPBaneadas = IpBaneadas.ToQuene
                                             If InvokeRequired Then
                                                 Invoke(Sub() .Location = New Point(Me.Location.X + (Me.Width - .Width) \ 2, Me.Location.Y + (Me.Height - .Height) \ 2))
                                                 Invoke(Sub() .ShowDialog(Me))
@@ -680,6 +684,7 @@ Namespace Interfaz
                 For Each Linea In FiltroMAI
                     DatosMAI.ImportRow(Linea)
                 Next
+                DatosMAI.DefaultView.Sort = "Fecha DESC"
                 TablaMailBackupMAI.DataSource = DatosMAI
 
                 'VCF
