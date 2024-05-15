@@ -9,19 +9,26 @@ Namespace Bucle
 
         Private WithEvents Trabajador As BackgroundWorker
         Protected Friend InvokeForm As InvokeForm
+        'Para Debug solo, Detiene el Compilador 
         Friend FlagBtnDetenerBackground As Boolean = False
         Friend FlagBtnDetenerForeground As Boolean = False
         Friend FlagBtnDetenerEndground As Boolean = False
+        'Detecta si se crea la clase desde un Subproceso
         Private InvokeRequired As Boolean = False
-
+        'Bandera para detectar la Ejecucion
         Public Property Cancelar As Boolean = False
         Public Property Name As String = String.Empty
         Public Property Intervalo As Integer = 100
+        'Evento en BackGround
         Public Event BackGround(Sender As Object, e As BackgroundEventArgs)
+        'Evento en el ForeGround
         Public Event ForeGround(Sender As Object, e As BackgroundEventArgs)
+        'Evento al Terminar Ejecucion
         Public Event EndGround(Sender As Object, e As BackgroundEventArgs)
+        'Evento al encontrar un error de codificacion
         Public Event ErrorGround(Sender As Object, e As BackgroundEventArgs)
-        Public Contador As Integer = 0
+        Public Property Contador As Integer = 0
+
         Private _esErroneo As Boolean = False
         Public ReadOnly Property esErroneo As Boolean
             Get
@@ -61,78 +68,11 @@ Namespace Bucle
 
             'Crear Controles
             InvokeForm = CreateForm()
-
-            With InvokeForm
-                If Not Visible Then
-                    .Height = 20
-                    .Text = Name
-                    .Name = Name
-                    .ShowInTaskbar = False
-                    .Opacity = 0
-                    .FormBorderStyle = FormBorderStyle.None
-                    .TopLevel = False
-                    .Dock = DockStyle.Top
-
-                    With .BtnDetenerBackground
-                        .Text = "B"
-                        .Width = 20
-                    End With
-
-                    With .BtnDetenerForeground
-                        .Text = "F"
-                        .Width = 20
-                    End With
-
-                    With .BtnDetenerEndground
-                        .Text = "E"
-                        .Width = 20
-                    End With
-
-                    With .lblCount
-                        .Text = 0
-                        .Width = 40
-                    End With
-
-                    With .lblName
-                        .Text = Name
-                        .Width = InvokeForm.Width - 100
-                    End With
-                Else
-                    .Height = 170
-                    .Text = Name
-                    .Name = Name
-                    .Visible = True
-                    .Opacity = 1
-                    .FormBorderStyle = FormBorderStyle.Sizable
-                    .TopLevel = True
-                    .ShowInTaskbar = True
-
-                    With .BtnDetenerBackground
-                        .Text = "Stop Background"
-                        .Width = InvokeForm.Width
-                    End With
-
-                    With .BtnDetenerForeground
-                        .Text = "Stop Foreground"
-                        .Width = InvokeForm.Width
-                    End With
-
-                    With .BtnDetenerEndground
-                        .Text = "Stop Endground"
-                        .Width = InvokeForm.Width
-                    End With
-
-                    With .lblCount
-                        .Text = 0
-                        .Width = 40
-                    End With
-
-                    With .lblName
-                        .Text = Name
-                        .Width = InvokeForm.Width - 100
-                    End With
-                End If
-            End With
+            If Not Visible Then
+                InvokeForm.Visor = InvokeForm.SelectorTipoVisor.Control
+            Else
+                InvokeForm.Visor = InvokeForm.SelectorTipoVisor.Ventana
+            End If
 
             InvokeForm.Show()
 
@@ -146,19 +86,10 @@ Namespace Bucle
             If InvokeRequired Then Application.OpenForms(0).Invoke(Sub() NuevoInvokeForm = New InvokeForm(Me)) Else NuevoInvokeForm = New InvokeForm(Me)
             Return NuevoInvokeForm
         End Function
-        Private Function CreateButton() As Button
-            Dim NuevoInvokeForm As Button = Nothing
-            If InvokeRequired Then Application.OpenForms(0).Invoke(Sub() NuevoInvokeForm = New Button) Else NuevoInvokeForm = New Button
-            Return NuevoInvokeForm
-        End Function
-        Private Function CreateLabel() As Label
-            Dim nlabel As Label = Nothing
-            If InvokeRequired Then Application.OpenForms(0).Invoke(Sub() nlabel = New Label) Else nlabel = New Label
-            Return nlabel
-        End Function
         Public Sub Iniciar()
             Cancelar = False
             If Not IsNothing(Trabajador) AndAlso Not Trabajador.IsBusy Then Trabajador.RunWorkerAsync()
+            InvokeForm.ToolIntervalo.Text = Intervalo
             Estado = EnumEstado.Corriendo
         End Sub
         Public Sub Detener(Optional UserCancel As Boolean = False)
@@ -190,8 +121,11 @@ Namespace Bucle
                 'Lanzamos el Bucle Background
                 Try
                     If FlagBtnDetenerBackground Then Stop
-                    Dim CancelBackground As New BackgroundEventArgs() With {.Detener = False}
+                    Dim CancelBackground As New BackgroundEventArgs() With {.Detener = False, .DetenerDepuracion = FlagBtnDetenerBackground}
                     RaiseEvent BackGround(Me, CancelBackground)
+                    FlagBtnDetenerBackground = CancelBackground.DetenerDepuracion
+
+                    'Verificamos cancelación
                     If CancelBackground.Detener OrElse Cancelar Then
                         e.Cancel = True
                         Cancelar = True
@@ -212,17 +146,30 @@ Namespace Bucle
                 'Lanzamos el Bucle Foreground
                 Try
                     If FlagBtnDetenerForeground Then Stop
-                    Dim CancelForeground As New BackgroundEventArgs() With {.Detener = False}
+                    Dim CancelForeground As New BackgroundEventArgs() With {.Detener = False, .DetenerDepuracion = FlagBtnDetenerForeground}
                     If Not IsNothing(InvokeForm) AndAlso InvokeForm.Created Then InvokeForm.Invoke(Sub() RaiseEvent ForeGround(Me, CancelForeground))
+                    FlagBtnDetenerForeground = CancelForeground.DetenerDepuracion
+
+                    'Contabilizamos las vuelta para esta sesión
+                    Contador += 1
+
+                    'Visualizar el Contador en el Form
+                    If InvokeForm.Visible AndAlso InvokeForm.Created AndAlso InvokeForm.Opacity = 1 Then
+                        If InvokeForm.InvokeRequired Then InvokeForm.Invoke(Sub() InvokeForm.lblCount.Text = Contador) Else InvokeForm.lblCount.Text = Contador
+                        If InvokeForm.InvokeRequired Then InvokeForm.Invoke(Sub() InvokeForm.ToolContador.Text = Contador) Else InvokeForm.ToolContador.Text = Contador
+                        If InvokeForm.InvokeRequired Then InvokeForm.Invoke(Sub() InvokeForm.ToolIntervalo.Text = Intervalo) Else InvokeForm.ToolIntervalo.Text = Intervalo
+                    End If
+
+                    'Verificamos cancelación
                     If CancelForeground.Detener OrElse Cancelar Then
                         e.Cancel = True
                         Cancelar = True
                         Exit Do
                     End If
 
-                    'Visualizar el Contador del Bucle
-                    If InvokeForm.Visible AndAlso InvokeForm.Created Then InvokeForm.Invoke(Sub() InvokeForm.lblCount.Text = CInt(InvokeForm.lblCount.Text) + 1)
-                    Contador += 1
+
+
+
                 Catch ex As Exception
                     _esErroneo = True
                     _exException = ex
@@ -238,8 +185,11 @@ Namespace Bucle
         End Sub
         Private Sub Trabajador_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles Trabajador.RunWorkerCompleted
             Try
-                Dim CancelarEndground As New BackgroundEventArgs() With {.Detener = False}
+                If FlagBtnDetenerEndground Then Stop
+                Dim CancelarEndground As New BackgroundEventArgs() With {.Detener = False, .DetenerDepuracion = FlagBtnDetenerEndground}
                 RaiseEvent EndGround(Me, CancelarEndground)
+                FlagBtnDetenerEndground = CancelarEndground.DetenerDepuracion
+
                 If Not CancelarEndground.Detener AndAlso Not Cancelar Then
                     If Not Trabajador.IsBusy Then Trabajador.RunWorkerAsync()
                 Else
@@ -257,13 +207,15 @@ Namespace Bucle
                     Cancelar = True
                 End If
             End Try
-            If FlagBtnDetenerEndground Then Stop
         End Sub
-
     End Class
     Public Class BackgroundEventArgs
         Inherits EventArgs
+        'Especifica si detener el Bucle
         Public Property Detener As Boolean
+        'Almacena el Error si se produce
         Public Property Excepcion As Exception
+        'Semaforo para indicar al proceso principal el uso de Stop en depuración
+        Public Property DetenerDepuracion As Boolean = False
     End Class
 End Namespace

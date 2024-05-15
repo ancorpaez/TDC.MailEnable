@@ -36,9 +36,9 @@
             'StatusStrip1
             '
             Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tlblBucles, Me.tlblSeparador1, Me.tlblVisualizador, Me.tBtnManual})
-            Me.StatusStrip1.Location = New System.Drawing.Point(0, 405)
+            Me.StatusStrip1.Location = New System.Drawing.Point(0, 239)
             Me.StatusStrip1.Name = "StatusStrip1"
-            Me.StatusStrip1.Size = New System.Drawing.Size(404, 22)
+            Me.StatusStrip1.Size = New System.Drawing.Size(659, 22)
             Me.StatusStrip1.TabIndex = 1
             Me.StatusStrip1.Text = "Bucles"
             '
@@ -52,7 +52,7 @@
             '
             Me.tlblSeparador1.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
             Me.tlblSeparador1.Name = "tlblSeparador1"
-            Me.tlblSeparador1.Size = New System.Drawing.Size(331, 17)
+            Me.tlblSeparador1.Size = New System.Drawing.Size(586, 17)
             Me.tlblSeparador1.Spring = True
             '
             'tlblVisualizador
@@ -80,14 +80,14 @@
             Me.PanelWindows.Dock = System.Windows.Forms.DockStyle.Fill
             Me.PanelWindows.Location = New System.Drawing.Point(0, 0)
             Me.PanelWindows.Name = "PanelWindows"
-            Me.PanelWindows.Size = New System.Drawing.Size(404, 405)
+            Me.PanelWindows.Size = New System.Drawing.Size(659, 239)
             Me.PanelWindows.TabIndex = 4
             '
             'View
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(404, 427)
+            Me.ClientSize = New System.Drawing.Size(659, 261)
             Me.Controls.Add(Me.PanelWindows)
             Me.Controls.Add(Me.StatusStrip1)
             Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)

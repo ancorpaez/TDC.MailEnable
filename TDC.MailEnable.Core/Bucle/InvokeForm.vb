@@ -4,7 +4,22 @@ Imports System.Drawing
 Namespace Bucle
     Public Class InvokeForm
         Private MainBucle As DoBucle
-        Private originalBackColor As Color
+        Private MainParent As Windows.Forms.Panel = Nothing
+        Private BtnString = {"Detener en ForeGround", "Detener en Background", "Detener en EndGround"}
+        Friend Enum SelectorTipoVisor
+            Ventana
+            Control
+        End Enum
+        Private _Visor As SelectorTipoVisor = SelectorTipoVisor.Control
+        Friend Property Visor As SelectorTipoVisor
+            Get
+                Return _Visor
+            End Get
+            Set(value As SelectorTipoVisor)
+                _Visor = value
+                SetVisor()
+            End Set
+        End Property
         Public Sub New(Bucle As DoBucle)
 
             ' Esta llamada es exigida por el diseñador.
@@ -17,45 +32,71 @@ Namespace Bucle
             lblName.Text = MainBucle.Name
             ToolName.Text = MainBucle.Name
         End Sub
-        Private Sub InvokeForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Private Sub SetVisor()
+            If Not IsNothing(Me.Parent) Then MainParent = Me.Parent
+            Select Case _Visor
+                Case SelectorTipoVisor.Ventana
+                    Me.FormBorderStyle = Windows.Forms.FormBorderStyle.Sizable
+                    Me.Visible = True
+                    Me.Opacity = 1
+                    Me.ShowIcon = True
+                    ShowInTaskbar = True
+                    TopLevel = True
+                    Me.Height = 180
+                    Me.Width = 250
+                    Me.Dock = Windows.Forms.DockStyle.None
 
-        End Sub
+                    ToolContador.Visible = False
+                    lblName.Visible = False
+                    BtnDetenerForeground.Width = Me.Width - 20
+                    BtnDetenerForeground.Text = $"{BtnString(0)}, {If(MainBucle IsNot Nothing, MainBucle.FlagBtnDetenerForeground.ToString(), "False")}"
+                    ToolTip.SetToolTip(BtnDetenerForeground, "Detener en ForeGround")
 
-        Private Sub InvokeForm_Resize(sender As Object, e As EventArgs) Handles Me.Resize
-            If Me.Height < 40 Then
-                Me.Height = 22
-                Me.Padding = New Windows.Forms.Padding(1)
-                Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
-                lblName.Visible = True
-                BtnDetenerForeground.Width = 20
-                BtnDetenerBackground.Width = 20
-                BtnDetenerEndground.Width = 20
-                lblCount.Width = 40
+                    BtnDetenerBackground.Width = Me.Width - 20
+                    BtnDetenerBackground.Text = $"{BtnString(1)}, {If(MainBucle IsNot Nothing, MainBucle.FlagBtnDetenerBackground.ToString(), "False")}"
+                    ToolTip.SetToolTip(BtnDetenerBackground, "Detener en BackGround")
 
-                lblName.Visible = True
-                lblName.Width = Me.Width - 102
+                    BtnDetenerEndground.Width = Me.Width - 20
+                    BtnDetenerEndground.Text = $"{BtnString(2)}, {If(MainBucle IsNot Nothing, MainBucle.FlagBtnDetenerEndground.ToString(), "False")}"
+                    ToolTip.SetToolTip(BtnDetenerEndground, "Detener en EndGround")
 
-                ToolStripOptions.Visible = False
-                Status.Visible = False
-                ToolName.Visible = True
-            Else
-                Me.FormBorderStyle = Windows.Forms.FormBorderStyle.Sizable
-                lblName.Visible = False
-                BtnDetenerForeground.Width = Me.Width - 20
-                BtnDetenerBackground.Width = Me.Width - 20
-                BtnDetenerEndground.Width = Me.Width - 20
+                    ToolStripOptions.Visible = True
+                    Status.Visible = True
+                    ToolName.Visible = False
 
-                ToolStripOptions.Visible = True
-                ToolName.Visible = False
-                Status.Visible = True
-                Status.Enabled = True
-                Status.Refresh()
-            End If
-            'Me.Margin = New Windows.Forms.Padding(0)
-        End Sub
+                Case SelectorTipoVisor.Control
+                    Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
+                    Me.Visible = False
+                    Me.Opacity = 0
+                    Me.ShowIcon = False
+                    ShowInTaskbar = False
+                    TopLevel = False
+                    Me.Padding = New Windows.Forms.Padding(1)
+                    Me.Height = ToolStripOptions.Height + (Me.Padding.All + 1)
+                    Me.Dock = Windows.Forms.DockStyle.Top
 
-        Private Sub InvokeForm_MouseLeave(sender As Object, e As EventArgs) Handles Me.MouseLeave
-            'Me.BackColor = originalBackColor
+                    ToolContador.Visible = True
+                    lblName.Visible = True
+                    BtnDetenerForeground.Width = ToolStripOptions.Height
+                    BtnDetenerForeground.Height = ToolStripOptions.Height
+                    BtnDetenerForeground.Text = "F"
+                    BtnDetenerBackground.Width = ToolStripOptions.Height
+                    BtnDetenerBackground.Height = ToolStripOptions.Height
+                    BtnDetenerBackground.Text = "B"
+                    BtnDetenerEndground.Width = ToolStripOptions.Height
+                    BtnDetenerEndground.Height = ToolStripOptions.Height
+                    BtnDetenerEndground.Text = "E"
+
+                    ToolTip.SetToolTip(BtnDetenerForeground, "Detener en ForeGround")
+                    ToolTip.SetToolTip(BtnDetenerEndground, "Detener en EndGround")
+                    ToolTip.SetToolTip(BtnDetenerBackground, "Detener en BackGround")
+
+
+
+                    ToolStripOptions.Visible = False
+                    Status.Visible = False
+                    ToolName.Visible = True
+            End Select
         End Sub
 
         Private Sub InvokeForm_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
@@ -65,24 +106,47 @@ Namespace Bucle
 
         Private Sub BtnDetenerBackground_Click(sender As Object, e As EventArgs) Handles BtnDetenerBackground.Click
             With MainBucle
-                .Detener(True)
                 .FlagBtnDetenerBackground = Not .FlagBtnDetenerBackground
-                CType(sender, Windows.Forms.Button).Text = $"Stop Background { .FlagBtnDetenerBackground}"
+                Select Case .FlagBtnDetenerBackground
+                    Case True
+                        CType(sender, Windows.Forms.Button).BackColor = Color.DarkRed
+                    Case False
+                        CType(sender, Windows.Forms.Button).BackColor = Color.DarkGreen
+                End Select
+                If Me.FormBorderStyle = Windows.Forms.FormBorderStyle.Sizable Then
+                    CType(sender, Windows.Forms.Button).Text = $"{BtnString(1)}, { .FlagBtnDetenerBackground}"
+                End If
             End With
+
         End Sub
         Private Sub BtnDetenerForeground_Click(sender As Object, e As EventArgs) Handles BtnDetenerForeground.Click
             With MainBucle
-                .Detener(True)
                 .FlagBtnDetenerForeground = Not .FlagBtnDetenerForeground
-                CType(sender, Windows.Forms.Button).Text = $"Stop Foreground { .FlagBtnDetenerForeground}"
+                Select Case .FlagBtnDetenerForeground
+                    Case True
+                        CType(sender, Windows.Forms.Button).BackColor = Color.DarkRed
+                    Case False
+                        CType(sender, Windows.Forms.Button).BackColor = Color.DarkGreen
+                End Select
+                If Me.FormBorderStyle = Windows.Forms.FormBorderStyle.Sizable Then
+                    CType(sender, Windows.Forms.Button).Text = $"{BtnString(0)}, { .FlagBtnDetenerForeground}"
+                End If
             End With
+
         End Sub
 
         Private Sub BtnDetenerEndground_Click(sender As Object, e As EventArgs) Handles BtnDetenerEndground.Click
             With MainBucle
-                .Detener(True)
                 .FlagBtnDetenerEndground = Not .FlagBtnDetenerEndground
-                CType(sender, Windows.Forms.Button).Text = $"Stop Endground { .FlagBtnDetenerEndground}"
+                Select Case .FlagBtnDetenerEndground
+                    Case True
+                        CType(sender, Windows.Forms.Button).BackColor = Color.DarkRed
+                    Case False
+                        CType(sender, Windows.Forms.Button).BackColor = Color.DarkGreen
+                End Select
+                If Me.FormBorderStyle = Windows.Forms.FormBorderStyle.Sizable Then
+                    CType(sender, Windows.Forms.Button).Text = $"{BtnString(2)}, { .FlagBtnDetenerEndground}"
+                End If
             End With
         End Sub
 
@@ -91,26 +155,38 @@ Namespace Bucle
         End Sub
 
         Private Sub ToolOptionsChange_Click(sender As Object, e As EventArgs) Handles ToolOptionsChange.Click
-            If Me.Height > 40 Then
-                Me.Height = 20
-                Me.Visible = False
-                Me.ShowInTaskbar = False
-                Me.TopLevel = False
-                Me.Opacity = 0
-                Me.Dock = Windows.Forms.DockStyle.Top
-            Else
+            If _Visor = SelectorTipoVisor.Control Then
+                _Visor = SelectorTipoVisor.Ventana
+                MainParent = Me.Parent
                 Me.Parent.Controls.Remove(Me)
-                Me.TopLevel = True
-                Me.Height = 170
+                SetVisor()
+            Else
+                _Visor = SelectorTipoVisor.Control
+                SetVisor()
+                If Not IsNothing(MainParent) AndAlso Not IsNothing(MainParent.Parent) Then
+                    MainParent.Controls.Add(Me)
+                    Me.Visible = True
+                    Me.Opacity = 1
+                    MainParent.ScrollControlIntoView(Me)
+                Else
+                    Me.Visible = False
+                    Me.Opacity = 0
+                End If
             End If
         End Sub
 
         Private Sub lblName_MouseEnter(sender As Object, e As EventArgs) Handles lblName.MouseEnter
-            If Me.Height < 40 Then ToolStripOptions.Visible = True
+            If Me.Height = ToolStripOptions.Height + (Me.Padding.All + 1) Then ToolStripOptions.Visible = True
         End Sub
 
         Private Sub ToolStripOptions_MouseLeave(sender As Object, e As EventArgs) Handles ToolStripOptions.MouseLeave
-            If Me.Height < 40 Then ToolStripOptions.Visible = False
+            If Me.Height = ToolStripOptions.Height + (Me.Padding.All + 1) Then ToolStripOptions.Visible = False
+        End Sub
+
+        Private Sub InvokeForm_Resize(sender As Object, e As EventArgs) Handles Me.Resize
+            ToolSpace.Width = ((ToolStripOptions.Height * 3) - ToolOptionsClose.Height) + 8
+            lblCount.Width = ToolStripOptions.Height * 2
+            lblName.Width = Me.Width - ((Me.Height * 5) + (Me.Padding.All + 1))
         End Sub
     End Class
 End Namespace

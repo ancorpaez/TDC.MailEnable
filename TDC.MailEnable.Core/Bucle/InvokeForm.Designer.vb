@@ -33,46 +33,68 @@
             Me.FlowControls = New System.Windows.Forms.FlowLayoutPanel()
             Me.Status = New System.Windows.Forms.StatusStrip()
             Me.ToolStripOptions = New System.Windows.Forms.ToolStrip()
-            Me.ToolOptionsClose = New System.Windows.Forms.ToolStripButton()
             Me.ToolOptionsChange = New System.Windows.Forms.ToolStripButton()
-            Me.ToolTip = New System.Windows.Forms.ToolTip(Me.components)
+            Me.ToolOptionsClose = New System.Windows.Forms.ToolStripButton()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
             Me.ToolName = New System.Windows.Forms.ToolStripLabel()
+            Me.ToolTip = New System.Windows.Forms.ToolTip(Me.components)
+            Me.ToolContador = New System.Windows.Forms.ToolStripLabel()
+            Me.ToolSpace = New System.Windows.Forms.ToolStripLabel()
+            Me.ToolIntervalo = New System.Windows.Forms.ToolStripLabel()
             Me.FlowControls.SuspendLayout()
             Me.ToolStripOptions.SuspendLayout()
             Me.SuspendLayout()
             '
             'BtnDetenerBackground
             '
-            Me.BtnDetenerBackground.Location = New System.Drawing.Point(398, 0)
+            Me.BtnDetenerBackground.BackColor = System.Drawing.Color.DarkGreen
+            Me.BtnDetenerBackground.FlatAppearance.BorderColor = System.Drawing.Color.LightGray
+            Me.BtnDetenerBackground.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+            Me.BtnDetenerBackground.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.BtnDetenerBackground.ForeColor = System.Drawing.Color.White
+            Me.BtnDetenerBackground.Location = New System.Drawing.Point(408, 0)
             Me.BtnDetenerBackground.Margin = New System.Windows.Forms.Padding(0)
             Me.BtnDetenerBackground.Name = "BtnDetenerBackground"
-            Me.BtnDetenerBackground.Size = New System.Drawing.Size(20, 20)
+            Me.BtnDetenerBackground.Size = New System.Drawing.Size(25, 25)
             Me.BtnDetenerBackground.TabIndex = 0
+            Me.BtnDetenerBackground.TabStop = False
             Me.BtnDetenerBackground.Text = "BtnDetenerBackground"
-            Me.ToolTip.SetToolTip(Me.BtnDetenerBackground, "Detener BackGround")
-            Me.BtnDetenerBackground.UseVisualStyleBackColor = True
+            Me.ToolTip.SetToolTip(Me.BtnDetenerBackground, "Detener en BackGround")
+            Me.BtnDetenerBackground.UseVisualStyleBackColor = False
             '
             'BtnDetenerForeground
             '
-            Me.BtnDetenerForeground.Location = New System.Drawing.Point(378, 0)
+            Me.BtnDetenerForeground.BackColor = System.Drawing.Color.DarkGreen
+            Me.BtnDetenerForeground.FlatAppearance.BorderColor = System.Drawing.Color.LightGray
+            Me.BtnDetenerForeground.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+            Me.BtnDetenerForeground.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.BtnDetenerForeground.ForeColor = System.Drawing.Color.White
+            Me.BtnDetenerForeground.Location = New System.Drawing.Point(383, 0)
             Me.BtnDetenerForeground.Margin = New System.Windows.Forms.Padding(0)
             Me.BtnDetenerForeground.Name = "BtnDetenerForeground"
-            Me.BtnDetenerForeground.Size = New System.Drawing.Size(20, 20)
+            Me.BtnDetenerForeground.Size = New System.Drawing.Size(25, 25)
             Me.BtnDetenerForeground.TabIndex = 1
+            Me.BtnDetenerForeground.TabStop = False
             Me.BtnDetenerForeground.Text = "BtnDetenerForeground"
-            Me.ToolTip.SetToolTip(Me.BtnDetenerForeground, "Detener ForeGround")
-            Me.BtnDetenerForeground.UseVisualStyleBackColor = True
+            Me.ToolTip.SetToolTip(Me.BtnDetenerForeground, "Detener en ForeGround")
+            Me.BtnDetenerForeground.UseVisualStyleBackColor = False
             '
             'BtnDetenerEndground
             '
+            Me.BtnDetenerEndground.BackColor = System.Drawing.Color.DarkGreen
+            Me.BtnDetenerEndground.FlatAppearance.BorderColor = System.Drawing.Color.LightGray
+            Me.BtnDetenerEndground.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+            Me.BtnDetenerEndground.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.BtnDetenerEndground.ForeColor = System.Drawing.Color.White
             Me.BtnDetenerEndground.Location = New System.Drawing.Point(358, 0)
             Me.BtnDetenerEndground.Margin = New System.Windows.Forms.Padding(0)
             Me.BtnDetenerEndground.Name = "BtnDetenerEndground"
-            Me.BtnDetenerEndground.Size = New System.Drawing.Size(20, 20)
+            Me.BtnDetenerEndground.Size = New System.Drawing.Size(25, 25)
             Me.BtnDetenerEndground.TabIndex = 2
+            Me.BtnDetenerEndground.TabStop = False
             Me.BtnDetenerEndground.Text = "BtnDetenerEndground"
-            Me.ToolTip.SetToolTip(Me.BtnDetenerEndground, "Detener EndGround")
-            Me.BtnDetenerEndground.UseVisualStyleBackColor = True
+            Me.ToolTip.SetToolTip(Me.BtnDetenerEndground, "Detener en EndGround")
+            Me.BtnDetenerEndground.UseVisualStyleBackColor = False
             '
             'lblCount
             '
@@ -108,14 +130,14 @@
             Me.FlowControls.Dock = System.Windows.Forms.DockStyle.Fill
             Me.FlowControls.Location = New System.Drawing.Point(0, 25)
             Me.FlowControls.Name = "FlowControls"
-            Me.FlowControls.Size = New System.Drawing.Size(606, 221)
+            Me.FlowControls.Size = New System.Drawing.Size(434, 64)
             Me.FlowControls.TabIndex = 5
             '
             'Status
             '
-            Me.Status.Location = New System.Drawing.Point(0, 246)
+            Me.Status.Location = New System.Drawing.Point(0, 89)
             Me.Status.Name = "Status"
-            Me.Status.Size = New System.Drawing.Size(606, 22)
+            Me.Status.Size = New System.Drawing.Size(434, 22)
             Me.Status.TabIndex = 6
             Me.Status.Text = "StatusStrip1"
             '
@@ -123,11 +145,20 @@
             '
             Me.ToolStripOptions.BackColor = System.Drawing.Color.WhiteSmoke
             Me.ToolStripOptions.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.ToolStripOptions.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolOptionsChange, Me.ToolOptionsClose, Me.ToolName})
+            Me.ToolStripOptions.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolOptionsChange, Me.ToolIntervalo, Me.ToolOptionsClose, Me.ToolStripSeparator1, Me.ToolName, Me.ToolSpace, Me.ToolContador})
             Me.ToolStripOptions.Location = New System.Drawing.Point(0, 0)
             Me.ToolStripOptions.Name = "ToolStripOptions"
-            Me.ToolStripOptions.Size = New System.Drawing.Size(606, 25)
+            Me.ToolStripOptions.Size = New System.Drawing.Size(434, 25)
             Me.ToolStripOptions.TabIndex = 7
+            '
+            'ToolOptionsChange
+            '
+            Me.ToolOptionsChange.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.ToolOptionsChange.Image = CType(resources.GetObject("ToolOptionsChange.Image"), System.Drawing.Image)
+            Me.ToolOptionsChange.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.ToolOptionsChange.Name = "ToolOptionsChange"
+            Me.ToolOptionsChange.Size = New System.Drawing.Size(23, 22)
+            Me.ToolOptionsChange.Text = "Cambiar"
             '
             'ToolOptionsClose
             '
@@ -139,14 +170,10 @@
             Me.ToolOptionsClose.Size = New System.Drawing.Size(23, 22)
             Me.ToolOptionsClose.Text = "Close"
             '
-            'ToolOptionsChange
+            'ToolStripSeparator1
             '
-            Me.ToolOptionsChange.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.ToolOptionsChange.Image = CType(resources.GetObject("ToolOptionsChange.Image"), System.Drawing.Image)
-            Me.ToolOptionsChange.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.ToolOptionsChange.Name = "ToolOptionsChange"
-            Me.ToolOptionsChange.Size = New System.Drawing.Size(23, 22)
-            Me.ToolOptionsChange.Text = "Cambiar"
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
             '
             'ToolName
             '
@@ -155,21 +182,41 @@
             Me.ToolName.Size = New System.Drawing.Size(74, 22)
             Me.ToolName.Text = "Bucle Name"
             '
+            'ToolContador
+            '
+            Me.ToolContador.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            Me.ToolContador.AutoSize = False
+            Me.ToolContador.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
+            Me.ToolContador.Name = "ToolContador"
+            Me.ToolContador.Size = New System.Drawing.Size(50, 22)
+            Me.ToolContador.Text = "0"
+            '
+            'ToolSpace
+            '
+            Me.ToolSpace.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            Me.ToolSpace.AutoSize = False
+            Me.ToolSpace.Name = "ToolSpace"
+            Me.ToolSpace.Size = New System.Drawing.Size(10, 22)
+            '
+            'ToolIntervalo
+            '
+            Me.ToolIntervalo.Name = "ToolIntervalo"
+            Me.ToolIntervalo.Size = New System.Drawing.Size(13, 22)
+            Me.ToolIntervalo.Text = "0"
+            '
             'InvokeForm
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-            Me.ClientSize = New System.Drawing.Size(606, 268)
-            Me.ControlBox = False
+            Me.ClientSize = New System.Drawing.Size(434, 111)
             Me.Controls.Add(Me.FlowControls)
             Me.Controls.Add(Me.ToolStripOptions)
             Me.Controls.Add(Me.Status)
+            Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "InvokeForm"
-            Me.ShowIcon = False
-            Me.ShowInTaskbar = False
             Me.Text = "InvokeForm"
             Me.FlowControls.ResumeLayout(False)
             Me.ToolStripOptions.ResumeLayout(False)
@@ -191,5 +238,9 @@
         Friend WithEvents ToolOptionsChange As Windows.Forms.ToolStripButton
         Friend WithEvents ToolTip As Windows.Forms.ToolTip
         Friend WithEvents ToolName As Windows.Forms.ToolStripLabel
+        Friend WithEvents ToolStripSeparator1 As Windows.Forms.ToolStripSeparator
+        Friend WithEvents ToolContador As Windows.Forms.ToolStripLabel
+        Friend WithEvents ToolSpace As Windows.Forms.ToolStripLabel
+        Friend WithEvents ToolIntervalo As Windows.Forms.ToolStripLabel
     End Class
 End Namespace

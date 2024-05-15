@@ -90,7 +90,8 @@ Namespace Backup
             End Select
             Return Nothing
         End Function
-        Private Sub BuscadoresEvents_Background(Sender As Object, Detener As MailEnable.Core.Bucle.BackgroundEventArgs) Handles BuscadoresEvents.BackGround
+        Private Sub BuscadoresEvents_Background(Sender As Object, e As MailEnable.Core.Bucle.BackgroundEventArgs) Handles BuscadoresEvents.BackGround
+
             If Not Escaneo.IsEmpty Then
                 Dim Carpeta As String = String.Empty
                 If Escaneo.TryDequeue(Carpeta) Then

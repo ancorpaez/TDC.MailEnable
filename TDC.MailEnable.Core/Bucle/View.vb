@@ -22,6 +22,7 @@ Namespace Bucle
             Next
         End Sub
         Private Sub View_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+            Me.Visible = False
             For Each dBucle In GlobalDoBucle.Values
                 If dBucle.InvokeForm.FormBorderStyle = FormBorderStyle.None Then
                     dBucle.InvokeForm.Opacity = 0
@@ -34,10 +35,12 @@ Namespace Bucle
         Private Sub SetText()
             tlblBucles.Text = $"Procesos ({Core.GlobalDoBucle.Count})"
         End Sub
-        Private Sub TrakVisualizador_Scroll(sender As Object, e As EventArgs)
+        Private Sub PanelWindows_ControlAdded(sender As Object, e As ControlEventArgs) Handles PanelWindows.ControlAdded
             SetText()
         End Sub
 
-
+        Private Sub PanelWindows_ControlRemoved(sender As Object, e As ControlEventArgs) Handles PanelWindows.ControlRemoved
+            SetText()
+        End Sub
     End Class
 End Namespace

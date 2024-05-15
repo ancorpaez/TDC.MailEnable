@@ -453,12 +453,12 @@ Namespace Interfaz
             Trabajador_POPW3C.Cancelar = False
             Trabajador_POPW3C.Intervalo = Configuracion.LECTURA_REPOSO
         End Sub
-        Private Sub Trabajador_SMTPW3C_Background(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Trabajador_SMTPW3C.BackGround
+        Private Sub Trabajador_SMTPW3C_Background(Sender As Object, e As Bucle.BackgroundEventArgs) Handles Trabajador_SMTPW3C.BackGround
             'Trabajo en BackGround
             EscanearCarpeta(UcSMTPEx, Function(Linea) RecuperarIpSplit(Linea, 2), Trabajador_SMTPW3C, Mod_Core.Configuracion.SMTP, Registro_SMTPW3C, "ex*.log")
 
-            'Propagamos la configuracion de Bloqueo de IP
-            BtnPropagarIps_Click(Nothing, New EventArgs)
+                'Propagamos la configuracion de Bloqueo de IP
+                BtnPropagarIps_Click(Nothing, New EventArgs)
         End Sub
         Private Sub Trabajador_SMTPW3C_Foreground(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Trabajador_SMTPW3C.ForeGround
             'Detenemos el procesamiento
