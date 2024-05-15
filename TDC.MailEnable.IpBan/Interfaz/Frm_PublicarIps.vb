@@ -108,7 +108,7 @@ Namespace Interfaz
             Me.Close()
         End Sub
         Private Sub Publicador_ErrorGround(Sender As Object, e As BackgroundEventArgs)
-            MsgBox($"{e.Excepcion.Message}{vbNewLine}{vbNewLine}No se ha podido propagar la lista IP", MsgBoxStyle.Critical, "Error")
+            MsgBox($"{e.Excepcion.Message}{vbNewLine}{vbNewLine}¡No se ha podido propagar la lista IP!", MsgBoxStyle.Critical, "Error")
             e.Detener = True
             Me.Close()
         End Sub

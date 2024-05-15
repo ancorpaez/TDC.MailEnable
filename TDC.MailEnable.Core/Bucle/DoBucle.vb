@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports System.Drawing
 Imports System.Threading
 Imports System.Windows.Forms
 
@@ -7,11 +8,10 @@ Namespace Bucle
     Public Class DoBucle
 
         Private WithEvents Trabajador As BackgroundWorker
-        Private InvokeForm As Form
-        Private LabelCount As Label
-        Private BtnDetenerBackground As Button, FlagBtnDetenerBackground As Boolean = False
-        Private BtnDetenerForeground As Button, FlagBtnDetenerForeground As Boolean = False
-        Private BtnDetenerEndground As Button, FlagBtnDetenerEndground As Boolean = False
+        Protected Friend InvokeForm As InvokeForm
+        Friend FlagBtnDetenerBackground As Boolean = False
+        Friend FlagBtnDetenerForeground As Boolean = False
+        Friend FlagBtnDetenerEndground As Boolean = False
         Private InvokeRequired As Boolean = False
 
         Public Property Cancelar As Boolean = False
@@ -60,84 +60,96 @@ Namespace Bucle
             Add(Me)
 
             'Crear Controles
-
             InvokeForm = CreateForm()
+
             With InvokeForm
                 If Not Visible Then
+                    .Height = 20
                     .Text = Name
                     .Name = Name
                     .ShowInTaskbar = False
                     .Opacity = 0
-                    .WindowState = FormWindowState.Minimized
-                    'InvokeForm = New Form With {.Text = Name, .Name = Name, .ShowInTaskbar = False, .Opacity = 0, .WindowState = FormWindowState.Minimized}
+                    .FormBorderStyle = FormBorderStyle.None
+                    .TopLevel = False
+                    .Dock = DockStyle.Top
+
+                    With .BtnDetenerBackground
+                        .Text = "B"
+                        .Width = 20
+                    End With
+
+                    With .BtnDetenerForeground
+                        .Text = "F"
+                        .Width = 20
+                    End With
+
+                    With .BtnDetenerEndground
+                        .Text = "E"
+                        .Width = 20
+                    End With
+
+                    With .lblCount
+                        .Text = 0
+                        .Width = 40
+                    End With
+
+                    With .lblName
+                        .Text = Name
+                        .Width = InvokeForm.Width - 100
+                    End With
                 Else
+                    .Height = 170
                     .Text = Name
                     .Name = Name
-                    .Height = 140
-                    'InvokeForm = New Form With {.Text = Name, .Name = Name, .Height = 140}
+                    .Visible = True
+                    .Opacity = 1
+                    .FormBorderStyle = FormBorderStyle.Sizable
+                    .TopLevel = True
+                    .ShowInTaskbar = True
+
+                    With .BtnDetenerBackground
+                        .Text = "Stop Background"
+                        .Width = InvokeForm.Width
+                    End With
+
+                    With .BtnDetenerForeground
+                        .Text = "Stop Foreground"
+                        .Width = InvokeForm.Width
+                    End With
+
+                    With .BtnDetenerEndground
+                        .Text = "Stop Endground"
+                        .Width = InvokeForm.Width
+                    End With
+
+                    With .lblCount
+                        .Text = 0
+                        .Width = 40
+                    End With
+
+                    With .lblName
+                        .Text = Name
+                        .Width = InvokeForm.Width - 100
+                    End With
                 End If
             End With
 
-            LabelCount = CreateLabel()
-            With LabelCount
-                .Text = 0
-                .Dock = DockStyle.Top
-            End With
-
-            If InvokeForm.Opacity <> 0 Then
-                BtnDetenerBackground = CreateButton()
-                With BtnDetenerBackground
-                    .Text = "Stop Background"
-                    .Dock = DockStyle.Bottom
-                End With
-
-                BtnDetenerForeground = CreateButton()
-                With BtnDetenerForeground
-                    .Text = "Stop Foreground"
-                    .Dock = DockStyle.Bottom
-                End With
-
-                BtnDetenerEndground = CreateButton()
-                With BtnDetenerEndground
-                    .Text = "Stop Endground"
-                    .Dock = DockStyle.Bottom
-                End With
-
-                AddHandler BtnDetenerBackground.Click, Sub()
-                                                           FlagBtnDetenerBackground = Not FlagBtnDetenerBackground
-                                                           BtnDetenerBackground.Text = $"Stop Background {FlagBtnDetenerBackground}"
-                                                       End Sub
-                AddHandler BtnDetenerForeground.Click, Sub()
-                                                           FlagBtnDetenerForeground = Not FlagBtnDetenerForeground
-                                                           BtnDetenerForeground.Text = $"Stop Foreground {FlagBtnDetenerForeground}"
-                                                       End Sub
-                AddHandler BtnDetenerEndground.Click, Sub()
-                                                          FlagBtnDetenerEndground = Not FlagBtnDetenerEndground
-                                                          BtnDetenerEndground.Text = $"Stop Endground {FlagBtnDetenerEndground}"
-                                                      End Sub
-                AddHandler InvokeForm.FormClosing, Sub(sender As Object, e As FormClosingEventArgs)
-                                                       e.Cancel = True
-                                                       CType(sender, Form).Hide()
-                                                   End Sub
-                InvokeForm.Controls.AddRange({LabelCount, BtnDetenerBackground, BtnDetenerForeground, BtnDetenerEndground})
-
-            End If
-
             InvokeForm.Show()
+
             If InvokeForm.Opacity = 0 Then InvokeForm.Hide() Else InvokeForm.Refresh()
 
             Trabajador = New BackgroundWorker With {.WorkerReportsProgress = True, .WorkerSupportsCancellation = True}
         End Sub
 
         Private Function CreateForm() As Form
-            Dim nForm As Form = Nothing
-            If InvokeRequired Then Application.OpenForms(0).Invoke(Sub() nForm = New Form) Else nForm = New Form
-            Return nForm
+            Dim NuevoInvokeForm As Form = Nothing
+            If InvokeRequired Then Application.OpenForms(0).Invoke(Sub() NuevoInvokeForm = New InvokeForm(Me)) Else NuevoInvokeForm = New InvokeForm(Me)
+            Return NuevoInvokeForm
         End Function
         Private Function CreateButton() As Button
-            Dim nButton As Button = Nothing
-            If InvokeRequired Then Application.OpenForms(0).Invoke(Sub() nButton = New Button) Else nButton = New Button
-            Return nButton
+            Dim NuevoInvokeForm As Button = Nothing
+            If InvokeRequired Then Application.OpenForms(0).Invoke(Sub() NuevoInvokeForm = New Button) Else NuevoInvokeForm = New Button
+            Return NuevoInvokeForm
         End Function
         Private Function CreateLabel() As Label
             Dim nlabel As Label = Nothing
@@ -158,10 +170,6 @@ Namespace Bucle
             Trabajador.Dispose()
             Try
                 If InvokeForm.Created Then
-                    InvokeForm.Invoke(Sub() If Not IsNothing(LabelCount) Then LabelCount.Dispose())
-                    InvokeForm.Invoke(Sub() If Not IsNothing(BtnDetenerBackground) Then BtnDetenerBackground.Dispose())
-                    InvokeForm.Invoke(Sub() If Not IsNothing(BtnDetenerForeground) Then BtnDetenerForeground.Dispose())
-                    InvokeForm.Invoke(Sub() If Not IsNothing(BtnDetenerEndground) Then BtnDetenerEndground.Dispose())
                     If Not InvokeForm.IsDisposed OrElse Not InvokeForm.Disposing Then InvokeForm.Invoke(Sub() InvokeForm.Dispose())
                 End If
             Catch ex As Exception
@@ -213,7 +221,7 @@ Namespace Bucle
                     End If
 
                     'Visualizar el Contador del Bucle
-                    If InvokeForm.Visible AndAlso InvokeForm.Created Then InvokeForm.Invoke(Sub() LabelCount.Text = CInt(LabelCount.Text) + 1)
+                    If InvokeForm.Visible AndAlso InvokeForm.Created Then InvokeForm.Invoke(Sub() InvokeForm.lblCount.Text = CInt(InvokeForm.lblCount.Text) + 1)
                     Contador += 1
                 Catch ex As Exception
                     _esErroneo = True

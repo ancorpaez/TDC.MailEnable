@@ -1219,7 +1219,7 @@ Namespace Interfaz
         End Sub
 
         Private Sub BuclesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BuclesToolStripMenuItem.Click
-            TDC.MailEnable.Core.Bucle.Mod_GlobalDoBucle.View()
+            TDC.MailEnable.Core.Bucle.Core.View()
         End Sub
 
         Private Sub lstEmailsReparadosAutoResponder_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstEmailsReparadosAutoResponder.SelectedIndexChanged

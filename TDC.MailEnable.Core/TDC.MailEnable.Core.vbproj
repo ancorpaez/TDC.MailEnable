@@ -76,7 +76,13 @@
     <Compile Include="BDD\IMAPBaneadas.vb" />
     <Compile Include="BDD\IMAPCorrectas.vb" />
     <Compile Include="Bucle\DoBucle.vb" />
-    <Compile Include="Bucle\Mod_GlobalDoBucle.vb" />
+    <Compile Include="Bucle\Core.vb" />
+    <Compile Include="Bucle\InvokeForm.Designer.vb">
+      <DependentUpon>InvokeForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Bucle\InvokeForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Bucle\View.Designer.vb">
       <DependentUpon>View.vb</DependentUpon>
     </Compile>
@@ -109,6 +115,9 @@
     <Compile Include="Pipe\ServerPipe.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Bucle\InvokeForm.resx">
+      <DependentUpon>InvokeForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Bucle\View.resx">
       <DependentUpon>View.vb</DependentUpon>
     </EmbeddedResource>

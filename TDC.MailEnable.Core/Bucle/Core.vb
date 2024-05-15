@@ -1,5 +1,5 @@
 ﻿Namespace Bucle
-    Public Module Mod_GlobalDoBucle
+    Public Module Core
         Friend GlobalDoBucle As New System.Collections.Concurrent.ConcurrentDictionary(Of String, DoBucle)
 
         Public Sub View()
