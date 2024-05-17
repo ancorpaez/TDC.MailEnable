@@ -34,7 +34,7 @@ Namespace Backup
             If IO.File.Exists(BddCleanerFullPath) Then Cleaner.Tabla.ReadXml(BddCleanerFullPath)
 
             For i = 0 To Configuracion.ANALIZADORES_BACKUP - 1
-                Dim Buscador As MailEnable.Core.Bucle.DoBucle = MailEnable.Core.Bucle.GetOrCreate($"MailBackup{i}")
+                Dim Indexador As MailEnable.Core.Bucle.DoBucle = MailEnable.Core.Bucle.GetOrCreate($"MailBackup{i}")
             Next
 
             'iFaceNotificador.Iniciar()

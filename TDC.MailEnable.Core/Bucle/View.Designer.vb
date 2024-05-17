@@ -1,4 +1,6 @@
-﻿Namespace Bucle
+﻿Imports System.Windows.Forms
+
+Namespace Bucle
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
     Partial Class View
         Inherits System.Windows.Forms.Form
@@ -99,11 +101,11 @@
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents StatusStrip1 As Windows.Forms.StatusStrip
-        Friend WithEvents tlblVisualizador As Windows.Forms.ToolStripStatusLabel
-        Friend WithEvents tlblBucles As Windows.Forms.ToolStripStatusLabel
-        Friend WithEvents tlblSeparador1 As Windows.Forms.ToolStripStatusLabel
-        Friend WithEvents tBtnManual As Windows.Forms.ToolStripDropDownButton
-        Friend WithEvents PanelWindows As Windows.Forms.Panel
+        Friend WithEvents StatusStrip1 As StatusStrip
+        Friend WithEvents tlblVisualizador As ToolStripStatusLabel
+        Friend WithEvents tlblBucles As ToolStripStatusLabel
+        Friend WithEvents tlblSeparador1 As ToolStripStatusLabel
+        Friend WithEvents tBtnManual As ToolStripDropDownButton
+        Friend WithEvents PanelWindows As Panel
     End Class
 End Namespace

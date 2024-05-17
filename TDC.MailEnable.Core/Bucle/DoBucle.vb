@@ -120,7 +120,7 @@ Namespace Bucle
 
                 'Lanzamos el Bucle Background
                 Try
-                    If FlagBtnDetenerBackground Then Stop
+                    'If FlagBtnDetenerBackground Then Stop
                     Dim CancelBackground As New BackgroundEventArgs() With {.Detener = False, .DetenerDepuracion = FlagBtnDetenerBackground}
                     RaiseEvent BackGround(Me, CancelBackground)
                     FlagBtnDetenerBackground = CancelBackground.DetenerDepuracion
@@ -145,7 +145,7 @@ Namespace Bucle
 
                 'Lanzamos el Bucle Foreground
                 Try
-                    If FlagBtnDetenerForeground Then Stop
+                    'If FlagBtnDetenerForeground Then Stop
                     Dim CancelForeground As New BackgroundEventArgs() With {.Detener = False, .DetenerDepuracion = FlagBtnDetenerForeground}
                     If Not IsNothing(InvokeForm) AndAlso InvokeForm.Created Then InvokeForm.Invoke(Sub() RaiseEvent ForeGround(Me, CancelForeground))
                     FlagBtnDetenerForeground = CancelForeground.DetenerDepuracion
@@ -185,7 +185,7 @@ Namespace Bucle
         End Sub
         Private Sub Trabajador_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles Trabajador.RunWorkerCompleted
             Try
-                If FlagBtnDetenerEndground Then Stop
+                'If FlagBtnDetenerEndground Then Stop
                 Dim CancelarEndground As New BackgroundEventArgs() With {.Detener = False, .DetenerDepuracion = FlagBtnDetenerEndground}
                 RaiseEvent EndGround(Me, CancelarEndground)
                 FlagBtnDetenerEndground = CancelarEndground.DetenerDepuracion

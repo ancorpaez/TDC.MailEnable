@@ -113,6 +113,8 @@
     </Compile>
     <Compile Include="Pipe\ClientPipe.vb" />
     <Compile Include="Pipe\ServerPipe.vb" />
+    <Compile Include="Windows\Registro\Acciones.vb" />
+    <Compile Include="Windows\Registro\MonitorDeCambiosDeClavesDelRegistro.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Bucle\InvokeForm.resx">

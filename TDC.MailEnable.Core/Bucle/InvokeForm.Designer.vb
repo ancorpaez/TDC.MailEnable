@@ -1,4 +1,6 @@
-﻿Namespace Bucle
+﻿Imports System.Windows.Forms
+
+Namespace Bucle
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
     Partial Class InvokeForm
         Inherits System.Windows.Forms.Form
@@ -226,21 +228,21 @@
 
         End Sub
 
-        Friend WithEvents BtnDetenerBackground As Windows.Forms.Button
-        Friend WithEvents BtnDetenerForeground As Windows.Forms.Button
-        Friend WithEvents BtnDetenerEndground As Windows.Forms.Button
-        Friend WithEvents lblCount As Windows.Forms.Label
-        Friend WithEvents lblName As Windows.Forms.Label
-        Friend WithEvents FlowControls As Windows.Forms.FlowLayoutPanel
-        Friend WithEvents Status As Windows.Forms.StatusStrip
-        Friend WithEvents ToolStripOptions As Windows.Forms.ToolStrip
-        Friend WithEvents ToolOptionsClose As Windows.Forms.ToolStripButton
-        Friend WithEvents ToolOptionsChange As Windows.Forms.ToolStripButton
-        Friend WithEvents ToolTip As Windows.Forms.ToolTip
-        Friend WithEvents ToolName As Windows.Forms.ToolStripLabel
-        Friend WithEvents ToolStripSeparator1 As Windows.Forms.ToolStripSeparator
-        Friend WithEvents ToolContador As Windows.Forms.ToolStripLabel
-        Friend WithEvents ToolSpace As Windows.Forms.ToolStripLabel
-        Friend WithEvents ToolIntervalo As Windows.Forms.ToolStripLabel
+        Friend WithEvents BtnDetenerBackground As Button
+        Friend WithEvents BtnDetenerForeground As Button
+        Friend WithEvents BtnDetenerEndground As Button
+        Friend WithEvents lblCount As Label
+        Friend WithEvents lblName As Label
+        Friend WithEvents FlowControls As FlowLayoutPanel
+        Friend WithEvents Status As StatusStrip
+        Friend WithEvents ToolStripOptions As ToolStrip
+        Friend WithEvents ToolOptionsClose As ToolStripButton
+        Friend WithEvents ToolOptionsChange As ToolStripButton
+        Friend WithEvents ToolTip As ToolTip
+        Friend WithEvents ToolName As ToolStripLabel
+        Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
+        Friend WithEvents ToolContador As ToolStripLabel
+        Friend WithEvents ToolSpace As ToolStripLabel
+        Friend WithEvents ToolIntervalo As ToolStripLabel
     End Class
 End Namespace

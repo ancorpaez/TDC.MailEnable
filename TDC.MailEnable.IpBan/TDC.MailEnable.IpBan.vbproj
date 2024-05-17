@@ -195,8 +195,8 @@
       <DependentUpon>IpBan.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MailEnableLog\Cls_IpBlanca.vb" />
-    <Compile Include="MailEnableLog\Cls_IpBan.vb" />
+    <Compile Include="MailEnableLog\IpBlancaSincronizada.vb" />
+    <Compile Include="MailEnableLog\IpNegraUnico.vb" />
     <Compile Include="MailEnableLog\Cls_MailBoxes.vb" />
     <Compile Include="MailEnableLog\Cls_MailEnableDeny.vb" />
     <Compile Include="MailEnableLog\Cls_PostOffices.vb" />

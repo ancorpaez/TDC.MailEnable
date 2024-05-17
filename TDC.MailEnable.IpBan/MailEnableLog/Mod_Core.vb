@@ -7,14 +7,13 @@ Namespace MailEnableLog
     Module Mod_Core
 
         'ARCHIVO DE CONFIGURACION
-        Const File_Config As String = "Config.xml"
+        Const ConfiguracionArchivo As String = "Config.xml"
         Public Configuracion As New Cls_Config
 
         'ARCHIVO UNICO IP BAN
-        Const File_IpBan As String = "IpBan.xml"
-        Public IpBaneadas As New Cls_IpBan
-        Const File_IpBlanca As String = "IpBlanca.xml"
-        Public IpBlancas As New Cls_IpBlanca
+        Const IpBaneadasArchivo As String = "IpNegraUnico.xml"
+        Public IpBaneadas As New IpNegraUnico
+        Public IpBlancas As New IpBlancaSincronizada
 
         'ARCHIVO UNICO GEOLOCALIZACION
         Dim File_Geolocalizacion As String = $"{Application.StartupPath}\Geolocalizacion\Geolocalizacion.lst"
@@ -77,16 +76,16 @@ Namespace MailEnableLog
                     End Try
                 End If
 
-                'Cargar Ips Blancas
-                If Not CargarIpBlanca() Then
-                    MsgBox("Error de carga de la lista de Ip's Blancas")
-                    End
-                Else
-                    Try
-                        If IpBlancas.Data.First = "" Then IpBlancas.Data.Remove("")
-                    Catch ex As Exception
-                    End Try
-                End If
+                ''Cargar Ips Blancas
+                'If Not CargarIpBlanca() Then
+                '    MsgBox("Error de carga de la lista de Ip's Blancas")
+                '    End
+                'Else
+                '    Try
+                '        If IpBlancas.Data.First = "" Then IpBlancas.Data.Remove("")
+                '    Catch ex As Exception
+                '    End Try
+                'End If
 
                 'Cargar PostOffices
                 If Not String.IsNullOrEmpty(Configuracion.POST_OFFICES) Then
@@ -137,14 +136,14 @@ Namespace MailEnableLog
         Private Function CargarConfiguracion() As Boolean
             Try
                 'Cargar Archivo
-                If Not IO.File.Exists(File_Config) Then
+                If Not IO.File.Exists(ConfiguracionArchivo) Then
                     Dim Generar As New XmlSerializer(GetType(Cls_Config))
-                    Using Crear As New StreamWriter(File_Config)
+                    Using Crear As New StreamWriter(ConfiguracionArchivo)
                         Generar.Serialize(Crear, Configuracion)
                     End Using
                 Else
                     Dim Cargar As New XmlSerializer(GetType(Cls_Config))
-                    Using Leer As New StreamReader(File_Config)
+                    Using Leer As New StreamReader(ConfiguracionArchivo)
                         Configuracion = DirectCast(Cargar.Deserialize(Leer), Cls_Config)
                     End Using
                 End If
@@ -166,7 +165,7 @@ Namespace MailEnableLog
         Public Function GuardarConfiguracion() As Boolean
             Try
                 Dim Guardar As New XmlSerializer(GetType(Cls_Config))
-                Using Escribir As New StreamWriter(File_Config)
+                Using Escribir As New StreamWriter(ConfiguracionArchivo)
                     Guardar.Serialize(Escribir, Mod_Core.Configuracion)
                 End Using
 
@@ -187,27 +186,28 @@ Namespace MailEnableLog
         '::::::::: ARCHIVO UNICO DE  IP BAN
         Public Function CargarIpBan() As Boolean
             Try
-                If Not IO.File.Exists(File_IpBan) Then
-                    Dim Generar As New XmlSerializer(GetType(Cls_IpBan))
-                    Using Crear As New StreamWriter(File_IpBan)
+                If Not IO.File.Exists(IpBaneadasArchivo) Then
+                    Dim Generar As New XmlSerializer(GetType(IpNegraUnico))
+                    Using Crear As New StreamWriter(IpBaneadasArchivo)
                         Generar.Serialize(Crear, IpBaneadas)
                     End Using
                 Else
-                    Dim Cargar As New XmlSerializer(GetType(Cls_IpBan))
-                    Using Leer As New StreamReader(File_IpBan)
-                        IpBaneadas = DirectCast(Cargar.Deserialize(Leer), Cls_IpBan)
+                    Dim Cargar As New XmlSerializer(GetType(IpNegraUnico))
+                    Using Leer As New StreamReader(IpBaneadasArchivo)
+                        IpBaneadas = DirectCast(Cargar.Deserialize(Leer), IpNegraUnico)
                     End Using
                 End If
                 Return True
             Catch ex As Exception
+                Stop
             End Try
             Return False
         End Function
 
         Public Function SalvarIpBan()
             Try
-                Dim Guardar As New XmlSerializer(GetType(Cls_IpBan))
-                Using Escribir As New StreamWriter(File_IpBan)
+                Dim Guardar As New XmlSerializer(GetType(IpNegraUnico))
+                Using Escribir As New StreamWriter(IpBaneadasArchivo)
                     Guardar.Serialize(Escribir, Mod_Core.IpBaneadas)
                 End Using
                 Return True
@@ -216,37 +216,6 @@ Namespace MailEnableLog
             Return False
         End Function
         '::::::::::::::::::::::::::::::::::::::::::::::::
-        '::::::::: ARCHIVO UNICO DE  IP BAN
-        Public Function CargarIpBlanca() As Boolean
-            Try
-                If Not IO.File.Exists(File_IpBlanca) Then
-                    Dim Generar As New XmlSerializer(GetType(Cls_IpBlanca))
-                    Using Crear As New StreamWriter(File_IpBlanca)
-                        Generar.Serialize(Crear, IpBlancas)
-                    End Using
-                Else
-                    Dim Cargar As New XmlSerializer(GetType(Cls_IpBlanca))
-                    Using Leer As New StreamReader(File_IpBlanca)
-                        IpBlancas = DirectCast(Cargar.Deserialize(Leer), Cls_IpBlanca)
-                    End Using
-                End If
-                Return True
-            Catch ex As Exception
-            End Try
-            Return False
-        End Function
 
-        Public Function SalvarIpBlanca()
-            Try
-                Dim Guardar As New XmlSerializer(GetType(Cls_IpBlanca))
-                Using Escribir As New StreamWriter(File_IpBlanca)
-                    Guardar.Serialize(Escribir, Mod_Core.IpBlancas)
-                End Using
-                Return True
-            Catch ex As Exception
-            End Try
-            Return False
-        End Function
-        '::::::::::::::::::::::::::::::::::::::::::::::::
     End Module
 End Namespace

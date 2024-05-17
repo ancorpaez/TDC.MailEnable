@@ -62,11 +62,22 @@ Namespace Interfaz
             'Dim Tes1 = Test.EsLegitima("129.126.197.254")
             'MiBucle.Intervalo = 1
             'MiBucle.Iniciar()
-            '*************
             'Dim test5 = New Threading.Thread(Sub()
             '                                     Dim d5 As New TDC.MailEnable.Core.Bucle.DoBucle("Test5")
             '                                 End Sub)
             'test5.Start()
+
+            'Dim t1 = Windows.Registro.GetSetRemove.GetDWORD(Windows.Registro.Registry.Keys.HKEY_LOCAL_MACHINE, "\SOFTWARE\WOW6432Node\Mail Enable\Mail Enable\Connectors\SMTP\Counters", "Service Start")
+            'Dim t2 = Windows.Registro.GetSetRemove.GetString(Windows.Registro.Registry.Keys.HKEY_LOCAL_MACHINE, "\SOFTWARE\WOW6432Node\Mail Enable\Mail Enable\Connectors\SMTP\Counters", "Service Start")
+            'Dim t3 = Windows.Registro.GetSetRemove.GetInteger(Windows.Registro.Registry.Keys.HKEY_LOCAL_MACHINE, "\SOFTWARE\WOW6432Node\Mail Enable\Mail Enable\Connectors\SMTP\Counters", "Service Start")
+            'Dim t4 = Windows.Registro.GetSetRemove.GetNames(Windows.Registro.Registry.Keys.HKEY_LOCAL_MACHINE, "\SOFTWARE\WOW6432Node\Mail Enable\Mail Enable\Connectors\SMTP\White List").ToList
+            'Dim t5 = Windows.Registro.GetSetRemove.GetKey(Windows.Registro.Registry.Keys.HKEY_LOCAL_MACHINE, "\SOFTWARE\WOW6432Node\Mail Enable\Mail Enable\Connectors\SMTP\White List")
+            'Dim t6 = Windows.Registro.GetSetRemove.SetNameDWORD(t5, "1.1.1.1", 0)
+            'Dim t7 = Windows.Registro.GetSetRemove.GetDWORD(Windows.Registro.Registry.Keys.HKEY_LOCAL_MACHINE, "\SOFTWARE\WOW6432Node\Mail Enable\Mail Enable\Connectors\SMTP\White List", "1.1.1.1")
+            'Dim t8 = Windows.Registro.Registry.Convert.FromDWORD(t7)
+            'Dim t9 = Windows.Registro.GetSetRemove.RemoveName(t5, "1.1.1.1")
+            'Stop
+            '*************
 
             'Iniciar Log Temporal
             LOG.Logs.TryAdd(LOG.MemoryLOG.EnumLogs.General, New LOG.LogConfig With {.Salida = SalidaConsola})
@@ -93,7 +104,7 @@ Namespace Interfaz
             'Cargar Ip Blancas
             lstIpBlancas.DataSource = Mod_Core.IpBlancas.Data
             lstIpBlancas.DisplayMember = "Item"
-            AddHandler Mod_Core.IpBlancas.OnRefresData, AddressOf RefrescarDatosBlancas
+            AddHandler Mod_Core.IpBlancas.AlActualizarLista, AddressOf RefrescarDatosBlancas
 
 
             'POP(W3C)
@@ -457,8 +468,8 @@ Namespace Interfaz
             'Trabajo en BackGround
             EscanearCarpeta(UcSMTPEx, Function(Linea) RecuperarIpSplit(Linea, 2), Trabajador_SMTPW3C, Mod_Core.Configuracion.SMTP, Registro_SMTPW3C, "ex*.log")
 
-                'Propagamos la configuracion de Bloqueo de IP
-                BtnPropagarIps_Click(Nothing, New EventArgs)
+            'Propagamos la configuracion de Bloqueo de IP
+            BtnPropagarIps_Click(Nothing, New EventArgs)
         End Sub
         Private Sub Trabajador_SMTPW3C_Foreground(Sender As Object, Detener As Bucle.BackgroundEventArgs) Handles Trabajador_SMTPW3C.ForeGround
             'Detenemos el procesamiento
@@ -531,6 +542,7 @@ Namespace Interfaz
         Private Sub BtnAñadirBlanca_Click(sender As Object, e As EventArgs) Handles BtnAñadirBlanca.Click
             IpBlancas.Add(lstBusqueda.Text)
             IpBaneadas.Remove(lstBusqueda.Text)
+            txtBuscarIp.Clear()
         End Sub
 
         Private Sub BtnEliminarBlanca_Click(sender As Object, e As EventArgs) Handles BtnEliminarBlanca.Click

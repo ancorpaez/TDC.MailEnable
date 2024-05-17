@@ -1,10 +1,11 @@
 ﻿Imports System.ComponentModel
 Imports System.Drawing
+Imports System.Windows.Forms
 
 Namespace Bucle
     Public Class InvokeForm
         Private MainBucle As DoBucle
-        Private MainParent As Windows.Forms.Panel = Nothing
+        Private MainParent As Panel = Nothing
         Private BtnString = {"Detener en ForeGround", "Detener en Background", "Detener en EndGround"}
         Friend Enum SelectorTipoVisor
             Ventana
@@ -36,7 +37,7 @@ Namespace Bucle
             If Not IsNothing(Me.Parent) Then MainParent = Me.Parent
             Select Case _Visor
                 Case SelectorTipoVisor.Ventana
-                    Me.FormBorderStyle = Windows.Forms.FormBorderStyle.Sizable
+                    Me.FormBorderStyle = FormBorderStyle.Sizable
                     Me.Visible = True
                     Me.Opacity = 1
                     Me.ShowIcon = True
@@ -44,7 +45,7 @@ Namespace Bucle
                     TopLevel = True
                     Me.Height = 180
                     Me.Width = 250
-                    Me.Dock = Windows.Forms.DockStyle.None
+                    Me.Dock = DockStyle.None
 
                     ToolContador.Visible = False
                     lblName.Visible = False
@@ -65,15 +66,15 @@ Namespace Bucle
                     ToolName.Visible = False
 
                 Case SelectorTipoVisor.Control
-                    Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
+                    Me.FormBorderStyle = FormBorderStyle.None
                     Me.Visible = False
                     Me.Opacity = 0
                     Me.ShowIcon = False
                     ShowInTaskbar = False
                     TopLevel = False
-                    Me.Padding = New Windows.Forms.Padding(1)
+                    Me.Padding = New Padding(1)
                     Me.Height = ToolStripOptions.Height + (Me.Padding.All + 1)
-                    Me.Dock = Windows.Forms.DockStyle.Top
+                    Me.Dock = DockStyle.Top
 
                     ToolContador.Visible = True
                     lblName.Visible = True
@@ -109,12 +110,12 @@ Namespace Bucle
                 .FlagBtnDetenerBackground = Not .FlagBtnDetenerBackground
                 Select Case .FlagBtnDetenerBackground
                     Case True
-                        CType(sender, Windows.Forms.Button).BackColor = Color.DarkRed
+                        CType(sender, Button).BackColor = Color.DarkRed
                     Case False
-                        CType(sender, Windows.Forms.Button).BackColor = Color.DarkGreen
+                        CType(sender, Button).BackColor = Color.DarkGreen
                 End Select
-                If Me.FormBorderStyle = Windows.Forms.FormBorderStyle.Sizable Then
-                    CType(sender, Windows.Forms.Button).Text = $"{BtnString(1)}, { .FlagBtnDetenerBackground}"
+                If Me.FormBorderStyle = FormBorderStyle.Sizable Then
+                    CType(sender, Button).Text = $"{BtnString(1)}, { .FlagBtnDetenerBackground}"
                 End If
             End With
 
@@ -124,12 +125,12 @@ Namespace Bucle
                 .FlagBtnDetenerForeground = Not .FlagBtnDetenerForeground
                 Select Case .FlagBtnDetenerForeground
                     Case True
-                        CType(sender, Windows.Forms.Button).BackColor = Color.DarkRed
+                        CType(sender, Button).BackColor = Color.DarkRed
                     Case False
-                        CType(sender, Windows.Forms.Button).BackColor = Color.DarkGreen
+                        CType(sender, Button).BackColor = Color.DarkGreen
                 End Select
-                If Me.FormBorderStyle = Windows.Forms.FormBorderStyle.Sizable Then
-                    CType(sender, Windows.Forms.Button).Text = $"{BtnString(0)}, { .FlagBtnDetenerForeground}"
+                If Me.FormBorderStyle = FormBorderStyle.Sizable Then
+                    CType(sender, Button).Text = $"{BtnString(0)}, { .FlagBtnDetenerForeground}"
                 End If
             End With
 
@@ -140,12 +141,12 @@ Namespace Bucle
                 .FlagBtnDetenerEndground = Not .FlagBtnDetenerEndground
                 Select Case .FlagBtnDetenerEndground
                     Case True
-                        CType(sender, Windows.Forms.Button).BackColor = Color.DarkRed
+                        CType(sender, Button).BackColor = Color.DarkRed
                     Case False
-                        CType(sender, Windows.Forms.Button).BackColor = Color.DarkGreen
+                        CType(sender, Button).BackColor = Color.DarkGreen
                 End Select
-                If Me.FormBorderStyle = Windows.Forms.FormBorderStyle.Sizable Then
-                    CType(sender, Windows.Forms.Button).Text = $"{BtnString(2)}, { .FlagBtnDetenerEndground}"
+                If Me.FormBorderStyle = FormBorderStyle.Sizable Then
+                    CType(sender, Button).Text = $"{BtnString(2)}, { .FlagBtnDetenerEndground}"
                 End If
             End With
         End Sub

@@ -3,7 +3,7 @@ Imports System.Net
 Imports TDC.MailEnable.Core
 
 Namespace MailEnableLog
-    Public Class Cls_IpBan
+    Public Class IpNegraUnico
         Private WithEvents Ips As New Concurrent.ConcurrentBindingList(Of String)
         Public Event OnRefresData()
         Private AddingBackGrundList As Boolean = False
