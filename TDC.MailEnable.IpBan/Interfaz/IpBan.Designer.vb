@@ -37,10 +37,6 @@
             Me.Panel5 = New System.Windows.Forms.Panel()
             Me.lblLineasCrossDomain = New System.Windows.Forms.Label()
             Me.lblCrossDomainLog = New System.Windows.Forms.Label()
-            Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
-            Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.PanelIps = New System.Windows.Forms.Panel()
             Me.PanelListaNegra = New System.Windows.Forms.Panel()
             Me.lstIpBaneadas = New System.Windows.Forms.ListBox()
@@ -238,6 +234,13 @@
             Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
             Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
+            Me.PanelPaisIpBlanca = New System.Windows.Forms.Panel()
+            Me.lblPaisIpBlanca = New System.Windows.Forms.Label()
+            Me.lblPaisIpBlancaSet = New System.Windows.Forms.Label()
+            Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
+            Me.UcPOPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.PanelIpBaneadas.SuspendLayout()
             Me.PanelBuscadores.SuspendLayout()
             Me.PanelLogs.SuspendLayout()
@@ -334,6 +337,7 @@
             Me.MenuPrincipal.SuspendLayout()
             Me.StatusStrip2.SuspendLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.PanelPaisIpBlanca.SuspendLayout()
             Me.SuspendLayout()
             '
             'PanelIpBaneadas
@@ -469,38 +473,6 @@
             Me.lblCrossDomainLog.Size = New System.Drawing.Size(200, 51)
             Me.lblCrossDomainLog.TabIndex = 2
             Me.lblCrossDomainLog.Text = "CrossDomain (0)"
-            '
-            'UcWEB
-            '
-            Me.UcWEB.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcWEB.Location = New System.Drawing.Point(3, 123)
-            Me.UcWEB.Name = "UcWEB"
-            Me.UcWEB.Size = New System.Drawing.Size(1088, 40)
-            Me.UcWEB.TabIndex = 0
-            '
-            'UcIMAPEx
-            '
-            Me.UcIMAPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcIMAPEx.Location = New System.Drawing.Point(3, 83)
-            Me.UcIMAPEx.Name = "UcIMAPEx"
-            Me.UcIMAPEx.Size = New System.Drawing.Size(1088, 40)
-            Me.UcIMAPEx.TabIndex = 0
-            '
-            'UcSMTPEx
-            '
-            Me.UcSMTPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcSMTPEx.Location = New System.Drawing.Point(3, 43)
-            Me.UcSMTPEx.Name = "UcSMTPEx"
-            Me.UcSMTPEx.Size = New System.Drawing.Size(1088, 40)
-            Me.UcSMTPEx.TabIndex = 0
-            '
-            'UcPOPEx
-            '
-            Me.UcPOPEx.Dock = System.Windows.Forms.DockStyle.Top
-            Me.UcPOPEx.Location = New System.Drawing.Point(3, 3)
-            Me.UcPOPEx.Name = "UcPOPEx"
-            Me.UcPOPEx.Size = New System.Drawing.Size(1088, 40)
-            Me.UcPOPEx.TabIndex = 0
             '
             'PanelIps
             '
@@ -719,6 +691,7 @@
             'Panel15
             '
             Me.Panel15.Controls.Add(Me.lstIpBlancas)
+            Me.Panel15.Controls.Add(Me.PanelPaisIpBlanca)
             Me.Panel15.Controls.Add(Me.PanelBotonesBlanca)
             Me.Panel15.Controls.Add(Me.Label2)
             Me.Panel15.Dock = System.Windows.Forms.DockStyle.Right
@@ -735,7 +708,8 @@
             Me.lstIpBlancas.IntegralHeight = False
             Me.lstIpBlancas.Location = New System.Drawing.Point(3, 23)
             Me.lstIpBlancas.Name = "lstIpBlancas"
-            Me.lstIpBlancas.Size = New System.Drawing.Size(125, 347)
+            Me.lstIpBlancas.ScrollAlwaysVisible = True
+            Me.lstIpBlancas.Size = New System.Drawing.Size(125, 309)
             Me.lstIpBlancas.TabIndex = 0
             '
             'PanelBotonesBlanca
@@ -2475,6 +2449,73 @@
             Me.ImageList2.ImageSize = New System.Drawing.Size(16, 16)
             Me.ImageList2.TransparentColor = System.Drawing.Color.Transparent
             '
+            'PanelPaisIpBlanca
+            '
+            Me.PanelPaisIpBlanca.BackColor = System.Drawing.Color.Black
+            Me.PanelPaisIpBlanca.Controls.Add(Me.lblPaisIpBlancaSet)
+            Me.PanelPaisIpBlanca.Controls.Add(Me.lblPaisIpBlanca)
+            Me.PanelPaisIpBlanca.Dock = System.Windows.Forms.DockStyle.Bottom
+            Me.PanelPaisIpBlanca.Location = New System.Drawing.Point(3, 332)
+            Me.PanelPaisIpBlanca.Name = "PanelPaisIpBlanca"
+            Me.PanelPaisIpBlanca.Padding = New System.Windows.Forms.Padding(0, 1, 0, 0)
+            Me.PanelPaisIpBlanca.Size = New System.Drawing.Size(125, 38)
+            Me.PanelPaisIpBlanca.TabIndex = 5
+            '
+            'lblPaisIpBlanca
+            '
+            Me.lblPaisIpBlanca.BackColor = System.Drawing.Color.White
+            Me.lblPaisIpBlanca.Dock = System.Windows.Forms.DockStyle.Left
+            Me.lblPaisIpBlanca.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.lblPaisIpBlanca.Location = New System.Drawing.Point(0, 1)
+            Me.lblPaisIpBlanca.Name = "lblPaisIpBlanca"
+            Me.lblPaisIpBlanca.Size = New System.Drawing.Size(45, 37)
+            Me.lblPaisIpBlanca.TabIndex = 0
+            Me.lblPaisIpBlanca.Text = "País:"
+            Me.lblPaisIpBlanca.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'lblPaisIpBlancaSet
+            '
+            Me.lblPaisIpBlancaSet.BackColor = System.Drawing.Color.White
+            Me.lblPaisIpBlancaSet.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lblPaisIpBlancaSet.Location = New System.Drawing.Point(45, 1)
+            Me.lblPaisIpBlancaSet.Name = "lblPaisIpBlancaSet"
+            Me.lblPaisIpBlancaSet.Size = New System.Drawing.Size(80, 37)
+            Me.lblPaisIpBlancaSet.TabIndex = 1
+            Me.lblPaisIpBlancaSet.Text = "..."
+            Me.lblPaisIpBlancaSet.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+            '
+            'UcWEB
+            '
+            Me.UcWEB.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcWEB.Location = New System.Drawing.Point(3, 123)
+            Me.UcWEB.Name = "UcWEB"
+            Me.UcWEB.Size = New System.Drawing.Size(1088, 40)
+            Me.UcWEB.TabIndex = 0
+            '
+            'UcIMAPEx
+            '
+            Me.UcIMAPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcIMAPEx.Location = New System.Drawing.Point(3, 83)
+            Me.UcIMAPEx.Name = "UcIMAPEx"
+            Me.UcIMAPEx.Size = New System.Drawing.Size(1088, 40)
+            Me.UcIMAPEx.TabIndex = 0
+            '
+            'UcSMTPEx
+            '
+            Me.UcSMTPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcSMTPEx.Location = New System.Drawing.Point(3, 43)
+            Me.UcSMTPEx.Name = "UcSMTPEx"
+            Me.UcSMTPEx.Size = New System.Drawing.Size(1088, 40)
+            Me.UcSMTPEx.TabIndex = 0
+            '
+            'UcPOPEx
+            '
+            Me.UcPOPEx.Dock = System.Windows.Forms.DockStyle.Top
+            Me.UcPOPEx.Location = New System.Drawing.Point(3, 3)
+            Me.UcPOPEx.Name = "UcPOPEx"
+            Me.UcPOPEx.Size = New System.Drawing.Size(1088, 40)
+            Me.UcPOPEx.TabIndex = 0
+            '
             'IpBan
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2604,6 +2645,7 @@
             Me.StatusStrip2.ResumeLayout(False)
             Me.StatusStrip2.PerformLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.PanelPaisIpBlanca.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -2821,5 +2863,8 @@
         Friend WithEvents PanellstEmailsColaSMTP As Panel
         Friend WithEvents Label28 As Label
         Friend WithEvents SplitterAutoResponderLst As Splitter
+        Friend WithEvents PanelPaisIpBlanca As Panel
+        Friend WithEvents lblPaisIpBlancaSet As Label
+        Friend WithEvents lblPaisIpBlanca As Label
     End Class
 End Namespace

@@ -546,7 +546,12 @@ Namespace Interfaz
         End Sub
 
         Private Sub BtnEliminarBlanca_Click(sender As Object, e As EventArgs) Handles BtnEliminarBlanca.Click
-            IpBlancas.Remove(lstIpBlancas.SelectedItem)
+            If lstIpBlancas.SelectedItems.Count > 0 Then
+                Dim Accion = MsgBox($"Seguro que desea eliminar {lstIpBlancas.Text}?", MsgBoxStyle.YesNo, "Confirmación de eliminación")
+                If Accion = MsgBoxResult.Yes Then
+                    IpBlancas.Remove(lstIpBlancas.SelectedItem)
+                End If
+            End If
         End Sub
         Private Sub BtnAnadirBlanca_Click(sender As Object, e As EventArgs) Handles BtnAnadirBlanca.Click
             IpBlancas.Add(InputBox("Ip Blanca", "Añadir", String.Empty))
@@ -1252,6 +1257,14 @@ Namespace Interfaz
             Catch ex As Exception
                 MessageBox.Show("No se pudo abrir el enlace. Error: " & ex.Message)
             End Try
+        End Sub
+
+        Private Sub lstIpBlancas_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstIpBlancas.SelectedIndexChanged
+            If lstIpBlancas.SelectedItems.Count > 0 Then
+                Dim Geolocalizar As New TDC.MailEnable.Core.GeoLocalizacion.IpInfo
+                Dim Pais As String = Geolocalizar.Geolocalizar(lstIpBlancas.Text, Mod_Core.Geolocalizador)
+                lblPaisIpBlancaSet.Text = Pais
+            End If
         End Sub
     End Class
 End Namespace

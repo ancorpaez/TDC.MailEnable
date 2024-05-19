@@ -28,84 +28,111 @@ Namespace Bucle
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(View))
             Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
             Me.tlblBucles = New System.Windows.Forms.ToolStripStatusLabel()
-            Me.tlblSeparador1 = New System.Windows.Forms.ToolStripStatusLabel()
-            Me.tlblVisualizador = New System.Windows.Forms.ToolStripStatusLabel()
-            Me.tBtnManual = New System.Windows.Forms.ToolStripDropDownButton()
+            Me.lblSeparador = New System.Windows.Forms.ToolStripStatusLabel()
+            Me.lblScroll = New System.Windows.Forms.ToolStripStatusLabel()
+            Me.btnMouse = New System.Windows.Forms.ToolStripDropDownButton()
             Me.PanelWindows = New System.Windows.Forms.Panel()
+            Me.Scroll = New System.Windows.Forms.VScrollBar()
+            Me.PanelContenedor = New System.Windows.Forms.Panel()
             Me.StatusStrip1.SuspendLayout()
+            Me.PanelContenedor.SuspendLayout()
             Me.SuspendLayout()
             '
             'StatusStrip1
             '
-            Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tlblBucles, Me.tlblSeparador1, Me.tlblVisualizador, Me.tBtnManual})
-            Me.StatusStrip1.Location = New System.Drawing.Point(0, 239)
+            Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tlblBucles, Me.lblSeparador, Me.lblScroll, Me.btnMouse})
+            Me.StatusStrip1.Location = New System.Drawing.Point(0, 237)
             Me.StatusStrip1.Name = "StatusStrip1"
-            Me.StatusStrip1.Size = New System.Drawing.Size(659, 22)
+            Me.StatusStrip1.Size = New System.Drawing.Size(659, 24)
             Me.StatusStrip1.TabIndex = 1
             Me.StatusStrip1.Text = "Bucles"
             '
             'tlblBucles
             '
             Me.tlblBucles.Name = "tlblBucles"
-            Me.tlblBucles.Size = New System.Drawing.Size(58, 17)
+            Me.tlblBucles.Size = New System.Drawing.Size(58, 19)
             Me.tlblBucles.Text = "Bucles (0)"
             '
-            'tlblSeparador1
+            'lblSeparador
             '
-            Me.tlblSeparador1.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-            Me.tlblSeparador1.Name = "tlblSeparador1"
-            Me.tlblSeparador1.Size = New System.Drawing.Size(586, 17)
-            Me.tlblSeparador1.Spring = True
+            Me.lblSeparador.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
+            Me.lblSeparador.Name = "lblSeparador"
+            Me.lblSeparador.Size = New System.Drawing.Size(463, 19)
+            Me.lblSeparador.Spring = True
+            Me.lblSeparador.Visible = False
             '
-            'tlblVisualizador
+            'lblScroll
             '
-            Me.tlblVisualizador.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right
-            Me.tlblVisualizador.Name = "tlblVisualizador"
-            Me.tlblVisualizador.Size = New System.Drawing.Size(77, 19)
-            Me.tlblVisualizador.Text = "Visualizar (0)"
-            Me.tlblVisualizador.Visible = False
+            Me.lblScroll.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right
+            Me.lblScroll.Name = "lblScroll"
+            Me.lblScroll.Size = New System.Drawing.Size(17, 19)
+            Me.lblScroll.Text = "0"
+            Me.lblScroll.Visible = False
             '
-            'tBtnManual
+            'btnMouse
             '
-            Me.tBtnManual.Image = CType(resources.GetObject("tBtnManual.Image"), System.Drawing.Image)
-            Me.tBtnManual.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.tBtnManual.Name = "tBtnManual"
-            Me.tBtnManual.ShowDropDownArrow = False
-            Me.tBtnManual.Size = New System.Drawing.Size(75, 20)
-            Me.tBtnManual.Text = "Refrescar"
-            Me.tBtnManual.Visible = False
+            Me.btnMouse.Image = CType(resources.GetObject("btnMouse.Image"), System.Drawing.Image)
+            Me.btnMouse.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.btnMouse.Name = "btnMouse"
+            Me.btnMouse.ShowDropDownArrow = False
+            Me.btnMouse.Size = New System.Drawing.Size(75, 22)
+            Me.btnMouse.Text = "Refrescar"
+            Me.btnMouse.Visible = False
             '
             'PanelWindows
             '
-            Me.PanelWindows.AutoScroll = True
+            Me.PanelWindows.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.PanelWindows.BackColor = System.Drawing.Color.Black
-            Me.PanelWindows.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.PanelWindows.Location = New System.Drawing.Point(0, 0)
+            Me.PanelWindows.Location = New System.Drawing.Point(1, 1)
             Me.PanelWindows.Name = "PanelWindows"
-            Me.PanelWindows.Size = New System.Drawing.Size(659, 239)
+            Me.PanelWindows.Size = New System.Drawing.Size(365, 147)
             Me.PanelWindows.TabIndex = 4
+            '
+            'Scroll
+            '
+            Me.Scroll.Cursor = System.Windows.Forms.Cursors.Cross
+            Me.Scroll.Dock = System.Windows.Forms.DockStyle.Right
+            Me.Scroll.LargeChange = 50
+            Me.Scroll.Location = New System.Drawing.Point(641, 0)
+            Me.Scroll.Name = "Scroll"
+            Me.Scroll.Size = New System.Drawing.Size(18, 237)
+            Me.Scroll.SmallChange = 10
+            Me.Scroll.TabIndex = 0
+            '
+            'PanelContenedor
+            '
+            Me.PanelContenedor.Controls.Add(Me.Scroll)
+            Me.PanelContenedor.Controls.Add(Me.PanelWindows)
+            Me.PanelContenedor.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.PanelContenedor.Location = New System.Drawing.Point(0, 0)
+            Me.PanelContenedor.Name = "PanelContenedor"
+            Me.PanelContenedor.Size = New System.Drawing.Size(659, 237)
+            Me.PanelContenedor.TabIndex = 5
             '
             'View
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(659, 261)
-            Me.Controls.Add(Me.PanelWindows)
+            Me.Controls.Add(Me.PanelContenedor)
             Me.Controls.Add(Me.StatusStrip1)
             Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
             Me.Name = "View"
             Me.Text = "Back Ground View Bucles"
             Me.StatusStrip1.ResumeLayout(False)
             Me.StatusStrip1.PerformLayout()
+            Me.PanelContenedor.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
         Friend WithEvents StatusStrip1 As StatusStrip
-        Friend WithEvents tlblVisualizador As ToolStripStatusLabel
+        Friend WithEvents lblScroll As ToolStripStatusLabel
         Friend WithEvents tlblBucles As ToolStripStatusLabel
-        Friend WithEvents tlblSeparador1 As ToolStripStatusLabel
-        Friend WithEvents tBtnManual As ToolStripDropDownButton
+        Friend WithEvents lblSeparador As ToolStripStatusLabel
+        Friend WithEvents btnMouse As ToolStripDropDownButton
         Friend WithEvents PanelWindows As Panel
+        Friend WithEvents Scroll As VScrollBar
+        Friend WithEvents PanelContenedor As Panel
     End Class
 End Namespace
