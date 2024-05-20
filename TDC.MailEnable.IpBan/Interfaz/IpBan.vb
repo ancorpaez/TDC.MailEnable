@@ -44,7 +44,7 @@ Namespace Interfaz
         Private iFaceControlIndex As New System.Collections.Concurrent.ConcurrentDictionary(Of UcAnalizador, LecturaDeArchivo)
         Private Shared SyncActualizarProgresoArchivo As New Object
 
-        'RElacion Tabs Tablas
+        'Relacion Tabs Tablas
         Private CalRelation As KeyValuePair(Of TabPage, DataGridView)
         Private MaiRelation As KeyValuePair(Of TabPage, DataGridView)
         Private VcfRelation As KeyValuePair(Of TabPage, DataGridView)
@@ -425,6 +425,7 @@ Namespace Interfaz
                         Core.Bucle.Remove(Archivo.FullName)
                     End If
 
+                    'Liberamos recursos asociados al Archivo
                     EscanearArchivo.Dispose()
                 End If
             Next
@@ -619,7 +620,9 @@ Namespace Interfaz
             txtRichSpamAssassin.ScrollToCaret()
         End Sub
 
-        Private Sub TimerIpBan_Tick(sender As Object, e As EventArgs) Handles TimerIpBan.Tick
+        Private Sub TimerToInterfaceIpBan_Tick(sender As Object, e As EventArgs) Handles TimerToInterfaceIpBan.Tick
+
+            'Mostrar Estado de SmapAssassin
             If Not IsNothing(SpamAssassin) Then
                 If Not IsNothing(SpamAssassin.Proceso) Then
                     If SpamAssassin.Corriendo Then
@@ -631,9 +634,11 @@ Namespace Interfaz
                         TSMIniciarSpamAssassin.Visible = True
                         TSMDetener.Visible = False
                     End If
-
                 End If
             End If
+
+            'Mostrar Contador de AutoIndexBackup
+            lblAutoindexaciones.Text = $"Indexaciones: {lstAutoIndex.Items.Count}"
         End Sub
 
         Private Sub TSMDetener_Click(sender As Object, e As EventArgs) Handles TSMDetener.Click
@@ -1172,7 +1177,6 @@ Namespace Interfaz
                 Ctrl.Item(0).Enabled = False
                 Ctrl.Item(1).Enabled = False
                 Ctrl.Item(2).Enabled = False
-                'Ctrl.ForEach(Function(C) C.Enabled = False)
             End If
         End Sub
 
@@ -1238,16 +1242,21 @@ Namespace Interfaz
         Private Sub BuclesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BuclesToolStripMenuItem.Click
             TDC.MailEnable.Core.Bucle.Core.View()
         End Sub
-
+#Region "AutoResponder"
         Private Sub lstEmailsReparadosAutoResponder_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstEmailsReparadosAutoResponder.SelectedIndexChanged
             If lstEmailsReparadosAutoResponder.SelectedItems.Count > 0 Then
-                RichAutoResponderMail.Text = AutoResponder.Mensajes(lstEmailsReparadosAutoResponder.SelectedItems.Item(0))
-                RichAutoResponderStatus.Text = AutoResponder.Estados(lstEmailsReparadosAutoResponder.SelectedItems.Item(0))
-                RichAutoResponderRespuesta.Text = AutoResponder.Respuestas(lstEmailsReparadosAutoResponder.SelectedItems.Item(0))
+                Dim ItemKey As String = lstEmailsReparadosAutoResponder.Text
+                If Not String.IsNullOrEmpty(ItemKey) Then
+                    If AutoResponder.Mensajes.ContainsKey(ItemKey) Then RichAutoResponderMail.Text = AutoResponder.Mensajes(lstEmailsReparadosAutoResponder.Text) Else RichAutoResponderMail.Text = "No se encuentra la Clave"
+                    If AutoResponder.Estados.ContainsKey(ItemKey) Then RichAutoResponderStatus.Text = AutoResponder.Estados(lstEmailsReparadosAutoResponder.SelectedItems.Item(0)) Else RichAutoResponderStatus.Text = "No se encuentra la Clave"
+                    If AutoResponder.Respuestas.ContainsKey(ItemKey) Then RichAutoResponderRespuesta.Text = AutoResponder.Respuestas(lstEmailsReparadosAutoResponder.SelectedItems.Item(0)) Else RichAutoResponderRespuesta.Text = "No se encuentra la Clave"
+                    BtnEliminarAutoResponder.Enabled = True
+                End If
             Else
                 RichAutoResponderMail.Text = String.Empty
                 RichAutoResponderStatus.Text = String.Empty
                 RichAutoResponderRespuesta.Text = String.Empty
+                BtnEliminarAutoResponder.Enabled = False
             End If
         End Sub
 
@@ -1258,13 +1267,24 @@ Namespace Interfaz
                 MessageBox.Show("No se pudo abrir el enlace. Error: " & ex.Message)
             End Try
         End Sub
-
+        Private Sub BtnEliminarAutoResponder_Click(sender As Object, e As EventArgs) Handles BtnEliminarAutoResponder.Click
+            If AutoResponder.Delete(lstEmailsReparadosAutoResponder.Text) Then
+                lstEmailsReparadosAutoResponder.Items.Remove(lstEmailsReparadosAutoResponder.Text)
+                RichAutoResponderMail.Text = String.Empty
+                RichAutoResponderStatus.Text = String.Empty
+                RichAutoResponderRespuesta.Text = String.Empty
+                BtnEliminarAutoResponder.Enabled = False
+            End If
+        End Sub
+#End Region
         Private Sub lstIpBlancas_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstIpBlancas.SelectedIndexChanged
             If lstIpBlancas.SelectedItems.Count > 0 Then
-                Dim Geolocalizar As New TDC.MailEnable.Core.GeoLocalizacion.IpInfo
+                Dim Geolocalizar As New GeoLocalizacion.IpInfo
                 Dim Pais As String = Geolocalizar.Geolocalizar(lstIpBlancas.Text, Mod_Core.Geolocalizador)
                 lblPaisIpBlancaSet.Text = Pais
             End If
         End Sub
+
+
     End Class
 End Namespace

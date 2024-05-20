@@ -16,6 +16,25 @@ Namespace AutoResponder
             AutoResponderRepair.Iniciar()
         End Sub
 
+        Public Function Delete(Archivo As String) As Boolean
+            Try
+                If Modificados.Contains(Archivo) Then
+                    Dim Mensaje As New IO.FileInfo($"{Configuracion.AUTORESPONDER}\{Archivo}")
+                    If IO.File.Exists(Mensaje.FullName) Then
+                        If ExistLog(Mensaje) Then LogFile(Mensaje).Delete()
+                        Mensaje.Delete()
+                        If Modificados.Contains(Archivo) Then Modificados.TryTake(Archivo)
+                        If Mensajes.ContainsKey(Archivo) Then Mensajes.TryRemove(Archivo, Nothing)
+                        If Estados.ContainsKey(Archivo) Then Estados.TryRemove(Archivo, Nothing)
+                        If Respuestas.ContainsKey(Archivo) Then Respuestas.TryRemove(Archivo, Nothing)
+                        Return True
+                    End If
+                End If
+            Catch ex As Exception
+                Return False
+            End Try
+            Return False
+        End Function
         Private Sub AutoResponderRepair_BackGround(Sender As Object, e As BackgroundEventArgs) Handles AutoResponderRepair.BackGround
             If Not String.IsNullOrEmpty(Configuracion.AUTORESPONDER) Then
                 If IO.Directory.Exists(Configuracion.AUTORESPONDER) Then
@@ -76,5 +95,6 @@ Namespace AutoResponder
         Private Function LogFile(Mensaje As IO.FileInfo) As IO.FileInfo
             If ExistLog(Mensaje) Then Return New IO.FileInfo($"{QueneFolder.Parent.FullName}\{Mensaje.Name}") Else Return Nothing
         End Function
+
     End Module
 End Namespace

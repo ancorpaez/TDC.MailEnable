@@ -57,6 +57,9 @@
             Me.Label6 = New System.Windows.Forms.Label()
             Me.Panel15 = New System.Windows.Forms.Panel()
             Me.lstIpBlancas = New System.Windows.Forms.ListBox()
+            Me.PanelPaisIpBlanca = New System.Windows.Forms.Panel()
+            Me.lblPaisIpBlancaSet = New System.Windows.Forms.Label()
+            Me.lblPaisIpBlanca = New System.Windows.Forms.Label()
             Me.PanelBotonesBlanca = New System.Windows.Forms.Panel()
             Me.BtnEliminarBlanca = New System.Windows.Forms.Button()
             Me.BtnAnadirBlanca = New System.Windows.Forms.Button()
@@ -96,7 +99,9 @@
             Me.PanelAutoIndex = New System.Windows.Forms.Panel()
             Me.lstAutoIndex = New System.Windows.Forms.ListView()
             Me.cAutoIndexTimeInit = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.tlpAutoIndexacion = New System.Windows.Forms.TableLayoutPanel()
             Me.Label14 = New System.Windows.Forms.Label()
+            Me.lblAutoindexaciones = New System.Windows.Forms.Label()
             Me.lblPostOffices = New System.Windows.Forms.Label()
             Me.TabBackup = New System.Windows.Forms.TabControl()
             Me.TabPMAI = New System.Windows.Forms.TabPage()
@@ -225,7 +230,7 @@
             Me.MenuPrincipal = New System.Windows.Forms.MenuStrip()
             Me.ConfiguraciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.BuclesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-            Me.TimerIpBan = New System.Windows.Forms.Timer(Me.components)
+            Me.TimerToInterfaceIpBan = New System.Windows.Forms.Timer(Me.components)
             Me.TimerGuiAnalizador = New System.Windows.Forms.Timer(Me.components)
             Me.StatusStrip2 = New System.Windows.Forms.StatusStrip()
             Me.lblPrueba = New System.Windows.Forms.ToolStripStatusLabel()
@@ -234,9 +239,8 @@
             Me.FiltrosMailBox = New System.Windows.Forms.BindingSource(Me.components)
             Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
             Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
-            Me.PanelPaisIpBlanca = New System.Windows.Forms.Panel()
-            Me.lblPaisIpBlanca = New System.Windows.Forms.Label()
-            Me.lblPaisIpBlancaSet = New System.Windows.Forms.Label()
+            Me.ToolStrip2 = New System.Windows.Forms.ToolStrip()
+            Me.BtnEliminarAutoResponder = New System.Windows.Forms.ToolStripButton()
             Me.UcWEB = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcIMAPEx = New TDC.MailEnable.IpBan.UcAnalizador()
             Me.UcSMTPEx = New TDC.MailEnable.IpBan.UcAnalizador()
@@ -261,6 +265,7 @@
             Me.SplitContainer1.SuspendLayout()
             Me.PanelTexto.SuspendLayout()
             Me.Panel15.SuspendLayout()
+            Me.PanelPaisIpBlanca.SuspendLayout()
             Me.PanelBotonesBlanca.SuspendLayout()
             Me.Fondo.SuspendLayout()
             Me.TabApp.SuspendLayout()
@@ -276,6 +281,7 @@
             Me.SplitContainer2.SuspendLayout()
             Me.MenuTablaBackup.SuspendLayout()
             Me.PanelAutoIndex.SuspendLayout()
+            Me.tlpAutoIndexacion.SuspendLayout()
             Me.TabBackup.SuspendLayout()
             Me.TabPMAI.SuspendLayout()
             CType(Me.TablaMailBackupMAI, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -337,7 +343,7 @@
             Me.MenuPrincipal.SuspendLayout()
             Me.StatusStrip2.SuspendLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.PanelPaisIpBlanca.SuspendLayout()
+            Me.ToolStrip2.SuspendLayout()
             Me.SuspendLayout()
             '
             'PanelIpBaneadas
@@ -712,6 +718,41 @@
             Me.lstIpBlancas.Size = New System.Drawing.Size(125, 309)
             Me.lstIpBlancas.TabIndex = 0
             '
+            'PanelPaisIpBlanca
+            '
+            Me.PanelPaisIpBlanca.BackColor = System.Drawing.Color.Black
+            Me.PanelPaisIpBlanca.Controls.Add(Me.lblPaisIpBlancaSet)
+            Me.PanelPaisIpBlanca.Controls.Add(Me.lblPaisIpBlanca)
+            Me.PanelPaisIpBlanca.Dock = System.Windows.Forms.DockStyle.Bottom
+            Me.PanelPaisIpBlanca.Location = New System.Drawing.Point(3, 332)
+            Me.PanelPaisIpBlanca.Name = "PanelPaisIpBlanca"
+            Me.PanelPaisIpBlanca.Padding = New System.Windows.Forms.Padding(0, 1, 0, 0)
+            Me.PanelPaisIpBlanca.Size = New System.Drawing.Size(125, 38)
+            Me.PanelPaisIpBlanca.TabIndex = 5
+            '
+            'lblPaisIpBlancaSet
+            '
+            Me.lblPaisIpBlancaSet.BackColor = System.Drawing.Color.White
+            Me.lblPaisIpBlancaSet.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lblPaisIpBlancaSet.Location = New System.Drawing.Point(45, 1)
+            Me.lblPaisIpBlancaSet.Name = "lblPaisIpBlancaSet"
+            Me.lblPaisIpBlancaSet.Size = New System.Drawing.Size(80, 37)
+            Me.lblPaisIpBlancaSet.TabIndex = 1
+            Me.lblPaisIpBlancaSet.Text = "..."
+            Me.lblPaisIpBlancaSet.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+            '
+            'lblPaisIpBlanca
+            '
+            Me.lblPaisIpBlanca.BackColor = System.Drawing.Color.White
+            Me.lblPaisIpBlanca.Dock = System.Windows.Forms.DockStyle.Left
+            Me.lblPaisIpBlanca.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.lblPaisIpBlanca.Location = New System.Drawing.Point(0, 1)
+            Me.lblPaisIpBlanca.Name = "lblPaisIpBlanca"
+            Me.lblPaisIpBlanca.Size = New System.Drawing.Size(45, 37)
+            Me.lblPaisIpBlanca.TabIndex = 0
+            Me.lblPaisIpBlanca.Text = "País:"
+            Me.lblPaisIpBlanca.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
             'PanelBotonesBlanca
             '
             Me.PanelBotonesBlanca.Controls.Add(Me.BtnEliminarBlanca)
@@ -1042,7 +1083,7 @@
             'PanelAutoIndex
             '
             Me.PanelAutoIndex.Controls.Add(Me.lstAutoIndex)
-            Me.PanelAutoIndex.Controls.Add(Me.Label14)
+            Me.PanelAutoIndex.Controls.Add(Me.tlpAutoIndexacion)
             Me.PanelAutoIndex.Dock = System.Windows.Forms.DockStyle.Bottom
             Me.PanelAutoIndex.Location = New System.Drawing.Point(0, 261)
             Me.PanelAutoIndex.Name = "PanelAutoIndex"
@@ -1054,9 +1095,9 @@
             Me.lstAutoIndex.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.cAutoIndexTimeInit})
             Me.lstAutoIndex.Dock = System.Windows.Forms.DockStyle.Fill
             Me.lstAutoIndex.HideSelection = False
-            Me.lstAutoIndex.Location = New System.Drawing.Point(0, 20)
+            Me.lstAutoIndex.Location = New System.Drawing.Point(0, 22)
             Me.lstAutoIndex.Name = "lstAutoIndex"
-            Me.lstAutoIndex.Size = New System.Drawing.Size(313, 146)
+            Me.lstAutoIndex.Size = New System.Drawing.Size(313, 144)
             Me.lstAutoIndex.TabIndex = 0
             Me.lstAutoIndex.UseCompatibleStateImageBehavior = False
             Me.lstAutoIndex.View = System.Windows.Forms.View.Details
@@ -1066,17 +1107,46 @@
             Me.cAutoIndexTimeInit.Text = "Iniciado"
             Me.cAutoIndexTimeInit.Width = 464
             '
+            'tlpAutoIndexacion
+            '
+            Me.tlpAutoIndexacion.ColumnCount = 2
+            Me.tlpAutoIndexacion.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.tlpAutoIndexacion.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.tlpAutoIndexacion.Controls.Add(Me.Label14, 0, 0)
+            Me.tlpAutoIndexacion.Controls.Add(Me.lblAutoindexaciones, 1, 0)
+            Me.tlpAutoIndexacion.Dock = System.Windows.Forms.DockStyle.Top
+            Me.tlpAutoIndexacion.Location = New System.Drawing.Point(0, 0)
+            Me.tlpAutoIndexacion.Name = "tlpAutoIndexacion"
+            Me.tlpAutoIndexacion.RowCount = 1
+            Me.tlpAutoIndexacion.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.tlpAutoIndexacion.Size = New System.Drawing.Size(313, 22)
+            Me.tlpAutoIndexacion.TabIndex = 2
+            '
             'Label14
             '
             Me.Label14.BackColor = System.Drawing.Color.Black
-            Me.Label14.Dock = System.Windows.Forms.DockStyle.Top
+            Me.Label14.Dock = System.Windows.Forms.DockStyle.Fill
             Me.Label14.ForeColor = System.Drawing.Color.White
             Me.Label14.Location = New System.Drawing.Point(0, 0)
+            Me.Label14.Margin = New System.Windows.Forms.Padding(0)
             Me.Label14.Name = "Label14"
-            Me.Label14.Size = New System.Drawing.Size(313, 20)
+            Me.Label14.Size = New System.Drawing.Size(156, 22)
             Me.Label14.TabIndex = 1
             Me.Label14.Text = "Auto indexación"
             Me.Label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'lblAutoindexaciones
+            '
+            Me.lblAutoindexaciones.BackColor = System.Drawing.Color.Black
+            Me.lblAutoindexaciones.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.lblAutoindexaciones.ForeColor = System.Drawing.Color.White
+            Me.lblAutoindexaciones.Location = New System.Drawing.Point(157, 0)
+            Me.lblAutoindexaciones.Margin = New System.Windows.Forms.Padding(1, 0, 0, 0)
+            Me.lblAutoindexaciones.Name = "lblAutoindexaciones"
+            Me.lblAutoindexaciones.Size = New System.Drawing.Size(156, 22)
+            Me.lblAutoindexaciones.TabIndex = 2
+            Me.lblAutoindexaciones.Text = "Idexaciones: 0"
+            Me.lblAutoindexaciones.TextAlign = System.Drawing.ContentAlignment.MiddleRight
             '
             'lblPostOffices
             '
@@ -2331,6 +2401,7 @@
             'PanellstEmailsColaSMTP
             '
             Me.PanellstEmailsColaSMTP.Controls.Add(Me.lstEmailsReparadosAutoResponder)
+            Me.PanellstEmailsColaSMTP.Controls.Add(Me.ToolStrip2)
             Me.PanellstEmailsColaSMTP.Controls.Add(Me.Label28)
             Me.PanellstEmailsColaSMTP.Dock = System.Windows.Forms.DockStyle.Left
             Me.PanellstEmailsColaSMTP.Location = New System.Drawing.Point(0, 0)
@@ -2343,9 +2414,9 @@
             Me.lstEmailsReparadosAutoResponder.Dock = System.Windows.Forms.DockStyle.Fill
             Me.lstEmailsReparadosAutoResponder.FormattingEnabled = True
             Me.lstEmailsReparadosAutoResponder.IntegralHeight = False
-            Me.lstEmailsReparadosAutoResponder.Location = New System.Drawing.Point(0, 20)
+            Me.lstEmailsReparadosAutoResponder.Location = New System.Drawing.Point(0, 45)
             Me.lstEmailsReparadosAutoResponder.Name = "lstEmailsReparadosAutoResponder"
-            Me.lstEmailsReparadosAutoResponder.Size = New System.Drawing.Size(216, 407)
+            Me.lstEmailsReparadosAutoResponder.Size = New System.Drawing.Size(216, 382)
             Me.lstEmailsReparadosAutoResponder.TabIndex = 1
             '
             'Label28
@@ -2396,10 +2467,10 @@
             Me.BuclesToolStripMenuItem.Size = New System.Drawing.Size(102, 20)
             Me.BuclesToolStripMenuItem.Text = "Subprocesos"
             '
-            'TimerIpBan
+            'TimerToInterfaceIpBan
             '
-            Me.TimerIpBan.Enabled = True
-            Me.TimerIpBan.Interval = 1000
+            Me.TimerToInterfaceIpBan.Enabled = True
+            Me.TimerToInterfaceIpBan.Interval = 1000
             '
             'TimerGuiAnalizador
             '
@@ -2449,40 +2520,24 @@
             Me.ImageList2.ImageSize = New System.Drawing.Size(16, 16)
             Me.ImageList2.TransparentColor = System.Drawing.Color.Transparent
             '
-            'PanelPaisIpBlanca
+            'ToolStrip2
             '
-            Me.PanelPaisIpBlanca.BackColor = System.Drawing.Color.Black
-            Me.PanelPaisIpBlanca.Controls.Add(Me.lblPaisIpBlancaSet)
-            Me.PanelPaisIpBlanca.Controls.Add(Me.lblPaisIpBlanca)
-            Me.PanelPaisIpBlanca.Dock = System.Windows.Forms.DockStyle.Bottom
-            Me.PanelPaisIpBlanca.Location = New System.Drawing.Point(3, 332)
-            Me.PanelPaisIpBlanca.Name = "PanelPaisIpBlanca"
-            Me.PanelPaisIpBlanca.Padding = New System.Windows.Forms.Padding(0, 1, 0, 0)
-            Me.PanelPaisIpBlanca.Size = New System.Drawing.Size(125, 38)
-            Me.PanelPaisIpBlanca.TabIndex = 5
+            Me.ToolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.ToolStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BtnEliminarAutoResponder})
+            Me.ToolStrip2.Location = New System.Drawing.Point(0, 20)
+            Me.ToolStrip2.Name = "ToolStrip2"
+            Me.ToolStrip2.Size = New System.Drawing.Size(216, 25)
+            Me.ToolStrip2.TabIndex = 3
+            Me.ToolStrip2.Text = "MenuColaSMTPAutoResponder"
             '
-            'lblPaisIpBlanca
+            'BtnEliminarAutoResponder
             '
-            Me.lblPaisIpBlanca.BackColor = System.Drawing.Color.White
-            Me.lblPaisIpBlanca.Dock = System.Windows.Forms.DockStyle.Left
-            Me.lblPaisIpBlanca.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.lblPaisIpBlanca.Location = New System.Drawing.Point(0, 1)
-            Me.lblPaisIpBlanca.Name = "lblPaisIpBlanca"
-            Me.lblPaisIpBlanca.Size = New System.Drawing.Size(45, 37)
-            Me.lblPaisIpBlanca.TabIndex = 0
-            Me.lblPaisIpBlanca.Text = "País:"
-            Me.lblPaisIpBlanca.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
-            'lblPaisIpBlancaSet
-            '
-            Me.lblPaisIpBlancaSet.BackColor = System.Drawing.Color.White
-            Me.lblPaisIpBlancaSet.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.lblPaisIpBlancaSet.Location = New System.Drawing.Point(45, 1)
-            Me.lblPaisIpBlancaSet.Name = "lblPaisIpBlancaSet"
-            Me.lblPaisIpBlancaSet.Size = New System.Drawing.Size(80, 37)
-            Me.lblPaisIpBlancaSet.TabIndex = 1
-            Me.lblPaisIpBlancaSet.Text = "..."
-            Me.lblPaisIpBlancaSet.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+            Me.BtnEliminarAutoResponder.Enabled = False
+            Me.BtnEliminarAutoResponder.Image = CType(resources.GetObject("BtnEliminarAutoResponder.Image"), System.Drawing.Image)
+            Me.BtnEliminarAutoResponder.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.BtnEliminarAutoResponder.Name = "BtnEliminarAutoResponder"
+            Me.BtnEliminarAutoResponder.Size = New System.Drawing.Size(70, 22)
+            Me.BtnEliminarAutoResponder.Text = "Eliminar"
             '
             'UcWEB
             '
@@ -2554,6 +2609,7 @@
             Me.PanelTexto.ResumeLayout(False)
             Me.PanelTexto.PerformLayout()
             Me.Panel15.ResumeLayout(False)
+            Me.PanelPaisIpBlanca.ResumeLayout(False)
             Me.PanelBotonesBlanca.ResumeLayout(False)
             Me.Fondo.ResumeLayout(False)
             Me.TabApp.ResumeLayout(False)
@@ -2572,6 +2628,7 @@
             Me.SplitContainer2.ResumeLayout(False)
             Me.MenuTablaBackup.ResumeLayout(False)
             Me.PanelAutoIndex.ResumeLayout(False)
+            Me.tlpAutoIndexacion.ResumeLayout(False)
             Me.TabBackup.ResumeLayout(False)
             Me.TabPMAI.ResumeLayout(False)
             CType(Me.TablaMailBackupMAI, System.ComponentModel.ISupportInitialize).EndInit()
@@ -2640,12 +2697,14 @@
             CType(Me.SplitContainer6, System.ComponentModel.ISupportInitialize).EndInit()
             Me.SplitContainer6.ResumeLayout(False)
             Me.PanellstEmailsColaSMTP.ResumeLayout(False)
+            Me.PanellstEmailsColaSMTP.PerformLayout()
             Me.MenuPrincipal.ResumeLayout(False)
             Me.MenuPrincipal.PerformLayout()
             Me.StatusStrip2.ResumeLayout(False)
             Me.StatusStrip2.PerformLayout()
             CType(Me.FiltrosMailBox, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.PanelPaisIpBlanca.ResumeLayout(False)
+            Me.ToolStrip2.ResumeLayout(False)
+            Me.ToolStrip2.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -2687,7 +2746,7 @@
         Friend WithEvents TabSpamAssassin As TabPage
         Friend WithEvents IconosTab As ImageList
         Friend WithEvents txtRichSpamAssassin As RichTextBox
-        Friend WithEvents TimerIpBan As Timer
+        Friend WithEvents TimerToInterfaceIpBan As Timer
         Friend WithEvents lblEstadoSpamAssasin As Label
         Friend WithEvents Label3 As Label
         Friend WithEvents MenuSpamAssassin As MenuStrip
@@ -2866,5 +2925,9 @@
         Friend WithEvents PanelPaisIpBlanca As Panel
         Friend WithEvents lblPaisIpBlancaSet As Label
         Friend WithEvents lblPaisIpBlanca As Label
+        Friend WithEvents tlpAutoIndexacion As TableLayoutPanel
+        Friend WithEvents lblAutoindexaciones As Label
+        Friend WithEvents ToolStrip2 As ToolStrip
+        Friend WithEvents BtnEliminarAutoResponder As ToolStripButton
     End Class
 End Namespace
