@@ -2292,7 +2292,7 @@
             '
             Me.SplitContainer5.BackColor = System.Drawing.Color.Black
             Me.SplitContainer5.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.SplitContainer5.Location = New System.Drawing.Point(224, 0)
+            Me.SplitContainer5.Location = New System.Drawing.Point(220, 0)
             Me.SplitContainer5.Name = "SplitContainer5"
             '
             'SplitContainer5.Panel1
@@ -2303,7 +2303,7 @@
             'SplitContainer5.Panel2
             '
             Me.SplitContainer5.Panel2.Controls.Add(Me.SplitContainer6)
-            Me.SplitContainer5.Size = New System.Drawing.Size(1216, 427)
+            Me.SplitContainer5.Size = New System.Drawing.Size(1220, 427)
             Me.SplitContainer5.SplitterDistance = 253
             Me.SplitContainer5.TabIndex = 2
             '
@@ -2343,8 +2343,8 @@
             '
             Me.SplitContainer6.Panel2.Controls.Add(Me.RichAutoResponderRespuesta)
             Me.SplitContainer6.Panel2.Controls.Add(Me.Label27)
-            Me.SplitContainer6.Size = New System.Drawing.Size(959, 427)
-            Me.SplitContainer6.SplitterDistance = 318
+            Me.SplitContainer6.Size = New System.Drawing.Size(963, 427)
+            Me.SplitContainer6.SplitterDistance = 319
             Me.SplitContainer6.TabIndex = 2
             '
             'RichAutoResponderStatus
@@ -2352,7 +2352,7 @@
             Me.RichAutoResponderStatus.Dock = System.Windows.Forms.DockStyle.Fill
             Me.RichAutoResponderStatus.Location = New System.Drawing.Point(0, 20)
             Me.RichAutoResponderStatus.Name = "RichAutoResponderStatus"
-            Me.RichAutoResponderStatus.Size = New System.Drawing.Size(318, 407)
+            Me.RichAutoResponderStatus.Size = New System.Drawing.Size(319, 407)
             Me.RichAutoResponderStatus.TabIndex = 0
             Me.RichAutoResponderStatus.Text = ""
             '
@@ -2363,7 +2363,7 @@
             Me.Label26.ForeColor = System.Drawing.Color.White
             Me.Label26.Location = New System.Drawing.Point(0, 0)
             Me.Label26.Name = "Label26"
-            Me.Label26.Size = New System.Drawing.Size(318, 20)
+            Me.Label26.Size = New System.Drawing.Size(319, 20)
             Me.Label26.TabIndex = 1
             Me.Label26.Text = "Estado"
             Me.Label26.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -2373,7 +2373,7 @@
             Me.RichAutoResponderRespuesta.Dock = System.Windows.Forms.DockStyle.Fill
             Me.RichAutoResponderRespuesta.Location = New System.Drawing.Point(0, 20)
             Me.RichAutoResponderRespuesta.Name = "RichAutoResponderRespuesta"
-            Me.RichAutoResponderRespuesta.Size = New System.Drawing.Size(637, 407)
+            Me.RichAutoResponderRespuesta.Size = New System.Drawing.Size(640, 407)
             Me.RichAutoResponderRespuesta.TabIndex = 3
             Me.RichAutoResponderRespuesta.Text = ""
             '
@@ -2384,7 +2384,7 @@
             Me.Label27.ForeColor = System.Drawing.Color.White
             Me.Label27.Location = New System.Drawing.Point(0, 0)
             Me.Label27.Name = "Label27"
-            Me.Label27.Size = New System.Drawing.Size(637, 20)
+            Me.Label27.Size = New System.Drawing.Size(640, 20)
             Me.Label27.TabIndex = 2
             Me.Label27.Text = "Respuesta"
             Me.Label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -2394,7 +2394,7 @@
             Me.SplitterAutoResponderLst.BackColor = System.Drawing.Color.Black
             Me.SplitterAutoResponderLst.Location = New System.Drawing.Point(216, 0)
             Me.SplitterAutoResponderLst.Name = "SplitterAutoResponderLst"
-            Me.SplitterAutoResponderLst.Size = New System.Drawing.Size(8, 427)
+            Me.SplitterAutoResponderLst.Size = New System.Drawing.Size(4, 427)
             Me.SplitterAutoResponderLst.TabIndex = 1
             Me.SplitterAutoResponderLst.TabStop = False
             '
