@@ -32,6 +32,7 @@ Namespace Bucle
                 End If
             Next
             PanelWindows.Controls.Clear()
+            Core.Visor = Nothing
         End Sub
         Private Sub SetText()
             tlblBucles.Text = $"SubProcesos ({Core.GlobalDoBucle.Count})"

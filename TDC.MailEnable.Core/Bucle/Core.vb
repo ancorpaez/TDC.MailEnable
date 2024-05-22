@@ -1,10 +1,12 @@
 ﻿Namespace Bucle
     Public Module Core
         Friend GlobalDoBucle As New System.Collections.Concurrent.ConcurrentDictionary(Of String, DoBucle)
+        Friend Visor As View = Nothing
 
         Public Sub View()
-            Dim v As New View
-            v.Show()
+            If IsNothing(Visor) Then Visor = New View
+            Visor.Show()
+            If Not Visor.Focused Then Visor.Focus()
         End Sub
         Friend Sub Add(iBucle As DoBucle)
             If Not GlobalDoBucle.ContainsKey(iBucle.Name) Then

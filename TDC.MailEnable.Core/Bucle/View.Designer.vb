@@ -41,23 +41,23 @@ Namespace Bucle
             'StatusStrip1
             '
             Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tlblBucles, Me.lblSeparador, Me.lblScroll, Me.btnMouse})
-            Me.StatusStrip1.Location = New System.Drawing.Point(0, 237)
+            Me.StatusStrip1.Location = New System.Drawing.Point(0, 239)
             Me.StatusStrip1.Name = "StatusStrip1"
-            Me.StatusStrip1.Size = New System.Drawing.Size(659, 24)
+            Me.StatusStrip1.Size = New System.Drawing.Size(659, 22)
             Me.StatusStrip1.TabIndex = 1
             Me.StatusStrip1.Text = "Bucles"
             '
             'tlblBucles
             '
             Me.tlblBucles.Name = "tlblBucles"
-            Me.tlblBucles.Size = New System.Drawing.Size(58, 19)
+            Me.tlblBucles.Size = New System.Drawing.Size(58, 17)
             Me.tlblBucles.Text = "Bucles (0)"
             '
             'lblSeparador
             '
             Me.lblSeparador.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
             Me.lblSeparador.Name = "lblSeparador"
-            Me.lblSeparador.Size = New System.Drawing.Size(463, 19)
+            Me.lblSeparador.Size = New System.Drawing.Size(494, 19)
             Me.lblSeparador.Spring = True
             Me.lblSeparador.Visible = False
             '
@@ -75,7 +75,7 @@ Namespace Bucle
             Me.btnMouse.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.btnMouse.Name = "btnMouse"
             Me.btnMouse.ShowDropDownArrow = False
-            Me.btnMouse.Size = New System.Drawing.Size(75, 22)
+            Me.btnMouse.Size = New System.Drawing.Size(75, 20)
             Me.btnMouse.Text = "Refrescar"
             Me.btnMouse.Visible = False
             '
@@ -95,7 +95,7 @@ Namespace Bucle
             Me.Scroll.LargeChange = 50
             Me.Scroll.Location = New System.Drawing.Point(641, 0)
             Me.Scroll.Name = "Scroll"
-            Me.Scroll.Size = New System.Drawing.Size(18, 237)
+            Me.Scroll.Size = New System.Drawing.Size(18, 239)
             Me.Scroll.SmallChange = 10
             Me.Scroll.TabIndex = 0
             '
@@ -106,7 +106,7 @@ Namespace Bucle
             Me.PanelContenedor.Dock = System.Windows.Forms.DockStyle.Fill
             Me.PanelContenedor.Location = New System.Drawing.Point(0, 0)
             Me.PanelContenedor.Name = "PanelContenedor"
-            Me.PanelContenedor.Size = New System.Drawing.Size(659, 237)
+            Me.PanelContenedor.Size = New System.Drawing.Size(659, 239)
             Me.PanelContenedor.TabIndex = 5
             '
             'View

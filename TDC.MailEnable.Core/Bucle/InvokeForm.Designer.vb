@@ -36,13 +36,14 @@ Namespace Bucle
             Me.Status = New System.Windows.Forms.StatusStrip()
             Me.ToolStripOptions = New System.Windows.Forms.ToolStrip()
             Me.ToolOptionsChange = New System.Windows.Forms.ToolStripButton()
+            Me.ToolIntervalo = New System.Windows.Forms.ToolStripLabel()
             Me.ToolOptionsClose = New System.Windows.Forms.ToolStripButton()
+            Me.ToolOptionsSiempreVisible = New System.Windows.Forms.ToolStripButton()
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
             Me.ToolName = New System.Windows.Forms.ToolStripLabel()
-            Me.ToolTip = New System.Windows.Forms.ToolTip(Me.components)
-            Me.ToolContador = New System.Windows.Forms.ToolStripLabel()
             Me.ToolSpace = New System.Windows.Forms.ToolStripLabel()
-            Me.ToolIntervalo = New System.Windows.Forms.ToolStripLabel()
+            Me.ToolContador = New System.Windows.Forms.ToolStripLabel()
+            Me.ToolTip = New System.Windows.Forms.ToolTip(Me.components)
             Me.FlowControls.SuspendLayout()
             Me.ToolStripOptions.SuspendLayout()
             Me.SuspendLayout()
@@ -147,7 +148,7 @@ Namespace Bucle
             '
             Me.ToolStripOptions.BackColor = System.Drawing.Color.WhiteSmoke
             Me.ToolStripOptions.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.ToolStripOptions.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolOptionsChange, Me.ToolIntervalo, Me.ToolOptionsClose, Me.ToolStripSeparator1, Me.ToolName, Me.ToolSpace, Me.ToolContador})
+            Me.ToolStripOptions.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolOptionsChange, Me.ToolIntervalo, Me.ToolOptionsClose, Me.ToolOptionsSiempreVisible, Me.ToolStripSeparator1, Me.ToolName, Me.ToolSpace, Me.ToolContador})
             Me.ToolStripOptions.Location = New System.Drawing.Point(0, 0)
             Me.ToolStripOptions.Name = "ToolStripOptions"
             Me.ToolStripOptions.Size = New System.Drawing.Size(434, 25)
@@ -162,6 +163,12 @@ Namespace Bucle
             Me.ToolOptionsChange.Size = New System.Drawing.Size(23, 22)
             Me.ToolOptionsChange.Text = "Cambiar"
             '
+            'ToolIntervalo
+            '
+            Me.ToolIntervalo.Name = "ToolIntervalo"
+            Me.ToolIntervalo.Size = New System.Drawing.Size(13, 22)
+            Me.ToolIntervalo.Text = "0"
+            '
             'ToolOptionsClose
             '
             Me.ToolOptionsClose.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -171,6 +178,18 @@ Namespace Bucle
             Me.ToolOptionsClose.Name = "ToolOptionsClose"
             Me.ToolOptionsClose.Size = New System.Drawing.Size(23, 22)
             Me.ToolOptionsClose.Text = "Close"
+            '
+            'ToolOptionsSiempreVisible
+            '
+            Me.ToolOptionsSiempreVisible.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            Me.ToolOptionsSiempreVisible.BackColor = System.Drawing.Color.WhiteSmoke
+            Me.ToolOptionsSiempreVisible.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.ToolOptionsSiempreVisible.ForeColor = System.Drawing.SystemColors.ControlText
+            Me.ToolOptionsSiempreVisible.Image = CType(resources.GetObject("ToolOptionsSiempreVisible.Image"), System.Drawing.Image)
+            Me.ToolOptionsSiempreVisible.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.ToolOptionsSiempreVisible.Name = "ToolOptionsSiempreVisible"
+            Me.ToolOptionsSiempreVisible.Size = New System.Drawing.Size(23, 22)
+            Me.ToolOptionsSiempreVisible.Text = "Siempre Visible"
             '
             'ToolStripSeparator1
             '
@@ -184,6 +203,13 @@ Namespace Bucle
             Me.ToolName.Size = New System.Drawing.Size(74, 22)
             Me.ToolName.Text = "Bucle Name"
             '
+            'ToolSpace
+            '
+            Me.ToolSpace.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            Me.ToolSpace.AutoSize = False
+            Me.ToolSpace.Name = "ToolSpace"
+            Me.ToolSpace.Size = New System.Drawing.Size(10, 22)
+            '
             'ToolContador
             '
             Me.ToolContador.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -192,19 +218,6 @@ Namespace Bucle
             Me.ToolContador.Name = "ToolContador"
             Me.ToolContador.Size = New System.Drawing.Size(50, 22)
             Me.ToolContador.Text = "0"
-            '
-            'ToolSpace
-            '
-            Me.ToolSpace.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-            Me.ToolSpace.AutoSize = False
-            Me.ToolSpace.Name = "ToolSpace"
-            Me.ToolSpace.Size = New System.Drawing.Size(10, 22)
-            '
-            'ToolIntervalo
-            '
-            Me.ToolIntervalo.Name = "ToolIntervalo"
-            Me.ToolIntervalo.Size = New System.Drawing.Size(13, 22)
-            Me.ToolIntervalo.Text = "0"
             '
             'InvokeForm
             '
@@ -244,5 +257,6 @@ Namespace Bucle
         Friend WithEvents ToolContador As ToolStripLabel
         Friend WithEvents ToolSpace As ToolStripLabel
         Friend WithEvents ToolIntervalo As ToolStripLabel
+        Friend WithEvents ToolOptionsSiempreVisible As ToolStripButton
     End Class
 End Namespace

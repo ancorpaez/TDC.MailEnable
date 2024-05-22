@@ -71,10 +71,15 @@ Namespace Bucle
                     Me.Opacity = 0
                     Me.ShowIcon = False
                     ShowInTaskbar = False
-                    TopLevel = False
+                    Me.TopLevel = False
                     Me.Padding = New Padding(1)
                     Me.Height = ToolStripOptions.Height + (Me.Padding.All + 1)
                     Me.Dock = DockStyle.Top
+
+                    If Me.TopMost Then
+                        Me.TopMost = False
+                        ToolOptionsSiempreVisible.BackColor = Color.WhiteSmoke
+                    End If
 
                     ToolContador.Visible = True
                     lblName.Visible = True
@@ -185,9 +190,34 @@ Namespace Bucle
         End Sub
 
         Private Sub InvokeForm_Resize(sender As Object, e As EventArgs) Handles Me.Resize
-            ToolSpace.Width = ((ToolStripOptions.Height * 3) - ToolOptionsClose.Height) + 8
+            ToolSpace.Width = ((ToolStripOptions.Height * 3) - ToolOptionsClose.Height) + 30
             lblCount.Width = ToolStripOptions.Height * 2
             lblName.Width = Me.Width - ((Me.Height * 5) + (Me.Padding.All + 1))
+        End Sub
+
+        Private Sub BtnSiempreVisible_Click(sender As Object, e As EventArgs) Handles ToolOptionsSiempreVisible.Click
+            Me.TopMost = Not Me.TopMost
+            If Me.TopMost Then ToolOptionsSiempreVisible.BackColor = Color.LightSkyBlue Else ToolOptionsSiempreVisible.BackColor = Color.WhiteSmoke
+        End Sub
+
+        Private Sub InvokeForm_VisibleChanged(sender As Object, e As EventArgs) Handles Me.VisibleChanged
+            If Me.FormBorderStyle = FormBorderStyle.None Then
+                ToolOptionsSiempreVisible.Visible = False
+                ToolOptionsClose.Visible = False
+            Else
+                ToolOptionsSiempreVisible.Visible = True
+                ToolOptionsClose.Visible = True
+            End If
+        End Sub
+
+        Private Sub MM(sender As Object, e As MouseEventArgs) Handles Me.MouseMove,
+            ToolStripOptions.MouseMove,
+            ToolOptionsClose.MouseMove,
+            ToolOptionsSiempreVisible.MouseMove,
+            ToolOptionsChange.MouseMove,
+            ToolContador.MouseMove,
+            FlowControls.MouseMove
+            If Me.FormBorderStyle <> FormBorderStyle.None AndAlso Not Me.Focused AndAlso Me.CanFocus Then Me.Focus()
         End Sub
     End Class
 End Namespace

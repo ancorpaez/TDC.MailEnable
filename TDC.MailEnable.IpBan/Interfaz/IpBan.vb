@@ -1251,12 +1251,14 @@ Namespace Interfaz
                     If AutoResponder.Estados.ContainsKey(ItemKey) Then RichAutoResponderStatus.Text = AutoResponder.Estados(lstEmailsReparadosAutoResponder.SelectedItems.Item(0)) Else RichAutoResponderStatus.Text = "No se encuentra la Clave"
                     If AutoResponder.Respuestas.ContainsKey(ItemKey) Then RichAutoResponderRespuesta.Text = AutoResponder.Respuestas(lstEmailsReparadosAutoResponder.SelectedItems.Item(0)) Else RichAutoResponderRespuesta.Text = "No se encuentra la Clave"
                     BtnEliminarAutoResponder.Enabled = True
+                    lblEmailSeleccionadoAutoResponder.Text = ItemKey
                 End If
             Else
                 RichAutoResponderMail.Text = String.Empty
                 RichAutoResponderStatus.Text = String.Empty
                 RichAutoResponderRespuesta.Text = String.Empty
                 BtnEliminarAutoResponder.Enabled = False
+                lblEmailSeleccionadoAutoResponder.Text = String.Empty
             End If
         End Sub
 
@@ -1275,6 +1277,14 @@ Namespace Interfaz
                 RichAutoResponderRespuesta.Text = String.Empty
                 BtnEliminarAutoResponder.Enabled = False
             End If
+        End Sub
+        Private Sub BtnLimpiarMemoriaAutoResponder_Click(sender As Object, e As EventArgs) Handles BtnLimpiarMemoriaAutoResponder.Click
+            AutoResponder.Clear()
+            lstEmailsReparadosAutoResponder.Items.Clear()
+            RichAutoResponderMail.Text = String.Empty
+            RichAutoResponderStatus.Text = String.Empty
+            RichAutoResponderRespuesta.Text = String.Empty
+            BtnEliminarAutoResponder.Enabled = False
         End Sub
 #End Region
         Private Sub lstIpBlancas_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstIpBlancas.SelectedIndexChanged

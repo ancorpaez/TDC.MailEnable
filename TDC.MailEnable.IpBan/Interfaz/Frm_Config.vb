@@ -92,7 +92,23 @@ Namespace Interfaz
             Me.Close()
         End Sub
 
-        Private Sub txtAPOP_TextChanged(sender As Object, e As EventArgs) Handles txtAPOP.TextChanged, txtAWEB.TextChanged, txtASMTP.TextChanged, txtWEB.TextChanged, txtPOP.TextChanged, txtSMTP.TextChanged, txtIMAP.TextChanged, txtImapApp.TextChanged, txtSpamAssassin.TextChanged, txtPostOffices.TextChanged, txtBackupEmail.TextChanged
+        Private Sub txtAPOP_TextChanged(sender As Object, e As EventArgs) Handles txtAPOP.TextChanged,
+            txtAWEB.TextChanged,
+            txtASMTP.TextChanged,
+            txtWEB.TextChanged,
+            txtPOP.TextChanged,
+            txtSMTP.TextChanged,
+            txtIMAP.TextChanged,
+            txtImapApp.TextChanged,
+            txtSpamAssassin.TextChanged,
+            txtPostOffices.TextChanged,
+            txtBackupEmail.TextChanged,
+            txtLecturaArchivos.TextChanged,
+            txtPropagacionIP.TextChanged,
+            txtAnalizadoresEmail.TextChanged,
+            txtTimerAnalizadoresEmail.TextChanged,
+            txtAntiguedadEmails.TextChanged,
+            txtAutoResponder.TextChanged
             If Estado = EstadosCarga.Cargado Then BtnGuardarConfig.Enabled = True
         End Sub
         Private Sub BtnCargarIMAP_Click(sender As Object, e As EventArgs) Handles BtnCargarIMAP.Click

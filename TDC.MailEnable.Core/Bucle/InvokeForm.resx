@@ -144,11 +144,23 @@
   <data name="ToolOptionsClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAD2SURBVFhH7ZcxDsIgFIbZvIRjE6emtNzBe5h4AI9mvIJj
-        nbyITq76PmydHsYECg685Jso///3QQKYuZqmWQ3DcBDGtm0fzrlnStBEGw+8Jtt3yeDaWnvVJi4BXnh6
-        c9LkNJ/B03eClmgf5ABvAozaYA7wZv2Tb7hfwdtoAzmpAWqAGqAGqAFqgG8B7nJcnoRjJGjcFH1PMIBM
-        2vorU4JCS/OAYAA5qzfT/OhCS/OA/w3QdZ2d5kcXWpoHBAPIrfUsa7fv+34XAxpoaR4QDJCL8pdSaVHJ
-        a/ml/MOk+NOMkrUo9zidizS0hD2xxMZEkzXH4/PnxpgXx7+r5IGO+dQAAAAASUVORK5CYII=
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAD6SURBVFhH7ZexDcIwEEXdsQRlJIooipPswB5IDMBoiBUo
+        Q8UiUNHCPRNTnRGSE5vCJ/0q8X8/Z0s5G19VVa36vj+IxrquH8MwPOcUnnjDgDVh39U0zdpae9UWLiFY
+        MB2cNCnhXjBdJ2iJ9kIKwSbAqD1MIdhmiQP3q2Ab7UFKlQAlQAlQApQAJcC3AHf5XZ5Ex0jhcVP8nYIB
+        ZNHWjUwzFF4aAwUDyMy2mdZHF14aA/1vgLZt7bQ+uvDSGCgYQKbWs+zdvuu6XYzwwEtjoGCAVMo/lEqL
+        co7ll/wXk+xXM4qLYsoQsGA6uC/S0BLOxBIHE0/2HMbny40xL0SYq7RqBuOXAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="ToolOptionsSiempreVisible.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFLSURBVFhH7dfBKkRxFMfxIRHKFgshC55Cylas2XkHWVuy
+        oSRP4AmkrETyIBLZ2aAsiO+33Lr9OyMz9z93NvdXn5r+95w5h273Nq0OMoJdPOO7jSfswNrs2cYbosFl
+        r9hC1gzjAtHAyDnsyZZR3CAaFrHWnmzxy64RDYtYm3WBAZwgGhY5RPYswX/tF6Kh8toVFtGTTGMTt0iH
+        e+bdP4me5xTpAp7Vlr4sMIgFrOIS6QKeec0aa7NmAnu4xweiG9Ezr1ljrT1ZMoQDfCId2o619thbOSt4
+        QTToL/Yso3KOEA34j31Uyjg6eQSn7B1D15nCHR7xkPC1Wwzyc3rdHnv9jq7jTTSDecyVzOIMxQJ+9qxc
+        Y4+9WW7EKOWHUa1PwSLNAs0CzQLNAn1f4BjFAr4xa8863n+teVB3fM36e9HfgZVeuVWygQp/fav1A4om
+        4NOdvxRPAAAAAElFTkSuQmCC
 </value>
   </data>
   <metadata name="ToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">

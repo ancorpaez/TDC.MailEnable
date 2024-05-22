@@ -35,6 +35,14 @@ Namespace AutoResponder
             End Try
             Return False
         End Function
+        Public Sub Clear()
+            If Not Mensajes.IsEmpty Then Mensajes.Clear()
+            If Not Estados.IsEmpty Then Estados.Clear()
+            If Not Respuestas.IsEmpty Then Respuestas.Clear()
+            Do While Not Modificados.IsEmpty
+                Modificados.TryTake(Modificados.First)
+            Loop
+        End Sub
         Private Sub AutoResponderRepair_BackGround(Sender As Object, e As BackgroundEventArgs) Handles AutoResponderRepair.BackGround
             If Not String.IsNullOrEmpty(Configuracion.AUTORESPONDER) Then
                 If IO.Directory.Exists(Configuracion.AUTORESPONDER) Then
