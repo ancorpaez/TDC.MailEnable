@@ -52,7 +52,7 @@ Namespace Migracion
             If Not CarpetaLocalErroneos.Exists Then CarpetaLocalErroneos.Create()
 
             'Cargar Archivo de MailEnable
-            Using LeerMailEnableMailBox As IO.StreamReader = New IO.StreamReader(IO.File.Open(MailEnableLog.Configuracion.MAIL_APP & MailEnableMailBoxFile, IO.FileMode.Open, IO.FileAccess.Read))
+            Using LeerMailEnableMailBox As IO.StreamReader = New IO.StreamReader(IO.File.Open(IpBan.MailEnable.Main.Configuracion.MAIL_APP & MailEnableMailBoxFile, IO.FileMode.Open, IO.FileAccess.Read))
                 Dim Linea As String = String.Empty
                 Dim Partes() As String = {}
                 Do
@@ -119,10 +119,10 @@ Namespace Migracion
         End Function
 
         Private Sub Refresh_Migraciones_Background(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Refresh_Migraciones.Background
-            If String.IsNullOrEmpty(MailEnableLog.Configuracion.MAIL_APP) Then Throw New Exception("No está configurada la carpeta MailEnable App")
-            If Not IO.Directory.Exists(MailEnableLog.Configuracion.MAIL_APP) Then Throw New Exception($"La carpeta configuarada {MailEnableLog.Configuracion.MAIL_APP} no existe o no hay acceso.")
+            If String.IsNullOrEmpty(IpBan.MailEnable.Main.Configuracion.MAIL_APP) Then Throw New Exception("No está configurada la carpeta MailEnable App")
+            If Not IO.Directory.Exists(IpBan.MailEnable.Main.Configuracion.MAIL_APP) Then Throw New Exception($"La carpeta configuarada {IpBan.MailEnable.Main.Configuracion.MAIL_APP} no existe o no hay acceso.")
 
-            CarpetaMigracion = New IO.DirectoryInfo(MailEnableLog.Configuracion.MAIL_APP & "\Config\Migration")
+            CarpetaMigracion = New IO.DirectoryInfo(IpBan.MailEnable.Main.Configuracion.MAIL_APP & "\Config\Migration")
             For Each DomFile In IO.Directory.GetFiles(CarpetaMigracion.FullName, "*.xml")
                 Try
                     Using Leer As New IO.StreamReader(DomFile)
@@ -139,7 +139,7 @@ Namespace Migracion
                 End Try
             Next
 
-            CarpetaQuened = New IO.DirectoryInfo(MailEnableLog.Configuracion.MAIL_APP & "\Config\Migration\Queued")
+            CarpetaQuened = New IO.DirectoryInfo(IpBan.MailEnable.Main.Configuracion.MAIL_APP & "\Config\Migration\Queued")
             For Each MailFile In IO.Directory.GetFiles(CarpetaQuened.FullName, "*.xml")
                 Using Leer As New IO.StreamReader(MailFile)
                     Dim CargarXml As New XmlSerializer(GetType(MailboxMigrationOperation))
@@ -152,7 +152,7 @@ Namespace Migracion
                 End Using
             Next
 
-            CarpetaProgress = New IO.DirectoryInfo(MailEnableLog.Configuracion.MAIL_APP & "\Config\Migration\InProgress")
+            CarpetaProgress = New IO.DirectoryInfo(IpBan.MailEnable.Main.Configuracion.MAIL_APP & "\Config\Migration\InProgress")
             For Each MailFile In IO.Directory.GetFiles(CarpetaProgress.FullName, "*.xml")
                 Using Leer As New IO.StreamReader(MailFile)
                     Dim CargarXml As New XmlSerializer(GetType(MailboxMigrationOperation))
@@ -165,8 +165,8 @@ Namespace Migracion
                 End Using
             Next
 
-            CarpetaCompletados = New IO.DirectoryInfo(MailEnableLog.Configuracion.MAIL_APP & "\Config\Migration\Completed")
-            For Each MailFile In IO.Directory.GetFiles(MailEnableLog.Configuracion.MAIL_APP & "\Config\Migration\Completed", "*.xml")
+            CarpetaCompletados = New IO.DirectoryInfo(IpBan.MailEnable.Main.Configuracion.MAIL_APP & "\Config\Migration\Completed")
+            For Each MailFile In IO.Directory.GetFiles(IpBan.MailEnable.Main.Configuracion.MAIL_APP & "\Config\Migration\Completed", "*.xml")
                 Using Leer As New IO.StreamReader(MailFile)
                     Dim CargarXml As New XmlSerializer(GetType(MailboxMigrationOperation))
                     Dim MailXml As MailboxMigrationOperation = CType(CargarXml.Deserialize(Leer), MailboxMigrationOperation)
@@ -338,7 +338,7 @@ Namespace Migracion
                     .Items.Add(Dominio).Name = Dominio
                 Next
             End With
-            Asistente.Show(MailEnableLog.IpBanForm)
+            Asistente.Show(IpBan.MailEnable.IpBanForm)
         End Sub
 
         Public Sub LimpiarErroneos()
@@ -350,7 +350,7 @@ Namespace Migracion
         End Sub
         Public Sub HabilitarDominio(Dominio As String)
             Try
-                If IO.File.Exists(MailEnableLog.Configuracion.MAIL_APP & $"\Config\Migration\{Dominio}.xml") Then
+                If IO.File.Exists(IpBan.MailEnable.Main.Configuracion.MAIL_APP & $"\Config\Migration\{Dominio}.xml") Then
                     Dominios(Dominio).Enabled = True
                     Dim Guardar As String = String.Join(vbNewLine, XmlTemplate_MailboxMigrationOperation)
                     Guardar = String.Format(Guardar,
@@ -359,7 +359,7 @@ Namespace Migracion
                                             Dominios(Dominio).MigrationStrategy.RemoteServerAddress,
                                             Dominios(Dominio).MigrationStrategy.Port,
                                             Dominios(Dominio).MigrationStrategy.UseSSL)
-                    IO.File.WriteAllText(MailEnableLog.Configuracion.MAIL_APP & $"\Config\Migration\{Dominio}.xml", Guardar)
+                    IO.File.WriteAllText(IpBan.MailEnable.Main.Configuracion.MAIL_APP & $"\Config\Migration\{Dominio}.xml", Guardar)
                 End If
             Catch ex As Exception
                 MsgBox(ex.Message)
@@ -367,7 +367,7 @@ Namespace Migracion
         End Sub
         Public Sub DesHabilitarDominio(Dominio As String)
             Try
-                If IO.File.Exists(MailEnableLog.Configuracion.MAIL_APP & $"\Config\Migration\{Dominio}.xml") Then
+                If IO.File.Exists(IpBan.MailEnable.Main.Configuracion.MAIL_APP & $"\Config\Migration\{Dominio}.xml") Then
                     If Not Dominios.ContainsKey(Dominio) Then Exit Sub
                     Dominios(Dominio).Enabled = False
                     Dim Guardar As String = String.Join(vbNewLine, XmlTemplate_MailboxMigrationOperation)
@@ -377,7 +377,7 @@ Namespace Migracion
                                             Dominios(Dominio).MigrationStrategy.RemoteServerAddress,
                                             Dominios(Dominio).MigrationStrategy.Port,
                                             Dominios(Dominio).MigrationStrategy.UseSSL)
-                    IO.File.WriteAllText(MailEnableLog.Configuracion.MAIL_APP & $"\Config\Migration\{Dominio}.xml", Guardar)
+                    IO.File.WriteAllText(IpBan.MailEnable.Main.Configuracion.MAIL_APP & $"\Config\Migration\{Dominio}.xml", Guardar)
                 End If
             Catch ex As Exception
                 MsgBox(ex.Message)
@@ -391,7 +391,7 @@ Namespace Migracion
                     .Items.Add(Dominio).Name = Dominio
                 Next
             End With
-            Asistente.Show(MailEnableLog.IpBanForm)
+            Asistente.Show(IpBan.MailEnable.IpBanForm)
         End Sub
         Public Sub EliminarDominio(Dominio As String)
             Dim Archivo As String = $"{CarpetaMigracion.FullName}\{Dominio}.xml"

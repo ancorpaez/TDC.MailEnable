@@ -1,5 +1,5 @@
 ﻿Imports System.Net.NetworkInformation
-Imports TDC.MailEnable.IpBan.MailEnableLog
+Imports TDC.MailEnable.IpBan.MailEnable
 Imports TDC.MailEnable.Core
 Imports System.ComponentModel
 Imports TDC.MailEnable.Core.Bucle
@@ -8,9 +8,9 @@ Namespace Interfaz
     Public Class Frm_PublicarIps
         Private Publicador As Bucle.DoBucle
         Private IndexIp As Integer = 0
-        Private ListaSMTP As Cls_MailEnableDeny
-        Private ListaPOP As Cls_MailEnableDeny
-        Private ListaWEB As Cls_ISS
+        Private ListaSMTP As MailEnableDenyIp
+        Private ListaPOP As MailEnableDenyIp
+        Private ListaWEB As IISDenyIp
         Public Property ListaIPBaneadas As Collections.Concurrent.ConcurrentQueue(Of String)
         Private Enum EnumEstado
             Cargando
@@ -18,9 +18,9 @@ Namespace Interfaz
         End Enum
         Private Estado As EnumEstado = EnumEstado.Cargando
         Private Sub Frm_PublicarIps_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-            ListaSMTP = New Cls_MailEnableDeny(Mod_Core.Configuracion.SMTP_DENY)
-            ListaPOP = New Cls_MailEnableDeny(Mod_Core.Configuracion.POP_DENY)
-            ListaWEB = New Cls_ISS()
+            ListaSMTP = New MailEnableDenyIp(MailEnable.Main.Configuracion.SMTP_DENY)
+            ListaPOP = New MailEnableDenyIp(MailEnable.Main.Configuracion.POP_DENY)
+            ListaWEB = New IISDenyIp()
             Publicador = Core.Bucle.GetOrCreate("PublicadorIpNegra")
             AddHandler Publicador.BackGround, AddressOf Publicador_Background
             AddHandler Publicador.ForeGround, AddressOf Publicador_Foreground
@@ -46,7 +46,7 @@ Namespace Interfaz
             ListaWEB.Clear()
 
             'Intervalo
-            If IsNumeric(Configuracion.TIMER_PROPAGACION) Then Publicador.Intervalo = Configuracion.TIMER_PROPAGACION Else Publicador.Intervalo = 1
+            If IsNumeric(MailEnable.Main.Configuracion.TIMER_PROPAGACION) Then Publicador.Intervalo = MailEnable.Main.Configuracion.TIMER_PROPAGACION Else Publicador.Intervalo = 1
 
             'Interfaz
             Progreso.Maximum = ListaIPBaneadas.Count
@@ -57,7 +57,7 @@ Namespace Interfaz
 
         End Sub
         Private Sub Publicador_Background(Sender As Object, e As BackgroundEventArgs)
-            If IsNumeric(Configuracion.TIMER_PROPAGACION) Then Publicador.Intervalo = Configuracion.TIMER_PROPAGACION Else Publicador.Intervalo = 1
+            If IsNumeric(MailEnable.Main.Configuracion.TIMER_PROPAGACION) Then Publicador.Intervalo = MailEnable.Main.Configuracion.TIMER_PROPAGACION Else Publicador.Intervalo = 1
             'Proteger
             If ListaIPBaneadas.IsEmpty Then
                 e.Detener = True

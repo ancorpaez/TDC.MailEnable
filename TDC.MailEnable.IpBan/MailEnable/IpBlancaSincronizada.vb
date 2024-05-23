@@ -2,7 +2,7 @@
 Imports TDC.MailEnable.Core
 Imports TDC.MailEnable.Core.Windows.Registro
 
-Namespace MailEnableLog
+Namespace MailEnable
     Public Class IpBlancaSincronizada
         Private WithEvents Ips As New Concurrent.ConcurrentBindingList(Of String)
         Public Event AlActualizarLista()

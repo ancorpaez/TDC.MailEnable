@@ -1,16 +1,16 @@
 ﻿Imports System.Threading.Tasks
 Imports TDC.MailEnable.Core.Bucle
-Imports TDC.MailEnable.IpBan.MailEnableLog
+Imports TDC.MailEnable.IpBan.MailEnable
 Namespace Backup
     Module Core
 
 #Region "0.2"
         'Tablas
-        Public ReadOnly Property MAI As New MailEnable.Core.BDD.MailBackup_MAI  'Emails
-        Public ReadOnly Property VCF As New MailEnable.Core.BDD.MailBackup_VCF  'Contactos
-        Public ReadOnly Property TSK As New MailEnable.Core.BDD.MailBackup_TSK  'Tareas
-        Public ReadOnly Property CAL As New MailEnable.Core.BDD.MailBackup_CAL  'Calendario
-        Public ReadOnly Property Cleaner As New MailEnable.Core.BDD.MailBackupCleaner 'Limpieza
+        Public ReadOnly Property MAI As New TDC.MailEnable.Core.BDD.MailBackup_MAI  'Emails
+        Public ReadOnly Property VCF As New TDC.MailEnable.Core.BDD.MailBackup_VCF  'Contactos
+        Public ReadOnly Property TSK As New TDC.MailEnable.Core.BDD.MailBackup_TSK  'Tareas
+        Public ReadOnly Property CAL As New TDC.MailEnable.Core.BDD.MailBackup_CAL  'Calendario
+        Public ReadOnly Property Cleaner As New TDC.MailEnable.Core.BDD.MailBackupCleaner 'Limpieza
 
         Public BddMAIFullPath As String = $"{Application.StartupPath}\BDD\MAI.xml"
         Public BddVCFFullPath As String = $"{Application.StartupPath}\BDD\VCF.xml"
@@ -23,8 +23,8 @@ Namespace Backup
         Public WithEvents BuscadorCarpetas As New QueneDirectorios
         Public WithEvents BuscadorArchivos As New QueneArchivos
         Public WithEvents IndexadorArchivos As New Indexador
-        Private WithEvents iFaceNotificador As New MailEnable.Core.Bucle.DoBucle("iFaceNotificadorBackup")
-        Private WithEvents AutoIndex As New MailEnable.Core.Bucle.DoBucle("AutoIndexMailBackup") With {.Intervalo = DateDiff(DateInterval.Second, Now, Now.AddHours(1)) * 1000}
+        Private WithEvents iFaceNotificador As New DoBucle("iFaceNotificadorBackup")
+        Private WithEvents AutoIndex As New DoBucle("AutoIndexMailBackup") With {.Intervalo = DateDiff(DateInterval.Second, Now, Now.AddHours(1)) * 1000}
         Public ControlesProtegidos As New List(Of Control) From {IpBanForm.TreePostOffices, IpBanForm.TabBackup, IpBanForm.MenuTablaBackup}
         Public Sub Main()
             If IO.File.Exists(BddMAIFullPath) Then MAI.Tabla.ReadXml(BddMAIFullPath)
@@ -33,14 +33,14 @@ Namespace Backup
             If IO.File.Exists(BddTSKFullPath) Then TSK.Tabla.ReadXml(BddTSKFullPath)
             If IO.File.Exists(BddCleanerFullPath) Then Cleaner.Tabla.ReadXml(BddCleanerFullPath)
 
-            For i = 0 To Configuracion.ANALIZADORES_BACKUP - 1
-                Dim Indexador As MailEnable.Core.Bucle.DoBucle = MailEnable.Core.Bucle.GetOrCreate($"MailBackup{i}")
+            For i = 0 To MailEnable.Main.Configuracion.ANALIZADORES_BACKUP - 1
+                Dim Indexador As DoBucle = GetOrCreate($"MailBackup{i}")
             Next
 
             'iFaceNotificador.Iniciar()
             Dim CrearRegistro As New ListViewItem With {.Text = $"{Now.ToShortTimeString} {Now.ToShortDateString}"}
             IpBanForm.lstAutoIndex.Items.Add(CrearRegistro)
-            BuscadorCarpetas.Buscar(Configuracion.CARPETA_BACKUP)
+            BuscadorCarpetas.Buscar(MailEnable.Main.Configuracion.CARPETA_BACKUP)
             AutoIndex.Iniciar()
         End Sub
 
@@ -68,7 +68,7 @@ Namespace Backup
             Return False
         End Function
         Private Function OriginalPath(Archivo As String) As String
-            Return Archivo.Replace(MailEnableLog.Configuracion.CARPETA_BACKUP, MailEnableLog.Configuracion.POST_OFFICES)
+            Return Archivo.Replace(MailEnable.Main.Configuracion.CARPETA_BACKUP, MailEnable.Main.Configuracion.POST_OFFICES)
         End Function
 
         Private Sub BuscadorCarpetas_AlIniciarBusquedaDeCarpetas(sender As Object) Handles BuscadorCarpetas.AlIniciarBusquedaDeCarpetas
@@ -98,8 +98,8 @@ Namespace Backup
                 BuscadorArchivos.Estado = QueneArchivos.EnumEstado.Analizado AndAlso
                 IndexadorArchivos.Estado = Indexador.EnumEstado.Analizado Then
                 'Denetener los Buscadores
-                For i = 0 To Configuracion.ANALIZADORES_BACKUP - 1
-                    Dim Buscador As MailEnable.Core.Bucle.DoBucle = MailEnable.Core.Bucle.GetOrCreate($"MailBackup{i}")
+                For i = 0 To MailEnable.Main.Configuracion.ANALIZADORES_BACKUP - 1
+                    Dim Buscador As DoBucle = GetOrCreate($"MailBackup{i}")
                     If Not Buscador.Cancelar OrElse Buscador.Estado = Global.TDC.MailEnable.Core.Bucle.DoBucle.EnumEstado.Corriendo Then Buscador.Detener()
                 Next
 
@@ -116,7 +116,7 @@ Namespace Backup
                 IndexadorArchivos.Continuar()
             End If
         End Sub
-        Private Sub iFaceNotificador_Foreground(Sender As Object, Detener As MailEnable.Core.Bucle.BackgroundEventArgs) Handles iFaceNotificador.ForeGround
+        Private Sub iFaceNotificador_Foreground(Sender As Object, Detener As BackgroundEventArgs) Handles iFaceNotificador.ForeGround
             'Si hay Archivos por Indexar
             If IndexadorArchivos.Estado = Indexador.EnumEstado.Analizando AndAlso IndexadorArchivos.Quened > 0 Then IpBanForm.lblMailBackupSeleccionados.Text = $"Pendientes ({IndexadorArchivos.Quened})"
             'Si no hay por Indexar
@@ -128,7 +128,7 @@ Namespace Backup
             $"Subprocesos: [Indexadores {IndexadorArchivos.Indexadores.TakeWhile(Function(Buscador) Buscador.Value.Estado = Global.TDC.MailEnable.Core.Bucle.DoBucle.EnumEstado.Corriendo).Count}, " &
             $"Archivos {BuscadorArchivos.Buscadores.TakeWhile(Function(Buscador) Buscador.Value.Estado = Global.TDC.MailEnable.Core.Bucle.DoBucle.EnumEstado.Corriendo).Count}, " &
             $"Carpetas {BuscadorCarpetas.Buscadores.Count} , " &
-            $"Relajación {Configuracion.ANALIZADORES_BACKUP_TIMER} ms]"
+            $"Relajación {MailEnable.Main.Configuracion.ANALIZADORES_BACKUP_TIMER} ms]"
 
             If BuscadorCarpetas.Estado = QueneDirectorios.EnumEstado.Analizando OrElse
                BuscadorArchivos.Estado = QueneArchivos.EnumEstado.Analizando OrElse
@@ -160,8 +160,8 @@ Namespace Backup
         End Sub
 
 
-        Private Sub AutoIndex_Background(Sender As Object, Detener As MailEnable.Core.Bucle.BackgroundEventArgs) Handles AutoIndex.BackGround
-            If BuscadorCarpetas.Estado = QueneDirectorios.EnumEstado.Analizado Then BuscadorCarpetas.Buscar(Configuracion.CARPETA_BACKUP)
+        Private Sub AutoIndex_Background(Sender As Object, Detener As BackgroundEventArgs) Handles AutoIndex.BackGround
+            If BuscadorCarpetas.Estado = QueneDirectorios.EnumEstado.Analizado Then BuscadorCarpetas.Buscar(MailEnable.Main.Configuracion.CARPETA_BACKUP)
         End Sub
 
         Private Sub AutoIndex_ForeGround(Sender As Object, e As BackgroundEventArgs) Handles AutoIndex.ForeGround

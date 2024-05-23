@@ -1,5 +1,5 @@
-﻿Namespace MailEnableLog
-    Public Class Cls_Config
+﻿Namespace MailEnable
+    Public Class Configuracion
         Public POST_OFFICES As String = ""
         Public MAIL_APP As String = ""
         Public IMAP As String = ""

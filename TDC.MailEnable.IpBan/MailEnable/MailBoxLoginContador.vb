@@ -1,5 +1,5 @@
-﻿Namespace MailEnableLog
-    Public Class Cls_MailBoxLogin
+﻿Namespace MailEnable
+    Public Class MailBoxLoginContador
         'Construccion (MailBox)(Ip,Contraseña)
         Private MailBoxes As New Concurrent.ConcurrentDictionary(Of String, Concurrent.ConcurrentQueue(Of String))
 

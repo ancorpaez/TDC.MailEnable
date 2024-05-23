@@ -16,7 +16,7 @@ Namespace Certificados
         Private UiFaceListControl As ListView = Nothing
         Private UiFaceListLogDownload As ListView = Nothing
 
-        Private WithEvents Actualizador As New MailEnable.Core.Bucle.DoBucle("ActualizadorSsl")
+        Private WithEvents Actualizador As New TDC.MailEnable.Core.Bucle.DoBucle("ActualizadorSsl")
 
         Public Sub Main(TabControl As TabControl, ListControl As ListView, ListDownload As ListView)
             If Not CarpetaCertificadosDescargados.Exists Then CarpetaCertificadosDescargados.Create()
@@ -133,7 +133,7 @@ Namespace Certificados
             End If
         End Sub
 
-        Private Sub Actualizador_Foreground(Sender As Object, Detener As MailEnable.Core.Bucle.BackgroundEventArgs) Handles Actualizador.ForeGround
+        Private Sub Actualizador_Foreground(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Actualizador.ForeGround
             'Resetea los Guiones
             If Guiones.Count > 0 AndAlso GuionesProcesados.Count = 0 Then
                 TryGetCertificate()

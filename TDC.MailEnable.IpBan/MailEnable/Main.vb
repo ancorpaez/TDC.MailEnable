@@ -2,13 +2,13 @@
 Imports System.Xml.Serialization
 Imports TDC.MailEnable.Core.MailEnableLog
 
-Namespace MailEnableLog
+Namespace MailEnable
 
-    Module Mod_Core
+    Module Main
 
         'ARCHIVO DE CONFIGURACION
-        Const ConfiguracionArchivo As String = "Config.xml"
-        Public Configuracion As New Cls_Config
+        Const ConfiguracionArchivo As String = "Configuracion.xml"
+        Public Configuracion As New Configuracion
 
         'ARCHIVO UNICO IP BAN
         Const IpBaneadasArchivo As String = "IpNegraUnico.xml"
@@ -22,13 +22,13 @@ Namespace MailEnableLog
 
         'SPAMASSASSIN
 
-        Public SpamAssassin As Spam.SpamAssassin
+        Public SpamAssassin As SpamAssassin.Programa
 
         'PIPE BANEADAS
         Private PipeServer As Core.Pipe.ServerPipe
 
         'POSTOFFICES
-        Public PostOfficesCenter As Cls_PostOffices
+        Public PostOfficesCenter As PostOffices
 
         Public IpBanForm As Interfaz.IpBan
 
@@ -90,7 +90,7 @@ Namespace MailEnableLog
                 'Cargar PostOffices
                 If Not String.IsNullOrEmpty(Configuracion.POST_OFFICES) Then
                     If IO.Directory.Exists(Configuracion.POST_OFFICES) Then
-                        PostOfficesCenter = New Cls_PostOffices(Configuracion.POST_OFFICES)
+                        PostOfficesCenter = New PostOffices(Configuracion.POST_OFFICES)
                     End If
                 End If
 
@@ -100,9 +100,9 @@ Namespace MailEnableLog
                         If New IO.FileInfo(Configuracion.SPAM_SPAMASSASSIN).Extension.ToLower.Contains("exe") Then
                             Dim BuscarProceso As Integer = Process.GetProcessesByName(New IO.FileInfo(Configuracion.SPAM_SPAMASSASSIN).Name.Replace(".exe", "")).Length
                             If BuscarProceso = 0 Then
-                                SpamAssassin = New Spam.SpamAssassin With {.Ejecutable = New IO.FileInfo(Configuracion.SPAM_SPAMASSASSIN)}
+                                SpamAssassin = New SpamAssassin.Programa With {.Ejecutable = New IO.FileInfo(Configuracion.SPAM_SPAMASSASSIN)}
                             Else
-                                SpamAssassin = New Spam.SpamAssassin With {.Proceso = Process.GetProcessesByName(New IO.FileInfo(Configuracion.SPAM_SPAMASSASSIN).Name.Replace(".exe", ""))(0)}
+                                SpamAssassin = New SpamAssassin.Programa With {.Proceso = Process.GetProcessesByName(New IO.FileInfo(Configuracion.SPAM_SPAMASSASSIN).Name.Replace(".exe", ""))(0)}
                             End If
                         End If
                     End If
@@ -137,20 +137,20 @@ Namespace MailEnableLog
             Try
                 'Cargar Archivo
                 If Not IO.File.Exists(ConfiguracionArchivo) Then
-                    Dim Generar As New XmlSerializer(GetType(Cls_Config))
+                    Dim Generar As New XmlSerializer(GetType(Configuracion))
                     Using Crear As New StreamWriter(ConfiguracionArchivo)
                         Generar.Serialize(Crear, Configuracion)
                     End Using
                 Else
-                    Dim Cargar As New XmlSerializer(GetType(Cls_Config))
+                    Dim Cargar As New XmlSerializer(GetType(Configuracion))
                     Using Leer As New StreamReader(ConfiguracionArchivo)
-                        Configuracion = DirectCast(Cargar.Deserialize(Leer), Cls_Config)
+                        Configuracion = DirectCast(Cargar.Deserialize(Leer), Configuracion)
                     End Using
                 End If
 
                 'Actualizar Registro de Windows
                 Try
-                    Dim ArranqueWindows As New Cls_ArranqueWindows With {.ArranqueWindows = Configuracion.AutoArranqueWindows}
+                    Dim ArranqueWindows As New ArranqueWindows With {.ArranqueWindows = Configuracion.AutoArranqueWindows}
                     ArranqueWindows.Inicializar()
                 Catch ex As Exception
                     MsgBox("No se pudo acceder al registro de windows. (Auto Arranque)")
@@ -164,14 +164,14 @@ Namespace MailEnableLog
 
         Public Function GuardarConfiguracion() As Boolean
             Try
-                Dim Guardar As New XmlSerializer(GetType(Cls_Config))
+                Dim Guardar As New XmlSerializer(GetType(Configuracion))
                 Using Escribir As New StreamWriter(ConfiguracionArchivo)
-                    Guardar.Serialize(Escribir, Mod_Core.Configuracion)
+                    Guardar.Serialize(Escribir, Main.Configuracion)
                 End Using
 
                 'Actualizar Registro de Windows
                 Try
-                    Dim ArranqueWindows As New Cls_ArranqueWindows With {.ArranqueWindows = Configuracion.AutoArranqueWindows}
+                    Dim ArranqueWindows As New ArranqueWindows With {.ArranqueWindows = Configuracion.AutoArranqueWindows}
                     ArranqueWindows.Inicializar()
                 Catch ex As Exception
                     MsgBox("No se pudo acceder al registro de windows. (Auto Arranque)")
@@ -208,7 +208,7 @@ Namespace MailEnableLog
             Try
                 Dim Guardar As New XmlSerializer(GetType(IpNegraUnico))
                 Using Escribir As New StreamWriter(IpBaneadasArchivo)
-                    Guardar.Serialize(Escribir, Mod_Core.IpBaneadas)
+                    Guardar.Serialize(Escribir, Main.IpBaneadas)
                 End Using
                 Return True
             Catch ex As Exception

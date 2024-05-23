@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports Microsoft.Win32
-Namespace MailEnableLog
-    Public Class Cls_ArranqueWindows
+Namespace MailEnable
+    Public Class ArranqueWindows
 #Region "AutoConfigurador"
 
         Public ReadOnly DisplayName As String = "Windows (Opciones Generales)"

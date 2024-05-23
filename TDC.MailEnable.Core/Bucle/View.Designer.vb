@@ -32,7 +32,7 @@ Namespace Bucle
             Me.lblScroll = New System.Windows.Forms.ToolStripStatusLabel()
             Me.btnMouse = New System.Windows.Forms.ToolStripDropDownButton()
             Me.PanelWindows = New System.Windows.Forms.Panel()
-            Me.Scroll = New System.Windows.Forms.VScrollBar()
+            Me.ManualScroll = New System.Windows.Forms.VScrollBar()
             Me.PanelContenedor = New System.Windows.Forms.Panel()
             Me.StatusStrip1.SuspendLayout()
             Me.PanelContenedor.SuspendLayout()
@@ -88,20 +88,20 @@ Namespace Bucle
             Me.PanelWindows.Size = New System.Drawing.Size(365, 147)
             Me.PanelWindows.TabIndex = 4
             '
-            'Scroll
+            'ManualScroll
             '
-            Me.Scroll.Cursor = System.Windows.Forms.Cursors.Cross
-            Me.Scroll.Dock = System.Windows.Forms.DockStyle.Right
-            Me.Scroll.LargeChange = 50
-            Me.Scroll.Location = New System.Drawing.Point(641, 0)
-            Me.Scroll.Name = "Scroll"
-            Me.Scroll.Size = New System.Drawing.Size(18, 239)
-            Me.Scroll.SmallChange = 10
-            Me.Scroll.TabIndex = 0
+            Me.ManualScroll.Cursor = System.Windows.Forms.Cursors.Cross
+            Me.ManualScroll.Dock = System.Windows.Forms.DockStyle.Right
+            Me.ManualScroll.LargeChange = 50
+            Me.ManualScroll.Location = New System.Drawing.Point(641, 0)
+            Me.ManualScroll.Name = "ManualScroll"
+            Me.ManualScroll.Size = New System.Drawing.Size(18, 239)
+            Me.ManualScroll.SmallChange = 10
+            Me.ManualScroll.TabIndex = 0
             '
             'PanelContenedor
             '
-            Me.PanelContenedor.Controls.Add(Me.Scroll)
+            Me.PanelContenedor.Controls.Add(Me.ManualScroll)
             Me.PanelContenedor.Controls.Add(Me.PanelWindows)
             Me.PanelContenedor.Dock = System.Windows.Forms.DockStyle.Fill
             Me.PanelContenedor.Location = New System.Drawing.Point(0, 0)
@@ -132,7 +132,7 @@ Namespace Bucle
         Friend WithEvents lblSeparador As ToolStripStatusLabel
         Friend WithEvents btnMouse As ToolStripDropDownButton
         Friend WithEvents PanelWindows As Panel
-        Friend WithEvents Scroll As VScrollBar
+        Friend WithEvents ManualScroll As VScrollBar
         Friend WithEvents PanelContenedor As Panel
     End Class
 End Namespace

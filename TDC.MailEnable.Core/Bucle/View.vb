@@ -20,7 +20,7 @@ Namespace Bucle
                 dBucle.InvokeForm.Visible = True
                 dBucle.InvokeForm.Show()
             Next
-            Scroll.SendToBack()
+            ManualScroll.SendToBack()
         End Sub
         Private Sub View_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
             Me.Visible = False
@@ -48,19 +48,19 @@ Namespace Bucle
         End Sub
 
 
-        Private Sub Scroll_Scroll(sender As Object, e As ScrollEventArgs) Handles Scroll.Scroll
+        Private Sub Scroll_Scroll(sender As Object, e As ScrollEventArgs) Handles ManualScroll.Scroll
             PanelWindows.Top = -e.NewValue
             'lblScroll.Text = e.NewValue
         End Sub
 
         Private Sub View_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
-            PanelWindows.Width = PanelContenedor.Width - Scroll.Width
+            PanelWindows.Width = PanelContenedor.Width - ManualScroll.Width
             CalcularAlto()
         End Sub
 
         Private Sub PanelWindows_SizeChanged(sender As Object, e As EventArgs) Handles PanelWindows.SizeChanged
-            Scroll.Maximum = PanelWindows.Height - PanelContenedor.Height
-            Scroll.Minimum = 0
+            ManualScroll.Maximum = PanelWindows.Height - PanelContenedor.Height
+            ManualScroll.Minimum = 0
         End Sub
 
         Private Sub PanelWindows_MouseWheel(sender As Object, e As MouseEventArgs) Handles PanelWindows.MouseWheel
@@ -69,25 +69,25 @@ Namespace Bucle
             Select Case e.Delta
                 Case > 0
                     'btnMouse.Text = "Arriba"
-                    If (Scroll.Value - Scroll.Minimum) > Scroll.SmallChange Then
-                        Scroll.Value -= Scroll.SmallChange
+                    If (ManualScroll.Value - ManualScroll.Minimum) > ManualScroll.SmallChange Then
+                        ManualScroll.Value -= ManualScroll.SmallChange
                     Else
-                        Scroll.Value = Scroll.Minimum
+                        ManualScroll.Value = ManualScroll.Minimum
                     End If
                 Case Else
                     'btnMouse.Text = "Abajo"
-                    If (Scroll.Maximum - Scroll.Value) > Scroll.SmallChange Then
-                        Scroll.Value += Scroll.SmallChange
+                    If (ManualScroll.Maximum - ManualScroll.Value) > ManualScroll.SmallChange Then
+                        ManualScroll.Value += ManualScroll.SmallChange
                     Else
-                        Scroll.Value = Scroll.Maximum
+                        ManualScroll.Value = ManualScroll.Maximum
                     End If
             End Select
-            Scroll_Scroll(Scroll, New ScrollEventArgs(ScrollEventType.SmallIncrement, Scroll.Value))
+            Scroll_Scroll(ManualScroll, New ScrollEventArgs(ScrollEventType.SmallIncrement, ManualScroll.Value))
         End Sub
         Private Sub CalcularAlto()
             Dim Contenedor As Integer = PanelContenedor.Height
             Dim Marco As Integer = PanelWindows.Height - Math.Abs(PanelWindows.Top)
-            If Contenedor > Marco Then Scroll_Scroll(Scroll, New ScrollEventArgs(ScrollEventType.SmallIncrement, Scroll.Maximum))
+            If Contenedor > Marco Then Scroll_Scroll(ManualScroll, New ScrollEventArgs(ScrollEventType.SmallIncrement, ManualScroll.Maximum))
             'lblSeparador.Text = $"CAlto{PanelContenedor.Height},Marco{PanelWindows.Height - Math.Abs(PanelWindows.Top)}"
         End Sub
     End Class

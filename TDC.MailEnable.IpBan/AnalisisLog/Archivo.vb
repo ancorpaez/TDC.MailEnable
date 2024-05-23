@@ -2,21 +2,21 @@
 Imports System.Threading
 Imports TDC.MailEnable.Core
 Imports TDC.MailEnable.Core.GeoLocalizacion
-Imports TDC.MailEnable.IpBan.MailEnableLog
+Imports TDC.MailEnable.IpBan.MailEnable
 Imports System.Text.RegularExpressions
 Imports System.Web.UI
 Imports TDC.MailEnable.IpBan.Interfaz
 Imports System.Net
 
 'Esta clase Analiza Archivos Log en busqueda de Patrones configurables segun el Filtro aplicado
-Namespace RegistroDeArchivos
-    Public Class LecturaDeArchivo
+Namespace AnalisisLog
+    Public Class Archivo
         Implements IDisposable
 
         'Bucle BackGround y ForeGround
         Private WithEvents Lector As Bucle.DoBucle
         'Lista con los Filtros a comprobar por Linea
-        Public Filtros As New List(Of Cls_Filtro)
+        Public Filtros As New List(Of Filtro)
         'Solicita la ip al Hilo principal donde estan agrupadas las diferentens funciones para realizarlo.
         Public Property ObtenerIp As Func(Of String, String)
         'Almacena los MailBox a los que accedio la IP
@@ -89,13 +89,13 @@ Namespace RegistroDeArchivos
             End Try
 
             'Aplicar configuracion de los Bucles
-            If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
+            If IsNumeric(MailEnable.Main.Configuracion.TIMER_LECTURA) Then Lector.Intervalo = MailEnable.Main.Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
         End Sub
 
         Private Sub Lector_Background(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs)
             Try
                 'Establecer el punto más rapido en caso de falla de configuración
-                If IsNumeric(Configuracion.TIMER_LECTURA) Then Lector.Intervalo = Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
+                If IsNumeric(MailEnable.Main.Configuracion.TIMER_LECTURA) Then Lector.Intervalo = MailEnable.Main.Configuracion.TIMER_LECTURA Else Lector.Intervalo = 1
 
                 'Si el Control de Memoria no contiene el archivo detenemos el analizador.
                 If Not ArchivosEnMemoria.Archivos.ContainsKey(Archivo) Then
@@ -116,34 +116,34 @@ Namespace RegistroDeArchivos
                                 'Filtro estandar True/False para Baneo de Ip
                                 Case False
                                     'Establece el Tipo de Comparacion Simulando a (Todo(.All), Cualquiera(.Any))
-                                    Dim TipoComparacion As Cls_Filtro.EnumTipoComparacion = Filtro.TrueSi
+                                    Dim TipoComparacion As Filtro.EnumTipoComparacion = Filtro.VerdaderoSi
 
                                     'Recoge los Strings a Comparar
-                                    Dim Comparaciones As List(Of Cls_Coincidencia) = Filtro.Coincidencias
+                                    Dim Comparaciones As List(Of Coincidencia) = Filtro.Coincidencias
 
                                     'Establece si el Filtro Tiene Coincidencias
                                     Dim Coincide As Boolean = False
 
                                     'Establecer Coincidencia (Simula el .All o .Any)
                                     Select Case TipoComparacion
-                                        Case Cls_Filtro.EnumTipoComparacion.Todo
+                                        Case Filtro.EnumTipoComparacion.Todo
                                             Coincide = True
                                             For Each Comparador In Comparaciones
                                                 Select Case Comparador.Condicion
-                                                    Case Cls_Coincidencia.EnumCondicion.Contiene
+                                                    Case Coincidencia.EnumCondicion.Contiene
                                                         If Not Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = False
-                                                    Case Cls_Coincidencia.EnumCondicion.NoContiene
+                                                    Case Coincidencia.EnumCondicion.NoContiene
                                                         If Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = False
                                                 End Select
                                             Next
 
-                                        Case Cls_Filtro.EnumTipoComparacion.Cualquiera
+                                        Case Filtro.EnumTipoComparacion.Cualquiera
                                             Coincide = False
                                             For Each Comparador In Comparaciones
                                                 Select Case Comparador.Condicion
-                                                    Case Cls_Coincidencia.EnumCondicion.Contiene
+                                                    Case Coincidencia.EnumCondicion.Contiene
                                                         If Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = True
-                                                    Case Cls_Coincidencia.EnumCondicion.NoContiene
+                                                    Case Coincidencia.EnumCondicion.NoContiene
                                                         If Not Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = True
                                                 End Select
                                             Next
@@ -157,7 +157,7 @@ Namespace RegistroDeArchivos
                                         If VerificarIpV4(Ip) Then
                                             'Obtenemos el Pais Asociado a la IP
                                             Dim Geolocalizar As New IpInfo
-                                            Dim Pais As String = Geolocalizar.Geolocalizar(Ip, Mod_Core.Geolocalizador)
+                                            Dim Pais As String = Geolocalizar.Geolocalizar(Ip, MailEnable.Geolocalizador)
 
                                             'Desecha los Paises Excentos al Baneo
                                             If Not ExclusionPais.Any(Function(Excento) Excento = Pais) Then
@@ -206,10 +206,10 @@ Namespace RegistroDeArchivos
                                                         Dim PostOffice As String = FullMailbox.Split("@")(1)
                                                         Dim MailBox As String = FullMailbox.Split("@")(0)
                                                         'Si no existe el PostOffice o el MailBox banea la IP
-                                                        If Not Mod_Core.PostOfficesCenter.PostOffices.Contains(PostOffice) Then
+                                                        If Not MailEnable.PostOfficesCenter.PostOffices.Contains(PostOffice) Then
                                                             'No existe el PostOffice
                                                             Banear = True
-                                                        ElseIf Not Mod_Core.PostOfficesCenter.PostOffice(PostOffice).MailBoxes.ContainsKey(MailBox) Then
+                                                        ElseIf Not MailEnable.PostOfficesCenter.PostOffice(PostOffice).MailBoxes.ContainsKey(MailBox) Then
                                                             'No existe el MailBox
                                                             Banear = True
                                                         Else
@@ -280,7 +280,7 @@ Namespace RegistroDeArchivos
                                                                 If Not String.IsNullOrEmpty(IpBox) Then
                                                                     'Obtiene los datos Necesario por IP {Coincidencias por Pais}
                                                                     Dim IpGeolocalizar As New IpInfo
-                                                                    Dim IpPais As String = IpGeolocalizar.Geolocalizar(IpBox, Mod_Core.Geolocalizador)
+                                                                    Dim IpPais As String = IpGeolocalizar.Geolocalizar(IpBox, MailEnable.Geolocalizador)
                                                                     Dim IpCoincidencias As Integer = Filtro.Repeteciones
 
                                                                     'Establece las Coincidencias por Pais
@@ -317,30 +317,30 @@ Namespace RegistroDeArchivos
 
                                 'Filtro Especial para detectar Login Correcto entre Dominios
                                 Case True
-                                    Dim Coincidir As Cls_Coincidencia.EnumCondicion = Filtro.TrueSi
+                                    Dim Coincidir As Coincidencia.EnumCondicion = Filtro.VerdaderoSi
                                     Dim Coincide As Boolean = False
 
-                                    Dim Comparaciones As List(Of Cls_Coincidencia) = Filtro.Coincidencias
+                                    Dim Comparaciones As List(Of Coincidencia) = Filtro.Coincidencias
 
                                     Select Case Coincidir
-                                        Case Cls_Filtro.EnumTipoComparacion.Todo
+                                        Case Filtro.EnumTipoComparacion.Todo
                                             Coincide = True
                                             For Each Comparador In Comparaciones
                                                 Select Case Comparador.Condicion
-                                                    Case Cls_Coincidencia.EnumCondicion.Contiene
+                                                    Case Coincidencia.EnumCondicion.Contiene
                                                         If Not Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = False
-                                                    Case Cls_Coincidencia.EnumCondicion.NoContiene
+                                                    Case Coincidencia.EnumCondicion.NoContiene
                                                         If Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = False
                                                 End Select
                                             Next
 
-                                        Case Cls_Filtro.EnumTipoComparacion.Cualquiera
+                                        Case Filtro.EnumTipoComparacion.Cualquiera
                                             Coincide = False
                                             For Each Comparador In Comparaciones
                                                 Select Case Comparador.Condicion
-                                                    Case Cls_Coincidencia.EnumCondicion.Contiene
+                                                    Case Coincidencia.EnumCondicion.Contiene
                                                         If Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = True
-                                                    Case Cls_Coincidencia.EnumCondicion.NoContiene
+                                                    Case Coincidencia.EnumCondicion.NoContiene
                                                         If Not Linea.ToLower.Contains(Comparador.Filtro.ToLower) Then Coincide = True
                                                 End Select
                                             Next
@@ -497,9 +497,9 @@ Namespace RegistroDeArchivos
             If Not disposedValue Then
                 If disposing Then
                     ' TODO: eliminar el estado administrado (objetos administrados)
-                    RemoveHandler Lector.Background, AddressOf Lector_Background
-                    RemoveHandler Lector.Foreground, AddressOf Lector_Foreground
-                    RemoveHandler Lector.Endground, AddressOf Lector_Endground
+                    RemoveHandler Lector.BackGround, AddressOf Lector_Background
+                    RemoveHandler Lector.ForeGround, AddressOf Lector_Foreground
+                    RemoveHandler Lector.EndGround, AddressOf Lector_Endground
 
                     'Lector.Matar()
                 End If

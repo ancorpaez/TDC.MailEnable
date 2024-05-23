@@ -1,15 +1,16 @@
-﻿Namespace RegistroDeArchivos
-    Public Class Cls_Filtro
+﻿Namespace AnalisisLog
+    Public Class Filtro
         Public Enum EnumTipoComparacion
             Cualquiera
             Todo
         End Enum
+
         Public Key As FilterKeys.FilterKey
-        Public TrueSi As EnumTipoComparacion = EnumTipoComparacion.Cualquiera
+        Public VerdaderoSi As EnumTipoComparacion = EnumTipoComparacion.Cualquiera
         Public Repeteciones As Integer = 0
         Public VerificarMailBox As Boolean = False
         Public DetectarCrossDomainLogin As Boolean = False
-        Public Coincidencias As New List(Of Cls_Coincidencia)
+        Public Coincidencias As New List(Of Coincidencia)
     End Class
     Public Class FilterKeys
         Public Enum FilterKey

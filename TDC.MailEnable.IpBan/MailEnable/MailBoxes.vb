@@ -1,8 +1,7 @@
-﻿Namespace MailEnableLog
-    Public Class Cls_MailBoxes
+﻿Namespace MailEnable
+    Public Class MailBoxes
         Private MailBoxesDirectory As IO.DirectoryInfo
         Public MailBoxes As New Concurrent.ConcurrentDictionary(Of String, String)
-        'Private WithEvents MailBoxesScan As New MailEnable.Core.Bucle.DoBucle("MailBoxesScan")
         Private WithEvents MailBoxesScan As Core.Bucle.DoBucle
 
         Public Sub New(PostOffice As IO.DirectoryInfo)

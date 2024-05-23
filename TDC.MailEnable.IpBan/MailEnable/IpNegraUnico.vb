@@ -2,7 +2,7 @@
 Imports System.Net
 Imports TDC.MailEnable.Core
 
-Namespace MailEnableLog
+Namespace MailEnable
     Public Class IpNegraUnico
         Private WithEvents Ips As New Concurrent.ConcurrentBindingList(Of String)
         Public Event OnRefresData()
@@ -26,7 +26,7 @@ Namespace MailEnableLog
                     If SearchIp4.AddressFamily = Sockets.AddressFamily.InterNetwork Then
                         If Not Ips.Contains(SearchIp4.ToString) Then
                             Ips.Add(SearchIp4.ToString)
-                            Mod_Core.SalvarIpBan()
+                            Main.SalvarIpBan()
                             AddingBackGrundList = True
                             Return True
                         Else
@@ -42,7 +42,7 @@ Namespace MailEnableLog
         Public Function Remove(Ip As String) As Boolean
             Try
                 If Ips.Contains(Ip) Then Ips.Remove(Ip)
-                Mod_Core.SalvarIpBan()
+                Main.SalvarIpBan()
                 Return True
             Catch ex As Exception
             End Try

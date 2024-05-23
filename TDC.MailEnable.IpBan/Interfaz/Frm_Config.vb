@@ -1,4 +1,4 @@
-﻿Imports TDC.MailEnable.IpBan.MailEnableLog
+﻿Imports TDC.MailEnable.IpBan.MailEnable
 
 Namespace Interfaz
     Public Class Frm_Config
@@ -8,62 +8,62 @@ Namespace Interfaz
         End Enum
         Private Estado As EstadosCarga = EstadosCarga.Cargando
         Private Sub Frm_Config_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-            txtIMAP.Text = Mod_Core.Configuracion.IMAP
-            txtSMTP.Text = Mod_Core.Configuracion.SMTP
-            txtPOP.Text = Mod_Core.Configuracion.POP
-            txtWEB.Text = Mod_Core.Configuracion.WEB
-            txtASMTP.Text = Mod_Core.Configuracion.SMTP_DENY
-            txtAPOP.Text = Mod_Core.Configuracion.POP_DENY
-            txtAWEB.Text = Mod_Core.Configuracion.WEB_DENY
-            txtImapApp.Text = Mod_Core.Configuracion.IMAP_SOCKET_APP
-            txtSpamAssassin.Text = Mod_Core.Configuracion.SPAM_SPAMASSASSIN
-            chkArranqueWindows.Checked = Mod_Core.Configuracion.AutoArranqueWindows
-            txtPostOffices.Text = Mod_Core.Configuracion.POST_OFFICES
-            NumReposoLectura.Value = CInt(Configuracion.LECTURA_REPOSO)
-            txtBackupEmail.Text = Configuracion.CARPETA_BACKUP
-            txtAntiguedadEmails.Text = Configuracion.ANTIGUEDAD_EMAILS
-            txtMailEnableApp.Text = Configuracion.MAIL_APP
-            txtAnalizadoresEmail.Text = Configuracion.ANALIZADORES_BACKUP
-            TrackAnalizadoresMailTimer.Value = Configuracion.ANALIZADORES_BACKUP_TIMER
-            txtTimerAnalizadoresEmail.Text = Configuracion.ANALIZADORES_BACKUP_TIMER
-            txtAutoResponder.Text = Configuracion.AUTORESPONDER
+            txtIMAP.Text = Main.Configuracion.IMAP
+            txtSMTP.Text = Main.Configuracion.SMTP
+            txtPOP.Text = Main.Configuracion.POP
+            txtWEB.Text = Main.Configuracion.WEB
+            txtASMTP.Text = Main.Configuracion.SMTP_DENY
+            txtAPOP.Text = Main.Configuracion.POP_DENY
+            txtAWEB.Text = Main.Configuracion.WEB_DENY
+            txtImapApp.Text = Main.Configuracion.IMAP_SOCKET_APP
+            txtSpamAssassin.Text = Main.Configuracion.SPAM_SPAMASSASSIN
+            chkArranqueWindows.Checked = Main.Configuracion.AutoArranqueWindows
+            txtPostOffices.Text = Main.Configuracion.POST_OFFICES
+            NumReposoLectura.Value = CInt(Main.Configuracion.LECTURA_REPOSO)
+            txtBackupEmail.Text = Main.Configuracion.CARPETA_BACKUP
+            txtAntiguedadEmails.Text = Main.Configuracion.ANTIGUEDAD_EMAILS
+            txtMailEnableApp.Text = Main.Configuracion.MAIL_APP
+            txtAnalizadoresEmail.Text = Main.Configuracion.ANALIZADORES_BACKUP
+            TrackAnalizadoresMailTimer.Value = Main.Configuracion.ANALIZADORES_BACKUP_TIMER
+            txtTimerAnalizadoresEmail.Text = Main.Configuracion.ANALIZADORES_BACKUP_TIMER
+            txtAutoResponder.Text = Main.Configuracion.AUTORESPONDER
 
-            If IsNumeric(Mod_Core.Configuracion.TIMER_LECTURA) Then
-                TrackLectura.Value = CInt(Configuracion.TIMER_LECTURA)
-                txtLecturaArchivos.Text = Configuracion.TIMER_LECTURA
+            If IsNumeric(Main.Configuracion.TIMER_LECTURA) Then
+                TrackLectura.Value = CInt(Main.Configuracion.TIMER_LECTURA)
+                txtLecturaArchivos.Text = Main.Configuracion.TIMER_LECTURA
             Else
-                Configuracion.TIMER_LECTURA = TrackLectura.Value
+                Main.Configuracion.TIMER_LECTURA = TrackLectura.Value
                 txtLecturaArchivos.Text = TrackLectura.Value
             End If
-            If IsNumeric(Mod_Core.Configuracion.TIMER_PROPAGACION) Then
-                TrackPropagacion.Value = CInt(Configuracion.TIMER_PROPAGACION)
-                txtPropagacionIP.Text = Configuracion.TIMER_PROPAGACION
+            If IsNumeric(Main.Configuracion.TIMER_PROPAGACION) Then
+                TrackPropagacion.Value = CInt(Main.Configuracion.TIMER_PROPAGACION)
+                txtPropagacionIP.Text = Main.Configuracion.TIMER_PROPAGACION
             Else
-                Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
+                Main.Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
                 txtPropagacionIP.Text = TrackPropagacion.Value
             End If
         End Sub
         Private Sub BtnGuardarConfig_Click(sender As Object, e As EventArgs) Handles BtnGuardarConfig.Click
-            Mod_Core.Configuracion.IMAP = txtIMAP.Text
-            Mod_Core.Configuracion.SMTP = txtSMTP.Text
-            Mod_Core.Configuracion.POP = txtPOP.Text
-            Mod_Core.Configuracion.WEB = txtWEB.Text
-            Mod_Core.Configuracion.SMTP_DENY = txtASMTP.Text
-            Mod_Core.Configuracion.POP_DENY = txtAPOP.Text
-            Mod_Core.Configuracion.WEB_DENY = txtAWEB.Text
-            Mod_Core.Configuracion.IMAP_SOCKET_APP = txtImapApp.Text
-            Mod_Core.Configuracion.SPAM_SPAMASSASSIN = txtSpamAssassin.Text
-            Mod_Core.Configuracion.POST_OFFICES = txtPostOffices.Text
-            Mod_Core.Configuracion.TIMER_LECTURA = TrackLectura.Value
-            Mod_Core.Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
-            Mod_Core.Configuracion.LECTURA_REPOSO = NumReposoLectura.Value
-            Mod_Core.Configuracion.CARPETA_BACKUP = txtBackupEmail.Text
-            Mod_Core.Configuracion.AUTORESPONDER = txtAutoResponder.Text
+            Main.Configuracion.IMAP = txtIMAP.Text
+            Main.Configuracion.SMTP = txtSMTP.Text
+            Main.Configuracion.POP = txtPOP.Text
+            Main.Configuracion.WEB = txtWEB.Text
+            Main.Configuracion.SMTP_DENY = txtASMTP.Text
+            Main.Configuracion.POP_DENY = txtAPOP.Text
+            Main.Configuracion.WEB_DENY = txtAWEB.Text
+            Main.Configuracion.IMAP_SOCKET_APP = txtImapApp.Text
+            Main.Configuracion.SPAM_SPAMASSASSIN = txtSpamAssassin.Text
+            Main.Configuracion.POST_OFFICES = txtPostOffices.Text
+            Main.Configuracion.TIMER_LECTURA = TrackLectura.Value
+            Main.Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
+            Main.Configuracion.LECTURA_REPOSO = NumReposoLectura.Value
+            Main.Configuracion.CARPETA_BACKUP = txtBackupEmail.Text
+            Main.Configuracion.AUTORESPONDER = txtAutoResponder.Text
 
-            Configuracion.ANTIGUEDAD_EMAILS = txtAntiguedadEmails.Text
-            Configuracion.MAIL_APP = txtMailEnableApp.Text
-            Configuracion.ANALIZADORES_BACKUP = CInt(txtAnalizadoresEmail.Text)
-            Mod_Core.GuardarConfiguracion()
+            Main.Configuracion.ANTIGUEDAD_EMAILS = txtAntiguedadEmails.Text
+            Main.Configuracion.MAIL_APP = txtMailEnableApp.Text
+            Main.Configuracion.ANALIZADORES_BACKUP = CInt(txtAnalizadoresEmail.Text)
+            Main.GuardarConfiguracion()
             Me.Close()
         End Sub
 
@@ -150,7 +150,7 @@ Namespace Interfaz
             txtSpamAssassin.Text = CargarArchivo()
         End Sub
         Private Sub chkArranqueWindows_CheckedChanged(sender As Object, e As EventArgs) Handles chkArranqueWindows.CheckedChanged
-            Configuracion.AutoArranqueWindows = chkArranqueWindows.Checked
+            Main.Configuracion.AutoArranqueWindows = chkArranqueWindows.Checked
             BtnGuardarConfig.Enabled = True
         End Sub
 
@@ -160,12 +160,12 @@ Namespace Interfaz
         End Sub
 
         Private Sub TrackLectura_Scroll(sender As Object, e As EventArgs) Handles TrackLectura.Scroll
-            Configuracion.TIMER_LECTURA = TrackLectura.Value
+            Main.Configuracion.TIMER_LECTURA = TrackLectura.Value
             If CInt(txtLecturaArchivos.Text) <> TrackLectura.Value Then txtLecturaArchivos.Text = TrackLectura.Value
         End Sub
 
         Private Sub TrackPropagacion_Scroll(sender As Object, e As EventArgs) Handles TrackPropagacion.Scroll
-            Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
+            Main.Configuracion.TIMER_PROPAGACION = TrackPropagacion.Value
             If CInt(txtPropagacionIP.Text) <> TrackPropagacion.Value Then txtPropagacionIP.Text = TrackPropagacion.Value
         End Sub
 
@@ -198,7 +198,7 @@ Namespace Interfaz
 
         Private Sub txtAntiguedadEmails_TextChanged(sender As Object, e As EventArgs) Handles txtAntiguedadEmails.TextChanged
             If IsNumeric(txtAntiguedadEmails.Text) Then
-                Configuracion.ANTIGUEDAD_EMAILS = txtAntiguedadEmails.Text
+                Main.Configuracion.ANTIGUEDAD_EMAILS = txtAntiguedadEmails.Text
             End If
         End Sub
 
@@ -220,18 +220,18 @@ Namespace Interfaz
 
         Private Sub TrackAnalizadoresEmail_Scroll(sender As Object, e As EventArgs) Handles TrackAnalizadoresEmail.Scroll
             If CInt(txtAnalizadoresEmail.Text) <> TrackAnalizadoresEmail.Value Then txtAnalizadoresEmail.Text = TrackAnalizadoresEmail.Value
-            Configuracion.ANALIZADORES_BACKUP = TrackAnalizadoresEmail.Value
+            Main.Configuracion.ANALIZADORES_BACKUP = TrackAnalizadoresEmail.Value
         End Sub
 
         Private Sub TrackAnalizadoresMailTimer_Scroll(sender As Object, e As EventArgs) Handles TrackAnalizadoresMailTimer.Scroll
-            Configuracion.ANALIZADORES_BACKUP_TIMER = TrackAnalizadoresMailTimer.Value
+            Main.Configuracion.ANALIZADORES_BACKUP_TIMER = TrackAnalizadoresMailTimer.Value
             If CInt(txtTimerAnalizadoresEmail.Text) <> TrackAnalizadoresMailTimer.Value Then txtTimerAnalizadoresEmail.Text = TrackAnalizadoresMailTimer.Value
         End Sub
 
         Private Sub txtTimerAnalizadoresEmail_TextChanged(sender As Object, e As EventArgs) Handles txtTimerAnalizadoresEmail.TextChanged
             If IsNumeric(txtTimerAnalizadoresEmail.Text) AndAlso txtTimerAnalizadoresEmail.Text <= TrackAnalizadoresMailTimer.Maximum Then
                 TrackAnalizadoresMailTimer.Value = txtTimerAnalizadoresEmail.Text
-                Configuracion.ANALIZADORES_BACKUP_TIMER = txtTimerAnalizadoresEmail.Text
+                Main.Configuracion.ANALIZADORES_BACKUP_TIMER = txtTimerAnalizadoresEmail.Text
             Else
                 txtTimerAnalizadoresEmail.Text = TrackAnalizadoresMailTimer.Maximum
             End If

@@ -2,10 +2,10 @@
 Imports System.Xml.Serialization
 Imports TDC.MailEnable.Core
 
-Namespace RegistroDeArchivos
-    Public Class RegistroDeArchivos
+Namespace AnalisisLog
+    Public Class ArchivosAnalizados
         Public Property Archivos As New Concurrent.ConcurrentBindingList(Of String)
-        Public Filtro As New List(Of Cls_Filtro)
+        Public Property Filtro As New List(Of Filtro)
         Private File_Registro As String = ""
         Private SyncGuardar As New Object()
 

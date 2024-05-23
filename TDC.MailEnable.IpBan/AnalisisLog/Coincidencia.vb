@@ -1,5 +1,5 @@
-﻿Namespace RegistroDeArchivos
-    Public Class Cls_Coincidencia
+﻿Namespace AnalisisLog
+    Public Class Coincidencia
         Public Enum EnumCondicion
             Contiene
             NoContiene

@@ -1,6 +1,6 @@
 ﻿Imports System.Collections.Concurrent
 
-Namespace RegistroDeArchivos
+Namespace AnalisisLog
     Module Core
         Public ReadOnly CoincidenciasPais As New Collections.Concurrent.ConcurrentDictionary(Of String, Concurrent.ConcurrentDictionary(Of FilterKeys.FilterKey, Integer))
 

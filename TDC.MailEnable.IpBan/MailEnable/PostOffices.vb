@@ -1,9 +1,9 @@
-﻿Namespace MailEnableLog
-    Public Class Cls_PostOffices
+﻿Namespace MailEnable
+    Public Class PostOffices
         Private PostOfficesPath As String = ""
         Private PostOfficesDirectory As IO.DirectoryInfo
-        Private WithEvents PostOfficeSearch As MailEnable.Core.Bucle.DoBucle
-        Private PostOfficesIndex As New Concurrent.ConcurrentDictionary(Of String, Cls_MailBoxes)
+        Private WithEvents PostOfficeSearch As Core.Bucle.DoBucle
+        Private PostOfficesIndex As New Concurrent.ConcurrentDictionary(Of String, MailBoxes)
 
         Public Sub New(PostOffices As String)
             PostOfficesPath = PostOffices
@@ -16,11 +16,11 @@
             End If
         End Sub
 
-        Private Sub PostOfficeSearch_Background(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles PostOfficeSearch.Background
+        Private Sub PostOfficeSearch_Background(Sender As Object, Detener As Core.Bucle.BackgroundEventArgs) Handles PostOfficeSearch.BackGround
             PostOfficeSearch.Intervalo = 10000
             'Añadir
             For Each iPostOffice In PostOfficesDirectory.GetDirectories("*.*", IO.SearchOption.TopDirectoryOnly)
-                If Not PostOfficesIndex.ContainsKey(iPostOffice.Name) Then Mod_Core.IpBanForm.Invoke(Sub() PostOfficesIndex.TryAdd(iPostOffice.Name, New Cls_MailBoxes(iPostOffice)))
+                If Not PostOfficesIndex.ContainsKey(iPostOffice.Name) Then Main.IpBanForm.Invoke(Sub() PostOfficesIndex.TryAdd(iPostOffice.Name, New MailBoxes(iPostOffice)))
             Next
 
             'Eliminar
@@ -35,7 +35,7 @@
         Public Function PostOffices() As List(Of String)
             Return PostOfficesIndex.Keys.ToList
         End Function
-        Public Function PostOffice(Index As String) As Cls_MailBoxes
+        Public Function PostOffice(Index As String) As MailBoxes
             Return PostOfficesIndex(Index)
         End Function
     End Class

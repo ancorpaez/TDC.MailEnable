@@ -1,7 +1,7 @@
 ﻿Imports TDC.MailEnable.Core
 Imports TDC.MailEnable.Core.Bucle
 Imports TDC.MailEnable.IpBan.Backup
-Imports TDC.MailEnable.IpBan.MailEnableLog
+Imports TDC.MailEnable.IpBan.MailEnable
 Namespace AutoResponder
     Module Core
         Private WithEvents AutoResponderRepair As New Bucle.DoBucle("AutoResponder")
@@ -19,7 +19,7 @@ Namespace AutoResponder
         Public Function Delete(Archivo As String) As Boolean
             Try
                 If Modificados.Contains(Archivo) Then
-                    Dim Mensaje As New IO.FileInfo($"{Configuracion.AUTORESPONDER}\{Archivo}")
+                    Dim Mensaje As New IO.FileInfo($"{MailEnable.Main.Configuracion.AUTORESPONDER}\{Archivo}")
                     If IO.File.Exists(Mensaje.FullName) Then
                         If ExistLog(Mensaje) Then LogFile(Mensaje).Delete()
                         Mensaje.Delete()
@@ -44,10 +44,10 @@ Namespace AutoResponder
             Loop
         End Sub
         Private Sub AutoResponderRepair_BackGround(Sender As Object, e As BackgroundEventArgs) Handles AutoResponderRepair.BackGround
-            If Not String.IsNullOrEmpty(Configuracion.AUTORESPONDER) Then
-                If IO.Directory.Exists(Configuracion.AUTORESPONDER) Then
+            If Not String.IsNullOrEmpty(MailEnable.Main.Configuracion.AUTORESPONDER) Then
+                If IO.Directory.Exists(MailEnable.Main.Configuracion.AUTORESPONDER) Then
                     'Establecer Capeta Puntero
-                    If IsNothing(QueneFolder) Then QueneFolder = New IO.DirectoryInfo(Configuracion.AUTORESPONDER)
+                    If IsNothing(QueneFolder) Then QueneFolder = New IO.DirectoryInfo(MailEnable.Main.Configuracion.AUTORESPONDER)
 
                     'Buscar Mensajes
                     For Each Email In QueneFolder.GetFiles("*.MAI")
@@ -60,9 +60,9 @@ Namespace AutoResponder
                             Mensajes.TryAdd(Email.Name, IO.File.ReadAllText(Email.FullName))
 
                             'Buscar Respuesta
-                            If IO.Directory.Exists(Configuracion.SMTP) Then
-                                If IO.File.Exists($"{Configuracion.SMTP}\SMTP-Debug-{Now.ToString("yyMMdd")}.log") Then
-                                    Using Buscador As New BuscadorRespuesta($"{Configuracion.SMTP}\SMTP-Debug-{Now.ToString("yyMMdd")}.log", Email.Name)
+                            If IO.Directory.Exists(MailEnable.Main.Configuracion.SMTP) Then
+                                If IO.File.Exists($"{MailEnable.Main.Configuracion.SMTP}\SMTP-Debug-{Now.ToString("yyMMdd")}.log") Then
+                                    Using Buscador As New BuscadorRespuesta($"{MailEnable.Main.Configuracion.SMTP}\SMTP-Debug-{Now.ToString("yyMMdd")}.log", Email.Name)
                                         'Registrar Respuesta
                                         Respuestas.TryAdd(Email.Name, Buscador.Respuesta)
                                     End Using

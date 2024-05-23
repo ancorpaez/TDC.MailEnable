@@ -1,5 +1,5 @@
-﻿Namespace Spam
-    Public Class SpamAssassin
+﻿Namespace SpamAssassin
+    Public Class Programa
         Private Declare Function ShowWindow Lib "user32.dll" (ByVal hWnd As IntPtr, ByVal nCmdShow As Integer) As Boolean
         Private Const SW_HIDE As Integer = 0
         Private Const SW_SHOW As Integer = 5
@@ -11,10 +11,10 @@
             End Get
             Set(value As IO.FileInfo)
                 _Ejecutable = value
-                LogFile = New IO.FileInfo(Ejecutable.FullName.Replace("exe", "log"))
+                ArchivoLog = New IO.FileInfo(Ejecutable.FullName.Replace("exe", "log"))
             End Set
         End Property
-        Public Property LogFile As IO.FileInfo
+        Public Property ArchivoLog As IO.FileInfo
         Private Log As IO.StreamReader
         Private LogLines As Concurrent.ConcurrentDictionary(Of Integer, String)
         Private LogBag As Concurrent.ConcurrentBag(Of String)
@@ -93,13 +93,13 @@
         End Sub
 
 
-        Private Sub Lectura_IBucle_Bucle(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Lectura.Background
-            If IsNothing(LogFile) Then LogFile = New IO.FileInfo(Ejecutable.FullName.Replace("exe", "log"))
-            If Not LogFile.Exists Then
-                LogFile.Refresh()
+        Private Sub Lectura_IBucle_Bucle(Sender As Object, Detener As TDC.MailEnable.Core.Bucle.BackgroundEventArgs) Handles Lectura.BackGround
+            If IsNothing(ArchivoLog) Then ArchivoLog = New IO.FileInfo(Ejecutable.FullName.Replace("exe", "log"))
+            If Not ArchivoLog.Exists Then
+                ArchivoLog.Refresh()
             Else
                 Try
-                    If IsNothing(Log) Then Log = New IO.StreamReader(IO.File.Open(LogFile.FullName, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.ReadWrite))
+                    If IsNothing(Log) Then Log = New IO.StreamReader(IO.File.Open(ArchivoLog.FullName, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.ReadWrite))
 
                     'Cargar Inicial del Archivo
                     If IsNothing(LogBag) Then

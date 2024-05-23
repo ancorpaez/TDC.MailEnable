@@ -180,8 +180,8 @@
     <Compile Include="Interfaz\UcAnalizador.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MailEnableLog\Cls_ArranqueWindows.vb" />
-    <Compile Include="MailEnableLog\Cls_Config.vb" />
+    <Compile Include="MailEnable\ArranqueWindows.vb" />
+    <Compile Include="MailEnable\Configuracion.vb" />
     <Compile Include="Interfaz\Frm_Config.Designer.vb">
       <DependentUpon>Frm_Config.vb</DependentUpon>
     </Compile>
@@ -195,15 +195,15 @@
       <DependentUpon>IpBan.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MailEnableLog\IpBlancaSincronizada.vb" />
-    <Compile Include="MailEnableLog\IpNegraUnico.vb" />
-    <Compile Include="MailEnableLog\Cls_MailBoxes.vb" />
-    <Compile Include="MailEnableLog\Cls_MailEnableDeny.vb" />
-    <Compile Include="MailEnableLog\Cls_PostOffices.vb" />
-    <Compile Include="MailEnableLog\Mod_Core.vb" />
-    <Compile Include="MailEnableLog\Cls_ISS.vb" />
-    <Compile Include="MailEnableLog\Cls_MailBoxLogin.vb" />
-    <Compile Include="MailEnableLog\ArchivosEnMemoria\Core.vb" />
+    <Compile Include="MailEnable\IpBlancaSincronizada.vb" />
+    <Compile Include="MailEnable\IpNegraUnico.vb" />
+    <Compile Include="MailEnable\MailBoxes.vb" />
+    <Compile Include="MailEnable\MailEnableDenyIp.vb" />
+    <Compile Include="MailEnable\PostOffices.vb" />
+    <Compile Include="MailEnable\Main.vb" />
+    <Compile Include="MailEnable\IISDenyIp.vb" />
+    <Compile Include="MailEnable\MailBoxLoginContador.vb" />
+    <Compile Include="AnalisisLog\ArchivosEnMemoria\Core.vb" />
     <Compile Include="Migracion\Core.vb" />
     <Compile Include="Migracion\Interfaz\FrmActivarDominio.Designer.vb">
       <DependentUpon>FrmActivarDominio.vb</DependentUpon>
@@ -235,12 +235,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="RegistroDeArchivos\Cls_Coincidencia.vb" />
-    <Compile Include="RegistroDeArchivos\Cls_Filtro.vb" />
-    <Compile Include="RegistroDeArchivos\Core.vb" />
-    <Compile Include="RegistroDeArchivos\LecturaDeArchivo.vb" />
-    <Compile Include="RegistroDeArchivos\RegistroDeArchivos.vb" />
-    <Compile Include="Spam\SpamAssassin.vb" />
+    <Compile Include="AnalisisLog\Coincidencia.vb" />
+    <Compile Include="AnalisisLog\Filtro.vb" />
+    <Compile Include="AnalisisLog\Core.vb" />
+    <Compile Include="AnalisisLog\Archivo.vb" />
+    <Compile Include="AnalisisLog\ArchivosAnalizados.vb" />
+    <Compile Include="SpamAssassin\Programa.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Certificados\Interfaz\Navegador.resx">
