@@ -1,7 +1,7 @@
 ﻿Namespace AnalisisLog
     Public Class LineaIMAP
         'Desarrollo para comprobar si conviene trabajar con Celdas.
-        Inherits MI_Archivo
+        Inherits Linea
         '#Fields: date time c-ip agent account cs-username s-ip s-port cs-method cs-uristem cs-uriquery s-computername sc-bytes cs-bytes time-taken
         Public Property Fecha As DateTime
         Public Property Hora As TimeSpan

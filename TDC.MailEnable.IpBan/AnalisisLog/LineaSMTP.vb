@@ -1,7 +1,7 @@
 ﻿Namespace AnalisisLog
     Public Class LineaSMTP
         'Desarrollo para comprobar si conviene trabajar con Celdas.
-        Inherits MI_Archivo
+        Inherits Linea
         '#Fields: date time c-ip agent account s-ip s-port cs-method cs-uristem cs-uriquery s-computername sc-bytes cs-bytes cs-username
 
         Private Elementos() As String = {}
