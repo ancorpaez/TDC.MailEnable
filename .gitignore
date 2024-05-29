@@ -365,3 +365,5 @@ FodyWeavers.xsd
 /TDC.MailEnable.IpBan/Certificados/Privado.vb
 /TDC.MailEnable.IpBan/Backup/Email.vb
 /TDC.MailEnable.Core/GeoLocalizacion/Privado.vb
+/TDC.MailEnable.IpBan/AnalisisLog/ArchivoSMTP.vb
+/TDC.MailEnable.IpBan/AnalisisLog/EjemplosLogReales.txt
