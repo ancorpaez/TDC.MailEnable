@@ -11,6 +11,7 @@ Imports System.Net
 'Esta clase Analiza Archivos Log en busqueda de Patrones configurables segun el Filtro aplicado
 Namespace AnalisisLog
     Public Class Archivo
+        Inherits MI_Archivo
         Implements IDisposable
 
         'Bucle BackGround y ForeGround

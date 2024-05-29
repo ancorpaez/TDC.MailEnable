@@ -144,6 +144,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalisisLog\LineaIMAP.vb" />
+    <Compile Include="AnalisisLog\LineaPOP.vb" />
+    <Compile Include="AnalisisLog\LineaSMTP.vb" />
+    <Compile Include="AnalisisLog\MI_Archivo.vb" />
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="AutoResponder\Core.vb" />
     <Compile Include="AutoResponder\BuscadorRespuesta.vb" />
@@ -314,6 +318,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AnalisisLog\EjemplosLogReales.txt" />
     <Content Include="CloudShield.ico" />
     <Content Include="IpBan1.ico" />
     <None Include="packages.config" />
