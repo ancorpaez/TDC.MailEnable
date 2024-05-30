@@ -113,6 +113,20 @@ Namespace AnalisisLog
                         Dim Linea As String = ArchivosEnMemoria.Archivos(Archivo).Lines(ArchivosEnMemoria.Archivos(Archivo).Line)
 
                         For Each Filtro In Filtros
+                            Dim Celdas As Linea = Nothing
+
+                            'Deteccion por Celdas
+                            Select Case Filtro.Key
+                                Case FilterKeys.FilterKey.SMTPLoginFailNoMailBox, FilterKeys.FilterKey.SMTPLoginFailMailBox, FilterKeys.FilterKey.SMTPOutNoLogin, FilterKeys.FilterKey.SMTPMultipleDomainLogin
+                                    'Celdas = New LineaSMTP(Linea)
+                                Case FilterKeys.FilterKey.IMAPLoginFail, FilterKeys.FilterKey.IMAPMultipleDomainLogin
+                                    'Celdas = New LineaIMAP(Linea)
+                                Case FilterKeys.FilterKey.PopLoginFail
+                                    'Celdas = New LineaPOP
+                                Case Else
+                                    'Stop
+                            End Select
+
                             Select Case Filtro.DetectarCrossDomainLogin
                                 'Filtro estandar True/False para Baneo de Ip
                                 Case False
