@@ -7,6 +7,7 @@ Imports TDC.MailEnable.IpBan.AnalisisLog.Archivo
 Imports TDC.MailEnable.Core
 Imports System.Reflection
 Imports System.Net.NetworkInformation
+Imports System.IO
 
 Namespace Interfaz
     Public Class IpBan
@@ -853,9 +854,6 @@ Namespace Interfaz
             Next
         End Sub
 
-        Private Sub TablaMailBackupMAI_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles TablaMailBackupMAI.CellContentClick
-
-        End Sub
         Private Sub ReindexarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReindexarEmail.Click
             If TablaMailBackupMAI.SelectedRows.Count > 0 Then
                 Dim mC As New List(Of Control) From {TablaMailBackupMAI, TreePostOffices}
@@ -1108,6 +1106,36 @@ Namespace Interfaz
                 'Dim Lanzar As Task = Task.Run(Accion)
             End If
         End Sub
+        ' Método para exportar los datos a un archivo de texto
+        Private Sub ExportarDatosATextoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExportarAUnArchivoToolStripMenuItem.Click
+            ExportarDatosATexto(TablaMailBackupMAI.DataSource)
+        End Sub
+        Public Sub ExportarDatosATexto(datos As DataTable)
+            Dim saveFileDialog As New SaveFileDialog()
+            saveFileDialog.Filter = "Archivos de Texto (*.txt)|*.txt|Todos los Archivos (*.*)|*.*"
+            saveFileDialog.Title = "Guardar como"
+            saveFileDialog.DefaultExt = "txt"
+
+            If saveFileDialog.ShowDialog() = DialogResult.OK Then
+                Try
+                    Using writer As New StreamWriter(saveFileDialog.FileName)
+                        ' Escribir la cabecera (opcional)
+                        Dim cabecera As String = String.Join(vbTab, datos.Columns.Cast(Of DataColumn)().Select(Function(c) c.ColumnName))
+                        writer.WriteLine(cabecera)
+
+                        ' Escribir los datos
+                        For Each row As DataRow In datos.Rows
+                            Dim linea As String = String.Join(vbTab, row.ItemArray.Select(Function(item) item.ToString()))
+                            writer.WriteLine(linea)
+                        Next
+                    End Using
+                    MessageBox.Show("Datos exportados exitosamente.", "Exportación Completa", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Catch ex As Exception
+                    MessageBox.Show("Error al exportar datos: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End Try
+            End If
+        End Sub
+
 #End Region 'Tablas MailBackup
 
 

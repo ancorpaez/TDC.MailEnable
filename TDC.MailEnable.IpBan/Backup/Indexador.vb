@@ -19,7 +19,7 @@ Namespace Backup
         'Almacena los delegados de los procesos EndGroundEventHandler creados por CrearIndexador
         Private ReadOnly HandlerEventos_EndGround As New Concurrent.ConcurrentDictionary(Of String, DoBucle.EndGroundEventHandler)
 
-        Private ReadOnly QueneEmails As New Concurrent.ConcurrentQueue(Of Email)
+        Private ReadOnly Property QueneEmails As New Concurrent.ConcurrentQueue(Of Email)
         Private ReadOnly QueneCalendar As New Concurrent.ConcurrentQueue(Of Calendar)
         Private ReadOnly QueneTask As New Concurrent.ConcurrentQueue(Of Task)
         Private ReadOnly QueneContact As New Concurrent.ConcurrentQueue(Of Contact)
@@ -177,6 +177,9 @@ Namespace Backup
                       Dim Value As DoBucle = sender
                       Dim Key As String = Value.Name
 
+                      'Actualizar el Interface con los Eliminados
+                      IpBanForm.lblLimpiadosBackup.Text = $"Eliminados ({Eliminados})"
+
                       'Comprobar  Límite de Analizadores
                       If Indexadores.Count > MailEnable.Main.Configuracion.ANALIZADORES_BACKUP AndAlso Not Archivos.IsEmpty Then
                           'Extraer Buscadores
@@ -213,6 +216,9 @@ Namespace Backup
                     If Not IsNothing(Archivos) Then If Not Archivos.IsEmpty Then CType(sender, DoBucle).Iniciar()
                 End Sub)
         End Function
+
+        'Variable de paso entre el BackGround y el ForeGround
+        Private Eliminados As Integer = 0
         Private Function CrearAccion_BackGround() As Action(Of String)
             Return New Action(Of String)(
                 Sub(Archivo As String)
@@ -249,16 +255,14 @@ Namespace Backup
                                 If Limpiar Then
                                     'Si hay que limpiar
                                     Dim Fila As DataRow = MAI.GetRow("Archivo", Archivo)
-                                    If Not IsNothing(Fila) Then MAI.Tabla.Rows.Remove(Fila)
+                                    If Not IsNothing(Fila) Then MAI.Remove(Fila)
                                 End If
 
                                 'Eliminamos el archivo del Backup
                                 If Eliminar Then
                                     'Si hay que Eliminar
                                     IO.File.Delete(Archivo)
-                                    Dim Contar As Integer = CInt(IpBanForm.lblLimpiadosBackup.Text.Split(" ")(1).Replace("(", "").Replace(")", ""))
-                                    Contar += 1
-                                    MailEnable.IpBanForm.Invoke(Sub() IpBanForm.lblLimpiadosBackup.Text = $"Limpiados ({Contar})")
+                                    Eliminados += 1
                                 End If
 
                                 'Indexamos el Archivo
@@ -266,6 +270,15 @@ Namespace Backup
                                     'Si hay que indexar
                                     If IO.File.Exists(Archivo) Then QueneEmails.Enqueue(New Email(Archivo))
                                 End If
+
+                                'Ajuste para Actualizar la Tabla MAI con la Fecha de la Indexación
+                                'If Not Indexar AndAlso Not Eliminar AndAlso Not Limpiar Then
+                                '    'Si no realizamos ninguna acción, Significa que está Vigente y debo Comprobar si Detectado está Vacío
+                                '    Dim MAIRow As DataRow = MAI.GetRow("Archivo", Archivo)
+                                '    If IsDBNull(MAIRow("Detectado")) Then
+                                '        MAI.Update(MAIRow("ID"), "Detectado", Fecha)
+                                '    End If
+                                'End If
                             End If
                         Catch ex As Exception
 
@@ -307,16 +320,14 @@ Namespace Backup
                                 If Limpiar Then
                                     'Si hay que limpiar
                                     Dim Fila As DataRow = CAL.GetRow("Archivo", Archivo)
-                                    If Not IsNothing(Fila) Then CAL.Tabla.Rows.Remove(Fila)
+                                    If Not IsNothing(Fila) Then CAL.Remove(Fila)
                                 End If
 
                                 'Eliminamos el archivo del Backup
                                 If Eliminar Then
                                     'Si hay que Eliminar
                                     IO.File.Delete(Archivo)
-                                    Dim Contar As Integer = CInt(IpBanForm.lblLimpiadosBackup.Text.Split(" ")(1).Replace("(", "").Replace(")", ""))
-                                    Contar += 1
-                                    MailEnable.IpBanForm.Invoke(Sub() IpBanForm.lblLimpiadosBackup.Text = $"Limpiados ({Contar})")
+                                    Eliminados += 1
                                 End If
 
 
@@ -364,16 +375,17 @@ Namespace Backup
                                 If Limpiar Then
                                     'Si hay que limpiar
                                     Dim Fila As DataRow = VCF.GetRow("Archivo", Archivo)
-                                    If Not IsNothing(Fila) Then VCF.Tabla.Rows.Remove(Fila)
+                                    If Not IsNothing(Fila) Then VCF.Remove(Fila)
                                 End If
 
                                 'Eliminamos el archivo del Backup
                                 If Eliminar Then
                                     'Si hay que Eliminar
                                     IO.File.Delete(Archivo)
-                                    Dim Contar As Integer = CInt(IpBanForm.lblLimpiadosBackup.Text.Split(" ")(1).Replace("(", "").Replace(")", ""))
-                                    Contar += 1
-                                    MailEnable.IpBanForm.Invoke(Sub() IpBanForm.lblLimpiadosBackup.Text = $"Limpiados ({Contar})")
+                                    Eliminados += 1
+                                    'Dim Contar As Integer = CInt(IpBanForm.lblLimpiadosBackup.Text.Split(" ")(1).Replace("(", "").Replace(")", ""))
+                                    'Contar += 1
+                                    'MailEnable.IpBanForm.Invoke(Sub() IpBanForm.lblLimpiadosBackup.Text = $"Limpiados ({Contar})")
                                 End If
 
 
@@ -421,16 +433,17 @@ Namespace Backup
                                 If Limpiar Then
                                     'Si hay que limpiar
                                     Dim Fila As DataRow = TSK.GetRow("Archivo", Archivo)
-                                    If Not IsNothing(Fila) Then TSK.Tabla.Rows.Remove(Fila)
+                                    If Not IsNothing(Fila) Then TSK.Remove(Fila)
                                 End If
 
                                 'Eliminamos el archivo del Backup
                                 If Eliminar Then
                                     'Si hay que Eliminar
                                     IO.File.Delete(Archivo)
-                                    Dim Contar As Integer = CInt(IpBanForm.lblLimpiadosBackup.Text.Split(" ")(1).Replace("(", "").Replace(")", ""))
-                                    Contar += 1
-                                    MailEnable.IpBanForm.Invoke(Sub() IpBanForm.lblLimpiadosBackup.Text = $"Limpiados ({Contar})")
+                                    Eliminados += 1
+                                    'Dim Contar As Integer = CInt(IpBanForm.lblLimpiadosBackup.Text.Split(" ")(1).Replace("(", "").Replace(")", ""))
+                                    'Contar += 1
+                                    'MailEnable.IpBanForm.Invoke(Sub() IpBanForm.lblLimpiadosBackup.Text = $"Limpiados ({Contar})")
                                 End If
 
 
@@ -449,6 +462,16 @@ Namespace Backup
         Private Sub Controlador_BackGround(Sender As Object, e As BackgroundEventArgs) Handles Controlador.BackGround
             If QueneToTable Then
 
+                'Arreglo para actializar registros desde añadir el campo Detectado a la tabla
+                'For Each Email As DataRow In MAI.Tabla.Rows
+                '    If IsDBNull(Email("Detectado")) Then
+                '        Dim rCleaner As DataRow = Cleaner.GetRow("Archivo", Email("Archivo"))
+                '        If Not IsNothing(rCleaner) Then
+                '            MAI.Update(Email("ID"), "Detectado", rCleaner("Registrado"))
+                '        End If
+                '    End If
+                'Next
+
                 'Indexar Emails
                 Do While Not QueneEmails.IsEmpty
                     Dim MaiQuene As Email = Nothing
@@ -460,7 +483,8 @@ Namespace Backup
                                                       .Remitente = If(MaiQuene.Remitente = String.Empty, "", MaiQuene.Remitente),
                                                       .Destinatarios = If(IsNothing(MaiQuene.Destinatarios), "", String.Join(";", MaiQuene.Destinatarios)),
                                                       .Fecha = MaiQuene.Fecha,
-                                                      .ConCopia = If(IsNothing(MaiQuene.ConCopia), "", String.Join(";", MaiQuene.ConCopia))})
+                                                      .ConCopia = If(IsNothing(MaiQuene.ConCopia), "", String.Join(";", MaiQuene.ConCopia)),
+                                                      .Detectado = Now.ToShortDateString})
 
                         'Registra el archivo en el Cleaner
                         Cleaner.Add(New TDC.MailEnable.Core.BDD.MailBackupCleaner.Rows With {

@@ -5,7 +5,7 @@ Imports System.Net.Mail
 Namespace Backup
     Public Class Email
         Public Archivo As String
-        Public Lineas() As String
+        Public Property Lineas As List(Of String)
         Public Remitente As String = " "
         Public Destinatarios As String = " "
         Public ConCopia As String = " "
@@ -24,7 +24,7 @@ Namespace Backup
         End Sub
 
         Private Sub Buscar()
-            Lineas = IO.File.ReadAllLines(Archivo, System.Text.Encoding.Default)
+            Lineas = New List(Of String)(IO.File.ReadAllLines(Archivo, System.Text.Encoding.Default))
             Dim Index As Integer = 0
 
             For Each Linea In Lineas
@@ -74,6 +74,10 @@ Namespace Backup
                 'Avanzamos 1
                 Index += 1
             Next
+
+            'Limpiar la Memoria
+            Lineas.Clear()
+            Lineas.TrimExcess()
         End Sub
         Private Function ExtraerFecha(contenido As String) As DateTime
             Dim match As Match = Regex.Match(contenido, "Sent: (.+?)(?:\r\n|$)")
@@ -317,8 +321,18 @@ Namespace Backup
                             AsuntoCodificado = AsuntoCodificado.Replace(Caracter, "")
                         Next
 
-                        Dim DecodificarBytes As Byte() = Convert.FromBase64String(AsuntoCodificado)
-                        Devolver = Codificacion.GetString(DecodificarBytes)
+                        While (AsuntoCodificado.Length Mod 4 <> 0)
+                            AsuntoCodificado &= "="
+                        End While
+
+                        Try
+                            Dim DecodificarBytes As Byte() = Convert.FromBase64String(AsuntoCodificado)
+                            Devolver = Codificacion.GetString(DecodificarBytes)
+                        Catch ex As Exception
+                            AsuntoCodificado = AsuntoCodificado.Replace("=", "")
+                            Dim DecodificarBytes As Byte() = Convert.FromBase64String(AsuntoCodificado)
+                            Devolver = Codificacion.GetString(DecodificarBytes)
+                        End Try
                     Case "C"
                         Devolver = QuotedPrintableToString(AsuntoCodificado)
                     Case "Q"

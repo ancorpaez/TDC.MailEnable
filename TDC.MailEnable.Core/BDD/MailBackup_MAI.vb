@@ -27,16 +27,18 @@
             Public Property ConCopia As String = String.Empty
             Public Property Asunto As String = String.Empty
             Public Property Fecha As DateTime = New Date
+            Public Property Detectado As DateTime = New Date
 
         End Class
 
         Public Shadows Enum Columnas
             Archivo = 1
-            Remitente = 2
-            Destinatarios = 3
-            ConCopia = 4
-            Asunto = 5
-            Fecha = 6
+            Remitente
+            Destinatarios
+            ConCopia
+            Asunto
+            Fecha
+            Detectado
         End Enum
     End Class
 End Namespace

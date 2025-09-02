@@ -106,12 +106,34 @@ Namespace MailEnable
         End Function
         Public Function Guardar() As Boolean
             Try
-                xmlDoc.Save(filePath)
+                ' Recargar desde disco la última versión del archivo
+                Dim nuevoXml As New XmlDocument()
+                nuevoXml.Load(filePath)
+
+                ' Reubicar nodos destino en la nueva instancia
+                Dim nuevaLocation = FindNodeByAttribute(nuevoXml, "location", "path", "MailEnable WebMail")
+                Dim nuevoSystemWebServer = BuscarNodo(nuevaLocation, "system.webServer")
+                Dim nuevaSecurity = BuscarNodo(nuevoSystemWebServer, "security")
+                Dim nuevoIpSecurity = BuscarNodo(nuevaSecurity, "ipSecurity")
+
+                ' Limpiar y copiar los nodos actuales a la nueva ipSecurity
+                If nuevoIpSecurity IsNot Nothing Then
+                    nuevoIpSecurity.RemoveAll()
+                    For Each ipNode As XmlNode In Me.ipSecurity.ChildNodes
+                        Dim nuevoNodo = nuevoXml.ImportNode(ipNode, True)
+                        nuevoIpSecurity.AppendChild(nuevoNodo)
+                    Next
+                End If
+
+                ' Guardar la nueva versión al archivo
+                nuevoXml.Save(filePath)
+
             Catch ex As Exception
                 Return False
             End Try
             Return True
         End Function
+
 
 
     End Class

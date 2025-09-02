@@ -219,5 +219,6 @@ Namespace Bucle
             FlowControls.MouseMove
             If Me.FormBorderStyle <> FormBorderStyle.None AndAlso Not Me.Focused AndAlso Me.CanFocus Then Me.Focus()
         End Sub
+
     End Class
 End Namespace

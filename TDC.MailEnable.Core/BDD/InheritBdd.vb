@@ -67,7 +67,14 @@ Namespace BDD
                 Return Fila("ID")
             End SyncLock
         End Function
-
+        Public Sub Remove(Fila As DataRow)
+            SyncLock SyncLockAction
+                Try
+                    Tabla.Rows.Remove(Fila)
+                Catch ex As Exception
+                End Try
+            End SyncLock
+        End Sub
         Public Sub Clear()
             Tabla.Clear()
         End Sub
@@ -124,13 +131,15 @@ Namespace BDD
         End Function
 
         Public Function GetRow(Columna As String, Valor As Object) As DataRow
-            Try
-                Dim Devolucion As DataRow() = Tabla.Select(String.Format(Columna & "='{0}'", Valor))
-                If Not IsNothing(Devolucion) Then Return Devolucion.First
-            Catch ex As Exception
+            SyncLock SyncLockAction
+                Try
+                    Dim Devolucion As DataRow() = Tabla.Select(String.Format(Columna & "='{0}'", Valor))
+                    If Not IsNothing(Devolucion) AndAlso Devolucion.Count > 0 Then Return Devolucion.First
+                Catch ex As Exception
 
-            End Try
-            Return Nothing
+                End Try
+                Return Nothing
+            End SyncLock
         End Function
         Protected Friend Function CrearID() As DataColumn
             Dim Columna As New DataColumn With {
